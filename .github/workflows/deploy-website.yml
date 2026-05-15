@@ -1,9 +1,12 @@
 name: Deploy website to GitHub Pages
 
 # Opt-in: enable Pages in repo settings (Source: GitHub Actions) to activate.
-# The build automatically uses the correct site URL and base path for the
-# repo it's running in via the GITHUB_* env vars below — no manual edits
-# required for project pages at https://<owner>.github.io/<repo>/.
+#
+# Production deploys publish to the custom domain
+# https://copilot-cli.genisisiq.com (served from the root path).
+# The CNAME file in `website/public/CNAME` tells GitHub Pages which custom
+# domain to bind to the deployed site. Configure the matching DNS record
+# (CNAME copilot-cli -> <owner>.github.io) at the domain registrar.
 
 on:
   push:
@@ -43,10 +46,9 @@ jobs:
         working-directory: website
         env:
           DEPLOY_TARGET: github-pages
-          # https://<owner>.github.io  (e.g. https://acme.github.io)
-          SITE_URL: https://${{ github.repository_owner }}.github.io
-          # /<repo>  (e.g. /copilot-cli-internals)
-          SITE_BASE: /${{ github.event.repository.name }}
+          # Custom domain served from the root path.
+          SITE_URL: https://copilot-cli.genisisiq.com
+          SITE_BASE: ''
         run: pnpm build
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

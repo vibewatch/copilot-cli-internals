@@ -5,22 +5,26 @@ import starlight from '@astrojs/starlight';
 /**
  * GitHub Pages deploy config.
  *
- * When DEPLOY_TARGET=github-pages, the build emits URLs prefixed with
- * `/copilot-cli-internals/` (the conventional Pages path for a project repo).
- * Local dev, preview, and other deploy targets keep the bare-root behaviour
- * so links work without extra setup.
+ * Production deploys go to the custom domain
+ * https://copilot-cli.genisisiq.com (served from the root path).
+ *
+ * When DEPLOY_TARGET=github-pages, the build emits absolute URLs based on
+ * `SITE_URL` and an optional path prefix from `SITE_BASE` (leave empty for
+ * a root-domain deployment). Local dev and preview keep the bare-root
+ * behaviour so links work without extra setup.
  *
  * Override either value via env vars when invoking the build, e.g.:
- *   SITE_URL=https://my-org.github.io DEPLOY_TARGET=github-pages pnpm build
+ *   SITE_URL=https://my-org.github.io SITE_BASE=/my-repo \
+ *     DEPLOY_TARGET=github-pages pnpm build
  */
 const isGitHubPages = process.env.DEPLOY_TARGET === 'github-pages';
-const siteUrl = process.env.SITE_URL ?? 'https://example.github.io';
-const basePath = process.env.SITE_BASE ?? '/copilot-cli-internals';
+const siteUrl = process.env.SITE_URL ?? 'https://copilot-cli.genisisiq.com';
+const basePath = process.env.SITE_BASE ?? '';
 
 // https://astro.build/config
 export default defineConfig({
   site: isGitHubPages ? siteUrl : undefined,
-  base: isGitHubPages ? basePath : undefined,
+  base: isGitHubPages && basePath ? basePath : undefined,
   trailingSlash: 'always',
   integrations: [
     starlight({
