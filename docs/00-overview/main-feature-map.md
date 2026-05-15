@@ -1,4 +1,4 @@
-# Main feature map for `app.js`
+# Main feature map for Copilot CLI
 
 This document continues the static analysis of the extracted `@github/copilot` CLI bundle. Its goal is to answer a product/runtime question: **what major capabilities are implemented by `app.js`, and how do those capabilities connect?**
 

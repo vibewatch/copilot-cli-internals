@@ -17,7 +17,7 @@ flowchart TD
 
 | Page | Why read it | File |
 |---|---|---|
-| [Permission system design in `app.js`](./permission-system-design.md) | Central PermissionService pipeline, rule precedence, path/URL managers, prompts, scopes, and allow-all behavior. | `permission-system-design.md` |
+| [Permission system design in Copilot CLI](./permission-system-design.md) | Central PermissionService pipeline, rule precedence, path/URL managers, prompts, scopes, and allow-all behavior. | `permission-system-design.md` |
 | [Content exclusion and redaction](./content-exclusion-and-redaction.md) | Content-exclusion service, policy fetch/merge, filtered outputs, bypass limits, secret env vars, and redaction. | `content-exclusion-and-redaction.md` |
 | [Hooks and lifecycle automation](./hooks-lifecycle-automation.md) | Hook schema, command/HTTP hooks, VS Code aliases, security restrictions, events, and lifecycle automation. | `hooks-lifecycle-automation.md` |
 | [Sandbox Implementation](./sandboxing.md) | Local command sandboxing, /sandbox, SANDBOX gate, shell wiring, MXC policy, and platform caveats. | `sandboxing.md` |

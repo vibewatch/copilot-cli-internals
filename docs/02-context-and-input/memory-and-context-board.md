@@ -1,4 +1,4 @@
-# Memory and dynamic context board in `app.js`
+# Memory and dynamic context board in Copilot CLI
 
 This document explains the memory-related systems in the extracted `@github/copilot` CLI bundle. The implementation is easiest to understand as four cooperating layers:
 

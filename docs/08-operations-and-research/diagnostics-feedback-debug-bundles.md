@@ -117,7 +117,7 @@ The gist path uses the GitHub API to create a gist with:
 
 The `/collect-debug-logs gist` command first gets an auth token, then opens a dialog in `collect-debug-logs` mode with `mode:"gist"`, token, current session ID, session/log file paths, and current directory.
 
-Even though GitHub calls these “secret” gists, they are still uploaded outside the local machine. The command therefore requires login and should be treated as a deliberate support/debug action.
+GitHub labels these gists as “secret”, which means they are unlisted rather than private to the local machine: anyone with the URL can access the contents. The command therefore requires login and should be treated as a deliberate support/debug action.
 
 ## Root CLI collection flags
 

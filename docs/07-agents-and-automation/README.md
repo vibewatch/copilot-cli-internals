@@ -16,9 +16,9 @@ flowchart TD
 
 | Page | Why read it | File |
 |---|---|---|
-| [Agent and task orchestration in `app.js`](./agent-task-orchestration.md) | Task tool dispatch, TaskRegistry, main/subagent/custom-agent collaboration, hooks, MCP tasks, research, and fleet. | `agent-task-orchestration.md` |
+| [Agent and task orchestration in Copilot CLI](./agent-task-orchestration.md) | Task tool dispatch, TaskRegistry, main/subagent/custom-agent collaboration, hooks, MCP tasks, research, and fleet. | `agent-task-orchestration.md` |
 | [Autopilot and no-ask-user flags](./autopilot-and-no-ask-user.md) | Implementation comparison of --autopilot, --no-ask-user, continuation, task_complete, ask_user, and permission boundaries. | `autopilot-and-no-ask-user.md` |
-| [Fleet mode implementation in `app.js`](./fleet-mode.md) | /fleet, session.fleet.start, autopilot_fleet, SQL todo coordination, dependencies, and parallel subagents. | `fleet-mode.md` |
+| [Fleet mode implementation in Copilot CLI](./fleet-mode.md) | /fleet, session.fleet.start, autopilot_fleet, SQL todo coordination, dependencies, and parallel subagents. | `fleet-mode.md` |
 | [Scheduled prompts and command queue](./scheduled-prompts-and-command-queue.md) | /every and /after parsing, ScheduleRegistry replay, queue integration, and ephemeral command dispatch. | `scheduled-prompts-and-command-queue.md` |
 
 ## Reading guidance

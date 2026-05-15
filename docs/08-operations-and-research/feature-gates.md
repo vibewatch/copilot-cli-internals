@@ -1,4 +1,4 @@
-# Feature gates and rollout logic in `app.js`
+# Feature gates and rollout logic in Copilot CLI
 
 This document explains how “gates” work in the extracted `@github/copilot` CLI bundle. In this bundle, “gate” mostly means **feature availability control**: a feature starts from a built-in availability tier, then can be changed by environment variables, settings, programmatic overrides, and sometimes remote experiment assignment.
 
@@ -31,7 +31,7 @@ There is also one literal MCP permission-gate flag path. That path is covered se
 
 Not from this extracted package alone. The published package includes `app.js` but no `app.js.map` or `sourcesContent`, and the only `sourceMappingURL` hits in `app.js` are embedded CSS/vendor artifacts. `package.json` points to `github/copilot-cli` and records build commit `eb38dfb`; exact pre-minification names would require that source tree or a matching sourcemap.
 
-What we *can* recover is a set of **semantic names** from call sites, data flow, string constants, schemas, and side effects. Treat these as analysis aliases, not proven source identifiers.
+What is recoverable is a set of **semantic names** derived from call sites, data flow, string constants, schemas, and side effects. These should be treated as analysis aliases, not proven source identifiers.
 
 | Semantic alias | Minified anchor | Confidence | Why |
 |---|---|---:|---|
@@ -60,7 +60,7 @@ What we *can* recover is a set of **semantic names** from call sites, data flow,
 | `MCP_PERMISSION_GATE_FLAG` | `CUs` | High | Constant string `copilot_swe_agent_mcp_permission_gate`. |
 | `resolveGithubMcpUrl(readonly)` | `p5e(readonly)` | Medium-high | Builds GitHub MCP URL and appends `/readonly` when requested. |
 
-These aliases are used throughout the diagrams and prose below so the document reads like source-level architecture notes. The `Minified anchor` column remains available when you need to jump back into the minified bundle.
+These aliases are used throughout the diagrams and prose below so the document reads like source-level architecture notes. The `Minified anchor` column remains available for cross-referencing back into the minified bundle.
 
 ## Gate inputs
 

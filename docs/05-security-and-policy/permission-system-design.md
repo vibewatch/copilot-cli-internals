@@ -1,4 +1,4 @@
-# Permission system design in `app.js`
+# Permission system design in Copilot CLI
 
 This document explains the permission subsystem in the extracted `@github/copilot` CLI bundle. The key idea is that permissions are not a single yes/no switch. The runtime combines static allow/deny rules, path and URL guards, content-exclusion checks, hook decisions, interactive prompts, remote/RPC responses, and persistence scopes before a tool call is allowed to run.
 

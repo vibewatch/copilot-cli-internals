@@ -1,4 +1,4 @@
-# Prompt sources in `app.js`
+# Prompt sources in Copilot CLI
 
 This document answers two questions from the static analysis of the extracted `@github/copilot` CLI bundle:
 

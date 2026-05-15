@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import rehypeRewriteDocLinks from './src/plugins/rehype-rewrite-doc-links.mjs';
 
 /**
  * GitHub Pages deploy config.
@@ -26,6 +27,12 @@ export default defineConfig({
   site: isGitHubPages ? siteUrl : undefined,
   base: isGitHubPages && basePath ? basePath : undefined,
   trailingSlash: 'always',
+  markdown: {
+    // Rewrite GitHub-style `*.md` links in the source docs to Starlight
+    // routes. The custom docs loader (see `src/content.config.ts`) reuses
+    // this markdown config, so the same rewrite applies to every page.
+    rehypePlugins: [rehypeRewriteDocLinks],
+  },
   integrations: [
     starlight({
       title: 'Copilot CLI Internals',

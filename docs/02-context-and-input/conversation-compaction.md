@@ -1,4 +1,4 @@
-# Conversation compaction and memory compression in `app.js`
+# Conversation compaction and memory compression in Copilot CLI
 
 This document explains the implementation behind the Copilot CLI behavior that is easy to describe as "memory compression". In the analyzed bundle, the main local mechanism is **conversation compaction**: old chat history is summarized by a model call, then the session replaces many prior messages with a compact summary so the next request fits within the model context window.
 

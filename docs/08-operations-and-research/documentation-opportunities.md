@@ -1,4 +1,4 @@
-# Further documentation opportunities in `app.js`
+# Further documentation opportunities for Copilot CLI
 
 This report summarizes a second-pass, script-assisted scan of the extracted Copilot CLI `app.js` bundle to identify areas that are still worth turning into focused implementation documents.
 

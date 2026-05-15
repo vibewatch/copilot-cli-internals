@@ -1,4 +1,4 @@
-# Fleet mode implementation in `app.js`
+# Fleet mode implementation in Copilot CLI
 
 This document explains how the `/fleet` feature is implemented in the extracted `@github/copilot` CLI bundle. Fleet mode is best understood as a prompt-driven orchestration mode: it asks the main agent to act like a project manager, split work into SQL-backed todos, dispatch independent subtasks through the `task` tool, and validate the combined result.
 

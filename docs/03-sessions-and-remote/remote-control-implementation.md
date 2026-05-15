@@ -1,4 +1,4 @@
-# Remote control implementation in `app.js`
+# Remote control implementation in Copilot CLI
 
 This document describes what can be inferred from the bundled `app.js` about the Copilot CLI remote feature. In short, the CLI implements remote control as an outbound HTTPS integration with GitHub's **Mission Control** service: an internal GitHub-hosted control plane for Copilot tasks/sessions that stores remote session state, receives CLI event uploads, and exposes commands for the local CLI to poll. The CLI exports local session events to a GitHub-hosted task/session, then optionally polls that task/session for remote commands from GitHub web or mobile.
 

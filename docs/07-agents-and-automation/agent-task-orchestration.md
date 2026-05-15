@@ -1,4 +1,4 @@
-# Agent and task orchestration in `app.js`
+# Agent and task orchestration in Copilot CLI
 
 This addendum focuses on the deeper agent/task layer in the extracted `@github/copilot` CLI bundle. It answers the follow-up question: how does `app.js` orchestrate agents, subagents, background tasks, multi-turn agents, MCP tasks, and slash-command workflows?
 
