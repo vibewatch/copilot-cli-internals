@@ -4,7 +4,7 @@ This document explains the checkpoint/rewind mechanics visible in the extracted 
 
 The important implementation point is that rewind is not implemented as an ad-hoc UI-only mutation. The session event log is truncated to a chosen event boundary, in-memory state is rebuilt by replaying remaining events, and a `session.snapshot_rewind` event is emitted so clients can update their UI.
 
-Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted `1.0.48` bundle.
+Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted bundle and will shift across releases.
 
 ## Source anchors
 

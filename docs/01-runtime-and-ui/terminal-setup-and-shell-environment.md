@@ -4,7 +4,7 @@ This document explains how terminal setup and shell-environment handling are imp
 
 The important implementation point is that terminal setup is narrowly scoped: it configures multiline input support for known terminals. It is adjacent to, but separate from, the shell execution context used by tools and subagents.
 
-Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted `1.0.48` bundle.
+Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted bundle and will shift across releases.
 
 ## Source anchors
 

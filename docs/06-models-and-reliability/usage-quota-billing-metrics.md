@@ -7,7 +7,7 @@ The important implementation point is that the CLI tracks two related but differ
 - live context-window usage, emitted as `session.usage_info`;
 - accumulated request/cost/session metrics, emitted through `assistant.usage`, `/usage`, and `session.shutdown`.
 
-Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted `1.0.48` bundle.
+Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted bundle and will shift across releases.
 
 ## Source anchors
 

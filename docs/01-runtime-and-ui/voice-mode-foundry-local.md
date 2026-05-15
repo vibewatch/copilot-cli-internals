@@ -12,7 +12,7 @@ The important implementation point is that voice mode is not just a UI toggle. I
 - model selection and cache checks;
 - TUI keybindings for recording and dictation.
 
-Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted `1.0.48` bundle.
+Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted bundle and will shift across releases.
 
 ## Source anchors
 

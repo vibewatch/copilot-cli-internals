@@ -9,8 +9,8 @@
  *
  *   ./README.md         -> ./
  *   ../README.md        -> ../
- *   ../SUMMARY.md       -> ../              (SUMMARY.md has no rendered page;
- *                                            point readers at the section index)
+ *   ./SUMMARY.md        -> ./summary/      (rendered as a top-level page)
+ *   ../SUMMARY.md       -> ../summary/
  *   ../foo/bar.md       -> ../foo/bar/
  *   ../foo/bar.md#x     -> ../foo/bar/#x
  *   ./quux.mdx          -> ./quux/
@@ -44,10 +44,10 @@ function rewriteHref(href) {
   if (!/\.mdx?$/i.test(pathPart)) return href;
 
   let p = pathPart.replace(/\.mdx?$/i, '');
-  // README/SUMMARY both collapse to the containing directory's index page.
-  // README -> directory index by design; SUMMARY.md is excluded from the
-  // generated pages, so the directory index is the closest reasonable target.
-  p = p.replace(/(^|\/)(README|SUMMARY)$/i, '$1');
+  // README collapses to the containing directory's index page (by design).
+  p = p.replace(/(^|\/)README$/i, '$1');
+  // SUMMARY.md is rendered at /summary/, so map any-case SUMMARY to lowercase.
+  p = p.replace(/(^|\/)SUMMARY$/i, '$1summary');
 
   // Ensure a trailing slash so links work with `trailingSlash: 'always'`.
   if (p !== '' && !p.endsWith('/')) p = `${p}/`;

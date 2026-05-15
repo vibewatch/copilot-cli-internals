@@ -7,7 +7,7 @@ The key distinction is:
 - **Scheduled prompts** enqueue plain user messages on a timer.
 - **Queued commands** ask a UI/protocol client to execute or route slash-command text.
 
-Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted `1.0.48` bundle.
+Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted bundle and will shift across releases.
 
 ## Source anchors
 

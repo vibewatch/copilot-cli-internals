@@ -2,7 +2,7 @@
 
 This document explains how the extracted Copilot CLI bundle loads, merges, migrates, and writes settings/configuration. In the analyzed `app.js`, configuration is not one file or one object. It is a family of stores and runtime overlays covering user settings, location permissions, MCP/LSP config, plugin state, sandbox policy, URL permissions, trusted folders, feature flags, auth metadata, terminal setup prompts, and session runtime options.
 
-Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted `1.0.48` bundle.
+Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted bundle and will shift across releases.
 
 ## Source anchors
 

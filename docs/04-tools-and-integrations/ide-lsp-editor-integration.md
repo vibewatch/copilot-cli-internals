@@ -4,7 +4,7 @@ This document explains how the extracted Copilot CLI bundle integrates with IDE/
 
 The implementation is intentionally optional. The CLI can run headless without an IDE, but when an IDE connection is available it can pull selection/diagnostic context, open editor diffs for file edits, synchronize the session title, and register IDE-related capabilities on the MCP/tool host.
 
-Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted `1.0.48` bundle.
+Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted bundle and will shift across releases.
 
 ## Source anchors
 

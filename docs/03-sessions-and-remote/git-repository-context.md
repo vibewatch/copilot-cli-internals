@@ -2,7 +2,7 @@
 
 This document explains how the extracted Copilot CLI bundle derives and reuses Git/repository context. In the analyzed `app.js`, Git context is not just a prompt nicety. It feeds session metadata, workspace persistence, telemetry, file identity, code review, remote/cloud task metadata, session indexing, dynamic context boards, and GitHub MCP instructions.
 
-Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted `1.0.48` bundle.
+Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted bundle and will shift across releases.
 
 ## Source anchors
 

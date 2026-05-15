@@ -6,7 +6,7 @@ The implementation is not an SSH-style remote shell and does not require an inbo
 
 ## Source anchors
 
-`app.js` is bundled and minified, so names are not stable public APIs. The anchors below are useful for searching the analyzed `1.0.48` artifact.
+`app.js` is bundled and minified, so names are not stable public APIs. The anchors below are useful for searching the analyzed `@github/copilot` artifact and may shift across releases.
 
 | Area | Semantic alias | Minified anchor / string | Approx. offset | Role |
 |---|---|---:|---:|---|

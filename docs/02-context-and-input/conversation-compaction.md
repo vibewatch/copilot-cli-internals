@@ -12,7 +12,7 @@ This is different from binary compression and also different from long-term memo
 
 ## Source anchors
 
-`app.js` is bundled/minified. This table uses semantic aliases first and keeps generated names only as lookup anchors for the analyzed `@github/copilot` `1.0.48` bundle.
+`app.js` is bundled/minified. This table uses semantic aliases first and keeps generated names only as lookup anchors for the analyzed `@github/copilot` bundle; they may shift across releases.
 
 | Area | Semantic alias | Minified anchor | Approx. location | What it does |
 |---|---|---:|---:|---|

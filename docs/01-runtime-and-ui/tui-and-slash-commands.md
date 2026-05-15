@@ -2,7 +2,7 @@
 
 This document fills the standalone coverage gap for the interactive terminal UI in `app.js`. It focuses on how the TUI is launched, what runtime services it hosts, how dialogs and approvals fit into the event loop, and how slash commands act as user-facing shortcuts over deeper session, mode, integration, and agent orchestration behavior.
 
-`app.js` is bundled and minified, so semantic aliases are used as stable documentation names. Minified symbols are retained only as search anchors for the analyzed `@github/copilot` `1.0.48` artifact.
+`app.js` is bundled and minified, so semantic aliases are used as stable documentation names. Minified symbols are retained only as search anchors for the analyzed `@github/copilot` artifact and may shift across releases.
 
 ## Source anchors
 

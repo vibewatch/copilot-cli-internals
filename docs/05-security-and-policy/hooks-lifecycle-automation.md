@@ -4,7 +4,7 @@ This document explains how hooks work in the extracted Copilot CLI bundle. Hooks
 
 The implementation is not just “run a script.” `app.js` defines a hook schema, compatibility aliases, discovery/merge logic, security restrictions for HTTP hooks, hook start/end events, and output adapters that can change prompts, approvals, and tool results.
 
-Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted `1.0.48` bundle.
+Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted bundle and will shift across releases.
 
 ## Source anchors
 

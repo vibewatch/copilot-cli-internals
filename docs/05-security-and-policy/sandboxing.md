@@ -14,7 +14,7 @@ The rest of this document focuses on local command sandboxing and calls out wher
 
 ## Source anchors
 
-`app.js` is bundled and minified, so this document uses semantic aliases in prose and diagrams. Minified names are kept only in this table for searching the analyzed `@github/copilot` `1.0.48` artifact.
+`app.js` is bundled and minified, so this document uses semantic aliases in prose and diagrams. Minified names are kept only in this table for searching the analyzed `@github/copilot` artifact and may shift across releases.
 
 | Area | Semantic alias | Minified anchor | Approx. line | Role |
 |---|---|---:|---:|---|

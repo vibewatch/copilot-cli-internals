@@ -1,0 +1,32 @@
+---
+/**
+ * Footer override — keeps Starlight's built-in footer (last-updated strip,
+ * prev/next pagination, edit link) and appends a one-line author credit
+ * styled to match the "Last updated" meta text so it reads as part of the
+ * same footer area rather than a separate block.
+ */
+import Default from '@astrojs/starlight/components/Footer.astro';
+---
+
+<Default {...Astro.props}><slot /></Default>
+
+<p class="wiki-attribution">
+  Created and maintained by <strong>Yingting Huang</strong>.
+</p>
+
+<style>
+  /* Match Starlight's `.meta` text treatment so the credit reads as a
+   * continuation of the "Last updated" line rather than a separate block. */
+  .wiki-attribution {
+    margin: 0.5rem 0 0;
+    font-size: var(--sl-text-sm);
+    color: var(--sl-color-gray-3);
+    line-height: 1.4;
+    text-align: right;
+  }
+
+  .wiki-attribution strong {
+    color: var(--sl-color-text);
+    font-weight: 600;
+  }
+</style>

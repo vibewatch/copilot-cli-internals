@@ -8,7 +8,7 @@ The important implementation point is that diagnostics and feedback are split in
 - `/feedback` opens a feedback dialog and can attach logs when the gate allows it;
 - `/collect-debug-logs` packages session/log files into a local `.tgz` or uploads them to a secret GitHub gist.
 
-Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted `1.0.48` bundle.
+Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted bundle and will shift across releases.
 
 ## Source anchors
 

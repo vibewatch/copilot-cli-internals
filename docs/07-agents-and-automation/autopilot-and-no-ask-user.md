@@ -21,7 +21,7 @@ In practical terms:
 
 ## Source anchors
 
-`app.js` is minified, so these anchors are version-specific lookup aids for the inspected `@github/copilot` `1.0.48` bundle.
+`app.js` is minified, so these anchors are version-specific lookup aids for the inspected `@github/copilot` bundle and will shift across releases.
 
 | Area | Semantic alias | Minified anchor | Approx. line | What it shows |
 |---|---|---:|---:|---|

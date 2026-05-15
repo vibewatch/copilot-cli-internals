@@ -6,7 +6,7 @@ The short version: the model-visible `task` tool is the main subagent router, wh
 
 ## Source anchors
 
-`app.js` is bundled/minified, so the documentation uses semantic aliases as the primary names and keeps generated symbols only as version-specific lookup anchors for `@github/copilot` `1.0.48`:
+`app.js` is bundled/minified, so the documentation uses semantic aliases as the primary names and keeps generated symbols only as version-specific lookup aids for the analyzed `@github/copilot` bundle (they will shift across releases):
 
 | Area | Semantic alias | Minified anchor | Approx. line | What it does |
 |---|---|---:|---:|---|

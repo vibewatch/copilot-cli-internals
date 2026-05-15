@@ -22,12 +22,18 @@ const DOCS_ROOT = path.resolve(here, '..', '..', 'docs');
 /** Path used in filePath fields — Astro requires it relative to the site root. */
 const SITE_ROOT = path.resolve(here, '..');
 
-/** Files we never want to surface as routes (GitBook-style TOC duplicates). */
-const EXCLUDE_BASENAMES = new Set(['SUMMARY.md']);
+/**
+ * Files we never want to surface as routes. Currently empty —
+ * `SUMMARY.md` is rendered as `/summary/` (see `deriveId`) so that the
+ * "Full table of contents" links from each volume README resolve to a
+ * real page instead of bouncing back to the directory index.
+ */
+const EXCLUDE_BASENAMES = new Set<string>();
 
 /**
  * Map an on-disk relative path to a Starlight slug.
  *   README.md                        -> "index"          (the home page)
+ *   SUMMARY.md                       -> "summary"        (lowercased TOC page)
  *   00-overview/README.md            -> "00-overview"
  *   00-overview/what-is-app-js.md    -> "00-overview/what-is-app-js"
  */
@@ -35,6 +41,8 @@ function deriveId(relPath: string): string {
   let id = relPath.replace(/\\/g, '/').replace(/\.mdx?$/i, '');
   // Folder README acts as the folder index.
   id = id.replace(/(^|\/)README$/i, '$1');
+  // Root SUMMARY becomes a lowercase top-level page.
+  id = id.replace(/^SUMMARY$/, 'summary');
   id = id.replace(/\/$/, '');
   // Root README has no folder context — use "index" (Astro requires non-empty IDs).
   return id === '' ? 'index' : id;

@@ -9,17 +9,16 @@ Analyzed artifact:
 Observed package metadata:
 
 - Package: `@github/copilot`
-- Version: `1.0.48`
+- Version, build commit: see [`copilot-cli-pkg/package.json`](../../copilot-cli-pkg/package.json) for the exact value of whichever bundle is currently checked in.
 - Package type: ESM (`"type": "module"`)
 - CLI bin: `npm-loader.js`
-- Build commit in package metadata: `eb38dfb`
 
-Observed bundle shape:
+Observed bundle shape (approximate, will drift release-to-release):
 
-- Size: about 11.9 MB (`11,865,712` bytes)
-- Lines: `8,684`
-- esbuild-style CommonJS module wrappers: about `1,140`
-- Lazy init wrappers: about `503`
+- Size: roughly 12 MB
+- Lines: roughly 8.7 K
+- esbuild-style CommonJS module wrappers: roughly 1.1 K
+- Lazy init wrappers: roughly 500
 
 ## What `app.js` does
 

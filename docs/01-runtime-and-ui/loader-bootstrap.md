@@ -25,7 +25,7 @@ flowchart TD
     Package --> App["app.js"]
 
     Package --> Metadata["package.json"]
-    Metadata --> Version["@github/copilot 1.0.48"]
+    Metadata --> Version["@github/copilot"]
     Metadata --> Bin["bin: copilot -> npm-loader.js"]
 ```
 

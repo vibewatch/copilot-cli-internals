@@ -4,7 +4,7 @@ This document explains the embedded server and Agent Client Protocol (ACP) surfa
 
 The important implementation point is that the CLI session model is exposed over a structured event/request protocol. The TUI is only one client; external clients can receive `session.event` notifications and respond to pending requests through JSON-RPC/ACP methods.
 
-Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted `1.0.48` bundle.
+Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted bundle and will shift across releases.
 
 ## Source anchors
 

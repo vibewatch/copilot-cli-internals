@@ -2,7 +2,7 @@
 
 This document explains the permission subsystem in the extracted `@github/copilot` CLI bundle. The key idea is that permissions are not a single yes/no switch. The runtime combines static allow/deny rules, path and URL guards, content-exclusion checks, hook decisions, interactive prompts, remote/RPC responses, and persistence scopes before a tool call is allowed to run.
 
-`app.js` is bundled and minified, so this document uses semantic aliases as stable names. Generated symbols are retained only in the source-anchor table for searching the analyzed `@github/copilot` `1.0.48` artifact.
+`app.js` is bundled and minified, so this document uses semantic aliases as stable names. Generated symbols are retained only in the source-anchor table for searching the analyzed `@github/copilot` artifact and may shift across releases.
 
 ## Source anchors
 

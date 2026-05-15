@@ -39,7 +39,7 @@ export default defineConfig({
       description:
         'Reverse-engineering wiki for the @github/copilot CLI bundle (app.js).',
       logo: {
-        src: './src/assets/hedgehogs/wave.svg',
+        src: './src/assets/cat.svg',
         replacesTitle: false,
       },
       tableOfContents: { minHeadingLevel: 2, maxHeadingLevel: 4 },
@@ -58,12 +58,13 @@ export default defineConfig({
       components: {
         Head: './src/components/Head.astro',
         SiteTitle: './src/components/SiteTitle.astro',
+        Footer: './src/components/Footer.astro',
       },
       social: [
         {
           icon: 'github',
           label: 'GitHub',
-          href: 'https://github.com/',
+          href: 'https://github.com/vibewatch/copilot-cli-internals',
         },
       ],
       sidebar: [
@@ -73,6 +74,7 @@ export default defineConfig({
             { label: 'Overview', link: '/00-overview/' },
             { label: 'What is app.js', link: '/00-overview/what-is-app-js/' },
             { label: 'Main feature map', link: '/00-overview/main-feature-map/' },
+            { label: 'Full table of contents', link: '/summary/' },
           ],
         },
         {

@@ -2,7 +2,7 @@
 
 This document explains how system-level session events become model context, timeline entries, telemetry, and UI updates in the extracted Copilot CLI bundle. In the analyzed `app.js`, events such as `system.message`, `system.notification`, `session.info`, `session.warning`, `session.error`, `pending_messages.modified`, and `session.custom_notification` are not equivalent. Some are model-visible, some are timeline-only, some are ephemeral UI state, and some are telemetry-only.
 
-Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted `1.0.48` bundle.
+Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted bundle and will shift across releases.
 
 ## Source anchors
 

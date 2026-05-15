@@ -132,3 +132,7 @@ For a compact sidebar-style table of contents, see [SUMMARY.md](./SUMMARY.md).
 ## Important caveat
 
 These pages document a bundled/minified production artifact, not clean source. Semantic names in prose and diagrams are explanatory aliases. Generated/minified symbols are retained only when useful as search anchors for the analyzed bundle.
+
+## Author
+
+This wiki was created and is maintained by **Yingting Huang**.

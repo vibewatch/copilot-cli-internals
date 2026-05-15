@@ -2,7 +2,7 @@
 
 This document continues the static analysis of the extracted `@github/copilot` CLI bundle. Its goal is to answer a product/runtime question: **what major capabilities are implemented by `app.js`, and how do those capabilities connect?**
 
-`app.js` is a bundled and minified production artifact. The document therefore uses semantic aliases such as `RootProgram`, `InteractiveTuiFlow`, `runPromptMode(...)`, `TaskRegistry`, and `LiveFeatureFlagService`. Minified names are kept only as search anchors for the analyzed `@github/copilot` `1.0.48` bundle.
+`app.js` is a bundled and minified production artifact. The document therefore uses semantic aliases such as `RootProgram`, `InteractiveTuiFlow`, `runPromptMode(...)`, `TaskRegistry`, and `LiveFeatureFlagService`. Minified names are kept only as search anchors for the analyzed `@github/copilot` bundle and may shift across releases.
 
 ## Executive summary
 

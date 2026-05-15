@@ -14,7 +14,7 @@ The short version: the CLI normalizes every agent turn into internal messages an
 
 ## Source anchors
 
-`app.js` is bundled/minified, so semantic aliases below are analysis names. Minified anchors are version-specific lookup anchors for the analyzed `@github/copilot` `1.0.48` artifact.
+`app.js` is bundled/minified, so semantic aliases below are analysis names. Minified anchors are version-specific lookup aids for the analyzed `@github/copilot` artifact and will shift across releases.
 
 | Area | Semantic alias | Minified anchor | Approx. location | Role |
 |---|---|---:|---:|---|

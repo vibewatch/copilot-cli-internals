@@ -10,7 +10,7 @@ The important implementation point is that “customization” is multi-layered:
 - plugins can contribute both skills and agents;
 - remote/project/inherited sources can merge into a session.
 
-Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted `1.0.48` bundle.
+Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted bundle and will shift across releases.
 
 ## Source anchors
 

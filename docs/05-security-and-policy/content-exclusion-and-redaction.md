@@ -10,7 +10,7 @@ The important implementation point is that sensitive-content handling is layered
 - secret env var handling strips/redacts configured secrets;
 - secret scanning can redact detected secrets in files after repeated remediation failures.
 
-Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted `1.0.48` bundle.
+Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted bundle and will shift across releases.
 
 ## Source anchors
 

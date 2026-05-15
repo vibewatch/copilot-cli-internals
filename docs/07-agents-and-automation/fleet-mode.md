@@ -2,7 +2,7 @@
 
 This document explains how the `/fleet` feature is implemented in the extracted `@github/copilot` CLI bundle. Fleet mode is best understood as a prompt-driven orchestration mode: it asks the main agent to act like a project manager, split work into SQL-backed todos, dispatch independent subtasks through the `task` tool, and validate the combined result.
 
-`app.js` is bundled and minified, so this document uses semantic aliases as the stable names. Minified symbols are retained only as search anchors for the analyzed `@github/copilot` `1.0.48` artifact.
+`app.js` is bundled and minified, so this document uses semantic aliases as the stable names. Minified symbols are retained only as search anchors for the analyzed `@github/copilot` artifact and may shift across releases.
 
 ## Source anchors
 

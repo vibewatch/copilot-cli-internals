@@ -96,3 +96,9 @@ body {
 starlight-theme-select {
   display: none !important;
 }
+
+/* Hide Starlight's vertical divider that the default Header.astro draws as
+ * a `::after` pseudo-element on the `.social-icons` group. */
+header .social-icons::after {
+  display: none;
+}

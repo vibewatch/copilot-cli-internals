@@ -13,7 +13,7 @@ This document explains how the extracted `@github/copilot` CLI bundle handles mo
 
 ## Source anchors
 
-`app.js` is bundled/minified, so semantic aliases below are analysis names. Minified anchors are version-specific lookup anchors for the analyzed `@github/copilot` `1.0.48` artifact.
+`app.js` is bundled/minified, so semantic aliases below are analysis names. Minified anchors are version-specific lookup aids for the analyzed `@github/copilot` artifact and will shift across releases.
 
 | Area | Semantic alias | Minified anchor | Approx. line | Role |
 |---|---|---:|---:|---|

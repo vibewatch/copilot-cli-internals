@@ -7,7 +7,7 @@ The important implementation point is that the CLI maintains two related session
 - raw per-session event logs under session state directories;
 - an indexed SQLite store (`session-store.db`) optimized for search, Chronicle summaries, references, and debugging queries.
 
-Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted `1.0.48` bundle.
+Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted bundle and will shift across releases.
 
 ## Source anchors
 

@@ -1,11 +1,11 @@
 ---
 /**
- * SiteTitle override — replaces Starlight's default text wordmark with a
- * hedgehog mascot anchored to the left of the title. Per DESIGN.md, the
- * hedgehog IS the brand identity — the wordmark never appears alone.
+ * SiteTitle override — replaces Starlight's default text wordmark with an
+ * abstract cat mascot anchored to the left of the title. The cat IS the
+ * brand identity — the wordmark never appears alone.
  */
 import type { Props } from '@astrojs/starlight/props';
-import wave from '../assets/hedgehogs/wave.svg';
+import cat from '../assets/cat.svg';
 
 const { siteTitle, siteTitleHref } = Astro.props as unknown as {
   siteTitle: string;
@@ -15,7 +15,7 @@ const { siteTitle, siteTitleHref } = Astro.props as unknown as {
 
 <a href={siteTitleHref} class="site-title">
   <img
-    src={wave.src}
+    src={cat.src}
     alt=""
     width={32}
     height={32}
