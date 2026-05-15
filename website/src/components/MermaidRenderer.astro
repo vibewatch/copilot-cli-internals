@@ -1,0 +1,326 @@
+---
+/**
+ * MermaidRenderer — client-side mermaid initializer mounted via Starlight's
+ * `Head` slot. The mermaid bundle (~500 KB) is lazy-loaded, so pages without
+ * any mermaid blocks never download it.
+ *
+ * Strategy: at runtime, find every mermaid fenced block (Astro+Expressive Code
+ * emits `<pre data-language="mermaid"><code>…</code></pre>`), feed the source
+ * text to mermaid, and replace the dark code block with the rendered SVG.
+ */
+---
+
+<script>
+  // Run only if the page actually contains a mermaid code block.
+  // Expressive Code marks the language on the <pre> via `data-language`;
+  // some pipelines instead place `language-mermaid` on the inner <code>.
+  const blocks = Array.from(
+    document.querySelectorAll<HTMLElement>(
+      'pre[data-language="mermaid"], pre code.language-mermaid, code.language-mermaid'
+    )
+  );
+
+  if (blocks.length > 0) {
+    import('mermaid').then(async ({ default: mermaid }) => {
+      mermaid.initialize({
+        startOnLoad: false,
+        securityLevel: 'strict',
+        theme: 'base',
+        themeVariables: {
+          // Pull the rendered diagram into the cream/olive/yellow palette
+          // declared in DESIGN.md. Values mirror tokens.css.
+          background: '#fcfcfa',
+          primaryColor: '#fcfcfa',
+          primaryBorderColor: '#bfc1b7',
+          primaryTextColor: '#23251d',
+          secondaryColor: '#e5e7e0',
+          secondaryBorderColor: '#bfc1b7',
+          secondaryTextColor: '#33342d',
+          tertiaryColor: '#f7a501',
+          tertiaryBorderColor: '#dd9001',
+          tertiaryTextColor: '#23251d',
+          lineColor: '#6c6e63',
+          textColor: '#4d4f46',
+          mainBkg: '#fcfcfa',
+          nodeBorder: '#bfc1b7',
+          edgeLabelBackground: '#eeefe9',
+          fontFamily:
+            "'IBM Plex Sans Variable', 'IBM Plex Sans', system-ui, sans-serif",
+          fontSize: '14px',
+        },
+        flowchart: { htmlLabels: true, curve: 'basis' },
+      });
+
+      // ----- Lightbox: one shared <dialog> for all diagrams on the page ----
+      // Click the rendered SVG to open it fullscreen with wheel-zoom and
+      // pointer-drag pan. Esc / backdrop click / close button dismiss.
+      const lightbox = document.createElement('dialog');
+      lightbox.className = 'mermaid-lightbox';
+      lightbox.setAttribute('aria-label', 'Diagram zoom view');
+      lightbox.innerHTML = `
+        <div class="mermaid-lightbox__chrome">
+          <button class="mermaid-lightbox__btn" data-action="zoom-out" aria-label="Zoom out" type="button">−</button>
+          <button class="mermaid-lightbox__btn" data-action="zoom-in" aria-label="Zoom in" type="button">+</button>
+          <button class="mermaid-lightbox__btn" data-action="reset" aria-label="Fit to screen" type="button">⤢</button>
+          <button class="mermaid-lightbox__btn" data-action="close" aria-label="Close" type="button">✕</button>
+        </div>
+        <div class="mermaid-lightbox__viewport">
+          <div class="mermaid-lightbox__stage"></div>
+        </div>
+      `;
+      document.body.appendChild(lightbox);
+
+      const viewport = lightbox.querySelector('.mermaid-lightbox__viewport') as HTMLElement;
+      const stage = lightbox.querySelector('.mermaid-lightbox__stage') as HTMLElement;
+
+      let scale = 1;
+      let tx = 0;
+      let ty = 0;
+
+      const apply = () => {
+        stage.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+      };
+
+      const fit = () => {
+        const svg = stage.querySelector('svg') as SVGSVGElement | null;
+        if (!svg) return;
+        // Strip any width/height set by mermaid so we can measure intrinsic size.
+        svg.removeAttribute('style');
+        svg.style.maxWidth = 'none';
+        svg.style.maxHeight = 'none';
+
+        scale = 1;
+        tx = 0;
+        ty = 0;
+        apply();
+
+        const vRect = viewport.getBoundingClientRect();
+        const sRect = svg.getBoundingClientRect();
+        const padding = 0.92;
+        const fitScale = Math.min(
+          vRect.width / Math.max(sRect.width, 1),
+          vRect.height / Math.max(sRect.height, 1)
+        ) * padding;
+
+        scale = Math.max(0.1, fitScale);
+        tx = (vRect.width - sRect.width * scale) / 2;
+        ty = (vRect.height - sRect.height * scale) / 2;
+        apply();
+      };
+
+      const zoomAt = (factor: number, anchorX?: number, anchorY?: number) => {
+        const vRect = viewport.getBoundingClientRect();
+        const cx = anchorX ?? vRect.width / 2;
+        const cy = anchorY ?? vRect.height / 2;
+        const newScale = Math.max(0.1, Math.min(20, scale * factor));
+        // Keep the point under the cursor stationary in viewport space.
+        tx = cx - (cx - tx) * (newScale / scale);
+        ty = cy - (cy - ty) * (newScale / scale);
+        scale = newScale;
+        apply();
+      };
+
+      const open = (svg: SVGElement) => {
+        stage.replaceChildren(svg.cloneNode(true));
+        lightbox.showModal();
+        // Wait one frame so the dialog has its measured size before fitting.
+        requestAnimationFrame(fit);
+      };
+
+      // Wheel zoom anchored at cursor.
+      viewport.addEventListener(
+        'wheel',
+        (e) => {
+          e.preventDefault();
+          const factor = Math.exp(-e.deltaY * 0.0015);
+          const rect = viewport.getBoundingClientRect();
+          zoomAt(factor, e.clientX - rect.left, e.clientY - rect.top);
+        },
+        { passive: false }
+      );
+
+      // Pointer drag panning.
+      let dragging = false;
+      let lastX = 0;
+      let lastY = 0;
+      viewport.addEventListener('pointerdown', (e) => {
+        dragging = true;
+        lastX = e.clientX;
+        lastY = e.clientY;
+        viewport.setPointerCapture(e.pointerId);
+        viewport.classList.add('is-grabbing');
+      });
+      viewport.addEventListener('pointermove', (e) => {
+        if (!dragging) return;
+        tx += e.clientX - lastX;
+        ty += e.clientY - lastY;
+        lastX = e.clientX;
+        lastY = e.clientY;
+        apply();
+      });
+      const endDrag = (e: PointerEvent) => {
+        if (!dragging) return;
+        dragging = false;
+        try {
+          viewport.releasePointerCapture(e.pointerId);
+        } catch {
+          /* noop */
+        }
+        viewport.classList.remove('is-grabbing');
+      };
+      viewport.addEventListener('pointerup', endDrag);
+      viewport.addEventListener('pointercancel', endDrag);
+
+      // Double-click to refit.
+      viewport.addEventListener('dblclick', (e) => {
+        e.preventDefault();
+        fit();
+      });
+
+      // Chrome buttons + click outside to close.
+      lightbox.addEventListener('click', (e) => {
+        const t = e.target as HTMLElement;
+        const action = t.dataset?.action;
+        if (action === 'close' || t === lightbox) {
+          lightbox.close();
+        } else if (action === 'reset') {
+          fit();
+        } else if (action === 'zoom-in') {
+          zoomAt(1.25);
+        } else if (action === 'zoom-out') {
+          zoomAt(1 / 1.25);
+        }
+      });
+
+      // Refit on window resize while open.
+      window.addEventListener('resize', () => {
+        if (lightbox.open) fit();
+      });
+
+      // Inline SVG icons for the action buttons. Stroke-based, currentColor —
+      // mirrors the look-and-feel of Expressive Code's copy button.
+      const COPY_ICON = `
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none"
+             stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="9" y="9" width="11" height="11" rx="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>`;
+      const ZOOM_ICON = `
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none"
+             stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="15 3 21 3 21 9"></polyline>
+          <polyline points="9 21 3 21 3 15"></polyline>
+          <line x1="21" y1="3" x2="14" y2="10"></line>
+          <line x1="3" y1="21" x2="10" y2="14"></line>
+        </svg>`;
+
+      const wireZoom = (wrapper: HTMLElement, source: string) => {
+        wrapper.classList.add('mermaid-rendered--zoomable');
+
+        // Build the actions toolbar: copy + enlarge, mirroring Expressive
+        // Code's copy-button placement (top-right corner of the card).
+        const actions = document.createElement('div');
+        actions.className = 'mermaid-rendered__actions';
+        actions.innerHTML = `
+          <button type="button"
+                  class="mermaid-rendered__btn"
+                  data-action="copy"
+                  aria-label="Copy diagram source"
+                  title="Copy diagram source">${COPY_ICON}</button>
+          <button type="button"
+                  class="mermaid-rendered__btn"
+                  data-action="zoom"
+                  aria-label="Open diagram in fullscreen viewer"
+                  title="Open in fullscreen">${ZOOM_ICON}</button>`;
+        wrapper.prepend(actions);
+
+        const triggerZoom = () => {
+          // The actions toolbar also contains <svg> icons, so a plain
+          // `querySelector('svg')` would return the copy-icon glyph instead
+          // of the diagram. Scope to direct children of the wrapper —
+          // mermaid renders the diagram as a top-level <svg>.
+          const svg = wrapper.querySelector(':scope > svg');
+          if (svg) open(svg as SVGElement);
+        };
+
+        const triggerCopy = async (btn: HTMLButtonElement) => {
+          try {
+            await navigator.clipboard.writeText(source);
+          } catch {
+            return;
+          }
+          btn.classList.add('is-copied');
+          window.setTimeout(() => btn.classList.remove('is-copied'), 1200);
+        };
+
+        actions.addEventListener('click', (e) => {
+          const btn = (e.target as HTMLElement).closest<HTMLButtonElement>(
+            '.mermaid-rendered__btn'
+          );
+          if (!btn) return;
+          e.stopPropagation();
+          if (btn.dataset.action === 'zoom') triggerZoom();
+          else if (btn.dataset.action === 'copy') triggerCopy(btn);
+        });
+
+        // Keep the whole card clickable as a fallback affordance — but only
+        // fire when the click did not originate inside the actions toolbar.
+        wrapper.addEventListener('click', (e) => {
+          if ((e.target as HTMLElement).closest('.mermaid-rendered__actions')) {
+            return;
+          }
+          triggerZoom();
+        });
+      };
+
+      for (let i = 0; i < blocks.length; i++) {
+        const block = blocks[i];
+        // For <pre data-language>, get its <code> child (or fall back to pre);
+        // for the language-mermaid variants, the block already is the source.
+        const codeEl = block.matches('pre')
+          ? (block.querySelector('code') ?? block)
+          : block;
+
+        // Expressive Code wraps each source line in `<div class="ec-line">`
+        // with NO whitespace text nodes between siblings — calling
+        // `.textContent` on the <code> would collapse the entire diagram onto
+        // a single line, which mermaid cannot parse. Walk the line divs and
+        // re-insert newlines manually; fall back to plain textContent for
+        // pipelines that emit raw text inside the code element.
+        const lineEls = codeEl.querySelectorAll<HTMLElement>('.ec-line');
+        const source = (
+          lineEls.length > 0
+            ? Array.from(lineEls, (el) => el.textContent ?? '').join('\n')
+            : (codeEl.textContent ?? '')
+        ).trim();
+        if (!source) continue;
+
+        const id = `mermaid-render-${i}-${Date.now().toString(36)}`;
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid-rendered';
+
+        try {
+          const { svg } = await mermaid.render(id, source);
+          wrapper.innerHTML = svg;
+          wireZoom(wrapper, source);
+        } catch (err) {
+          console.error('[mermaid] render failed:', err);
+          wrapper.classList.add('mermaid-rendered--error');
+          wrapper.textContent = source;
+        }
+
+        // Replace the outermost Expressive Code frame (when present) so we
+        // also strip its sibling copy-to-clipboard button — otherwise the
+        // page ends up with two copy buttons (EC's, plus our own toolbar).
+        // Fall back to the <pre> (or the block itself) for non-EC pipelines.
+        const target =
+          block.closest('.expressive-code') ??
+          block.closest('pre') ??
+          block;
+        target.replaceWith(wrapper);
+      }
+    });
+  }
+</script>

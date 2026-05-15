@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>Copilot CLI Internals</title>
+  <!-- Cream canvas background -->
+  <rect width="64" height="64" rx="8" fill="#eeefe9"/>
+  <!-- Spikes -->
+  <g fill="#33342d">
+    <polygon points="20,28 23,18 26,28"/>
+    <polygon points="26,26 29,14 32,26"/>
+    <polygon points="32,25 35,13 38,25"/>
+    <polygon points="38,26 41,14 44,26"/>
+  </g>
+  <!-- Body -->
+  <ellipse cx="32" cy="40" rx="20" ry="14" fill="#6c6e63"/>
+  <!-- Face -->
+  <ellipse cx="48" cy="38" rx="8" ry="6" fill="#fcfcfa"/>
+  <!-- Nose -->
+  <circle cx="55" cy="38" r="2" fill="#23251d"/>
+  <!-- Eye -->
+  <circle cx="49" cy="36" r="1.2" fill="#23251d"/>
+  <!-- Yellow primary CTA accent -->
+  <rect x="14" y="50" width="36" height="4" rx="2" fill="#f7a501"/>
+</svg>

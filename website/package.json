@@ -1,0 +1,25 @@
+{
+  "name": "copilot-cli-internals-website",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/markdown-remark": "^7.1.2",
+    "@astrojs/starlight": "^0.34.0",
+    "@fontsource-variable/ibm-plex-sans": "^5.1.0",
+    "@fontsource/source-code-pro": "^5.1.0",
+    "astro": "^5.5.0",
+    "mermaid": "^11.15.0",
+    "sharp": "^0.33.5"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0"
+  }
+}

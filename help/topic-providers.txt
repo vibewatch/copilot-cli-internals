@@ -1,0 +1,6 @@
+error: Invalid command format.
+
+Did you mean: copilot -i "help providers"?
+
+For non-interactive mode, use the -p or --prompt option.
+Try 'copilot --help' for more information.

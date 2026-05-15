@@ -1,0 +1,129 @@
+/* ============================================================================
+ * typography.css — IBM Plex Sans Variable weight ladder per DESIGN.md.
+ * Hierarchy comes from weight + size + occasional uppercase transform.
+ * ========================================================================= */
+
+body,
+.sl-markdown-content {
+  font-family: var(--tk-font-sans);
+  font-size: var(--tk-fs-body-md);
+  font-weight: var(--tk-fw-regular);
+  line-height: var(--tk-lh-body-md);
+  color: var(--tk-color-body);
+}
+
+.sl-markdown-content h1,
+.sl-markdown-content h2,
+.sl-markdown-content h3,
+.sl-markdown-content h4,
+.sl-markdown-content h5,
+.sl-markdown-content h6 {
+  color: var(--tk-color-ink);
+  font-family: var(--tk-font-sans);
+}
+
+.sl-markdown-content h1 {
+  font-size: var(--tk-fs-display-xl);
+  font-weight: var(--tk-fw-bold);
+  line-height: var(--tk-lh-display-xl);
+  letter-spacing: 0;
+}
+
+.sl-markdown-content h2 {
+  font-size: var(--tk-fs-display-lg);
+  font-weight: var(--tk-fw-extrabold);
+  line-height: var(--tk-lh-display-lg);
+  letter-spacing: var(--tk-ls-display-lg);
+  margin-top: var(--tk-space-xxl);
+}
+
+.sl-markdown-content h3 {
+  font-size: var(--tk-fs-heading-lg);
+  font-weight: var(--tk-fw-bold);
+  line-height: var(--tk-lh-heading-lg);
+  letter-spacing: var(--tk-ls-heading-lg);
+  margin-top: var(--tk-space-xl);
+}
+
+.sl-markdown-content h4 {
+  font-size: var(--tk-fs-heading-md);
+  font-weight: var(--tk-fw-bold);
+  line-height: var(--tk-lh-heading-md);
+  margin-top: var(--tk-space-lg);
+}
+
+.sl-markdown-content h5 {
+  font-size: var(--tk-fs-heading-sm);
+  font-weight: var(--tk-fw-semibold);
+  line-height: var(--tk-lh-heading-sm);
+  margin-top: var(--tk-space-md);
+}
+
+/* Body prose ---------------------------------------------------------------- */
+.sl-markdown-content p,
+.sl-markdown-content li {
+  font-size: var(--tk-fs-body-sm);
+  line-height: var(--tk-lh-body-sm);
+  color: var(--tk-color-body);
+}
+
+.sl-markdown-content strong,
+.sl-markdown-content b {
+  font-weight: var(--tk-fw-semibold);
+  color: var(--tk-color-charcoal);
+}
+
+/* Inline link — body-prose anchor uses link-teal per DESIGN.md ------------ */
+.sl-markdown-content a:not(.sl-anchor-link) {
+  color: var(--tk-color-link-teal);
+  text-decoration: none;
+  font-weight: var(--tk-fw-regular);
+  border-bottom: 1px solid transparent;
+  transition: border-color 120ms ease-in-out;
+}
+
+.sl-markdown-content a:not(.sl-anchor-link):focus-visible,
+.sl-markdown-content a:not(.sl-anchor-link):hover {
+  border-bottom-color: currentColor;
+}
+
+/* Tables ------------------------------------------------------------------- */
+.sl-markdown-content table {
+  font-size: var(--tk-fs-body-xs);
+  border-collapse: collapse;
+}
+.sl-markdown-content th,
+.sl-markdown-content td {
+  border-bottom: 1px solid var(--tk-color-hairline-soft);
+  padding: var(--tk-space-sm) var(--tk-space-md);
+}
+.sl-markdown-content th {
+  color: var(--tk-color-ink);
+  font-weight: var(--tk-fw-bold);
+  border-bottom-color: var(--tk-color-hairline);
+}
+
+/* Horizontal rule */
+.sl-markdown-content hr {
+  border: none;
+  border-top: 1px solid var(--tk-color-hairline);
+  margin: var(--tk-space-xl) 0;
+}
+
+/* Doc page title (Starlight's <h1>) gets the display-xl treatment. */
+h1#_top,
+.content-panel > h1 {
+  font-size: var(--tk-fs-display-xl);
+  font-weight: var(--tk-fw-bold);
+  line-height: var(--tk-lh-display-xl);
+  color: var(--tk-color-ink);
+}
+
+/* Mobile: shrink the hero per DESIGN.md responsive notes. */
+@media (max-width: 480px) {
+  .sl-markdown-content h1,
+  h1#_top,
+  .content-panel > h1 {
+    font-size: 28px;
+  }
+}

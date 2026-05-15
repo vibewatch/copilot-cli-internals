@@ -1,0 +1,7 @@
+/* Self-hosted IBM Plex Sans (variable) + Source Code Pro per DESIGN.md.
+ * @fontsource packages embed the font files locally so the site has
+ * zero third-party requests at runtime. */
+@import '@fontsource-variable/ibm-plex-sans/index.css';
+@import '@fontsource/source-code-pro/400.css';
+@import '@fontsource/source-code-pro/500.css';
+@import '@fontsource/source-code-pro/700.css';

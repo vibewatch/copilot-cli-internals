@@ -1,0 +1,98 @@
+/* ============================================================================
+ * theme.css — Map DESIGN.md tokens onto Starlight's CSS custom properties so
+ * the entire site adopts the cream-canvas / olive-ink palette automatically.
+ * Reference: https://starlight.astro.build/guides/css-and-tailwind/#css-custom-properties
+ * ========================================================================= */
+
+:root,
+:root[data-theme='light'] {
+  /* Accent (yellow-orange CTA) ------------------------------------------ */
+  --sl-color-accent-low: #fde9b8;
+  --sl-color-accent: var(--tk-color-primary);
+  --sl-color-accent-high: var(--tk-color-primary-active);
+
+  /* Greys / surfaces — drive every chrome surface to the cream canvas --- */
+  --sl-color-white: var(--tk-color-ink);
+  --sl-color-gray-1: var(--tk-color-ink);
+  --sl-color-gray-2: var(--tk-color-charcoal);
+  --sl-color-gray-3: var(--tk-color-body);
+  --sl-color-gray-4: var(--tk-color-mute);
+  --sl-color-gray-5: var(--tk-color-ash);
+  --sl-color-gray-6: var(--tk-color-hairline);
+  --sl-color-gray-7: var(--tk-color-hairline-soft);
+  --sl-color-black: var(--tk-color-canvas);
+
+  /* Typography routing -------------------------------------------------- */
+  --sl-font: var(--tk-font-sans);
+  --sl-font-mono: var(--tk-font-mono);
+
+  /* Body & text --------------------------------------------------------- */
+  --sl-color-text: var(--tk-color-body);
+  --sl-color-text-accent: var(--tk-color-link-teal);
+  --sl-color-text-invert: var(--tk-color-on-dark);
+
+  /* Backgrounds --------------------------------------------------------- */
+  --sl-color-bg: var(--tk-color-canvas);
+  --sl-color-bg-nav: var(--tk-color-canvas);
+  --sl-color-bg-sidebar: var(--tk-color-canvas);
+  --sl-color-bg-inline-code: var(--tk-color-surface-soft);
+  --sl-color-bg-accent: var(--tk-color-primary);
+
+  /* Borders ------------------------------------------------------------- */
+  --sl-color-hairline: var(--tk-color-hairline);
+  --sl-color-hairline-light: var(--tk-color-hairline-soft);
+  --sl-color-hairline-shade: var(--tk-color-hairline);
+
+  /* Code surface (light theme uses the dark olive surface from DESIGN.md
+   * because there is no light code theme — the contrast IS the design) - */
+  --sl-color-bg-code: var(--tk-color-surface-dark);
+
+  /* Focus ring ---------------------------------------------------------- */
+  --sl-shadow-md: 0 0 0 2px var(--tk-color-focus-ring);
+
+  /* Layout dimensions --------------------------------------------------- */
+  --sl-sidebar-width: var(--tk-doc-sidebar-width);
+  --sl-sidebar-pad-x: var(--tk-space-lg);
+  --sl-content-width: 50rem;
+  --sl-nav-height: var(--tk-nav-height);
+  --sl-nav-pad-x: var(--tk-space-xl);
+  --sl-nav-pad-y: 0px;
+}
+
+/* The site is intentionally light-only (cream canvas IS the brand). Force
+ * dark mode to fall back to the same tokens so users with dark OS prefs
+ * still see the PostHog-style cream sheet. */
+:root[data-theme='dark'] {
+  color-scheme: light;
+}
+:root[data-theme='dark'],
+:root[data-theme='dark'] :root {
+  --sl-color-white: var(--tk-color-ink);
+  --sl-color-gray-1: var(--tk-color-ink);
+  --sl-color-gray-2: var(--tk-color-charcoal);
+  --sl-color-gray-3: var(--tk-color-body);
+  --sl-color-gray-4: var(--tk-color-mute);
+  --sl-color-gray-5: var(--tk-color-ash);
+  --sl-color-gray-6: var(--tk-color-hairline);
+  --sl-color-gray-7: var(--tk-color-hairline-soft);
+  --sl-color-black: var(--tk-color-canvas);
+  --sl-color-text: var(--tk-color-body);
+  --sl-color-bg: var(--tk-color-canvas);
+  --sl-color-bg-nav: var(--tk-color-canvas);
+  --sl-color-bg-sidebar: var(--tk-color-canvas);
+  --sl-color-bg-inline-code: var(--tk-color-surface-soft);
+  --sl-color-accent: var(--tk-color-primary);
+  --sl-color-bg-accent: var(--tk-color-primary);
+}
+
+/* Background canvas — runs edge to edge (no shaded section bands). */
+html,
+body {
+  background-color: var(--tk-color-canvas);
+  color: var(--tk-color-body);
+}
+
+/* Hide Starlight's theme-toggle button — the site is light-only. */
+starlight-theme-select {
+  display: none !important;
+}

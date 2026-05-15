@@ -1,0 +1,66 @@
+/* ============================================================================
+ * callouts.css — restyle Starlight's <Aside> component into the four pastel
+ * banner-tip-* tokens from DESIGN.md.
+ *
+ *   <Aside type="note">     → banner-tip-purple   (📘 Note / Reference)
+ *   <Aside type="tip">      → banner-tip-blue     (💡 Tip / Info)
+ *   <Aside type="caution">  → banner-tip-red      (⚠️ Warning)
+ *   <Aside type="danger">   → banner-tip-red      (⚠️ Danger)
+ *
+ * Reference: https://starlight.astro.build/components/asides/
+ * ========================================================================= */
+
+.starlight-aside {
+  border-radius: var(--tk-radius-md);
+  padding: var(--tk-space-lg) var(--tk-space-xl);
+  border: 1px solid transparent;
+  border-inline-start-width: 4px;
+  color: var(--tk-color-ink);
+  font-size: var(--tk-fs-body-md);
+  line-height: var(--tk-lh-body-md);
+}
+
+.starlight-aside__title {
+  color: var(--tk-color-ink);
+  font-weight: var(--tk-fw-bold);
+  text-transform: none;
+  font-size: var(--tk-fs-body-md);
+  display: flex;
+  align-items: center;
+  gap: var(--tk-space-sm);
+}
+
+.starlight-aside p {
+  color: var(--tk-color-ink);
+}
+
+/* Tip → blue --------------------------------------------------------------- */
+.starlight-aside--tip {
+  background: var(--tk-color-accent-blue-soft);
+  border-color: var(--tk-color-accent-blue);
+}
+
+/* Note → purple ------------------------------------------------------------ */
+.starlight-aside--note {
+  background: var(--tk-color-accent-purple-soft);
+  border-color: var(--tk-color-accent-purple);
+}
+
+/* Caution → red ------------------------------------------------------------ */
+.starlight-aside--caution {
+  background: var(--tk-color-accent-red-soft);
+  border-color: var(--tk-color-accent-red);
+}
+
+/* Danger → red, deeper rail ------------------------------------------------ */
+.starlight-aside--danger {
+  background: var(--tk-color-accent-red-soft);
+  border-color: var(--tk-color-accent-red);
+}
+
+/* DESIGN.md doesn't enumerate "success" in the four-color callout table, but
+ * Starlight may emit one through plugins — surface it as the green token. */
+.starlight-aside--success {
+  background: var(--tk-color-accent-green-soft);
+  border-color: var(--tk-color-accent-green);
+}

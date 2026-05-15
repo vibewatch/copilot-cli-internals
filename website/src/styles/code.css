@@ -1,0 +1,291 @@
+/* ============================================================================
+ * code.css — DESIGN.md prescribes a single dark olive-charcoal block surface
+ * (#23251d) with white code text, plus a soft inline-code chip on the cream
+ * surface-soft fill. Starlight uses Expressive Code by default.
+ * ========================================================================= */
+
+/* Block code -------------------------------------------------------------- */
+.expressive-code,
+.expressive-code .frame.is-terminal,
+.expressive-code .frame .header,
+.expressive-code pre {
+  --ec-frm-edActTabBg: var(--tk-color-surface-dark);
+  --ec-frm-edActTabIndBtmCol: var(--tk-color-primary);
+  --ec-frm-edTabBarBg: var(--tk-color-surface-dark);
+  --ec-frm-edTabBarBrdBtmCol: transparent;
+  --ec-frm-edBg: var(--tk-color-surface-dark);
+  --ec-frm-frameBoxShdCssVal: none;
+  --ec-frm-trmTtbBg: var(--tk-color-surface-dark);
+  --ec-frm-trmTtbDefTxtCol: var(--tk-color-on-dark);
+  --ec-codeBg: var(--tk-color-surface-dark);
+  --ec-codeFg: var(--tk-color-on-dark);
+  --ec-codeFontFml: var(--tk-font-mono);
+  --ec-codeFontSize: var(--tk-fs-code-sm);
+  --ec-codeLineHeight: var(--tk-lh-code);
+  border-radius: var(--tk-radius-md);
+}
+
+.expressive-code .frame {
+  border-radius: var(--tk-radius-md);
+  overflow: hidden;
+  box-shadow: none;
+  border: none;
+}
+
+.expressive-code pre,
+.expressive-code pre > code {
+  background: var(--tk-color-surface-dark);
+  color: var(--tk-color-on-dark);
+  padding: var(--tk-space-lg) var(--tk-space-xl);
+  font-family: var(--tk-font-mono);
+  font-size: var(--tk-fs-code-sm);
+  line-height: var(--tk-lh-code);
+}
+
+/* Plain <pre> fallback (used for fenced code if Expressive Code is bypassed) */
+.sl-markdown-content pre {
+  background: var(--tk-color-surface-dark);
+  color: var(--tk-color-on-dark);
+  padding: var(--tk-space-lg) var(--tk-space-xl);
+  border-radius: var(--tk-radius-md);
+  font-family: var(--tk-font-mono);
+  font-size: var(--tk-fs-code-sm);
+  line-height: var(--tk-lh-code);
+  border: none;
+}
+
+/* Inline code chip -------------------------------------------------------- */
+.sl-markdown-content :not(pre) > code {
+  background: var(--tk-color-surface-soft);
+  color: var(--tk-color-ink);
+  padding: var(--tk-space-xxs) var(--tk-space-xs) calc(var(--tk-space-xxs) + 1px);
+  border-radius: var(--tk-radius-xs);
+  font-family: var(--tk-font-mono);
+  font-size: var(--tk-fs-code-xs);
+  font-weight: var(--tk-fw-medium);
+  border: none;
+}
+
+/* Mermaid fenced blocks: hide the raw `<pre>` until the client-side renderer
+ * (`MermaidRenderer.astro`) replaces it with SVG, so users never see the
+ * dark code surface flashing in for diagrams. The `:has()` guard keeps the
+ * placeholder visible when JS is disabled (no `.mermaid-rendered` sibling will
+ * ever appear, and modern browsers without `:has()` simply ignore the rule). */
+.sl-markdown-content .expressive-code:has(pre[data-language='mermaid']),
+.sl-markdown-content pre[data-language='mermaid'],
+.sl-markdown-content pre.language-mermaid,
+.sl-markdown-content pre.language-mermaid > code {
+  /* Reserve a placeholder card so layout doesn't jump when the SVG mounts. */
+  background: var(--tk-color-surface-card);
+  color: transparent;
+  border: 1px solid var(--tk-color-hairline);
+  border-radius: var(--tk-radius-md);
+  min-height: 4rem;
+}
+
+.sl-markdown-content .expressive-code:has(pre[data-language='mermaid']) * {
+  visibility: hidden;
+}
+
+/* Rendered mermaid SVG — sits in a white card on the cream canvas, matching
+ * DESIGN.md's `doc-card` chrome. */
+.mermaid-rendered {
+  background: var(--tk-color-surface-card);
+  border: 1px solid var(--tk-color-hairline);
+  border-radius: var(--tk-radius-md);
+  padding: var(--tk-space-xl);
+  margin: var(--tk-space-lg) 0;
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+}
+
+.mermaid-rendered svg {
+  max-width: 100%;
+  height: auto;
+  font-family: var(--tk-font-sans);
+}
+
+.mermaid-rendered--error {
+  background: var(--tk-color-accent-red-soft);
+  color: var(--tk-color-ink);
+  border-color: var(--tk-color-accent-red);
+  font-family: var(--tk-font-mono);
+  font-size: var(--tk-fs-code-sm);
+  white-space: pre;
+  text-align: left;
+  display: block;
+}
+
+/* Click affordance for diagrams that opted into the fullscreen viewer.
+ * The whole card is still clickable (cursor: zoom-in) as a fallback, but the
+ * primary affordance is the icon-button toolbar in the top-right corner. */
+.mermaid-rendered--zoomable {
+  position: relative;
+  cursor: zoom-in;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.mermaid-rendered--zoomable:hover,
+.mermaid-rendered--zoomable:focus-visible {
+  border-color: var(--tk-color-primary);
+  box-shadow: 0 4px 18px rgba(35, 37, 29, 0.08);
+  outline: none;
+}
+
+/* Action toolbar (copy + enlarge). Mirrors Expressive Code's copy-button
+ * placement: absolute, top-right inside the card, semi-transparent at rest,
+ * full opacity on hover/focus. */
+.mermaid-rendered__actions {
+  position: absolute;
+  top: var(--tk-space-md);
+  right: var(--tk-space-md);
+  display: flex;
+  flex-direction: row;
+  gap: var(--tk-space-xxs);
+  z-index: 1;
+  cursor: default;
+}
+
+.mermaid-rendered__btn {
+  width: 2.25rem;
+  height: 2.25rem;
+  margin: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--tk-color-surface-card);
+  color: var(--tk-color-mute);
+  border: 1px solid var(--tk-color-hairline);
+  border-radius: var(--tk-radius-xs);
+  cursor: pointer;
+  opacity: 0.55;
+  transition:
+    opacity 0.15s ease,
+    background 0.12s ease,
+    color 0.12s ease,
+    border-color 0.12s ease,
+    transform 0.08s ease;
+}
+
+.mermaid-rendered__btn svg {
+  display: block;
+  pointer-events: none;
+}
+
+.mermaid-rendered--zoomable:hover .mermaid-rendered__btn,
+.mermaid-rendered--zoomable:focus-within .mermaid-rendered__btn {
+  opacity: 1;
+}
+
+.mermaid-rendered__btn:hover,
+.mermaid-rendered__btn:focus-visible {
+  background: var(--tk-color-primary);
+  color: var(--tk-color-ink);
+  border-color: var(--tk-color-primary);
+  opacity: 1;
+  outline: none;
+}
+
+.mermaid-rendered__btn:active {
+  transform: scale(0.94);
+}
+
+.mermaid-rendered__btn.is-copied {
+  background: var(--tk-color-primary);
+  color: var(--tk-color-ink);
+  border-color: var(--tk-color-primary);
+  opacity: 1;
+}
+
+/* Fullscreen lightbox dialog ------------------------------------------------ */
+.mermaid-lightbox {
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: var(--tk-color-surface-doc);
+  color: var(--tk-color-ink);
+  overflow: hidden;
+}
+
+.mermaid-lightbox::backdrop {
+  background: rgba(35, 37, 29, 0.82);
+}
+
+.mermaid-lightbox__chrome {
+  position: absolute;
+  top: var(--tk-space-lg);
+  right: var(--tk-space-lg);
+  display: flex;
+  gap: var(--tk-space-xs);
+  z-index: 2;
+}
+
+.mermaid-lightbox__btn {
+  background: var(--tk-color-surface-card);
+  border: 1px solid var(--tk-color-hairline);
+  color: var(--tk-color-ink);
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--tk-radius-sm);
+  font-size: 1.25rem;
+  line-height: 1;
+  font-family: var(--tk-font-sans);
+  font-weight: var(--tk-fw-medium);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background 0.12s ease,
+    transform 0.08s ease,
+    border-color 0.12s ease;
+}
+
+.mermaid-lightbox__btn:hover,
+.mermaid-lightbox__btn:focus-visible {
+  background: var(--tk-color-primary);
+  border-color: var(--tk-color-primary);
+  outline: none;
+}
+
+.mermaid-lightbox__btn:active {
+  transform: scale(0.95);
+}
+
+.mermaid-lightbox__viewport {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.mermaid-lightbox__viewport.is-grabbing {
+  cursor: grabbing;
+}
+
+.mermaid-lightbox__stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+.mermaid-lightbox__stage svg {
+  display: block;
+  /* Override mermaid's max-width:100% rule so the SVG can render at intrinsic
+     size and we can fit/scale it manually. */
+  max-width: none !important;
+  height: auto;
+}

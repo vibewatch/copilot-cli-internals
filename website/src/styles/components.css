@@ -1,0 +1,177 @@
+/* ============================================================================
+ * components.css — DESIGN.md component vocabulary: cards, tiles, pill chips,
+ * primary CTA, primary nav, sidebar items, footer.
+ * ========================================================================= */
+
+/* ----- Primary nav -------------------------------------------------------- */
+.header {
+  background: var(--tk-color-canvas);
+  border-bottom: 1px solid var(--tk-color-hairline-soft);
+  height: var(--tk-nav-height);
+  font-family: var(--tk-font-sans);
+  font-size: var(--tk-fs-body-md);
+  font-weight: var(--tk-fw-semibold);
+  color: var(--tk-color-ink);
+}
+
+.header a,
+.header .site-title {
+  color: var(--tk-color-ink);
+  font-weight: var(--tk-fw-semibold);
+}
+
+/* Sticky yellow "Get started" pill — DESIGN.md primary CTA ----------------- */
+.header .sl-flex > a[href*='github.com']::after,
+.header .actions a.sl-button {
+  /* leaves Starlight's social/icon links alone; explicit CTA below */
+}
+
+/* ----- Sidebar (doc-sidebar) ---------------------------------------------- */
+.sidebar {
+  background: var(--tk-color-canvas);
+  border-inline-end: 1px solid var(--tk-color-hairline-soft);
+}
+
+.sidebar a {
+  font-family: var(--tk-font-sans);
+  font-size: var(--tk-fs-body-xs);
+  font-weight: var(--tk-fw-medium);
+  color: var(--tk-color-body);
+  border-radius: var(--tk-radius-sm);
+  padding: var(--tk-space-xs) var(--tk-space-sm);
+}
+
+.sidebar a[aria-current='page'] {
+  background: var(--tk-color-surface-card);
+  color: var(--tk-color-ink);
+  font-weight: var(--tk-fw-bold);
+  border: 1px solid var(--tk-color-hairline-soft);
+}
+
+.sidebar summary,
+.sidebar .group-label,
+.sidebar h2 {
+  color: var(--tk-color-ink);
+  font-size: var(--tk-fs-caption-xs);
+  font-weight: var(--tk-fw-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: var(--tk-space-md) var(--tk-space-sm) var(--tk-space-xs);
+}
+
+/* ----- Right-rail TOC ----------------------------------------------------- */
+.right-sidebar,
+.right-sidebar a {
+  font-family: var(--tk-font-sans);
+  font-size: var(--tk-fs-body-xs);
+  color: var(--tk-color-mute);
+}
+.right-sidebar a:hover,
+.right-sidebar a[aria-current='true'] {
+  color: var(--tk-color-ink);
+  font-weight: var(--tk-fw-semibold);
+}
+
+/* ----- Content card surface (doc-card from DESIGN.md) --------------------- */
+.content-panel {
+  background: var(--tk-color-canvas);
+}
+
+.content-panel + .content-panel {
+  border-top: 1px solid var(--tk-color-hairline-soft);
+}
+
+main .sl-markdown-content {
+  background: var(--tk-color-surface-doc);
+  border: 1px solid var(--tk-color-hairline);
+  border-radius: var(--tk-radius-md);
+  padding: var(--tk-space-xl) var(--tk-space-xl);
+  color: var(--tk-color-body);
+}
+
+@media (min-width: 72rem) {
+  main .sl-markdown-content {
+    padding: var(--tk-space-xxl);
+  }
+}
+
+/* ----- Pagination links --------------------------------------------------- */
+.pagination-links a {
+  background: var(--tk-color-surface-card);
+  border: 1px solid var(--tk-color-hairline);
+  border-radius: var(--tk-radius-md);
+  color: var(--tk-color-ink);
+  padding: var(--tk-space-md) var(--tk-space-lg);
+}
+
+.pagination-links a span:first-of-type {
+  color: var(--tk-color-mute);
+  font-size: var(--tk-fs-caption-xs);
+  font-weight: var(--tk-fw-bold);
+  text-transform: uppercase;
+}
+
+/* ----- Footer (last-updated / edit-link strip) ---------------------------- */
+.meta {
+  color: var(--tk-color-mute);
+  font-size: var(--tk-fs-caption-sm);
+  border-top: 1px solid var(--tk-color-hairline-soft);
+  padding-top: var(--tk-space-lg);
+}
+
+/* ----- Search dialog ------------------------------------------------------ */
+dialog[open] {
+  background: var(--tk-color-surface-card);
+  border-radius: var(--tk-radius-md);
+  border: 1px solid var(--tk-color-hairline);
+}
+
+button[aria-label='Search'],
+button[data-open-modal] {
+  background: var(--tk-color-surface-card);
+  border: 1px solid var(--tk-color-hairline);
+  border-radius: var(--tk-radius-md);
+  color: var(--tk-color-mute);
+  font-family: var(--tk-font-sans);
+}
+
+/* ----- Reusable button utility classes (used by MDX components later) ---- */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--tk-space-sm);
+  background: var(--tk-color-primary);
+  color: var(--tk-color-on-primary);
+  font-family: var(--tk-font-sans);
+  font-size: var(--tk-fs-body-xs);
+  font-weight: var(--tk-fw-bold);
+  line-height: 1.5;
+  padding: var(--tk-space-sm) var(--tk-space-lg);
+  height: var(--tk-button-height);
+  border-radius: var(--tk-radius-md);
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover,
+.btn-primary:focus-visible {
+  background: var(--tk-color-primary-pressed);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tk-space-sm);
+  background: var(--tk-color-surface-soft);
+  color: var(--tk-color-ink);
+  font-family: var(--tk-font-sans);
+  font-size: var(--tk-fs-body-xs);
+  font-weight: var(--tk-fw-bold);
+  padding: var(--tk-space-sm) var(--tk-space-lg);
+  height: var(--tk-button-height);
+  border-radius: var(--tk-radius-md);
+  text-decoration: none;
+  border: none;
+}

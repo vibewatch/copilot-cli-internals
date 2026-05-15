@@ -1,0 +1,117 @@
+/* ============================================================================
+ * tokens.css — DESIGN.md tokens declared as CSS custom properties.
+ * Every value here mirrors a token in DESIGN.md. Do not edit values without
+ * updating DESIGN.md alongside it.
+ * ========================================================================= */
+
+:root {
+  /* ---------- Colors: Brand & accent ----------------------------------- */
+  --tk-color-primary: #f7a501;
+  --tk-color-primary-pressed: #dd9001;
+  --tk-color-primary-active: #b17816;
+  --tk-color-on-primary: #23251d;
+
+  /* ---------- Colors: Surface ------------------------------------------ */
+  --tk-color-canvas: #eeefe9;
+  --tk-color-surface-soft: #e5e7e0;
+  --tk-color-surface-card: #ffffff;
+  --tk-color-surface-doc: #fcfcfa;
+  --tk-color-surface-dark: #23251d;
+  --tk-color-hairline: #bfc1b7;
+  --tk-color-hairline-soft: #dcdfd2;
+  --tk-color-on-dark: #ffffff;
+
+  /* ---------- Colors: Text --------------------------------------------- */
+  --tk-color-ink: #23251d;
+  --tk-color-body: #4d4f46;
+  --tk-color-charcoal: #33342d;
+  --tk-color-mute: #6c6e63;
+  --tk-color-ash: #9b9c92;
+  --tk-color-stone: #b6b7af;
+
+  /* ---------- Colors: Semantic ----------------------------------------- */
+  --tk-color-link-blue: #1d4ed8;
+  --tk-color-link-teal: #1078a3;
+
+  --tk-color-accent-blue: #2c84e0;
+  --tk-color-accent-blue-soft: #dceaf6;
+  --tk-color-accent-red: #cd4239;
+  --tk-color-accent-red-soft: #f7d6d3;
+  --tk-color-accent-green: #2c8c66;
+  --tk-color-accent-green-soft: #d9eddf;
+  --tk-color-accent-purple: #7c44a6;
+  --tk-color-accent-purple-soft: #e7d8ee;
+
+  --tk-color-focus-ring: rgba(59, 130, 246, 0.5);
+
+  /* ---------- Typography: Families ------------------------------------- */
+  --tk-font-sans:
+    'IBM Plex Sans Variable', 'IBM Plex Sans', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', Arial,
+    sans-serif;
+  --tk-font-mono:
+    'Source Code Pro', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
+
+  /* ---------- Typography: Sizes ---------------------------------------- */
+  --tk-fs-display-xl: 36px;
+  --tk-fs-display-lg: 24px;
+  --tk-fs-heading-lg: 21px;
+  --tk-fs-heading-md: 20px;
+  --tk-fs-heading-sm: 18px;
+  --tk-fs-body-md: 16px;
+  --tk-fs-body-sm: 15px;
+  --tk-fs-body-xs: 14px;
+  --tk-fs-caption-sm: 13px;
+  --tk-fs-caption-xs: 12px;
+  --tk-fs-code-sm: 14px;
+  --tk-fs-code-xs: 14px;
+
+  /* ---------- Typography: Line heights --------------------------------- */
+  --tk-lh-display-xl: 1.5;
+  --tk-lh-display-lg: 1.33;
+  --tk-lh-heading-lg: 1.4;
+  --tk-lh-heading-md: 1.4;
+  --tk-lh-heading-sm: 1.5;
+  --tk-lh-body-md: 1.5;
+  --tk-lh-body-sm: 1.71;
+  --tk-lh-body-xs: 1.43;
+  --tk-lh-caption: 1.33;
+  --tk-lh-code: 1.43;
+
+  /* ---------- Typography: Weights -------------------------------------- */
+  --tk-fw-regular: 400;
+  --tk-fw-medium: 500;
+  --tk-fw-semibold: 600;
+  --tk-fw-bold: 700;
+  --tk-fw-extrabold: 800;
+
+  /* ---------- Typography: Tracking ------------------------------------- */
+  --tk-ls-display-lg: -0.6px;
+  --tk-ls-heading-lg: -0.5px;
+
+  /* ---------- Spacing -------------------------------------------------- */
+  --tk-space-xxs: 2px;
+  --tk-space-xs: 4px;
+  --tk-space-sm: 8px;
+  --tk-space-md: 12px;
+  --tk-space-lg: 16px;
+  --tk-space-xl: 24px;
+  --tk-space-xxl: 32px;
+  --tk-space-section: 80px;
+
+  /* ---------- Radius --------------------------------------------------- */
+  --tk-radius-none: 0px;
+  --tk-radius-xs: 2px;
+  --tk-radius-sm: 4px;
+  --tk-radius-md: 6px;
+  --tk-radius-lg: 8px;
+  --tk-radius-full: 9999px;
+
+  /* ---------- Component dimensions ------------------------------------- */
+  --tk-nav-height: 56px;
+  --tk-subnav-height: 40px;
+  --tk-doc-sidebar-width: 240px;
+  --tk-button-height: 40px;
+  --tk-input-height: 36px;
+}

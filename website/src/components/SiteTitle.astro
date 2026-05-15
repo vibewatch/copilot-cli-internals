@@ -1,0 +1,58 @@
+---
+/**
+ * SiteTitle override — replaces Starlight's default text wordmark with a
+ * hedgehog mascot anchored to the left of the title. Per DESIGN.md, the
+ * hedgehog IS the brand identity — the wordmark never appears alone.
+ */
+import type { Props } from '@astrojs/starlight/props';
+import wave from '../assets/hedgehogs/wave.svg';
+
+const { siteTitle, siteTitleHref } = Astro.props as unknown as {
+  siteTitle: string;
+  siteTitleHref: string;
+};
+---
+
+<a href={siteTitleHref} class="site-title">
+  <img
+    src={wave.src}
+    alt=""
+    width={32}
+    height={32}
+    class="site-title__mascot"
+  />
+  <span class="site-title__text">{siteTitle}</span>
+</a>
+
+<style>
+  .site-title {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--tk-space-sm);
+    color: var(--tk-color-ink);
+    font-family: var(--tk-font-sans);
+    font-size: var(--tk-fs-body-md);
+    font-weight: var(--tk-fw-bold);
+    text-decoration: none;
+    line-height: 1;
+  }
+
+  .site-title__mascot {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+  }
+
+  .site-title__text {
+    color: var(--tk-color-ink);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 480px) {
+    .site-title__text {
+      /* On narrow viewports keep the mascot, drop the text — same pattern
+       * PostHog uses for its mobile nav. */
+      display: none;
+    }
+  }
+</style>

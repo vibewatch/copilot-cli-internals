@@ -1,0 +1,66 @@
+---
+/**
+ * Hedgehog — DESIGN.md's signature mascot, rendered as an inline SVG so it
+ * inherits CSS color and scales without a network request.
+ *
+ * Available poses: 'wave' (default), 'lab-coat', 'terminal', 'hammock',
+ * 'reading', 'search'.
+ *
+ * Usage in MDX content:
+ *
+ *   import Hedgehog from '../../../components/Hedgehog.astro';
+ *   <Hedgehog pose="lab-coat" size={120} />
+ *
+ * The component falls back to the wave pose if an unknown name is passed.
+ */
+
+interface Props {
+  pose?: 'wave' | 'lab-coat' | 'terminal' | 'hammock' | 'reading' | 'search';
+  size?: number;
+  alt?: string;
+  class?: string;
+}
+
+const {
+  pose = 'wave',
+  size = 96,
+  alt = 'PostHog-style hedgehog mascot',
+  class: className = '',
+} = Astro.props;
+
+import wave from '../assets/hedgehogs/wave.svg';
+import labCoat from '../assets/hedgehogs/lab-coat.svg';
+import terminal from '../assets/hedgehogs/terminal.svg';
+import hammock from '../assets/hedgehogs/hammock.svg';
+import reading from '../assets/hedgehogs/reading.svg';
+import search from '../assets/hedgehogs/search.svg';
+
+const poses = {
+  wave,
+  'lab-coat': labCoat,
+  terminal,
+  hammock,
+  reading,
+  search,
+};
+const src = (poses[pose] ?? wave).src;
+---
+
+<img
+  src={src}
+  alt={alt}
+  width={size}
+  height={size}
+  class={`hedgehog hedgehog--${pose} ${className}`}
+  loading="lazy"
+  decoding="async"
+/>
+
+<style>
+  .hedgehog {
+    display: inline-block;
+    vertical-align: middle;
+    /* Hand-drawn flat-color illustration — no shadow per DESIGN.md. */
+    filter: none;
+  }
+</style>
