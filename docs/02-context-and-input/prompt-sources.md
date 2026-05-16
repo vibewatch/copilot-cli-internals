@@ -133,7 +133,7 @@ The normal interactive and prompt-mode session path builds the active system pro
 
 | Step | Source | Source anchor | What it contributes |
 |---|---|---:|---|
-| Gather current tools | Session tool initialization | ~4481 | Produces the active tool metadata list used by the prompt and provider tool definitions. |
+| Gather current tools | Session tool initialization | ~4481 | Produces the active tool metadata list used by the prompt and provider tool definitions. See [`runtime-tool-assembly-and-filtering.md`](../04-tools-and-integrations/runtime-tool-assembly-and-filtering.md). |
 | Get model-specific prompt parts | `settings.cli.systemMessage` | ~4481, ~5734 | Adds or overrides `toneAndStyle`, `rules`, `toolInstructions`, and `additionalInstructions` depending on the selected model/provider configuration. |
 | Load custom instructions | `loadCustomInstructions(...)` then `mergeCustomInstructions(...)` | ~499-512, ~3824 | Loads repo/user/VS Code/nested instruction sources and wraps them into custom-instruction blocks. |
 | Add static identity and safety | `CliIdentityTemplate`, `GuidelinesTemplate`, `EnvironmentLimitationsTemplate`, `CodeChangeRulesTemplate`, `InstructionPriorityPolicy` | ~3085-3368, ~3824 | Adds Copilot CLI identity, tone, search/delegation, tool efficiency, safety, environment limitations, and code-change rules. |

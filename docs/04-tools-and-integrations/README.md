@@ -29,6 +29,7 @@ flowchart TD
 | Page | Why read it | File |
 |---|---|---|
 | [Built-in tool execution pipeline](./built-in-tool-execution-pipeline.md) | Tool registration, model-visible schemas, permission/hook flow, execution events, streaming, and telemetry. | `built-in-tool-execution-pipeline.md` |
+| [Runtime tool assembly and filtering](./runtime-tool-assembly-and-filtering.md) | How session options, model config, MCP, external tools, custom agents, allow/exclude filters, and deferred tool search produce the final model-visible toolset. | `runtime-tool-assembly-and-filtering.md` |
 | [Shell command execution lifecycle](./shell-command-execution-lifecycle.md) | Bash/PowerShell tool assembly, PTY vs process backends, sync/async/detached commands, shell task tracking, background promotion, and large-output handling. | `shell-command-execution-lifecycle.md` |
 | [Coding-agent validation and review toolchain](./coding-agent-validation-toolchain.md) | `parallel_validation`, `code_review`, CodeQL, secret scanning, advisory checks, trivial-change declarations, budgets, and validation telemetry. | `coding-agent-validation-toolchain.md` |
 | [MCP support implementation in the Copilot CLI](./mcp-support-implementation.md) | MCP config discovery, transports, host lifecycle, tool exposure, OAuth, permissions, and tasks. | `mcp-support-implementation.md` |
@@ -40,6 +41,7 @@ flowchart TD
 ## Reading guidance
 
 - Start with the generic tool pipeline, then read validation/review and specific integration sources.
+- Read runtime tool assembly when you need to know why a tool is present, absent, deferred, or overridden before execution starts.
 - Read the shell lifecycle page when tracing actual `bash`/`powershell` command execution rather than generic tool events.
 - MCP, plugins, IDE, and web are different tool providers/bridges.
 

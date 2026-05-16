@@ -74,7 +74,8 @@ Remaining gap-review set:
 Additional iterative gap pass:
 
 1. [`shell-command-execution-lifecycle.md`](../04-tools-and-integrations/shell-command-execution-lifecycle.md) now covers the previously scattered shell execution path: shell tool assembly, PTY vs process backends, sync/async/detached command handling, task tracking, background promotion, completion notifications, and large-output buffering.
-2. A likely next high-value gap is the **runtime tool assembly and filtering path** that decides the final model-visible toolset across built-ins, MCP, extensions, custom agents, feature gates, focused-tools settings, and mode-specific exclusions.
+2. [`runtime-tool-assembly-and-filtering.md`](../04-tools-and-integrations/runtime-tool-assembly-and-filtering.md) now covers the final model-visible toolset path across built-ins, MCP, extensions, custom agents, feature gates, allow/exclude filters, deferred `tool_search`, request-time refresh, and `session.tools_updated` invalidation.
+3. A likely next high-value gap is the **SessionFs provider and session-state file lifecycle**: RPC-backed session filesystems, reverse calls, local session directories, fork/checkpoint state copying, and how prompt-mode/server-mode sessions share or isolate state.
 
 ## Extracted command surface
 
