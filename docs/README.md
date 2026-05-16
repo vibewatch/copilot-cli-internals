@@ -45,7 +45,7 @@ flowchart TD
 | Section | Purpose | Pages |
 |---|---|---:|
 | [Overview](./00-overview/README.md) | Start here: what the extracted bundle is, how to read the docs, the high-level feature map, and the context/harness engineering split. | 2 |
-| [Runtime and UI](./01-runtime-and-ui/README.md) | Bootstrap, root command routing, interactive TUI, terminal ergonomics, voice mode, protocol server modes, and rendering support. | 7 |
+| [Runtime and UI](./01-runtime-and-ui/README.md) | Bootstrap, root command routing, interactive TUI, terminal ergonomics, voice mode, protocol server modes, and rendering support. | 8 |
 | [Context and input](./02-context-and-input/README.md) | Everything that becomes model-visible context: prompts, custom instructions, attachments, memory, compaction, and rewind boundaries. | 7 |
 | [Sessions and remote](./03-sessions-and-remote/README.md) | Local event-sourced sessions, cloud/remote control, SQLite indexing, UI projection, repository metadata, and Mission Control steering. | 8 |
 | [Tools and integrations](./04-tools-and-integrations/README.md) | Built-in tools, validation/review tools, MCP, plugins, IDE/LSP/editor bridges, web access, and integration overview surfaces. | 9 |
@@ -100,6 +100,7 @@ flowchart TD
 | Runtime and UI | [Interactive TUI and slash-command workflows](./01-runtime-and-ui/tui-and-slash-commands.md) | Interactive TUI event loop, dialogs, slash command macros, and permission surfaces. |
 | Runtime and UI | [Terminal setup and shell environment](./01-runtime-and-ui/terminal-setup-and-shell-environment.md) | Terminal detection, Shift+Enter setup, shell context, and command-history state. |
 | Runtime and UI | [Voice mode and Foundry Local](./01-runtime-and-ui/voice-mode-foundry-local.md) | Foundry Local dictation runtime, voice settings, native audio modules, and model cache checks. |
+| Runtime and UI | [Voice runtime workers and transcription pipeline](./01-runtime-and-ui/voice-runtime-workers-and-transcription.md) | Microphone, installer, and Foundry worker state machines; PCM flow; streaming/batch transcription; and cleanup. |
 | Runtime and UI | [Embedded server, ACP, and JSON-RPC protocol](./01-runtime-and-ui/embedded-server-acp-protocol.md) | JSON-RPC/ACP server modes, external tool calls, elicitation, sampling, and commands. |
 | Runtime and UI | [Tree-sitter WASM usage in the Copilot CLI](./01-runtime-and-ui/tree-sitter-wasm-usage.md) | Packaged Tree-sitter grammars, highlight queries, rich diff rendering, and fallback behavior. |
 | Context and input | [Prompt sources in Copilot CLI](./02-context-and-input/prompt-sources.md) | Static/runtime prompt sources, YAML package prompts, instructions, MCP prompts, hooks, and provider mapping. |
