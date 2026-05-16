@@ -6,10 +6,12 @@
  * first so all standard <head> tags remain.
  */
 import Default from '@astrojs/starlight/components/Head.astro';
+import GoogleAnalytics from './GoogleAnalytics.astro';
 import MermaidRenderer from './MermaidRenderer.astro';
 import SourceAnchorPopup from './SourceAnchorPopup.astro';
 ---
 
 <Default {...Astro.props}><slot /></Default>
+<GoogleAnalytics />
 <MermaidRenderer />
 <SourceAnchorPopup />
