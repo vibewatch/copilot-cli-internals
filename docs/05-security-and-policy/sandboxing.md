@@ -140,6 +140,8 @@ Two details matter here:
 1. `ShellConfigFactory` defaults to **PowerShell on Windows** and **Bash on non-Windows** platforms.
 2. The shell tools factory only takes the alternate non-PTY spawn backend when sandboxing is not enabled. With sandboxing enabled, it stays on the interactive shell session creation path that can invoke the sandbox adapter.
 
+For the full command lifecycle around this branch -- including PTY vs non-TTY backend selection, sync/async/detached execution, background promotion, and output buffering -- see [Shell command execution lifecycle](../04-tools-and-integrations/shell-command-execution-lifecycle.md).
+
 ## Shell execution flow
 
 The enforcement point is shell session creation. When sandboxing is disabled, the runtime spawns a normal PTY shell. When sandboxing is enabled, it first checks the shell type.

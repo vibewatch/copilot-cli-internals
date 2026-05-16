@@ -71,6 +71,11 @@ Remaining gap-review set:
 8. [`session-store-sqlite-indexing.md`](../03-sessions-and-remote/session-store-sqlite-indexing.md)
 9. [`content-exclusion-and-redaction.md`](../05-security-and-policy/content-exclusion-and-redaction.md)
 
+Additional iterative gap pass:
+
+1. [`shell-command-execution-lifecycle.md`](../04-tools-and-integrations/shell-command-execution-lifecycle.md) now covers the previously scattered shell execution path: shell tool assembly, PTY vs process backends, sync/async/detached command handling, task tracking, background promotion, completion notifications, and large-output buffering.
+2. A likely next high-value gap is the **runtime tool assembly and filtering path** that decides the final model-visible toolset across built-ins, MCP, extensions, custom agents, feature gates, focused-tools settings, and mode-specific exclusions.
+
 ## Extracted command surface
 
 The script found these runtime slash commands:
