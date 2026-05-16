@@ -2,7 +2,7 @@
 
 This addendum focuses on the deeper agent/task layer in the extracted `@github/copilot` CLI bundle. It answers the follow-up question: how does `app.js` orchestrate agents, subagents, background tasks, multi-turn agents, MCP tasks, and slash-command workflows?
 
-The short version: the model-visible `task` tool is the main subagent router, while an internal `TaskRegistry` tracks background and multi-turn agent state. Slash commands such as `/research`, `/review`, `/subconscious run`, and `/fleet` mostly inject prompts that cause the main agent to call `task` with a specific `agent_type` or start a fleet/autopilot workflow. Memory-specific `rem-agent`, `context_board`, and sidekick behavior is covered in [`memory-and-context-board.md`](../02-context-and-input/memory-and-context-board.md). Rate-limit recovery and model-call concurrency behavior are covered in [`resilience-rate-limits-concurrency.md`](../06-models-and-reliability/resilience-rate-limits-concurrency.md).
+The short version: the model-visible `task` tool is the main subagent router, while an internal `TaskRegistry` tracks background and multi-turn agent state. Slash commands such as `/research`, `/review`, `/subconscious run`, and `/fleet` mostly inject prompts that cause the main agent to call `task` with a specific `agent_type` or start a fleet/autopilot workflow. The dedicated built-in agent catalog is in [`built-in-agents.md`](./built-in-agents.md). Memory-specific `rem-agent`, `context_board`, and sidekick behavior is covered in [`memory-and-context-board.md`](../02-context-and-input/memory-and-context-board.md). Rate-limit recovery and model-call concurrency behavior are covered in [`resilience-rate-limits-concurrency.md`](../06-models-and-reliability/resilience-rate-limits-concurrency.md).
 
 ## Source anchors
 
@@ -236,6 +236,8 @@ flowchart LR
 So the answer to “how do custom agents collaborate with normal agents?” is: the main agent selects them exactly like any other subagent, by name. They specialize the worker implementation, but they do not bypass the main agent’s orchestration or the registry’s state model.
 
 ## Agent catalog and selection
+
+For per-agent prompt sources, packaged YAML details, and the `general-purpose` runtime-defined exception, see [`built-in-agents.md`](./built-in-agents.md).
 
 The built-in agent list is defined by the `BUILT_IN_AGENTS` catalog and includes:
 

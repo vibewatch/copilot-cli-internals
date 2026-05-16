@@ -219,6 +219,8 @@ This catalog lists the major prompt families found during static inspection. It 
 
 Not all packaged prompts are inline in `app.js`. Several important prompts are shipped as YAML files and loaded at runtime.
 
+For the central catalog of all built-in agent types, including the runtime-defined `general-purpose` agent that is not backed by a YAML file, see [`built-in-agents.md`](../07-agents-and-automation/built-in-agents.md).
+
 | File | Agent or sidekick | Prompt role |
 |---|---|---|
 | `copilot-cli-pkg/definitions/explore.agent.yaml` | `explore` | Fast codebase exploration with search/read tools and short cited answers. |

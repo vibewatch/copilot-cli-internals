@@ -64,6 +64,7 @@ This file is a table-of-contents document, not a direct `app.js` implementation 
   - [Usage, quota, and billing metrics](./06-models-and-reliability/usage-quota-billing-metrics.md)
 - [Agents and automation](./07-agents-and-automation/README.md)
   - [Agent and task orchestration in Copilot CLI](./07-agents-and-automation/agent-task-orchestration.md)
+  - [Built-in agents in Copilot CLI](./07-agents-and-automation/built-in-agents.md)
   - [Autopilot and no-ask-user flags](./07-agents-and-automation/autopilot-and-no-ask-user.md)
   - [Fleet mode implementation in Copilot CLI](./07-agents-and-automation/fleet-mode.md)
   - [Scheduled prompts and command queue](./07-agents-and-automation/scheduled-prompts-and-command-queue.md)
