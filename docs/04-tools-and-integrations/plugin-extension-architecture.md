@@ -163,6 +163,8 @@ The `EXTENSIONS` feature flag is described in the bundle as enabling:
 
 > extensions — programmatic tools and hooks via `@github/copilot-sdk`, scaffolded and managed by the agent itself
 
+For the standalone SDK-focused map, see [Copilot SDK extension support](./copilot-sdk-extension-support.md).
+
 When config discovery and `EXTENSIONS` are enabled, session creation/resume calls `setupExtensionsForSession(...)`.
 
 The setup path around line `6100`:
@@ -223,6 +225,7 @@ Plugins and extensions add capabilities; they do not remove the central permissi
 ## Relationship to other docs
 
 - `integrations-permissions-config.md` gives the broader integration overview.
+- `copilot-sdk-extension-support.md` expands the programmatic `@github/copilot-sdk` extension lifecycle, APIs, events, and trust boundaries.
 - `mcp-support-implementation.md` explains how plugin-provided MCP servers become tools.
 - `hooks-lifecycle-automation.md` explains plugin hooks in the broader hook system.
 - `ide-lsp-editor-integration.md` explains LSP and extension state from the IDE/editor perspective.

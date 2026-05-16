@@ -124,6 +124,7 @@ export default defineConfig({
             { label: 'Built-in tool execution', link: '/04-tools-and-integrations/built-in-tool-execution-pipeline/' },
             { label: 'MCP support', link: '/04-tools-and-integrations/mcp-support-implementation/' },
             { label: 'Plugin and extension architecture', link: '/04-tools-and-integrations/plugin-extension-architecture/' },
+            { label: 'Copilot SDK extension support', link: '/04-tools-and-integrations/copilot-sdk-extension-support/' },
             { label: 'IDE, LSP, editor integration', link: '/04-tools-and-integrations/ide-lsp-editor-integration/' },
             { label: 'Web search and URL fetching', link: '/04-tools-and-integrations/web-search-url-fetching/' },
             { label: 'Integrations and permissions', link: '/04-tools-and-integrations/integrations-permissions-config/' },
