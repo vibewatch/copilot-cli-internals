@@ -176,6 +176,7 @@ sequenceDiagram
 
 ## Relationship to other docs
 
+- `debug-bundle-redaction-boundaries.md` explains what can enter a bundle, which redaction layers apply, local archive versus secret gist risk, and remaining safety caveats.
 - `observability-update-shutdown.md` covers logging, telemetry, update checks, and shutdown cleanup.
 - `system-events-and-ui-projection.md` explains how diagnostic/feedback results appear as timeline/dialog events.
 - `content-exclusion-and-redaction.md` explains broader redaction and content exclusion behavior.
