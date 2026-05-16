@@ -9,14 +9,16 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 | Semantic alias | Minified anchor | Approx. `app.js` line | Role |
 |---|---|---:|---|
 | System prompt event | `system.message`, `upsertSystemContextMessage` | 4361, 4471, 4475 | System/developer messages update model-visible system context. |
-| System notification event | `system.notification`, `instruction_discovered` | 4361, 4471, 4475, 4481 | Runtime notifications can become chat-like user context, with instruction discovery filtered. |
+| System notification schema | `E6s`, `b6s`, `f6s`, `g6s`, `A6s`, `m6s`, `h6s`, `y6s` | 4361 | Defines `system.notification` and the structured `kind` union. |
+| System notification sender | `sendSystemNotification(...)`, `v8s(...)`, `Qyr.preRequest(...)` | 4471, 4479, 4481 | Wraps notification text in XML, fires hooks, queues immediate system prompts, and emits `system.notification`. |
+| Instruction discovery notification | `instruction_discovered`, `onFileAccessed`, `I8s(...)` | 4361, 4471, 4481 | Directly emits a notification when on-demand instruction loading discovers new instruction files. |
 | Info/warning/error events | `session.info`, `session.warning`, `session.error` | 4361, 4396 | Timeline display messages with category and optional URL. |
 | Notification API bridge | `level`, `info`, `warning`, `error`, `emitEphemeral` | 4396 | A notification helper maps severity to session info/warning/error events. |
 | Pending queue update | `pending_messages.modified` | 4361, 4471, 4479 | Empty ephemeral event tells clients prompt queue state changed. |
 | Custom notifications | `session.custom_notification`, `payload`, `mcp task event callback` | 4361, 4481 | Opaque source-defined notifications, including MCP task events. |
 | Tool/capability state | `session.tools_updated`, `session.context_changed`, `session.mode_changed` | 4361, 4471, 4475 | UI/state update events that are not ordinary chat messages. |
 | Telemetry projection | `SYSTEM_NOTIFICATION`, `github.copilot.system.notification.*` | 5742 | System notifications are projected into OpenTelemetry attributes/events. |
-| Timeline entries | `add-timeline-entry`, `timeline`, `onSystemNotification` | 1739, 4644, 4783 | Command handlers return timeline entries; renderer maps event-like records to UI/Markdown. |
+| Timeline entries | `add-timeline-entry`, `timeline`, `onSystemNotification`, `IFa(...)`, `jze(...)` | 1739, 4644, 4783, 6860 | Command handlers return timeline entries; renderer maps event-like records to UI/Markdown. |
 | Ephemeral event helper | `emitEphemeral` | 4207+ | Streaming, queue, tool, and status updates can be emitted without durable conversation semantics. |
 
 ## Event categories
@@ -66,6 +68,66 @@ This means `system.message` is not just UI copy. It mutates the model context us
 The event processor treats most `system.notification` events as user-like model context by pushing a `{ role: "user", content }` chat message. There is one important exception: if the kind is `instruction_discovered`, it is not pushed into `_chatMessages` during replay.
 
 That exception avoids turning every dynamic instruction discovery notice into persistent user prompt content while still allowing the UI/telemetry to show that an instruction file was discovered.
+
+### System notification lifecycle
+
+Most runtime notifications go through `sendSystemNotification(message, kind)`:
+
+```mermaid
+flowchart TD
+  Trigger[Runtime trigger] --> Sender["sendSystemNotification(message, kind)"]
+  Sender --> Hook["notification hooks<br/>notificationType = kind.type<br/>title = v8s(kind)"]
+  Hook --> Extra{hook additionalContext?}
+  Extra -->|yes| Prepend["send additional context<br/>as source: system, prepend"]
+  Extra -->|no| Wrap
+  Prepend --> Wrap["wrap message in<br/>&lt;system_notification&gt;...&lt;/system_notification&gt;"]
+  Wrap --> Busy{session is processing?}
+  Busy -->|yes| Immediate["addImmediateMessage<br/>mode: immediate"]
+  Busy -->|no| Send["send(... mode: immediate)"]
+  Immediate --> Queue[pending_messages.modified]
+  Send --> Queue
+  Queue --> PreRequest[Qyr.preRequest]
+  PreRequest --> Emit["emit system.notification<br/>{ content, kind }"]
+  Emit --> Replay[session event replay]
+  Replay --> Model{kind.type === instruction_discovered?}
+  Model -->|no| Chat[append user-like chat message]
+  Model -->|yes| Filter[skip chat-message replay]
+  Emit --> UI[timeline/UI projection]
+  Emit --> Telemetry[OpenTelemetry event]
+```
+
+Two details matter:
+
+- The model sees system notifications as **user-role content** containing the XML-wrapped `<system_notification>` block, not as a new provider-level role.
+- `instruction_discovered` is unusual: the on-demand instruction loader emits `system.notification` directly from the file-access callback instead of calling `sendSystemNotification(...)`, and replay filters it out of model chat history. The actual instruction text is loaded through the dynamic instruction pipeline.
+
+The system prompt includes a companion `<system_notifications>` rule telling the model to acknowledge relevant notifications briefly, avoid repeating them verbatim, and never generate its own `<system_notification>` tags. That prompt contract is cataloged in [`app-js-prompt-catalog.md`](../02-context-and-input/app-js-prompt-catalog.md#system-notifications-prompt).
+
+### System notification kinds
+
+`kind` is a discriminated union (`b6s`) with six observed variants:
+
+| `kind.type` | Required fields | Optional fields | Trigger/source | Model/UI behavior |
+|---|---|---|---|---|
+| `agent_completed` | `agentId`, `agentType`, `status` (`completed` or `failed`) | `description`, `prompt` | Background agent task completion callback. `sendBackgroundAgentCompletionNotification(...)` tells the main agent to call `read_agent` for full results. | Model-visible as a user-like system notification; timeline text is `Background agent "..." (...) completed/failed`, with the original agent prompt as detail when available. |
+| `agent_idle` | `agentId`, `agentType` | `description` | Multi-turn/background agent idle callback. `sendBackgroundAgentIdleNotification(...)` tells the main agent it can `read_agent` or `write_agent`. | Model-visible; timeline text says the background agent completed/idle. |
+| `shell_completed` | `shellId` | `exitCode`, `description` | Background shell completion callback for non-detached shell sessions. | Model-visible; timeline text reports completion or `exited (code N)`. |
+| `shell_detached_completed` | `shellId` | `description` | Detached shell completion callback. | Model-visible; timeline text reports detached-shell completion. |
+| `new_inbox_message` | `entryId`, `senderName`, `senderType`, `summary` | none | Sidekick/plugin/hook inbox entry. `sendInboxNotification(...)` tells the main agent it may call `read_inbox(entry_id=...)` if useful. | Model-visible, but `jze(...)` filters it from the normal timeline projection to avoid duplicating inbox UI state. |
+| `instruction_discovered` | `sourcePath`, `triggerFile`, `triggerTool` | `description` | On-demand instruction discovery after a file access, currently from the `view`-style access path. | UI/telemetry-visible, but filtered from model chat replay; the dynamic instruction loader handles the instruction content itself. |
+
+`v8s(kind)` also derives the title passed into notification hooks:
+
+| `kind.type` | Hook title fallback |
+|---|---|
+| `agent_completed` | `Agent ${agentId} completed` or `Agent ${agentId} failed` |
+| `agent_idle` | `Agent ${agentId} idle` |
+| `new_inbox_message` | `Inbox entry ${entryId} from ${senderName}` |
+| `shell_completed` | `description` or `Shell completed` |
+| `shell_detached_completed` | `description` or `Detached shell completed` |
+| `instruction_discovered` | `description` or `Discovered instruction: ${sourcePath}` |
+
+`notifyPermissionPrompt(...)` also uses the notification hook path with `notificationType: "permission_prompt"`, but it does **not** emit a `system.notification` event. Treat it as hook-only notification plumbing rather than a system-notification kind.
 
 ## Instruction discovery notifications
 

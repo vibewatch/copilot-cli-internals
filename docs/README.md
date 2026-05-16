@@ -44,7 +44,7 @@ flowchart TD
 
 | Section | Purpose | Pages |
 |---|---|---:|
-| [Overview](./00-overview/README.md) | Start here: what the extracted bundle is, how to read the docs, and the high-level feature map. | 2 |
+| [Overview](./00-overview/README.md) | Start here: what the extracted bundle is, how to read the docs, the high-level feature map, and the context/harness engineering split. | 2 |
 | [Runtime and UI](./01-runtime-and-ui/README.md) | Bootstrap, root command routing, interactive TUI, terminal ergonomics, voice mode, protocol server modes, and rendering support. | 7 |
 | [Context and input](./02-context-and-input/README.md) | Everything that becomes model-visible context: prompts, custom instructions, attachments, memory, compaction, and rewind boundaries. | 7 |
 | [Sessions and remote](./03-sessions-and-remote/README.md) | Local event-sourced sessions, cloud/remote control, SQLite indexing, UI projection, repository metadata, and Mission Control steering. | 7 |
@@ -70,6 +70,7 @@ flowchart TD
 | Goal | Read this path |
 |---|---|
 | Get oriented quickly | [Overview](./00-overview/README.md) → [Runtime and UI](./01-runtime-and-ui/README.md) → [Context and input](./02-context-and-input/README.md) |
+| Separate context engineering from harness engineering | [Main feature map](./00-overview/main-feature-map.md) → [Context and input](./02-context-and-input/README.md) → [Tools and integrations](./04-tools-and-integrations/README.md) → [Security and policy](./05-security-and-policy/README.md) |
 | Understand local/remote session behavior | [Sessions and remote](./03-sessions-and-remote/README.md) → [Operations and research](./08-operations-and-research/README.md) |
 | Trace a model request end to end | [Context and input](./02-context-and-input/README.md) → [Tools and integrations](./04-tools-and-integrations/README.md) → [Models and reliability](./06-models-and-reliability/README.md) |
 | Review safety and trust boundaries | [Security and policy](./05-security-and-policy/README.md) → [Tools and integrations](./04-tools-and-integrations/README.md) → [Operations and research](./08-operations-and-research/README.md) |
@@ -79,6 +80,8 @@ flowchart TD
 
 | Concern | Primary section | Key supporting sections |
 |---|---|---|
+| Context engineering | [Context and input](./02-context-and-input/README.md) | [Overview](./00-overview/main-feature-map.md), [Models and reliability](./06-models-and-reliability/README.md), [Agents and automation](./07-agents-and-automation/README.md) |
+| Harness engineering | [Runtime and UI](./01-runtime-and-ui/README.md) | [Tools and integrations](./04-tools-and-integrations/README.md), [Security and policy](./05-security-and-policy/README.md), [Agents and automation](./07-agents-and-automation/README.md) |
 | Prompt/context assembly | [Context and input](./02-context-and-input/README.md) | [Tools and integrations](./04-tools-and-integrations/README.md), [Models and reliability](./06-models-and-reliability/README.md) |
 | Session/event lifecycle | [Sessions and remote](./03-sessions-and-remote/README.md) | [Runtime and UI](./01-runtime-and-ui/README.md), [Operations and research](./08-operations-and-research/README.md) |
 | Tool execution | [Tools and integrations](./04-tools-and-integrations/README.md) | [Security and policy](./05-security-and-policy/README.md), [Agents and automation](./07-agents-and-automation/README.md) |
@@ -91,7 +94,7 @@ flowchart TD
 | Section | Page | Covers |
 |---|---|---|
 | Overview | [`app.js` overview](./00-overview/what-is-app-js.md) | Bundle identity, responsibilities, and caveats. |
-| Overview | [Main feature map for Copilot CLI](./00-overview/main-feature-map.md) | High-level map of feature areas and runtime ownership. |
+| Overview | [Main feature map for Copilot CLI](./00-overview/main-feature-map.md) | High-level map of feature areas, runtime ownership, context engineering, and harness engineering. |
 | Runtime and UI | [Loader and bootstrap workflows](./01-runtime-and-ui/loader-bootstrap.md) | SEA/npm loader chain, restart wrapper, secure module loading, and bootstrap safeguards. |
 | Runtime and UI | [CLI runtime workflows](./01-runtime-and-ui/cli-runtime-workflows.md) | Root CLI routing, pre-action setup, prompt/headless/server dispatch, and session resolution. |
 | Runtime and UI | [Interactive TUI and slash-command workflows](./01-runtime-and-ui/tui-and-slash-commands.md) | Interactive TUI event loop, dialogs, slash command macros, and permission surfaces. |
@@ -101,10 +104,10 @@ flowchart TD
 | Runtime and UI | [Tree-sitter WASM usage in the Copilot CLI](./01-runtime-and-ui/tree-sitter-wasm-usage.md) | Packaged Tree-sitter grammars, highlight queries, rich diff rendering, and fallback behavior. |
 | Context and input | [Prompt sources in Copilot CLI](./02-context-and-input/prompt-sources.md) | Static/runtime prompt sources, YAML package prompts, instructions, MCP prompts, hooks, and provider mapping. |
 | Context and input | [`app.js` prompt catalog](./02-context-and-input/app-js-prompt-catalog.md) | Curated extracted prompts from `app.js`, normalized placeholders, prompt families, and system prompt composition workflows. |
-| Context and input | [Custom agents and skills packaging](./02-context-and-input/custom-agents-and-skills-packaging.md) | AGENTS.md, SKILL.md, built-in skills, plugin/remote/provided agents, skill directories, and enable/disable events. |
+| Context and input | [Custom agents and skills packaging](./02-context-and-input/custom-agents-and-skills-packaging.md) | AGENTS.md, SKILL.md, built-in skills, plugin/remote/provided agents, skill directories, skill invocation, allowed-tools, and enable/disable events. |
 | Context and input | [Attachment and file-ingestion pipeline](./02-context-and-input/attachments-and-file-ingestion.md) | Native image/document attachments, tagged-file fallback, MIME detection, payload mapping, and limits. |
 | Context and input | [Memory and dynamic context board in Copilot CLI](./02-context-and-input/memory-and-context-board.md) | Agentic memory API, local memory, dynamic context board, rem-agent, sidekicks, and shutdown consolidation. |
-| Context and input | [Conversation compaction and memory compression in Copilot CLI](./02-context-and-input/conversation-compaction.md) | /compact, automatic compaction, summary replacement, checkpoints, hooks, telemetry, and UI status. |
+| Context and input | [Conversation compaction and memory compression in Copilot CLI](./02-context-and-input/conversation-compaction.md) | /compact, automatic compaction, request-time prompt trimming, summary replacement, checkpoints, hooks, telemetry, and UI status. |
 | Context and input | [Checkpoints, undo, rewind, and fork](./02-context-and-input/checkpoints-undo-rewind.md) | /undo, /rewind, /fork, event-log truncation/replay, snapshot_rewind, and workspace events. |
 | Sessions and remote | [Session support implementation in the Copilot CLI](./03-sessions-and-remote/session-support-implementation.md) | Event-sourced local persistence, workspace artifacts, startup resolution, APIs, and handoff behavior. |
 | Sessions and remote | [API and session event schema contracts](./03-sessions-and-remote/api-and-session-event-schemas.md) | JSON-RPC and session event schemas, SDK generation surfaces, event envelopes, and `app.js` forwarding/replay cross-checks. |

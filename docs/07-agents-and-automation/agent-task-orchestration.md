@@ -19,11 +19,16 @@ The short version: the model-visible `task` tool is the main subagent router, wh
 | Task registry | `TaskRegistry` | `B3` | 3367 | Tracks agent tasks, states, message queues, progress, results, and cancellation. |
 | Background launch | `launchBackgroundAgent(...)` | `Bur(...)` | 3698 | Starts a background agent through the task registry. |
 | Task tool | `createTaskTool(...)`, `taskToolInputSchema`, `TASK_TOOL_NAME` | `I6n(...)`, `v6n`, `H3="task"` | 3735-3815 | Defines the `task` tool schema, instructions, dispatch callback, sync/background modes. |
+| Task completion tool | `createTaskCompleteTool(...)`, `TASK_COMPLETE_TOOL_NAME`, continuation prompt | `$Vn()`, `UM="task_complete"`, `UTe`, `Dgr` | 4140-4149 | Defines the explicit main-agent completion tool, summary schema, terminal-tool instructions, and hidden continuation reminder. |
 | Built-in agents | `BUILT_IN_AGENTS` | `nHn` | 4037 | Catalog of built-in agents: `explore`, `task`, `general-purpose`, `rubber-duck`, `code-review`, `research`, `rem-agent`. |
 | Session subagent executor | `SessionAgentExecutor` | `dZ` | 4037-4039 | Runs built-in/session-based agents, emits subagent boundaries, applies hooks, supports multi-turn loops. |
 | MCP task bridge | `doInvokeToolWithTask`, `consumeTaskStreamNonBlocking` | same names | 4138 | Converts MCP `taskSupport: "required"` tools into background `mcp-task` agent records. |
 | Tool assembly | `assembleRuntimeTools(...)`, `assembleSubagentTools(...)` | `HCr(...)`, `Gjs(...)` | 5734 | Builds tool lists recursively and injects `task`, agent tools, MCP tools, skills, shell tools, etc. |
 | Session runtime | `getToolConfig`, `waitForPendingBackgroundTasks` | same names | 4481-4487 | Wires hooks, task registry, MCP host, session events, and shutdown waiting. |
+| Completion event emission | `tool.execution_complete`, `session.task_complete` | `ue===UM`, `emit("session.task_complete", ...)` | 4481 | Converts a `task_complete` tool execution into the durable completion event consumed by autopilot/prompt-mode loops and timeline projection. |
+| Session idleness | `emitSessionIdle(...)`, `emitDeferredSessionIdleIfReady(...)`, `hasActiveBackgroundWork(...)` | same names | 4481 | Emits `session.idle` only when the foreground loop and running background agents are drained; this is not the same as task completion. |
+| TUI autopilot continuation | `useAutopilotContinuation(...)` | `F5o(...)` | 6615 | Watches `session.task_complete`, `session.error`, `abort`, and `session.idle`; sends `UTe` until completion or limit. |
+| Completion timeline projection | `buildTimelineEntries(...)`, task-complete renderer | `session.task_complete`, `a3o(...)`, `onTaskComplete` | 6639, 6860 | Hides the raw `task_complete` tool call and renders a `Task complete` timeline entry from the session event. |
 | Prompt/autopilot | `runPromptMode(...)`, prompt-mode listeners | `u1t(...)` | 7420 | Prompt mode, `session.task_complete`, and autopilot continuation loop. |
 | Detached memory agent | `spawnDetachedMemoryAgent(...)` | `T5a(...)` | 7445 | Spawns a detached `rem-agent` on shutdown when subconscious memory is enabled. |
 
@@ -511,26 +516,99 @@ Important differences from normal subagents:
 - If steering support is enabled, `write_agent`-style follow-up can map to MCP `tasks/steer`; otherwise MCP task agents reject follow-up messages and advise starting a new task.
 - Progress is stored under `progress.mcpTask`, including status, message, progress totals, event-stream warnings, and timestamps.
 
-## Autopilot and prompt-mode task completion
+## How the agent decides a task is complete
 
-Non-interactive prompt mode (`runPromptMode(...)`) wires task completion into the session event stream. When the model calls the task-completion tool, the session emits `session.task_complete`. Autopilot listens for `session.idle`; if the task is not complete, no abort happened, and the continuation limit is not reached, it sends an internal continuation prompt.
+There are three different “done” concepts in the runtime, and only one means the **user's overall task** is complete.
 
-The important distinction is that autopilot is a mode/lifecycle feature, not merely an ask-user toggle. `--autopilot` selects autopilot mode, injects autopilot system instructions, adds the `task_complete` tool, and enables continuation. `--no-ask-user` instead suppresses the `ask_user` capability/tool in the TUI path and does not create continuation by itself. The detailed flag comparison is in [`autopilot-and-no-ask-user.md`](./autopilot-and-no-ask-user.md).
+| Signal | What it means | What it does **not** mean |
+|---|---|---|
+| `session.task_complete` | The main model explicitly called the `task_complete` terminal tool, and the tool execution produced a completion event. | It is not a semantic proof that the request was solved; the runtime trusts the model/tool protocol and the tool's validation result. |
+| `session.idle` | The current processing loop is drained and there are no running background agents blocking idleness. | The user task may still be unfinished. In autopilot, idle is the trigger to either continue or stop. |
+| `TaskRegistry` status `completed` / `failed` / `cancelled` / `idle` | A background or multi-turn subagent changed lifecycle state. | This does not mark the main user's task complete; it only tells the main agent that delegated work changed state or produced results. |
+
+So the short answer is: **for autonomous/autopilot completion, the agent decides by calling `task_complete`; the runtime does not infer completion from a final assistant message or from `session.idle`.** The runtime then records and reacts to that explicit tool call.
+
+### Main-agent completion protocol
+
+`task_complete` is exposed only when `autopilotActive` is true. The tool is built by `$Vn()` with:
+
+- tool name `UM = "task_complete"`;
+- input schema `Dgr`, currently just `{ summary: string }`;
+- `isTerminal: true`, so the tool is intended to end the turn/task;
+- instructions that say to call it only after all requested work is done and verified, and not after unresolved errors, remaining steps, or uncertainty.
+
+When the tool finishes, the normal tool pipeline first emits `tool.execution_complete`. The session loop then checks `ue === UM` and emits:
+
+```text
+session.task_complete({ summary, success })
+```
+
+`success` is derived from the tool result type. Consumers treat `success !== false` as the completion signal, which means failed validation/tool execution does not count as completion.
+
+```mermaid
+sequenceDiagram
+    participant Model as Main model
+    participant Tool as task_complete tool
+    participant Session as Session runtime
+    participant Loop as Autopilot listener
+    participant UI as Timeline/UI
+
+    Model->>Tool: task_complete({ summary })
+    Tool-->>Session: success result + summary
+    Session->>Session: emit tool.execution_complete
+    Session->>Session: emit session.task_complete({ summary, success })
+    Session-->>Loop: completion event
+    Loop->>Loop: mark taskCompleted when success !== false
+    Session-->>UI: render Task complete entry
+```
+
+The UI projection hides the raw `task_complete` tool call in the timeline and renders the `session.task_complete` event as a `Task complete` entry with the model-provided summary.
+
+### Idle versus complete
+
+`session.idle` is emitted by `emitSessionIdle(...)` after processing drains. It is intentionally separate from task completion. Background agents can defer idleness: `hasActiveBackgroundWork()` checks for running agent tasks, and `emitDeferredSessionIdleIfReady()` waits until the foreground loop, queued messages, and running background agents allow idleness.
+
+Autopilot uses this idle event as a checkpoint:
 
 ```mermaid
 flowchart TD
-    Prompt["copilot -p prompt"] --> Send["session.send"]
-    Send --> Idle["session.idle"]
+    Turn["model/tool turn ends"] --> Idle["session.idle"]
     Idle --> Done{"session.task_complete seen?"}
-    Done -->|"yes"| WaitBg["waitForPendingBackgroundTasks"]
-    Done -->|"no"| Limit{"max continuations?"}
-    Limit -->|"not reached"| Continue["send autopilot continuation prompt"]
-    Continue --> Idle
-    Limit -->|"reached / abort / error"| Stop["stop continuation"]
-    WaitBg --> Exit["export/share/print metrics"]
+    Done -->|"yes"| Stop["stop autonomous continuation"]
+    Done -->|"no"| Error{"non-model error or abort?"}
+    Error -->|"yes"| Stop
+    Error -->|"no"| Limit{"continuation limit reached?"}
+    Limit -->|"yes"| Stop
+    Limit -->|"no"| Continue["send hidden UTe reminder"]
+    Continue --> Turn
 ```
 
-This explains why prompt mode can keep working autonomously after the first answer: `session.idle` does not necessarily mean the overall requested task is done; `session.task_complete` is the explicit completion signal.
+The hidden reminder `UTe` says the task has not yet been marked complete with `task_complete`, tells the model to stop planning and keep working, and explicitly warns not to call `task_complete` while there are open questions, unresolved errors, or remaining steps.
+
+### TUI versus prompt mode
+
+The same event is used in both interactive autopilot and non-interactive prompt mode, but the surrounding loop differs slightly:
+
+| Runtime path | Completion behavior |
+|---|---|
+| Interactive/TUI autopilot | `F5o(...)` listens for `session.task_complete`, `session.error`, `abort`, and `session.idle`. If idle arrives before completion and the limit is not reached, it sends `UTe` with `displayPrompt: ""` and `requiredTool: "task_complete"`. |
+| Prompt-mode autopilot | `runPromptMode(...)` sets `currentMode = "autopilot"`, sends the initial prompt, then sends `UTe` after idle until `session.task_complete`, error, abort, or the limit. |
+| Prompt mode without autopilot | Sends the prompt once, then waits for pending background work; it does not require `task_complete` as the overall done signal. |
+| Normal interactive mode | The user-facing turn can simply stop at an assistant response; `task_complete` is not part of the normal tool surface unless autopilot is active. |
+
+The detailed flag comparison is in [`autopilot-and-no-ask-user.md`](./autopilot-and-no-ask-user.md).
+
+### Stop hooks can veto stopping
+
+The runtime also has a policy hook after normal model turns. After an `end_turn`, if the session was not aborted, the session calls configured `agentStop` hooks with `stopReason: "end_turn"`. If a hook returns `decision: "block"` plus a `reason`, the runtime prepends that reason as another user message and resumes processing.
+
+This is not the primary task-completion detector. It is a guardrail that can say “you tried to stop, but continue because …”. In other words, completion is still model-declared through `task_complete`; hooks can prevent a stop from being accepted.
+
+### Background agents are separate
+
+Background subagents and MCP tasks finish through `TaskRegistry.complete(...)`, `fail(...)`, or `cancelRecursive(...)`. Those transitions trigger background-task change events and, for background agents, `agent_completed` / `agent_idle` system notifications. The main model can read those results and decide what to do next.
+
+They do **not** automatically call `task_complete` for the main task. A completed background agent means delegated work finished; the main agent still has to synthesize results, perform remaining validation, and call `task_complete` if the overall user request is done.
 
 ## Subconscious / `rem-agent`
 
@@ -557,6 +635,7 @@ For the full memory architecture, including the cloud memory API, local JSONL st
 
 - `task` is not just another helper; it is the public model-facing orchestration surface for subagents.
 - `TaskRegistry` is the core in-process task registry for background/multi-turn work.
+- Main-agent task completion is explicit and model-declared through `task_complete`; `session.idle` and background-agent completion are not equivalent to overall task completion.
 - Built-in and custom agents share the same high-level lifecycle: prompt assembly, optional hooks, one or more turns, telemetry/progress, and result capture.
 - Background mode is designed for real parallel work, not polling.
 - Multi-turn agents use `turnHistory`, `messageQueue`, `waitForMessage`, and `sendMessage` to keep an agent alive after a response.

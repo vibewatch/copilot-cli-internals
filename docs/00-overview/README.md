@@ -28,7 +28,7 @@ flowchart LR
 | Page | Why read it | File |
 |---|---|---|
 | [`app.js` overview](./what-is-app-js.md) | Bundle identity, responsibilities, and caveats. | `what-is-app-js.md` |
-| [Main feature map for Copilot CLI](./main-feature-map.md) | High-level map of feature areas and runtime ownership. | `main-feature-map.md` |
+| [Main feature map for Copilot CLI](./main-feature-map.md) | High-level map of feature areas, runtime ownership, and the context-engineering versus harness-engineering split. | `main-feature-map.md` |
 
 ## Reading guidance
 

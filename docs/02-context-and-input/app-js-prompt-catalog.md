@@ -849,7 +849,14 @@ Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
 ### Task-complete reminder prompt
 
 ```text
-You have not yet marked the task as complete using the task_complete tool. If you were planning, stop planning and start implementing. You aren't done until you have fully completed the task, verified it, and called task_complete.
+You have not yet marked the task as complete using the task_complete tool. If you were planning, stop planning and start implementing. You aren't done until you have fully completed the task.
+
+IMPORTANT: Do NOT call task_complete if:
+- You have open questions or ambiguities - make good decisions and keep working
+- You encountered an error - try to resolve it or find an alternative approach
+- There are remaining steps - complete them first
+
+Keep working autonomously until the task is truly finished, then call task_complete.
 ```
 
 ## Tool and progress prompts
@@ -1169,6 +1176,8 @@ DO NOT answer capability questions from memory alone. The ${self_documentation_t
 ```
 
 ### System notifications prompt
+
+This is the model-facing instruction for handling runtime-injected notifications. The event schema, lifecycle, and concrete `kind` variants are documented in [System events and UI projection](../03-sessions-and-remote/system-events-and-ui-projection.md#system-notification-lifecycle).
 
 ```text
 <system_notifications>

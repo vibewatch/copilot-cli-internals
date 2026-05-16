@@ -1,6 +1,6 @@
 # Custom agents and skills packaging
 
-This document explains how custom agents and skills are packaged, discovered, loaded, enabled/disabled, and surfaced in the extracted Copilot CLI `app.js` bundle. Existing docs cover prompts and task orchestration broadly; this document focuses on the packaging surfaces: `AGENTS.md`, `SKILL.md`, built-in skills, skill directories, plugin contributions, remote/custom-agent sources, and session events such as `session.skills_loaded` and `session.custom_agents_updated`.
+This document explains how custom agents and skills are packaged, discovered, loaded, enabled/disabled, invoked, and surfaced in the extracted Copilot CLI `app.js` bundle. Existing docs cover prompts and task orchestration broadly; this document focuses on the customization surfaces: `AGENTS.md`, `SKILL.md`, built-in skills, skill directories, plugin contributions, remote/custom-agent sources, the model-visible `skill` tool, and session events such as `session.skills_loaded`, `skill.invoked`, and `session.custom_agents_updated`.
 
 The important implementation point is that “customization” is multi-layered:
 
@@ -17,10 +17,15 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 | Semantic alias | Minified anchor | Approx. `app.js` line | Role |
 |---|---|---:|---|
 | Instruction files | `AGENTS.md`, `Nested AGENTS.md`, `Child instruction files` | 499 | Repo/cwd/inherited instruction files are discovered and folded into prompt context. |
-| Skill files | `SKILL.md`, `skillsParseSkillMarkdown`, `allowedTools`, `userInvocable`, `disableModelInvocation` | 525 | Skills are parsed from markdown files and normalized into runtime metadata. |
+| Skill files | `SKILL.md`, `skillsParseSkillMarkdown`, `skillsParseCommandMarkdown`, `allowedTools`, `userInvocable`, `disableModelInvocation` | 525 | Skills and command markdown files are parsed and normalized into runtime metadata. |
+| Skill loader | `I9(...)`, `sWr(...)`, `cbi(...)`, `aWr(...)` | 525 | Resolves skill roots, reads direct/child `SKILL.md` files, loads command markdown, de-duplicates, caches, and returns diagnostics. |
 | Built-in skills | `copilot-cli-pkg/builtin-skills/**/SKILL.md`, `customize-cloud-agent` | package tree | Packaged skills are loaded through the same skill loader as user/plugin skill roots. |
 | Skill settings | `skillDirectories`, `disabledSkills` | 239, 4471 | Settings can add skill search roots and disable named skills. |
 | Skill events | `session.skills_loaded`, `enableSkill`, `disableSkill`, `emitSkillsChanged` | 4361, 4396, 4471 | Loaded/enabled skill metadata is emitted to clients and updated dynamically. |
+| Model-visible skill tool | `HVn(...)`, `LTe="skill"`, `QVn`, `_4n(...)`, `B0s(...)` | 4138 | Builds the `skill` tool, renders available-skill instructions, filters disabled/model-disabled skills, and loads selected skill context. |
+| Skill context injection | `Aft(...)`, `<skill-context>`, `skillInvocation`, `S0s(...)` | 3146, 3085 | Reads skill body, wraps it as context, emits invocation metadata, and preserves invoked-skill instructions through compaction. |
+| Skill slash commands | `/skills`, `pto(...)`, `R_t(...)`, `dHs(...)`, `JYn(...)`, `gGo(...)` | 1312, 4361, 4918, 6103 | Lists/info/reloads skills and exposes user-invocable skills as slash/available commands that prompt the model to call the `skill` tool. |
+| Skill allowed tools | `allowed-tools`, `Xar(...)`, `w4n(...)`, `N6o(...)` | 4811, 6689 | Parses skill tool approvals and applies/restores session permission rules after a skill is invoked. |
 | Custom-agent settings | `customAgents:{defaultLocalOnly}`, `customAgentsLocalOnly` | 239, 4471 | Settings/runtime options control custom-agent discovery scope. |
 | Agent events | `session.custom_agents_updated`, `emitCustomAgentsUpdated` | 4361, 4475 | Session emits agent metadata, warnings, and errors after load/merge. |
 | Provided agents | `providedCustomAgents`, `mergeProvidedCustomAgents` | 4471, 4475 | Agents passed by the host are merged with discovered agents and de-duplicated. |
@@ -46,6 +51,11 @@ flowchart TD
     PluginAgents --> AgentsUpdated[session.custom_agents_updated]
     RemoteAgents --> AgentsUpdated
     ProvidedAgents --> AgentsUpdated
+    SkillsLoaded --> SkillTool[model-visible skill tool]
+    SkillTool --> SkillContext[skill-context injection]
+    SkillContext --> SkillInvoked[skill.invoked]
+    SkillsLoaded --> AgentSkillContext[agent-configured skill context]
+    AgentSkillContext --> AgentTools
     AgentsUpdated --> AgentTools[custom-agent/subagent tool choices]
 ```
 
@@ -83,6 +93,10 @@ Skills are loaded from multiple roots:
 - markdown command files that can be parsed as user-invocable skills/commands.
 
 The loader checks each directory for a direct `SKILL.md` or for child directories containing `SKILL.md`. It deduplicates by real path and skill name, collects warnings/errors, and returns normalized skill metadata.
+
+`I9(...)` is the central loader. Its cache key includes project root, custom skill directories, config directory, environment skill directories, working directory, plugin/additional source paths, command source paths, and whether config discovery is enabled. That means a reload or config/source change can invalidate the cache, while repeated calls in the same environment can reuse the loaded skill set.
+
+The same loader also accepts command markdown sources. Those parse through `skillsParseCommandMarkdown`, become `isCommand:true`, and are treated as user-invocable skills unless their frontmatter disables model invocation.
 
 ## Built-in skills in this artifact
 
@@ -135,6 +149,69 @@ A parsed skill includes fields such as:
 
 `skill.invoked` events include name, path, content, allowed tools, and plugin provenance, showing that skill content can be injected into the conversation when used.
 
+## Runtime invocation model
+
+Skills are not injected wholesale into every prompt. The runtime uses a two-step design:
+
+1. load lightweight metadata for all available skills;
+2. expose a model-visible `skill` tool that can load the full selected skill on demand.
+
+`HVn(...)` builds this tool. It reloads or reads the current skill set through `I9(...)`, merges additional runtime-provided skills, removes names in `disabledSkills`, and renders the remaining model-invocable subset into `<available_skills>` instructions. The tool schema is intentionally tiny:
+
+| Field | Meaning |
+|---|---|
+| `skill` | Name of the skill to invoke, for example `pdf` or `code-reviewer`. |
+
+The tool instructions tell the model to call the `skill` tool immediately when a matching skill is relevant, before answering in text. `disableModelInvocation:true` removes a skill from that advertised model-invocable list. The callback can still resolve any enabled loaded skill by exact name, which supports the instruction that an explicitly requested skill name may be invoked even if it was not listed.
+
+When the tool runs successfully, `Aft(...)`:
+
+- reads local skill markdown or fetches remote skill content;
+- strips YAML frontmatter before exposing the instruction body;
+- builds a `<skill-context name="...">` message;
+- adds the skill base directory or remote-skill notice;
+- includes a bounded related-file listing for local skills, with large directories summarized and noisy folders such as `.git`, `node_modules`, `dist`, and `build` skipped;
+- returns `skillInvocation` metadata containing name, path, content, allowed tools, plugin provenance, and description.
+
+The tool result adds `newMessages` sourced as `skill-<name>`, so the model sees the loaded skill context in the ongoing conversation. The session then emits `skill.invoked`, and replay state records the invocation in `invokedSkills`.
+
+## Skill context after compaction
+
+Compaction would otherwise risk summarizing away the exact skill instructions that shaped the current task. The replacement-history builder calls `S0s(...)` with the session's invoked-skill list:
+
+- the most recent skill is preserved with full content and path under `<invoked_skills>`;
+- earlier skills are retained as name/path references with an instruction to re-read the skill file if needed.
+
+This is deliberately asymmetric: the active/latest skill remains directly model-visible after compaction, while older skills are compacted to pointers to save tokens.
+
+## User-invocable skill commands
+
+`userInvocable` controls whether a skill is exposed to the user as a slash-style command, not whether the model can use it. The user-facing flow has two related surfaces:
+
+| Surface | Behavior |
+|---|---|
+| `/skills list` | Groups loaded skills by source, shows enabled/disabled state, and reports the count. |
+| `/skills info <name>` | Shows source, location, description, and allowed tools for one skill. |
+| `/skills reload` | Clears skill caches, reloads all roots, and reports warnings/errors. |
+| User-invocable skill command | Converts `/skill-name optional text` into an agent prompt such as “Use the skill tool to invoke the `skill-name` skill…”. |
+| SDK/ACP available commands | Includes enabled user-invocable skills in command lists; `session.skills_loaded` triggers available-command refreshes. |
+
+Invoking a user-invocable skill command does not directly paste the skill file into the conversation. It queues a prompt instructing the agent to call the `skill` tool, so the same `HVn(...)`/`Aft(...)`/`skill.invoked` path is used.
+
+## Allowed tools and permission side effects
+
+Skill frontmatter can declare `allowed-tools`. The runtime parses those declarations into permission rules and applies them only after the skill is active.
+
+The relevant flow is:
+
+1. `skillsParseSkillMarkdown` or `skillsParseCommandMarkdown` reads `allowed-tools` into skill metadata.
+2. `Aft(...)` copies those entries into `skillInvocation.allowedTools`.
+3. `N6o(...)` listens for `skill.invoked` and calls `Xar(...)` to parse tool specs into approval rules.
+4. The permission service receives `addApprovedRules(...)` for valid rules.
+5. When a UI/session component mounts or restores state, it resets session tool approvals and reapplies rules for already invoked skills. If `allowedTools` metadata is missing, it falls back to parsing `allowed-tools` from the skill markdown body through `w4n(...)`.
+
+Unknown tool specs are warning-only; valid specs still apply. This means `allowed-tools` is a session-scoped convenience after invocation, not a global bypass before the model selects a skill.
+
 ## Skill enable/disable lifecycle
 
 The settings schema includes `disabledSkills`. At runtime:
@@ -147,6 +224,8 @@ The settings schema includes `disabledSkills`. At runtime:
 | Skill reload API | Clears caches, reloads skills, and returns load diagnostics. |
 
 The `session.skills_loaded` event includes each skill’s name, description, source, user-invocable flag, enabled flag, and path.
+
+Disabled skills are filtered out before the model-facing skill tool can load them. If the model nevertheless asks for one by name, the callback returns a failure telling the model that the skill is disabled and should be enabled with `/skills`.
 
 ## Custom-agent sources
 
@@ -179,6 +258,8 @@ The `session.custom_agents_updated` schema emits agents with:
 | `warnings` / `errors` | Load diagnostics for UI/debugging. |
 
 The merge logic de-duplicates agents by normalized `id` or `name`, preserving host-provided agents first.
+
+Custom agents can also declare a `skills` array. During agent prompt construction, `zae(...)` maps those names to the loaded skill set and injects each matching skill's `<skill-context>` directly into that agent's context. Missing skills are logged as diagnostics rather than becoming fatal load errors.
 
 ## Plugin-packaged agents
 
@@ -235,14 +316,38 @@ sequenceDiagram
     Session->>Plugins: collect plugin skill and agent sources
     Session->>Session: parse SKILL.md files
     Session->>UI: session.skills_loaded
+    Session->>Session: build model-visible skill tool from enabled skills
+    Session->>Session: inject agent-configured skills when an agent requests them
     Session->>Remote: fetch custom agents if auth/provider available
     Session->>Session: merge provided + discovered agents
     Session->>UI: session.custom_agents_updated
 ```
 
+## End-to-end invocation flow
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant User as User/model prompt
+    participant Tool as skill tool
+    participant Loader as skill context loader
+    participant Session as Session event state
+    participant Perms as Permission service
+    participant Model as Model context
+
+    User->>Tool: skill({ skill: "name" })
+    Tool->>Loader: read/fetch SKILL.md and render context
+    Loader-->>Tool: <skill-context> + invocation metadata
+    Tool-->>Model: newMessages with skill context
+    Tool-->>Session: skill.invoked
+    Session->>Session: update invokedSkills list
+    Session->>Perms: approve allowed-tools rules, if present
+```
+
 ## Relationship to other docs
 
 - `prompt-sources.md` explains how instruction files and invoked skills become model-visible context.
+- `conversation-compaction.md` explains why the most recent invoked skill is preserved when old conversation turns are summarized.
 - `plugin-extension-architecture.md` explains plugin install/cache/config and plugin-contributed capabilities.
 - `agent-task-orchestration.md` explains how custom agents participate in subagent execution.
 - `built-in-tool-execution-pipeline.md` explains how allowed tools and tool filters affect execution.
