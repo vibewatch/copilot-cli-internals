@@ -1,19 +1,17 @@
 ---
 /**
  * SiteTitle override — replaces Starlight's default text wordmark with an
- * abstract cat mascot anchored to the left of the title. The cat IS the
- * brand identity — the wordmark never appears alone.
+ * abstract cat mascot anchored to the left of the title. The cat and wordmark
+ * link to the docs home page as one brand affordance.
  */
-import type { Props } from '@astrojs/starlight/props';
 import cat from '../assets/cat.svg';
 
-const { siteTitle, siteTitleHref } = Astro.props as unknown as {
-  siteTitle: string;
-  siteTitleHref: string;
-};
+const { siteTitle, siteTitleHref } = Astro.locals.starlightRoute;
+const title = siteTitle || 'Copilot CLI Internal Analysis';
+const href = siteTitleHref || import.meta.env.BASE_URL || '/';
 ---
 
-<a href={siteTitleHref} class="site-title">
+<a href={href} class="site-title" aria-label={`${title} home`}>
   <img
     src={cat.src}
     alt=""
@@ -21,7 +19,7 @@ const { siteTitle, siteTitleHref } = Astro.props as unknown as {
     height={32}
     class="site-title__mascot"
   />
-  <span class="site-title__text">{siteTitle}</span>
+  <span class="site-title__text" translate="no">{title}</span>
 </a>
 
 <style>

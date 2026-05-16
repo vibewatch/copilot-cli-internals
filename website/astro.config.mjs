@@ -36,7 +36,7 @@ export default defineConfig({
   },
   integrations: [
     starlight({
-      title: 'Copilot CLI Internals',
+      title: 'Copilot CLI Internal Analysis',
       description:
         'Reverse-engineering wiki for the @github/copilot CLI bundle (app.js).',
       logo: {
