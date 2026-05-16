@@ -39,7 +39,7 @@ flowchart TD
 | [Context and input](./02-context-and-input/README.md) | Everything that becomes model-visible context: prompts, custom instructions, attachments, memory, compaction, and rewind boundaries. | 6 |
 | [Sessions and remote](./03-sessions-and-remote/README.md) | Local event-sourced sessions, cloud/remote control, SQLite indexing, UI projection, repository metadata, and Mission Control steering. | 6 |
 | [Tools and integrations](./04-tools-and-integrations/README.md) | Built-in tools, MCP, plugins, IDE/LSP/editor bridges, web access, and integration overview surfaces. | 6 |
-| [Security and policy](./05-security-and-policy/README.md) | Permissions, content exclusion, hooks, sandboxing, and persistent policy/configuration state. | 5 |
+| [Security and policy](./05-security-and-policy/README.md) | Permissions, content exclusion, hooks, sandboxing, and persistent policy/configuration state. | 6 |
 | [Models and reliability](./06-models-and-reliability/README.md) | Authentication, provider selection, wire APIs, resilience, rate limits, usage metrics, quota, and billing. | 4 |
 | [Agents and automation](./07-agents-and-automation/README.md) | Task orchestration, subagents, autopilot, fleet mode, and scheduled prompt/command automation. | 4 |
 | [Operations and research](./08-operations-and-research/README.md) | Feature gates, diagnostics, debug bundles, observability/update/shutdown, and the original documentation backlog. | 4 |
@@ -90,7 +90,7 @@ flowchart TD
 | Runtime and UI | [Embedded server, ACP, and JSON-RPC protocol](./01-runtime-and-ui/embedded-server-acp-protocol.md) | JSON-RPC/ACP server modes, external tool calls, elicitation, sampling, and commands. |
 | Runtime and UI | [Tree-sitter WASM usage in the Copilot CLI](./01-runtime-and-ui/tree-sitter-wasm-usage.md) | Packaged Tree-sitter grammars, highlight queries, rich diff rendering, and fallback behavior. |
 | Context and input | [Prompt sources in Copilot CLI](./02-context-and-input/prompt-sources.md) | Static/runtime prompt sources, YAML package prompts, instructions, MCP prompts, hooks, and provider mapping. |
-| Context and input | [Custom agents and skills packaging](./02-context-and-input/custom-agents-and-skills-packaging.md) | AGENTS.md, SKILL.md, plugin/remote/provided agents, skill directories, and enable/disable events. |
+| Context and input | [Custom agents and skills packaging](./02-context-and-input/custom-agents-and-skills-packaging.md) | AGENTS.md, SKILL.md, built-in skills, plugin/remote/provided agents, skill directories, and enable/disable events. |
 | Context and input | [Attachment and file-ingestion pipeline](./02-context-and-input/attachments-and-file-ingestion.md) | Native image/document attachments, tagged-file fallback, MIME detection, payload mapping, and limits. |
 | Context and input | [Memory and dynamic context board in Copilot CLI](./02-context-and-input/memory-and-context-board.md) | Agentic memory API, local memory, dynamic context board, rem-agent, sidekicks, and shutdown consolidation. |
 | Context and input | [Conversation compaction and memory compression in Copilot CLI](./02-context-and-input/conversation-compaction.md) | /compact, automatic compaction, summary replacement, checkpoints, hooks, telemetry, and UI status. |
@@ -111,6 +111,7 @@ flowchart TD
 | Security and policy | [Content exclusion and redaction](./05-security-and-policy/content-exclusion-and-redaction.md) | Content-exclusion service, policy fetch/merge, filtered outputs, bypass limits, secret env vars, and redaction. |
 | Security and policy | [Hooks and lifecycle automation](./05-security-and-policy/hooks-lifecycle-automation.md) | Hook schema, command/HTTP hooks, VS Code aliases, security restrictions, events, and lifecycle automation. |
 | Security and policy | [Sandbox Implementation](./05-security-and-policy/sandboxing.md) | Local command sandboxing, /sandbox, SANDBOX gate, shell wiring, MXC policy, and platform caveats. |
+| Security and policy | [MXC binary reverse-engineering notes](./05-security-and-policy/mxc-bin-reverse-engineering.md) | Static analysis of bundled MXC helpers, compiler fingerprints, Linux LXC execution, Windows helper roles, and sandbox implications. |
 | Security and policy | [Settings and configuration persistence](./05-security-and-policy/settings-config-persistence.md) | Config roots, typed stores, writeKey/load paths, settings overlays, URL/MCP/plugin/sandbox state, and migration. |
 | Models and reliability | [Models, providers, and authentication workflows](./06-models-and-reliability/models-providers-auth.md) | Auth manager, login, GitHub tokens, BYOK/custom providers, offline mode, model selection, and effort. |
 | Models and reliability | [Model API routing and provider wire formats](./06-models-and-reliability/model-api-routing.md) | Routing to Chat Completions, Responses, WebSocket Responses, and Anthropic Messages APIs. |

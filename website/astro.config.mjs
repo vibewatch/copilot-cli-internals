@@ -2,7 +2,6 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import rehypeRewriteDocLinks from './src/plugins/rehype-rewrite-doc-links.mjs';
-import rehypeSourceAnchors from './src/plugins/rehype-source-anchors.mjs';
 
 /**
  * GitHub Pages deploy config.
@@ -32,11 +31,7 @@ export default defineConfig({
     // Rewrite GitHub-style `*.md` links in the source docs to Starlight
     // routes. The custom docs loader (see `src/content.config.ts`) reuses
     // this markdown config, so the same rewrite applies to every page.
-    //
-    // `rehypeSourceAnchors` is currently gated to a single pilot page; it
-    // turns line-number cells in source-anchor tables into clickable
-    // buttons that open the popup defined in `SourceAnchorPopup.astro`.
-    rehypePlugins: [rehypeRewriteDocLinks, rehypeSourceAnchors],
+    rehypePlugins: [rehypeRewriteDocLinks],
   },
   integrations: [
     starlight({
@@ -59,7 +54,6 @@ export default defineConfig({
         './src/styles/callouts.css',
         './src/styles/code.css',
         './src/styles/components.css',
-        './src/styles/source-anchor.css',
       ],
       components: {
         Head: './src/components/Head.astro',

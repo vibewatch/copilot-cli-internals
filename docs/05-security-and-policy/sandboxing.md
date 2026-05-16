@@ -187,6 +187,8 @@ The policy-to-config converter can create different containment configs, includi
 
 For the normal local shell path on Windows, the default shell is PowerShell, so the PowerShell-only guard can pass and the default process containment path maps to Windows AppContainer behavior.
 
+For binary-level evidence about the packaged MXC helpers, compiler fingerprints, Linux `lxc-exec` behavior, Windows helper roles, and WSLC/Windows Sandbox strings, see [MXC binary reverse-engineering notes](./mxc-bin-reverse-engineering.md).
+
 ## Policy construction
 
 The sandboxed shell spawner has three configuration modes.

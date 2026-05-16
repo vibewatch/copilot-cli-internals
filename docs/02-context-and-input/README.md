@@ -19,7 +19,8 @@ flowchart TD
 | Page | Why read it | File |
 |---|---|---|
 | [Prompt sources in Copilot CLI](./prompt-sources.md) | Static/runtime prompt sources, YAML package prompts, instructions, MCP prompts, hooks, and provider mapping. | `prompt-sources.md` |
-| [Custom agents and skills packaging](./custom-agents-and-skills-packaging.md) | AGENTS.md, SKILL.md, plugin/remote/provided agents, skill directories, and enable/disable events. | `custom-agents-and-skills-packaging.md` |
+| [`app.js` prompt catalog](./app-js-prompt-catalog.md) | Extracted model-facing prompt templates from `copilot-cli-pkg/app.js`, with system-prompt composition workflow diagrams and placeholders for dynamic parameters. | `app-js-prompt-catalog.md` |
+| [Custom agents and skills packaging](./custom-agents-and-skills-packaging.md) | AGENTS.md, SKILL.md, built-in skills, plugin/remote/provided agents, skill directories, and enable/disable events. | `custom-agents-and-skills-packaging.md` |
 | [Attachment and file-ingestion pipeline](./attachments-and-file-ingestion.md) | Native image/document attachments, tagged-file fallback, MIME detection, payload mapping, and limits. | `attachments-and-file-ingestion.md` |
 | [Memory and dynamic context board in Copilot CLI](./memory-and-context-board.md) | Agentic memory API, local memory, dynamic context board, rem-agent, sidekicks, and shutdown consolidation. | `memory-and-context-board.md` |
 | [Conversation compaction and memory compression in Copilot CLI](./conversation-compaction.md) | /compact, automatic compaction, summary replacement, checkpoints, hooks, telemetry, and UI status. | `conversation-compaction.md` |

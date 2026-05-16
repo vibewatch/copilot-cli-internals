@@ -42,28 +42,28 @@ This document explains how the extracted `@github/copilot` CLI bundle handles mo
 sequenceDiagram
     autonumber
     participant Session as Session runtime
-    participant Loop as ModelRequestLoop
+    participant RequestLoop as ModelRequestLoop
     participant Adapter as Provider adapter
     participant API as Model API
     participant Processors as Request processors
 
-    Session->>Loop: system prompt, messages, tools, abort signal
-    Loop->>Processors: preRequest hooks
-    Loop->>Adapter: send request with SDK retries disabled
+    Session->>RequestLoop: system prompt, messages, tools, abort signal
+    RequestLoop->>Processors: preRequest hooks
+    RequestLoop->>Adapter: send request with SDK retries disabled
     Adapter->>API: Chat / Responses / Messages / WebSocket
     API-->>Adapter: response or error
-    Adapter-->>Loop: response, stream, or APIError
+    Adapter-->>RequestLoop: response, stream, or APIError
     alt success
-        Loop-->>Session: model_call_success + message/tool events
+        RequestLoop-->>Session: model_call_success and message/tool events
     else retryable error
-        Loop-->>Session: model_call_failure
-        Loop->>Processors: onRequestError hooks
-        Loop->>Loop: compute retry delay + jitter
-        Loop-->>Session: turn_retry
-        Loop->>Adapter: retry request
+        RequestLoop-->>Session: model_call_failure
+        RequestLoop->>Processors: onRequestError hooks
+        RequestLoop->>RequestLoop: compute retry delay and jitter
+        RequestLoop-->>Session: turn_retry
+        RequestLoop->>Adapter: retry request
     else exhausted or non-retryable
-        Loop-->>Session: turn_failed
-        Loop-->>Session: throw classified error
+        RequestLoop-->>Session: turn_failed
+        RequestLoop-->>Session: throw classified error
     end
 ```
 
