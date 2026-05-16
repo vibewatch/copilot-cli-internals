@@ -260,6 +260,7 @@ Because copy uses the abstract `SessionFs` operations (`stat`, `readdirWithTypes
 
 ## Relationship to other pages
 
+- [Persistence pipeline for sessions](./persistence-pipeline.md) shows how SessionFs-backed files fit into JSONL replay, workspace sidecars, SQLite indexing, reindex, fork, and rewind.
 - [Session support implementation](./session-support-implementation.md) covers the broader event-sourced session manager and resume/continue flow.
 - [API and session event schema contracts](./api-and-session-event-schemas.md) lists the generated `sessionFs.*` methods.
 - [Checkpoints, undo, rewind, and fork](../02-context-and-input/checkpoints-undo-rewind.md) covers the user-visible checkpoint/history workflows that consume these files.

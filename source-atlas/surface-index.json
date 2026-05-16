@@ -1,0 +1,8276 @@
+{
+  "generatedAt": "2026-05-16T21:15:13.599Z",
+  "source": {
+    "path": "/home/ythuang/workspace/copilot-cli-internals/copilot-cli-pkg/app.js",
+    "relativePath": "copilot-cli-pkg/app.js",
+    "sha256": "4643c8fe2dc55bb3a988a16001cf9b3d2b70fdbdaec5b7d567102fa7066327db",
+    "bytes": 11865779,
+    "lines": 8684
+  },
+  "envVars": [
+    {
+      "name": "COPILOT_AGENT_ACTION",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AGENT_ACTOR",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AGENT_ACTOR_ID",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AGENT_ACTOR_TYPE",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AGENT_BASE_COMMIT",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AGENT_BRANCH_NAME",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AGENT_CALLBACK_URL",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AGENT_COMMIT_EMAIL",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AGENT_COMMIT_LOGIN",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AGENT_CONTENT_FILTER_MODE",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AGENT_DEBUG",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AGENT_ERROR_CODES_TO_RETRY",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AGENT_EVENT_TYPE",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AGENT_EVENT_URL",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AGENT_FIREWALL_LOG_FILE",
+      "line": 4150
+    },
+    {
+      "name": "COPILOT_AGENT_JOB_ID",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AGENT_MODEL",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AGENT_ONLINE_EVALUATION_DISABLED",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AGENT_ONLINE_EVALUATION_OUTPUT_FILE",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AGENT_PR_COMMIT_COUNT",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AGENT_PREVIOUS_SESSION_IDS",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AGENT_PROMPT",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AGENT_PUSH",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AGENT_REQUEST_HEADERS",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AGENT_RUNTIME_VERSION",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AGENT_SESSION_ID",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AGENT_SIGN_COMMITS",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AGENT_START_TIME_SEC",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AGENT_TIMEOUT_MIN",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AGENT_USE_CCR",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AGENT_USE_CODEQL",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AGENT_USE_DEPENDENCY_VULN",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AGENT_USE_SECRET_SCANNING",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_ALLOW_ALL",
+      "line": 6024
+    },
+    {
+      "name": "COPILOT_API_URL",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_ASSOCIATE_COMPUTE",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_AUTO_UPDATE",
+      "line": 1609
+    },
+    {
+      "name": "COPILOT_BACKGROUND_COMPACTION_THRESHOLD",
+      "line": 1295
+    },
+    {
+      "name": "COPILOT_BUFFER_EXHAUSTION_THRESHOLD",
+      "line": 1295
+    },
+    {
+      "name": "COPILOT_CACHE_HOME",
+      "line": 234
+    },
+    {
+      "name": "COPILOT_CLI",
+      "line": 572
+    },
+    {
+      "name": "COPILOT_CLI_BINARY_VERSION",
+      "line": 1609
+    },
+    {
+      "name": "COPILOT_CLI_ENABLED_FEATURE_FLAGS",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_CLI_RUN_AS_NODE",
+      "line": 8400
+    },
+    {
+      "name": "COPILOT_CLI_VERSION",
+      "line": 1599
+    },
+    {
+      "name": "COPILOT_CONNECTION_TOKEN",
+      "line": 6096
+    },
+    {
+      "name": "COPILOT_CUSTOM_AGENT",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_CUSTOM_INSTRUCTIONS_DIRS",
+      "line": 499
+    },
+    {
+      "name": "COPILOT_DEBUG_BROWSER",
+      "line": 4339
+    },
+    {
+      "name": "COPILOT_DEBUG_CONTENT_EXCLUSION_API_URL",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_DEBUG_DEVICE_CODE_OFFER_TIMEOUT_MS",
+      "line": 4339
+    },
+    {
+      "name": "COPILOT_DEBUG_DEVICE_CODE_POLL_INTERVAL_MS",
+      "line": 4339
+    },
+    {
+      "name": "COPILOT_DEBUG_GITHUB_API_URL",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_DEBUG_RATELIMIT_SESSION_REM",
+      "line": 6860
+    },
+    {
+      "name": "COPILOT_DEBUG_RATELIMIT_WEEKLY_REM",
+      "line": 6860
+    },
+    {
+      "name": "COPILOT_DEBUG_SEND_INBOX_DELAY_MS",
+      "line": 5724
+    },
+    {
+      "name": "COPILOT_DEBUG_SKIP_LAUNCH_CHECKS",
+      "line": 4463
+    },
+    {
+      "name": "COPILOT_DEBUG_VERSION_DEPRECATED_WARNING",
+      "line": 5742
+    },
+    {
+      "name": "COPILOT_DEPENDABOT_TIMEOUT",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_DETACHED_PARENT_ENGAGEMENT_ID",
+      "line": 7441
+    },
+    {
+      "name": "COPILOT_DETACHED_PARENT_SESSION_ID",
+      "line": 7441
+    },
+    {
+      "name": "COPILOT_DETACHED_SESSION",
+      "line": 7441
+    },
+    {
+      "name": "COPILOT_DISABLE_KEYTAR",
+      "line": 4339
+    },
+    {
+      "name": "COPILOT_DISABLE_TERMINAL_TITLE",
+      "line": 7336
+    },
+    {
+      "name": "COPILOT_EDITOR",
+      "line": 6551
+    },
+    {
+      "name": "COPILOT_ENABLE_ALT_PROVIDERS",
+      "line": 5741
+    },
+    {
+      "name": "COPILOT_ENTERPRISE_ALLOWLIST_REPO",
+      "line": 6064
+    },
+    {
+      "name": "COPILOT_ENTERPRISE_ALLOWLIST_URL",
+      "line": 6064
+    },
+    {
+      "name": "COPILOT_EVENTS_LOG_DIRECTORY",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_EXP_",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_EXP_CLIENT_ID",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_EXP_EXTENSION_NAME",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_EXP_TIMEOUT_MS",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_EXPERIMENTS",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_FEATURE_FLAGS",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_FIREWALL_ALLOW_LIST",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_FIREWALL_ENABLED",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_FORCE_EMBEDDING_RETRIEVAL",
+      "line": 4481
+    },
+    {
+      "name": "COPILOT_FORCE_WINDOWS_HIDE",
+      "line": 6104
+    },
+    {
+      "name": "COPILOT_GH",
+      "line": 4491
+    },
+    {
+      "name": "COPILOT_GH_HOST",
+      "line": 1599
+    },
+    {
+      "name": "COPILOT_GITHUB_TOKEN",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_HMAC_KEY",
+      "line": 5742
+    },
+    {
+      "name": "COPILOT_HOME",
+      "line": 234
+    },
+    {
+      "name": "COPILOT_HOOK_ALLOW_HTTP_AUTH_HOOKS",
+      "line": 238
+    },
+    {
+      "name": "COPILOT_HOOK_ALLOW_LOCALHOST",
+      "line": 238
+    },
+    {
+      "name": "COPILOT_INTEGRATION_ID_OVERRIDE",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_JOB_EVENT_TYPE",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_JOB_NONCE",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_KEEP_TEMP_FILES",
+      "line": 569
+    },
+    {
+      "name": "COPILOT_LARGE_OUTPUT_MAX_BYTES",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_LARGE_OUTPUT_THRESHOLD_BYTES",
+      "line": 563
+    },
+    {
+      "name": "COPILOT_LOADER_PID",
+      "line": 1599
+    },
+    {
+      "name": "COPILOT_MC_ACCESS_TOKEN",
+      "line": 4516
+    },
+    {
+      "name": "COPILOT_MC_BASE_URL",
+      "line": 4643
+    },
+    {
+      "name": "COPILOT_MC_FRONTEND_URL",
+      "line": 4516
+    },
+    {
+      "name": "COPILOT_MC_REPO",
+      "line": 5767
+    },
+    {
+      "name": "COPILOT_MC_REPO_IDS",
+      "line": 5767
+    },
+    {
+      "name": "COPILOT_MCP_COPILOT_SPACES_ENABLED",
+      "line": 4207
+    },
+    {
+      "name": "COPILOT_MCP_EMIT_PENDING_SETUP_LOGS",
+      "line": 4210
+    },
+    {
+      "name": "COPILOT_MODEL",
+      "line": 5742
+    },
+    {
+      "name": "COPILOT_MODEL_FAMILY",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_ODR_DEBUG",
+      "line": 6024
+    },
+    {
+      "name": "COPILOT_OFFLINE",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_OTEL_ENABLED",
+      "line": 5742
+    },
+    {
+      "name": "COPILOT_OTEL_EXPORTER_TYPE",
+      "line": 5742
+    },
+    {
+      "name": "COPILOT_OTEL_FILE_EXPORTER_PATH",
+      "line": 5742
+    },
+    {
+      "name": "COPILOT_OTEL_SOURCE_NAME",
+      "line": 5742
+    },
+    {
+      "name": "COPILOT_PLUGIN_DATA",
+      "line": 2797
+    },
+    {
+      "name": "COPILOT_PLUGIN_ROOT",
+      "line": 2797
+    },
+    {
+      "name": "COPILOT_PROJECT_DIR",
+      "line": 2790
+    },
+    {
+      "name": "COPILOT_PROMPT",
+      "line": 6650
+    },
+    {
+      "name": "COPILOT_PROMPT_FRAME",
+      "line": 1685
+    },
+    {
+      "name": "COPILOT_PROVIDER_API_KEY",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_PROVIDER_AZURE_API_VERSION",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_PROVIDER_BASE_URL",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_PROVIDER_BEARER_TOKEN",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_PROVIDER_MAX_OUTPUT_TOKENS",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_PROVIDER_MAX_PROMPT_TOKENS",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_PROVIDER_MODEL_ID",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_PROVIDER_MODEL_LIMITS_ID",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_PROVIDER_TYPE",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_PROVIDER_WIRE_API",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_PROVIDER_WIRE_MODEL",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_RUN_APP",
+      "line": 5767
+    },
+    {
+      "name": "COPILOT_SDK_PATH",
+      "line": 6096
+    },
+    {
+      "name": "COPILOT_SETUP_TERMINAL",
+      "line": 4512
+    },
+    {
+      "name": "COPILOT_SHUTDOWN_FLUSH",
+      "line": 5767
+    },
+    {
+      "name": "COPILOT_SKILLS_DIRS",
+      "line": 525
+    },
+    {
+      "name": "COPILOT_SUBAGENT_MAX_CONCURRENT",
+      "line": 3698
+    },
+    {
+      "name": "COPILOT_SUBAGENT_MAX_DEPTH",
+      "line": 3698
+    },
+    {
+      "name": "COPILOT_SUBCONSCIOUS",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_SWE_AGENT_BACKGROUND_AGENTS",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_SWE_AGENT_PARALLEL_TASK_EXECUTION",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_TASK_WAIT_TIMEOUT_SECONDS",
+      "line": 4487
+    },
+    {
+      "name": "COPILOT_TRACE_PARENT",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_USE_ASYNC_SESSIONS",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_USE_SESSIONS",
+      "line": 239
+    },
+    {
+      "name": "GH_CLI_OVER_MCP",
+      "line": 239
+    },
+    {
+      "name": "GH_HOST",
+      "line": 1599
+    },
+    {
+      "name": "GH_TOKEN",
+      "line": 926
+    },
+    {
+      "name": "GITHUB_ACTIONS",
+      "line": 1017
+    },
+    {
+      "name": "GITHUB_AGENTIC_APP_OIDC_",
+      "line": 4207
+    },
+    {
+      "name": "GITHUB_ASKPASS",
+      "line": 5742
+    },
+    {
+      "name": "GITHUB_AW",
+      "line": 1599
+    },
+    {
+      "name": "GITHUB_CONTEXT_SIDEKICK_AGENT",
+      "line": 239
+    },
+    {
+      "name": "GITHUB_COPILOT_3P_MCP_ENABLED",
+      "line": 4207
+    },
+    {
+      "name": "GITHUB_COPILOT_API_TOKEN",
+      "line": 239
+    },
+    {
+      "name": "GITHUB_COPILOT_CLI_MODE",
+      "line": 4207
+    },
+    {
+      "name": "GITHUB_COPILOT_GITHUB_TOKEN",
+      "line": 239
+    },
+    {
+      "name": "GITHUB_COPILOT_INTEGRATION_ID",
+      "line": 239
+    },
+    {
+      "name": "GITHUB_COPILOT_INTERACTION_ID",
+      "line": 4058
+    },
+    {
+      "name": "GITHUB_COPILOT_MCP_JSON",
+      "line": 4207
+    },
+    {
+      "name": "GITHUB_COPILOT_MCP_JSON_FROM_INPUT",
+      "line": 239
+    },
+    {
+      "name": "GITHUB_COPILOT_OIDC_",
+      "line": 4207
+    },
+    {
+      "name": "GITHUB_COPILOT_OIDC_MCP_TOKEN",
+      "line": 4207
+    },
+    {
+      "name": "GITHUB_COPILOT_PROMPT_MODE_EXTENSIONS",
+      "line": 7426
+    },
+    {
+      "name": "GITHUB_COPILOT_PROMPT_MODE_REPO_HOOKS",
+      "line": 7375
+    },
+    {
+      "name": "GITHUB_COPILOT_PROMPT_MODE_WORKSPACE_MCP",
+      "line": 7391
+    },
+    {
+      "name": "GITHUB_DOWNLOADS_URL",
+      "line": 239
+    },
+    {
+      "name": "GITHUB_ENV",
+      "line": 681
+    },
+    {
+      "name": "GITHUB_GIT_HOST_PROTOCOL",
+      "line": 686
+    },
+    {
+      "name": "GITHUB_HOST",
+      "line": 238
+    },
+    {
+      "name": "GITHUB_HOST_PROTOCOL",
+      "line": 238
+    },
+    {
+      "name": "GITHUB_MCP_SERVER_TOKEN",
+      "line": 239
+    },
+    {
+      "name": "GITHUB_MCP_URL_OVERRIDE",
+      "line": 1343
+    },
+    {
+      "name": "GITHUB_OUTPUT",
+      "line": 683
+    },
+    {
+      "name": "GITHUB_PATH",
+      "line": 681
+    },
+    {
+      "name": "GITHUB_PERSONAL_ACCESS_TOKEN",
+      "line": 239
+    },
+    {
+      "name": "GITHUB_REPOSITORY",
+      "line": 239
+    },
+    {
+      "name": "GITHUB_REPOSITORY_ID",
+      "line": 239
+    },
+    {
+      "name": "GITHUB_REPOSITORY_OWNER",
+      "line": 239
+    },
+    {
+      "name": "GITHUB_REPOSITORY_OWNER_ID",
+      "line": 239
+    },
+    {
+      "name": "GITHUB_SERVER_URL",
+      "line": 238
+    },
+    {
+      "name": "GITHUB_STATE",
+      "line": 683
+    },
+    {
+      "name": "GITHUB_STEP_SUMMARY",
+      "line": 680
+    },
+    {
+      "name": "GITHUB_TOKEN",
+      "line": 239
+    },
+    {
+      "name": "GITHUB_TOKEN_VARNAME",
+      "line": 239
+    },
+    {
+      "name": "GITHUB_UPLOADS_URL",
+      "line": 239
+    },
+    {
+      "name": "GITHUB_USER_ID",
+      "line": 1254
+    },
+    {
+      "name": "GITHUB_VERIFICATION_TOKEN",
+      "line": 239
+    },
+    {
+      "name": "GITHUB_WORKSPACE",
+      "line": 4207
+    }
+  ],
+  "featureKeys": [
+    {
+      "name": "AAD",
+      "line": 1178
+    },
+    {
+      "name": "AAD_INSTANCE_DISCOVERY_ENDPT",
+      "line": 1178
+    },
+    {
+      "name": "AAD_TENANT_DOMAIN_SUFFIX",
+      "line": 1178
+    },
+    {
+      "name": "ABBR",
+      "line": 256
+    },
+    {
+      "name": "ABORT_ERR",
+      "line": 944
+    },
+    {
+      "name": "ABORT_REASON",
+      "line": 5742
+    },
+    {
+      "name": "ACCEPTED",
+      "line": 60
+    },
+    {
+      "name": "ACCESS_TOKEN",
+      "line": 1178
+    },
+    {
+      "name": "ACCESS_TOKEN_WITH_AUTH_SCHEME",
+      "line": 1178
+    },
+    {
+      "name": "ACL",
+      "line": 60
+    },
+    {
+      "name": "ACP",
+      "line": 6103
+    },
+    {
+      "name": "ACP_CLIENT_NAME",
+      "line": 6103
+    },
+    {
+      "name": "ACTION",
+      "line": 5797
+    },
+    {
+      "name": "ACTIVE_ACCOUNT_FILTERS",
+      "line": 1178
+    },
+    {
+      "name": "ADD",
+      "line": 4120
+    },
+    {
+      "name": "ADD_ATTR",
+      "line": 241
+    },
+    {
+      "name": "ADD_TAGS",
+      "line": 241
+    },
+    {
+      "name": "ADDRESS",
+      "line": 256
+    },
+    {
+      "name": "ADDRESS_TYPE_NOT_SUPPORTED",
+      "line": 99
+    },
+    {
+      "name": "ADDRESS_TYPES",
+      "line": 99
+    },
+    {
+      "name": "ADFS",
+      "line": 1178
+    },
+    {
+      "name": "ALIGN_AUTO",
+      "line": 6170
+    },
+    {
+      "name": "ALIGN_BASELINE",
+      "line": 6170
+    },
+    {
+      "name": "ALIGN_CENTER",
+      "line": 6170
+    },
+    {
+      "name": "ALIGN_FLEX_END",
+      "line": 6170
+    },
+    {
+      "name": "ALIGN_FLEX_START",
+      "line": 6170
+    },
+    {
+      "name": "ALIGN_SPACE_AROUND",
+      "line": 6170
+    },
+    {
+      "name": "ALIGN_SPACE_BETWEEN",
+      "line": 6170
+    },
+    {
+      "name": "ALIGN_SPACE_EVENLY",
+      "line": 6170
+    },
+    {
+      "name": "ALIGN_STRETCH",
+      "line": 6170
+    },
+    {
+      "name": "ALL",
+      "line": 1156
+    },
+    {
+      "name": "ALLOW_DATA_ATTR",
+      "line": 471
+    },
+    {
+      "name": "ALLOWED_ATTR",
+      "line": 471
+    },
+    {
+      "name": "ALLOWED_TAGS",
+      "line": 471
+    },
+    {
+      "name": "ALPHA",
+      "line": 60
+    },
+    {
+      "name": "ALPHANUM",
+      "line": 60
+    },
+    {
+      "name": "ALPHANUMERIC",
+      "line": 5806
+    },
+    {
+      "name": "ALREADY_REPORTED",
+      "line": 60
+    },
+    {
+      "name": "ALTER_TO_DIV_EXCEPTIONS",
+      "line": 927
+    },
+    {
+      "name": "AMP",
+      "line": 948
+    },
+    {
+      "name": "AMPERSAND",
+      "line": 5797
+    },
+    {
+      "name": "AND",
+      "line": 4120
+    },
+    {
+      "name": "ANNOTATION_XML",
+      "line": 5797
+    },
+    {
+      "name": "ANNOUNCE",
+      "line": 60
+    },
+    {
+      "name": "ANTHROPIC_ADVISOR",
+      "line": 239
+    },
+    {
+      "name": "ANY",
+      "line": 1186
+    },
+    {
+      "name": "API",
+      "line": 3437
+    },
+    {
+      "name": "API_VERSION",
+      "line": 1184
+    },
+    {
+      "name": "APOS_STRING_MODE",
+      "line": 5786
+    },
+    {
+      "name": "APOSTROPHE",
+      "line": 5797
+    },
+    {
+      "name": "APP_METADATA",
+      "line": 1178
+    },
+    {
+      "name": "APP_SERVICE",
+      "line": 1184
+    },
+    {
+      "name": "APP_SERVICE_SECRET_HEADER_NAME",
+      "line": 1184
+    },
+    {
+      "name": "APPLET",
+      "line": 5797
+    },
+    {
+      "name": "APPLICATION_XML",
+      "line": 5799
+    },
+    {
+      "name": "AREA",
+      "line": 256
+    },
+    {
+      "name": "ARIA_ATTR",
+      "line": 241
+    },
+    {
+      "name": "ARR",
+      "line": 1156
+    },
+    {
+      "name": "ARROW_DOWN",
+      "line": 6155
+    },
+    {
+      "name": "ARROW_LEFT",
+      "line": 6155
+    },
+    {
+      "name": "ARROW_RIGHT",
+      "line": 6155
+    },
+    {
+      "name": "ARROW_UP",
+      "line": 6155
+    },
+    {
+      "name": "ARTICLE",
+      "line": 256
+    },
+    {
+      "name": "ASCII",
+      "line": 4124
+    },
+    {
+      "name": "ASIDE",
+      "line": 256
+    },
+    {
+      "name": "ASK_USER_ELICITATION",
+      "line": 239
+    },
+    {
+      "name": "AST",
+      "line": 239
+    },
+    {
+      "name": "AT_TARGET",
+      "line": 928
+    },
+    {
+      "name": "ATOM",
+      "line": 1156
+    },
+    {
+      "name": "ATTR",
+      "line": 947
+    },
+    {
+      "name": "ATTR_WHITESPACE",
+      "line": 241
+    },
+    {
+      "name": "ATTRIBUTE_NODE",
+      "line": 947
+    },
+    {
+      "name": "ATTRIBUTE_SELECTOR_MODE",
+      "line": 5791
+    },
+    {
+      "name": "AUDIENCE",
+      "line": 1184
+    },
+    {
+      "name": "AUDIO",
+      "line": 256
+    },
+    {
+      "name": "AUTH_GET_STATUS",
+      "line": 6063
+    },
+    {
+      "name": "AUTH_METHODS",
+      "line": 99
+    },
+    {
+      "name": "AUTHENTICATED",
+      "line": 99
+    },
+    {
+      "name": "AUTHENTICATING",
+      "line": 99
+    },
+    {
+      "name": "AUTHORITY_METADATA_CACHE_KEY",
+      "line": 1178
+    },
+    {
+      "name": "AUTHORITY_METADATA_REFRESH_TIME_SECONDS",
+      "line": 1178
+    },
+    {
+      "name": "AUTHORIZATION_CODE_GRANT",
+      "line": 1178
+    },
+    {
+      "name": "AUTHORIZATION_HEADER_NAME",
+      "line": 1184
+    },
+    {
+      "name": "AUTHORIZATION_PENDING",
+      "line": 1178
+    },
+    {
+      "name": "AUTO_DETECTION_REQUESTED_FAILED",
+      "line": 1178
+    },
+    {
+      "name": "AUTO_DETECTION_REQUESTED_SUCCESSFUL",
+      "line": 1178
+    },
+    {
+      "name": "AUTO_MODE_SWITCH_REQUEST",
+      "line": 6063
+    },
+    {
+      "name": "AZURE_ARC",
+      "line": 1184
+    },
+    {
+      "name": "AZURE_CLIENT_SEND_CERTIFICATE_CHAIN",
+      "line": 1203
+    },
+    {
+      "name": "AZURE_POD_IDENTITY_AUTHORITY_HOST",
+      "line": 1184
+    },
+    {
+      "name": "AZURE_REGION_AUTO_DISCOVER_FLAG",
+      "line": 1178
+    },
+    {
+      "name": "BACKGROUND_SESSIONS",
+      "line": 239
+    },
+    {
+      "name": "BACKSLASH_ESCAPE",
+      "line": 5786
+    },
+    {
+      "name": "BAD_GATEWAY",
+      "line": 60
+    },
+    {
+      "name": "BAD_REQUEST",
+      "line": 60
+    },
+    {
+      "name": "BANDWIDTH_LIMIT_EXCEEDED",
+      "line": 60
+    },
+    {
+      "name": "BASE",
+      "line": 256
+    },
+    {
+      "name": "BASE64",
+      "line": 1178
+    },
+    {
+      "name": "BASEFONT",
+      "line": 5797
+    },
+    {
+      "name": "BASH_ENV",
+      "line": 5654
+    },
+    {
+      "name": "BDI",
+      "line": 256
+    },
+    {
+      "name": "BDO",
+      "line": 256
+    },
+    {
+      "name": "BEARER",
+      "line": 1178
+    },
+    {
+      "name": "BEGIN",
+      "line": 1023
+    },
+    {
+      "name": "BGSOUND",
+      "line": 5797
+    },
+    {
+      "name": "BIG",
+      "line": 1024
+    },
+    {
+      "name": "BIGINT",
+      "line": 60
+    },
+    {
+      "name": "BIGINT_FORMAT_RANGES",
+      "line": 4092
+    },
+    {
+      "name": "BINARY",
+      "line": 187
+    },
+    {
+      "name": "BINARY_NUMBER_MODE",
+      "line": 5786
+    },
+    {
+      "name": "BINARY_NUMBER_RE",
+      "line": 5786
+    },
+    {
+      "name": "BINARY_TYPES",
+      "line": 455
+    },
+    {
+      "name": "BIND",
+      "line": 60
+    },
+    {
+      "name": "BLACKBIRD_API_TOKEN",
+      "line": 4481
+    },
+    {
+      "name": "BLOCK",
+      "line": 924
+    },
+    {
+      "name": "BLOCK_FOLDED",
+      "line": 770
+    },
+    {
+      "name": "BLOCK_LITERAL",
+      "line": 770
+    },
+    {
+      "name": "BLOCKED_BY_PARENTAL_CONTROL",
+      "line": 60
+    },
+    {
+      "name": "BLOCKQUAOTE",
+      "line": 256
+    },
+    {
+      "name": "BLOCKQUOTE",
+      "line": 256
+    },
+    {
+      "name": "BODY",
+      "line": 256
+    },
+    {
+      "name": "BOOL",
+      "line": 1156
+    },
+    {
+      "name": "BOOLEAN",
+      "line": 60
+    },
+    {
+      "name": "BOTH",
+      "line": 60
+    },
+    {
+      "name": "BOX_SIZING_BORDER_BOX",
+      "line": 6170
+    },
+    {
+      "name": "BOX_SIZING_CONTENT_BOX",
+      "line": 6170
+    },
+    {
+      "name": "BRANCH",
+      "line": 5742
+    },
+    {
+      "name": "BRAND",
+      "line": 220
+    },
+    {
+      "name": "BROKER_CLIENT_ID",
+      "line": 1178
+    },
+    {
+      "name": "BROKER_REDIRECT_URI",
+      "line": 1178
+    },
+    {
+      "name": "BROTLI_DECODE",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_ERROR_ALLOC_BLOCK_TYPE_TREES",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_ERROR_ALLOC_CONTEXT_MAP",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_ERROR_ALLOC_CONTEXT_MODES",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_ERROR_ALLOC_RING_BUFFER_1",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_ERROR_ALLOC_RING_BUFFER_2",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_ERROR_ALLOC_TREE_GROUPS",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_ERROR_DICTIONARY_NOT_SET",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_ERROR_FORMAT_BLOCK_LENGTH_1",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_ERROR_FORMAT_BLOCK_LENGTH_2",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_ERROR_FORMAT_CL_SPACE",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_ERROR_FORMAT_CONTEXT_MAP_REPEAT",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_ERROR_FORMAT_DICTIONARY",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_ERROR_FORMAT_DISTANCE",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_ERROR_FORMAT_EXUBERANT_META_NIBBLE",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_ERROR_FORMAT_EXUBERANT_NIBBLE",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_ERROR_FORMAT_HUFFMAN_SPACE",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_ERROR_FORMAT_PADDING_1",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_ERROR_FORMAT_PADDING_2",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_ERROR_FORMAT_RESERVED",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_ERROR_FORMAT_SIMPLE_HUFFMAN_ALPHABET",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_ERROR_FORMAT_SIMPLE_HUFFMAN_SAME",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_ERROR_FORMAT_TRANSFORM",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_ERROR_FORMAT_WINDOW_BITS",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_ERROR_INVALID_ARGUMENTS",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_ERROR_UNREACHABLE",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_NEEDS_MORE_INPUT",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_NEEDS_MORE_OUTPUT",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_NO_ERROR",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_PARAM_DISABLE_RING_BUFFER_REALLOCATION",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_PARAM_LARGE_WINDOW",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_RESULT_ERROR",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_RESULT_NEEDS_MORE_INPUT",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_RESULT_NEEDS_MORE_OUTPUT",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_RESULT_SUCCESS",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DECODER_SUCCESS",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DEFAULT_MODE",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DEFAULT_QUALITY",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_DEFAULT_WINDOW",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_ENCODE",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_LARGE_MAX_WINDOW_BITS",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_MAX_INPUT_BLOCK_BITS",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_MAX_QUALITY",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_MAX_WINDOW_BITS",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_MIN_INPUT_BLOCK_BITS",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_MIN_QUALITY",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_MIN_WINDOW_BITS",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_MODE_FONT",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_MODE_GENERIC",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_MODE_TEXT",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_OPERATION_EMIT_METADATA",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_OPERATION_FINISH",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_OPERATION_FLUSH",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_OPERATION_PROCESS",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_PARAM_DISABLE_LITERAL_CONTEXT_MODELING",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_PARAM_LARGE_WINDOW",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_PARAM_LGBLOCK",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_PARAM_LGWIN",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_PARAM_MODE",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_PARAM_NDIRECT",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_PARAM_NPOSTFIX",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_PARAM_QUALITY",
+      "line": 736
+    },
+    {
+      "name": "BROTLI_PARAM_SIZE_HINT",
+      "line": 736
+    },
+    {
+      "name": "BROWSER",
+      "line": 6587
+    },
+    {
+      "name": "BULLET",
+      "line": 6155
+    },
+    {
+      "name": "BUTTON",
+      "line": 256
+    },
+    {
+      "name": "BYTE",
+      "line": 5806
+    },
+    {
+      "name": "C_BLOCK_COMMENT_MODE",
+      "line": 5786
+    },
+    {
+      "name": "C_LINE_COMMENT_MODE",
+      "line": 5786
+    },
+    {
+      "name": "C_NUMBER_MODE",
+      "line": 5786
+    },
+    {
+      "name": "C_NUMBER_RE",
+      "line": 5786
+    },
+    {
+      "name": "C64",
+      "line": 6604
+    },
+    {
+      "name": "CACHE",
+      "line": 1178
+    },
+    {
+      "name": "CACHE_ACCOUNT_TYPE_ADFS",
+      "line": 1178
+    },
+    {
+      "name": "CACHE_ACCOUNT_TYPE_GENERIC",
+      "line": 1178
+    },
+    {
+      "name": "CACHE_ACCOUNT_TYPE_MSAV1",
+      "line": 1178
+    },
+    {
+      "name": "CACHE_ACCOUNT_TYPE_MSSTS",
+      "line": 1178
+    },
+    {
+      "name": "CACHE_KEY_SEPARATOR",
+      "line": 1178
+    },
+    {
+      "name": "CACHED_ACCESS_TOKEN_EXPIRED",
+      "line": 1178
+    },
+    {
+      "name": "CANVAS",
+      "line": 256
+    },
+    {
+      "name": "CAPI_INTEGRATION_ID",
+      "line": 620
+    },
+    {
+      "name": "CAPI_PROD_KEY",
+      "line": 620
+    },
+    {
+      "name": "CAPTION",
+      "line": 256
+    },
+    {
+      "name": "CARRIAGE_RETURN",
+      "line": 5797
+    },
+    {
+      "name": "CB_CHUNK_COMPLETE",
+      "line": 60
+    },
+    {
+      "name": "CB_CHUNK_EXTENSION_NAME_COMPLETE",
+      "line": 60
+    },
+    {
+      "name": "CB_CHUNK_EXTENSION_VALUE_COMPLETE",
+      "line": 60
+    },
+    {
+      "name": "CB_CHUNK_HEADER",
+      "line": 60
+    },
+    {
+      "name": "CB_HEADER_FIELD_COMPLETE",
+      "line": 60
+    },
+    {
+      "name": "CB_HEADER_VALUE_COMPLETE",
+      "line": 60
+    },
+    {
+      "name": "CB_HEADERS_COMPLETE",
+      "line": 60
+    },
+    {
+      "name": "CB_MESSAGE_BEGIN",
+      "line": 60
+    },
+    {
+      "name": "CB_MESSAGE_COMPLETE",
+      "line": 60
+    },
+    {
+      "name": "CB_METHOD_COMPLETE",
+      "line": 60
+    },
+    {
+      "name": "CB_PROTOCOL_COMPLETE",
+      "line": 60
+    },
+    {
+      "name": "CB_RESET",
+      "line": 60
+    },
+    {
+      "name": "CB_STATUS_COMPLETE",
+      "line": 60
+    },
+    {
+      "name": "CB_URL_COMPLETE",
+      "line": 60
+    },
+    {
+      "name": "CB_VERSION_COMPLETE",
+      "line": 60
+    },
+    {
+      "name": "CCS_HEADER",
+      "line": 1178
+    },
+    {
+      "name": "CDATA",
+      "line": 927
+    },
+    {
+      "name": "CDATA_SECTION_NODE",
+      "line": 947
+    },
+    {
+      "name": "CDATA_START_STRING",
+      "line": 5797
+    },
+    {
+      "name": "CDIR64_END",
+      "line": 894
+    },
+    {
+      "name": "CDIR64_END_DATA_SECTOR",
+      "line": 894
+    },
+    {
+      "name": "CDIR64_END_RECORD",
+      "line": 894
+    },
+    {
+      "name": "CDIR64_LOCATOR",
+      "line": 894
+    },
+    {
+      "name": "CELL_RENDERER",
+      "line": 239
+    },
+    {
+      "name": "CENTER",
+      "line": 5797
+    },
+    {
+      "name": "CENTRAL_DIRECTORY_END",
+      "line": 894
+    },
+    {
+      "name": "CENTRAL_DIRECTORY_END_COMMENT",
+      "line": 894
+    },
+    {
+      "name": "CENTRAL_DIRECTORY_FILE_HEADER",
+      "line": 894
+    },
+    {
+      "name": "CENTRAL_DIRECTORY_FILE_HEADER_SUFFIX",
+      "line": 894
+    },
+    {
+      "name": "CGA",
+      "line": 6604
+    },
+    {
+      "name": "CHAR_0",
+      "line": 239
+    },
+    {
+      "name": "CHAR_9",
+      "line": 239
+    },
+    {
+      "name": "CHAR_AMPERSAND",
+      "line": 239
+    },
+    {
+      "name": "CHAR_ASTERISK",
+      "line": 239
+    },
+    {
+      "name": "CHAR_AT",
+      "line": 239
+    },
+    {
+      "name": "CHAR_BACKWARD_SLASH",
+      "line": 239
+    },
+    {
+      "name": "CHAR_CARRIAGE_RETURN",
+      "line": 239
+    },
+    {
+      "name": "CHAR_CIRCUMFLEX_ACCENT",
+      "line": 239
+    },
+    {
+      "name": "CHAR_COLON",
+      "line": 239
+    },
+    {
+      "name": "CHAR_COMMA",
+      "line": 239
+    },
+    {
+      "name": "CHAR_DOT",
+      "line": 239
+    },
+    {
+      "name": "CHAR_DOUBLE_QUOTE",
+      "line": 239
+    },
+    {
+      "name": "CHAR_EQUAL",
+      "line": 239
+    },
+    {
+      "name": "CHAR_EXCLAMATION_MARK",
+      "line": 239
+    },
+    {
+      "name": "CHAR_FORM_FEED",
+      "line": 239
+    },
+    {
+      "name": "CHAR_FORWARD_SLASH",
+      "line": 239
+    },
+    {
+      "name": "CHAR_GRAVE_ACCENT",
+      "line": 239
+    },
+    {
+      "name": "CHAR_HASH",
+      "line": 239
+    },
+    {
+      "name": "CHAR_HYPHEN_MINUS",
+      "line": 239
+    },
+    {
+      "name": "CHAR_LEFT_ANGLE_BRACKET",
+      "line": 239
+    },
+    {
+      "name": "CHAR_LEFT_CURLY_BRACE",
+      "line": 239
+    },
+    {
+      "name": "CHAR_LEFT_PARENTHESES",
+      "line": 239
+    },
+    {
+      "name": "CHAR_LEFT_SQUARE_BRACKET",
+      "line": 239
+    },
+    {
+      "name": "CHAR_LINE_FEED",
+      "line": 239
+    },
+    {
+      "name": "CHAR_LOWERCASE_A",
+      "line": 239
+    },
+    {
+      "name": "CHAR_LOWERCASE_Z",
+      "line": 239
+    },
+    {
+      "name": "CHAR_NO_BREAK_SPACE",
+      "line": 239
+    },
+    {
+      "name": "CHAR_PERCENT",
+      "line": 239
+    },
+    {
+      "name": "CHAR_PLUS",
+      "line": 239
+    },
+    {
+      "name": "CHAR_QUESTION_MARK",
+      "line": 239
+    },
+    {
+      "name": "CHAR_RIGHT_ANGLE_BRACKET",
+      "line": 239
+    },
+    {
+      "name": "CHAR_RIGHT_CURLY_BRACE",
+      "line": 239
+    },
+    {
+      "name": "CHAR_RIGHT_PARENTHESES",
+      "line": 239
+    },
+    {
+      "name": "CHAR_RIGHT_SQUARE_BRACKET",
+      "line": 239
+    },
+    {
+      "name": "CHAR_SEMICOLON",
+      "line": 239
+    },
+    {
+      "name": "CHAR_SINGLE_QUOTE",
+      "line": 239
+    },
+    {
+      "name": "CHAR_SPACE",
+      "line": 239
+    },
+    {
+      "name": "CHAR_TAB",
+      "line": 239
+    },
+    {
+      "name": "CHAR_UNDERSCORE",
+      "line": 239
+    },
+    {
+      "name": "CHAR_UPPERCASE_A",
+      "line": 239
+    },
+    {
+      "name": "CHAR_UPPERCASE_Z",
+      "line": 239
+    },
+    {
+      "name": "CHAR_VERTICAL_LINE",
+      "line": 239
+    },
+    {
+      "name": "CHAR_ZERO_WIDTH_NOBREAK_SPACE",
+      "line": 239
+    },
+    {
+      "name": "CHECK",
+      "line": 6155
+    },
+    {
+      "name": "CHECKBOX_CHECKED",
+      "line": 6155
+    },
+    {
+      "name": "CHECKBOX_UNCHECKED",
+      "line": 6155
+    },
+    {
+      "name": "CHECKOUT",
+      "line": 60
+    },
+    {
+      "name": "CHEVRON_RIGHT",
+      "line": 6155
+    },
+    {
+      "name": "CHILD_CUSTOM_INSTRUCTIONS",
+      "line": 239
+    },
+    {
+      "name": "CHILD_GIT_REPO_SCAN",
+      "line": 239
+    },
+    {
+      "name": "CHILD_LAST",
+      "line": 6155
+    },
+    {
+      "name": "CHILD_MIDDLE",
+      "line": 6155
+    },
+    {
+      "name": "CHILD_SKIP",
+      "line": 6155
+    },
+    {
+      "name": "CHUNKED",
+      "line": 60
+    },
+    {
+      "name": "CHUNKED_LENGTH",
+      "line": 60
+    },
+    {
+      "name": "CIAM_AUTH_URL",
+      "line": 1178
+    },
+    {
+      "name": "CIRCLE",
+      "line": 256
+    },
+    {
+      "name": "CIRCLE_EMPTY",
+      "line": 6155
+    },
+    {
+      "name": "CIRCLE_FILLED",
+      "line": 6155
+    },
+    {
+      "name": "CIRCLE_HALF",
+      "line": 6155
+    },
+    {
+      "name": "CITE",
+      "line": 256
+    },
+    {
+      "name": "CLAIMS",
+      "line": 1178
+    },
+    {
+      "name": "CLASSES_TO_PRESERVE",
+      "line": 927
+    },
+    {
+      "name": "CLAUDE_PLUGIN_DATA",
+      "line": 2797
+    },
+    {
+      "name": "CLAUDE_PLUGIN_ROOT",
+      "line": 525
+    },
+    {
+      "name": "CLAUDE_PROJECT_DIR",
+      "line": 2790
+    },
+    {
+      "name": "CLI",
+      "line": 1599
+    },
+    {
+      "name": "CLI_CLOUD_SESSIONS",
+      "line": 239
+    },
+    {
+      "name": "CLI_DATA",
+      "line": 1178
+    },
+    {
+      "name": "CLIENT_ASSERTION",
+      "line": 1178
+    },
+    {
+      "name": "CLIENT_ASSERTION_TYPE",
+      "line": 1178
+    },
+    {
+      "name": "CLIENT_CLOSED_LOAD_BALANCED_REQUEST",
+      "line": 60
+    },
+    {
+      "name": "CLIENT_CLOSED_REQUEST",
+      "line": 60
+    },
+    {
+      "name": "CLIENT_CREDENTIALS_GRANT",
+      "line": 1178
+    },
+    {
+      "name": "CLIENT_ID",
+      "line": 1178
+    },
+    {
+      "name": "CLIENT_INFO",
+      "line": 1178
+    },
+    {
+      "name": "CLIENT_INFO_SEPARATOR",
+      "line": 1178
+    },
+    {
+      "name": "CLIENT_MISMATCH_ERROR",
+      "line": 1178
+    },
+    {
+      "name": "CLIENT_REQUEST_ID",
+      "line": 1178
+    },
+    {
+      "name": "CLIENT_SECRET",
+      "line": 1178
+    },
+    {
+      "name": "CLOSE",
+      "line": 187
+    },
+    {
+      "name": "CLOSED",
+      "line": 99
+    },
+    {
+      "name": "CLOSED_CONNECTION",
+      "line": 60
+    },
+    {
+      "name": "CLOSING",
+      "line": 187
+    },
+    {
+      "name": "CLOUD_SESSION_STORE",
+      "line": 239
+    },
+    {
+      "name": "CLOUD_SHELL",
+      "line": 1184
+    },
+    {
+      "name": "CLRS",
+      "line": 6604
+    },
+    {
+      "name": "CODE",
+      "line": 256
+    },
+    {
+      "name": "CODE_CHALLENGE",
+      "line": 1178
+    },
+    {
+      "name": "CODE_CHALLENGE_METHOD",
+      "line": 1178
+    },
+    {
+      "name": "CODE_GRANT_TYPE",
+      "line": 1178
+    },
+    {
+      "name": "CODE_VERIFIER",
+      "line": 1178
+    },
+    {
+      "name": "COL",
+      "line": 256
+    },
+    {
+      "name": "COLGROUP",
+      "line": 256
+    },
+    {
+      "name": "COLLECT_DEBUG_LOGS",
+      "line": 239
+    },
+    {
+      "name": "COLLECTION",
+      "line": 1156
+    },
+    {
+      "name": "COLOR",
+      "line": 5797
+    },
+    {
+      "name": "COLORTYPE_ALPHA",
+      "line": 5811
+    },
+    {
+      "name": "COLORTYPE_COLOR",
+      "line": 5811
+    },
+    {
+      "name": "COLORTYPE_COLOR_ALPHA",
+      "line": 5811
+    },
+    {
+      "name": "COLORTYPE_GRAYSCALE",
+      "line": 5811
+    },
+    {
+      "name": "COLORTYPE_PALETTE",
+      "line": 5811
+    },
+    {
+      "name": "COLORTYPE_PALETTE_COLOR",
+      "line": 5811
+    },
+    {
+      "name": "COLORTYPE_TO_BPP_MAP",
+      "line": 5811
+    },
+    {
+      "name": "COMMAND",
+      "line": 947
+    },
+    {
+      "name": "COMMAND_NOT_SUPPORTED",
+      "line": 99
+    },
+    {
+      "name": "COMMANDS",
+      "line": 99
+    },
+    {
+      "name": "COMMENT",
+      "line": 5786
+    },
+    {
+      "name": "COMMENT_NODE",
+      "line": 947
+    },
+    {
+      "name": "COMMON",
+      "line": 1178
+    },
+    {
+      "name": "COMPRESSION",
+      "line": 1026
+    },
+    {
+      "name": "COMPUTER_USE",
+      "line": 239
+    },
+    {
+      "name": "CONFIG",
+      "line": 1178
+    },
+    {
+      "name": "CONFIGURED_MATCHES_DETECTED",
+      "line": 1178
+    },
+    {
+      "name": "CONFIGURED_NO_AUTO_DETECTION",
+      "line": 1178
+    },
+    {
+      "name": "CONFIGURED_NOT_DETECTED",
+      "line": 1178
+    },
+    {
+      "name": "CONFLICT",
+      "line": 60
+    },
+    {
+      "name": "CONNECT",
+      "line": 60
+    },
+    {
+      "name": "CONNECTED",
+      "line": 99
+    },
+    {
+      "name": "CONNECTING",
+      "line": 99
+    },
+    {
+      "name": "CONNECTION",
+      "line": 60
+    },
+    {
+      "name": "CONNECTION_CLOSE",
+      "line": 60
+    },
+    {
+      "name": "CONNECTION_KEEP_ALIVE",
+      "line": 60
+    },
+    {
+      "name": "CONNECTION_NOT_ALLOWED",
+      "line": 99
+    },
+    {
+      "name": "CONNECTION_REFUSED",
+      "line": 99
+    },
+    {
+      "name": "CONNECTION_TIMEOUT",
+      "line": 60
+    },
+    {
+      "name": "CONNECTION_TOKEN_CHARS",
+      "line": 60
+    },
+    {
+      "name": "CONNECTION_UPGRADE",
+      "line": 60
+    },
+    {
+      "name": "CONSENT",
+      "line": 1178
+    },
+    {
+      "name": "CONSUMER_UTID",
+      "line": 1178
+    },
+    {
+      "name": "CONSUMERS",
+      "line": 1178
+    },
+    {
+      "name": "CONTAINED_BY",
+      "line": 928
+    },
+    {
+      "name": "CONTAINS",
+      "line": 928
+    },
+    {
+      "name": "CONTENT_EXCLUSION",
+      "line": 239
+    },
+    {
+      "name": "CONTENT_LENGTH",
+      "line": 60
+    },
+    {
+      "name": "CONTENT_TYPE",
+      "line": 1178
+    },
+    {
+      "name": "CONTINUATION",
+      "line": 187
+    },
+    {
+      "name": "CONTINUE",
+      "line": 60
+    },
+    {
+      "name": "COPILOT_AGENT_MODEL",
+      "line": 5742
+    },
+    {
+      "name": "COPILOT_AGENT_SESSION_ID",
+      "line": 5683
+    },
+    {
+      "name": "COPILOT_ASSOCIATE_COMPUTE",
+      "line": 239
+    },
+    {
+      "name": "COPILOT_CACHE_HOME",
+      "line": 234
+    },
+    {
+      "name": "COPILOT_CLI",
+      "line": 572
+    },
+    {
+      "name": "COPILOT_DEBUG_BROWSER",
+      "line": 4339
+    },
+    {
+      "name": "COPILOT_DETACHED_PARENT_ENGAGEMENT_ID",
+      "line": 7441
+    },
+    {
+      "name": "COPILOT_DETACHED_PARENT_SESSION_ID",
+      "line": 7441
+    },
+    {
+      "name": "COPILOT_DETACHED_SESSION",
+      "line": 7441
+    },
+    {
+      "name": "COPILOT_FORCE_WINDOWS_HIDE",
+      "line": 7441
+    },
+    {
+      "name": "COPILOT_HOME",
+      "line": 234
+    },
+    {
+      "name": "COPILOT_LOADER_PID",
+      "line": 5767
+    },
+    {
+      "name": "COPILOT_PLUGIN_DATA",
+      "line": 2797
+    },
+    {
+      "name": "COPILOT_PLUGIN_ROOT",
+      "line": 2797
+    },
+    {
+      "name": "COPILOT_PROJECT_DIR",
+      "line": 2790
+    },
+    {
+      "name": "COPILOT_RUN_APP",
+      "line": 5767
+    },
+    {
+      "name": "COPILOT_SDK_PATH",
+      "line": 6096
+    },
+    {
+      "name": "COPILOT_SHUTDOWN_FLUSH",
+      "line": 5767
+    },
+    {
+      "name": "COPILOT_SUBCONSCIOUS",
+      "line": 239
+    },
+    {
+      "name": "COPY",
+      "line": 60
+    },
+    {
+      "name": "COUNT_SIZE",
+      "line": 1026
+    },
+    {
+      "name": "COUNTER",
+      "line": 5742
+    },
+    {
+      "name": "CR_EXPECTED",
+      "line": 60
+    },
+    {
+      "name": "CREATE",
+      "line": 1178
+    },
+    {
+      "name": "CREATED",
+      "line": 60
+    },
+    {
+      "name": "CRITICAL",
+      "line": 3035
+    },
+    {
+      "name": "CROSS",
+      "line": 6155
+    },
+    {
+      "name": "CSS_NUMBER_MODE",
+      "line": 5786
+    },
+    {
+      "name": "CSV",
+      "line": 1202
+    },
+    {
+      "name": "CUMULATIVE",
+      "line": 5754
+    },
+    {
+      "name": "CURRENT_TOKENS",
+      "line": 5742
+    },
+    {
+      "name": "CUSTOM_ELEMENT",
+      "line": 241
+    },
+    {
+      "name": "CV_CHARSET",
+      "line": 1184
+    },
+    {
+      "name": "CWD",
+      "line": 5742
+    },
+    {
+      "name": "DASH_DASH_STRING",
+      "line": 5797
+    },
+    {
+      "name": "DATA",
+      "line": 256
+    },
+    {
+      "name": "DATA_AFTER_CLOSE",
+      "line": 60
+    },
+    {
+      "name": "DATA_ATTR",
+      "line": 241
+    },
+    {
+      "name": "DATA_CLONE_ERR",
+      "line": 944
+    },
+    {
+      "name": "DATA_DESCRIPTOR",
+      "line": 894
+    },
+    {
+      "name": "DATALIST",
+      "line": 256
+    },
+    {
+      "name": "DEBUG",
+      "line": 5754
+    },
+    {
+      "name": "DEFAULT",
+      "line": 5611
+    },
+    {
+      "name": "DEFAULT_AUTHORITY",
+      "line": 1178
+    },
+    {
+      "name": "DEFAULT_AUTHORITY_HOST",
+      "line": 1178
+    },
+    {
+      "name": "DEFAULT_CHAR_THRESHOLD",
+      "line": 927
+    },
+    {
+      "name": "DEFAULT_COMMON_TENANT",
+      "line": 1178
+    },
+    {
+      "name": "DEFAULT_IDENTITY_CLIENT_ID",
+      "line": 1184
+    },
+    {
+      "name": "DEFAULT_MAX_ELEMS_TO_PARSE",
+      "line": 927
+    },
+    {
+      "name": "DEFAULT_MAX_EXTGLOB_RECURSION",
+      "line": 239
+    },
+    {
+      "name": "DEFAULT_MAX_THROTTLE_TIME_SECONDS",
+      "line": 1178
+    },
+    {
+      "name": "DEFAULT_N_TOP_CANDIDATES",
+      "line": 927
+    },
+    {
+      "name": "DEFAULT_TAGS_TO_SCORE",
+      "line": 927
+    },
+    {
+      "name": "DEFAULT_THROTTLE_TIME_SECONDS",
+      "line": 1178
+    },
+    {
+      "name": "DEFAULT_TO_IMDS",
+      "line": 1184
+    },
+    {
+      "name": "DEFAULT_TOKEN_RENEWAL_OFFSET_SEC",
+      "line": 1178
+    },
+    {
+      "name": "DEFAULTS",
+      "line": 734
+    },
+    {
+      "name": "DEFLATE",
+      "line": 736
+    },
+    {
+      "name": "DEFLATERAW",
+      "line": 736
+    },
+    {
+      "name": "DEL",
+      "line": 256
+    },
+    {
+      "name": "DELETE",
+      "line": 60
+    },
+    {
+      "name": "DELTA",
+      "line": 5754
+    },
+    {
+      "name": "DEPRECATED_SIZE_ATTRIBUTE_ELEMS",
+      "line": 927
+    },
+    {
+      "name": "DESC",
+      "line": 5797
+    },
+    {
+      "name": "DESCRIBE",
+      "line": 60
+    },
+    {
+      "name": "DETAILS",
+      "line": 256
+    },
+    {
+      "name": "DEVICE_CODE",
+      "line": 1178
+    },
+    {
+      "name": "DEVICE_CODE_GRANT",
+      "line": 1178
+    },
+    {
+      "name": "DFN",
+      "line": 256
+    },
+    {
+      "name": "DIAGNOSE",
+      "line": 239
+    },
+    {
+      "name": "DIALOG",
+      "line": 256
+    },
+    {
+      "name": "DIGIT_0",
+      "line": 5797
+    },
+    {
+      "name": "DIGIT_9",
+      "line": 5797
+    },
+    {
+      "name": "DIMENSION_HEIGHT",
+      "line": 6170
+    },
+    {
+      "name": "DIMENSION_WIDTH",
+      "line": 6170
+    },
+    {
+      "name": "DIR",
+      "line": 5797
+    },
+    {
+      "name": "DIRECTION_INHERIT",
+      "line": 6170
+    },
+    {
+      "name": "DIRECTION_LTR",
+      "line": 6170
+    },
+    {
+      "name": "DIRECTION_RTL",
+      "line": 6170
+    },
+    {
+      "name": "DIRTY",
+      "line": 220
+    },
+    {
+      "name": "DISABLE_WEB_TOOLS",
+      "line": 239
+    },
+    {
+      "name": "DISABLED",
+      "line": 6155
+    },
+    {
+      "name": "DISCONNECTED_OPERATION",
+      "line": 60
+    },
+    {
+      "name": "DISPLAY_CONTENTS",
+      "line": 6170
+    },
+    {
+      "name": "DISPLAY_FLEX",
+      "line": 6170
+    },
+    {
+      "name": "DISPLAY_NONE",
+      "line": 6170
+    },
+    {
+      "name": "DIV",
+      "line": 256
+    },
+    {
+      "name": "DIV_TO_P_ELEMS",
+      "line": 927
+    },
+    {
+      "name": "DOCTYPE_NAME",
+      "line": 242
+    },
+    {
+      "name": "DOCTYPE_STRING",
+      "line": 5797
+    },
+    {
+      "name": "DOCUMENT_FRAGMENT_NODE",
+      "line": 326
+    },
+    {
+      "name": "DOCUMENT_MODE",
+      "line": 5799
+    },
+    {
+      "name": "DOCUMENT_NODE",
+      "line": 326
+    },
+    {
+      "name": "DOCUMENT_POSITION_CONTAINED_BY",
+      "line": 947
+    },
+    {
+      "name": "DOCUMENT_POSITION_CONTAINS",
+      "line": 947
+    },
+    {
+      "name": "DOCUMENT_POSITION_DISCONNECTED",
+      "line": 947
+    },
+    {
+      "name": "DOCUMENT_POSITION_FOLLOWING",
+      "line": 947
+    },
+    {
+      "name": "DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC",
+      "line": 947
+    },
+    {
+      "name": "DOCUMENT_POSITION_PRECEDING",
+      "line": 326
+    },
+    {
+      "name": "DOCUMENT_TYPE_NODE",
+      "line": 947
+    },
+    {
+      "name": "DOMAIN",
+      "line": 99
+    },
+    {
+      "name": "DOMAIN_HINT",
+      "line": 1178
+    },
+    {
+      "name": "DOMSTRING_SIZE_ERR",
+      "line": 944
+    },
+    {
+      "name": "DONE",
+      "line": 675
+    },
+    {
+      "name": "DOT_LITERAL",
+      "line": 239
+    },
+    {
+      "name": "DOT_SEPARATOR",
+      "line": 6155
+    },
+    {
+      "name": "DOTCOM",
+      "line": 6104
+    },
+    {
+      "name": "DOTS_SLASH",
+      "line": 239
+    },
+    {
+      "name": "DOUBLE",
+      "line": 5754
+    },
+    {
+      "name": "DOWNGRADE",
+      "line": 239
+    },
+    {
+      "name": "DRAG",
+      "line": 5611
+    },
+    {
+      "name": "DROP",
+      "line": 5742
+    },
+    {
+      "name": "DSTS",
+      "line": 1178
+    },
+    {
+      "name": "DYNAMIC_INSTRUCTIONS_RETRIEVAL",
+      "line": 239
+    },
+    {
+      "name": "EAR",
+      "line": 1178
+    },
+    {
+      "name": "EAR_JWE_CRYPTO",
+      "line": 1178
+    },
+    {
+      "name": "EAR_JWK",
+      "line": 1178
+    },
+    {
+      "name": "EARLY_HINTS",
+      "line": 60
+    },
+    {
+      "name": "EDGE_ALL",
+      "line": 6170
+    },
+    {
+      "name": "EDGE_BOTTOM",
+      "line": 6170
+    },
+    {
+      "name": "EDGE_END",
+      "line": 6170
+    },
+    {
+      "name": "EDGE_HORIZONTAL",
+      "line": 6170
+    },
+    {
+      "name": "EDGE_LEFT",
+      "line": 6170
+    },
+    {
+      "name": "EDGE_RIGHT",
+      "line": 6170
+    },
+    {
+      "name": "EDGE_START",
+      "line": 6170
+    },
+    {
+      "name": "EDGE_TOP",
+      "line": 6170
+    },
+    {
+      "name": "EDGE_VERTICAL",
+      "line": 6170
+    },
+    {
+      "name": "ELEMENT_NODE",
+      "line": 927
+    },
+    {
+      "name": "ELICITATION_MESSAGE",
+      "line": 5742
+    },
+    {
+      "name": "ELLIPSE",
+      "line": 256
+    },
+    {
+      "name": "EMAIL_SCOPE",
+      "line": 1178
+    },
+    {
+      "name": "EMBED",
+      "line": 256
+    },
+    {
+      "name": "EMPTY",
+      "line": 675
+    },
+    {
+      "name": "EMPTY_BUFFER",
+      "line": 455
+    },
+    {
+      "name": "EMPTY_PATH",
+      "line": 220
+    },
+    {
+      "name": "ENCODING",
+      "line": 5797
+    },
+    {
+      "name": "ENCOM",
+      "line": 6604
+    },
+    {
+      "name": "END_ANCHOR",
+      "line": 239
+    },
+    {
+      "name": "END_SAME_AS_BEGIN",
+      "line": 5786
+    },
+    {
+      "name": "ENHANCE_YOUR_CALM",
+      "line": 60
+    },
+    {
+      "name": "ENTITY_NODE",
+      "line": 947
+    },
+    {
+      "name": "ENTITY_REFERENCE_NODE",
+      "line": 947
+    },
+    {
+      "name": "ENTRY_SIZE",
+      "line": 1026
+    },
+    {
+      "name": "ENVIRONMENT_VARIABLE",
+      "line": 1178
+    },
+    {
+      "name": "EOF",
+      "line": 5797
+    },
+    {
+      "name": "EQUALS_SIGN",
+      "line": 5797
+    },
+    {
+      "name": "ERB_EXPR",
+      "line": 241
+    },
+    {
+      "name": "ERR",
+      "line": 5786
+    },
+    {
+      "name": "ERRATA_ABSOLUTE_PERCENT_AGAINST_INNER_SIZE",
+      "line": 6170
+    },
+    {
+      "name": "ERRATA_ABSOLUTE_POSITION_WITHOUT_INSETS_EXCLUDES_PADDING",
+      "line": 6170
+    },
+    {
+      "name": "ERRATA_ALL",
+      "line": 6170
+    },
+    {
+      "name": "ERRATA_CLASSIC",
+      "line": 6170
+    },
+    {
+      "name": "ERRATA_NONE",
+      "line": 6170
+    },
+    {
+      "name": "ERRATA_STRETCH_FLEX_BASIS",
+      "line": 6170
+    },
+    {
+      "name": "ERROR",
+      "line": 60
+    },
+    {
+      "name": "ERROR_DESCRIPTION",
+      "line": 1178
+    },
+    {
+      "name": "ERROR_PROVIDER_CALL_ID",
+      "line": 5742
+    },
+    {
+      "name": "ERROR_REASON",
+      "line": 5742
+    },
+    {
+      "name": "ERROR_STATUS_CODE",
+      "line": 5742
+    },
+    {
+      "name": "ERROR_TYPE_NAME",
+      "line": 5742
+    },
+    {
+      "name": "ES256",
+      "line": 1184
+    },
+    {
+      "name": "ES384",
+      "line": 1184
+    },
+    {
+      "name": "ES512",
+      "line": 1184
+    },
+    {
+      "name": "ESC",
+      "line": 6172
+    },
+    {
+      "name": "ETH",
+      "line": 948
+    },
+    {
+      "name": "EVENTS_REMOVED",
+      "line": 5742
+    },
+    {
+      "name": "EXCLAMATION_MARK",
+      "line": 5797
+    },
+    {
+      "name": "EXIT_PLAN_MODE_REQUEST",
+      "line": 6063
+    },
+    {
+      "name": "EXPECTATION_FAILED",
+      "line": 60
+    },
+    {
+      "name": "EXPERIMENTAL_FEATURE_WEB_FLEX_BASIS",
+      "line": 6170
+    },
+    {
+      "name": "EXPIRATION_TIME",
+      "line": 1184
+    },
+    {
+      "name": "EXPIRES_IN",
+      "line": 1178
+    },
+    {
+      "name": "EXPLICIT_BUCKET_HISTOGRAM",
+      "line": 5742
+    },
+    {
+      "name": "EXPONENTIAL_HISTOGRAM",
+      "line": 5742
+    },
+    {
+      "name": "EXTENSION_PATH",
+      "line": 6096
+    },
+    {
+      "name": "EXTENSIONS",
+      "line": 239
+    },
+    {
+      "name": "EXTERNAL_TOOL_CALL_ID",
+      "line": 5742
+    },
+    {
+      "name": "EXTERNAL_TOOL_NAME",
+      "line": 5742
+    },
+    {
+      "name": "FACE",
+      "line": 5797
+    },
+    {
+      "name": "FAILED_AUTO_DETECTION",
+      "line": 1178
+    },
+    {
+      "name": "FAILED_DEPENDENCY",
+      "line": 60
+    },
+    {
+      "name": "FEATURE_FLAG_TEST",
+      "line": 239
+    },
+    {
+      "name": "FIDES_IFC",
+      "line": 239
+    },
+    {
+      "name": "FIELDSET",
+      "line": 256
+    },
+    {
+      "name": "FIGCAPTION",
+      "line": 256
+    },
+    {
+      "name": "FIGURE",
+      "line": 256
+    },
+    {
+      "name": "FILE_DATA",
+      "line": 894
+    },
+    {
+      "name": "FILE_DATA_END",
+      "line": 894
+    },
+    {
+      "name": "FILES_MODIFIED_COUNT",
+      "line": 5742
+    },
+    {
+      "name": "FILTER_ACCEPT",
+      "line": 370
+    },
+    {
+      "name": "FILTER_REJECT",
+      "line": 370
+    },
+    {
+      "name": "FILTER_SKIP",
+      "line": 370
+    },
+    {
+      "name": "FINISH",
+      "line": 60
+    },
+    {
+      "name": "FLAG_CLEAN_CONDITIONALLY",
+      "line": 927
+    },
+    {
+      "name": "FLAG_INCLUDE_PRERELEASE",
+      "line": 1051
+    },
+    {
+      "name": "FLAG_LOOSE",
+      "line": 1051
+    },
+    {
+      "name": "FLAG_STRIP_UNLIKELYS",
+      "line": 927
+    },
+    {
+      "name": "FLAG_WEIGHT_CLASSES",
+      "line": 927
+    },
+    {
+      "name": "FLAGS",
+      "line": 60
+    },
+    {
+      "name": "FLEX_DIRECTION_COLUMN",
+      "line": 6170
+    },
+    {
+      "name": "FLEX_DIRECTION_COLUMN_REVERSE",
+      "line": 6170
+    },
+    {
+      "name": "FLEX_DIRECTION_ROW",
+      "line": 6170
+    },
+    {
+      "name": "FLEX_DIRECTION_ROW_REVERSE",
+      "line": 6170
+    },
+    {
+      "name": "FLUSH",
+      "line": 60
+    },
+    {
+      "name": "FOCI",
+      "line": 1178
+    },
+    {
+      "name": "FOCUSED_TOOLS",
+      "line": 239
+    },
+    {
+      "name": "FOLLOWING",
+      "line": 928
+    },
+    {
+      "name": "FONT",
+      "line": 5797
+    },
+    {
+      "name": "FOOTER",
+      "line": 256
+    },
+    {
+      "name": "FORBIDDEN",
+      "line": 60
+    },
+    {
+      "name": "FORCE_HYPERLINK",
+      "line": 5805
+    },
+    {
+      "name": "FORCE_REFRESH_OR_CLAIMS",
+      "line": 1178
+    },
+    {
+      "name": "FOREIGN_OBJECT",
+      "line": 5797
+    },
+    {
+      "name": "FORM",
+      "line": 256
+    },
+    {
+      "name": "FORM_FEED",
+      "line": 5797
+    },
+    {
+      "name": "FORM_POST",
+      "line": 1178
+    },
+    {
+      "name": "FORWARD_SLASH",
+      "line": 1178
+    },
+    {
+      "name": "FOUND",
+      "line": 60
+    },
+    {
+      "name": "FRAGMENT",
+      "line": 1178
+    },
+    {
+      "name": "FRAME",
+      "line": 5797
+    },
+    {
+      "name": "FRAMESET",
+      "line": 5797
+    },
+    {
+      "name": "FROM",
+      "line": 6574
+    },
+    {
+      "name": "GAMMA_DIVISION",
+      "line": 5811
+    },
+    {
+      "name": "GATEWAY_TIMEOUT",
+      "line": 60
+    },
+    {
+      "name": "GAUGE",
+      "line": 5742
+    },
+    {
+      "name": "GENERAL",
+      "line": 60
+    },
+    {
+      "name": "GENERAL_FAILURE",
+      "line": 99
+    },
+    {
+      "name": "GENERIC",
+      "line": 1178
+    },
+    {
+      "name": "GET",
+      "line": 60
+    },
+    {
+      "name": "GET_PARAMETER",
+      "line": 60
+    },
+    {
+      "name": "GH_CLI_OVER_MCP",
+      "line": 239
+    },
+    {
+      "name": "GH001",
+      "line": 685
+    },
+    {
+      "name": "GH013",
+      "line": 685
+    },
+    {
+      "name": "GHE_SUFFIX",
+      "line": 6104
+    },
+    {
+      "name": "GIT_ROOT",
+      "line": 5742
+    },
+    {
+      "name": "GIT_TERMINAL_PROMPT",
+      "line": 686
+    },
+    {
+      "name": "GITHUB_ASKPASS",
+      "line": 5742
+    },
+    {
+      "name": "GITHUB_CONTEXT_SIDEKICK_AGENT",
+      "line": 239
+    },
+    {
+      "name": "GITHUB_TOKEN",
+      "line": 1608
+    },
+    {
+      "name": "GLIBC",
+      "line": 1051
+    },
+    {
+      "name": "GLOBSTAR",
+      "line": 239
+    },
+    {
+      "name": "GONE",
+      "line": 60
+    },
+    {
+      "name": "GPT_5_4_MINI_FOR_EXPLORE",
+      "line": 239
+    },
+    {
+      "name": "GPT_FOR_SUBAGENTS",
+      "line": 239
+    },
+    {
+      "name": "GRANT_TYPE",
+      "line": 1178
+    },
+    {
+      "name": "GRAVE_ACCENT",
+      "line": 5797
+    },
+    {
+      "name": "GREATER_THAN_SIGN",
+      "line": 5797
+    },
+    {
+      "name": "GSSAPI",
+      "line": 99
+    },
+    {
+      "name": "GTE",
+      "line": 4120
+    },
+    {
+      "name": "GTE0PRE",
+      "line": 1051
+    },
+    {
+      "name": "GUID",
+      "line": 455
+    },
+    {
+      "name": "GUNZIP",
+      "line": 736
+    },
+    {
+      "name": "GUTTER_ALL",
+      "line": 6170
+    },
+    {
+      "name": "GUTTER_COLUMN",
+      "line": 6170
+    },
+    {
+      "name": "GUTTER_ROW",
+      "line": 6170
+    },
+    {
+      "name": "GZIP",
+      "line": 736
+    },
+    {
+      "name": "H_METHOD_MAP",
+      "line": 60
+    },
+    {
+      "name": "HALF_OPEN",
+      "line": 238
+    },
+    {
+      "name": "HANDSHAKING",
+      "line": 99
+    },
+    {
+      "name": "HARDCODED_VALUES",
+      "line": 1178
+    },
+    {
+      "name": "HASH_COMMENT_MODE",
+      "line": 5786
+    },
+    {
+      "name": "HEAD",
+      "line": 60
+    },
+    {
+      "name": "HEADER",
+      "line": 256
+    },
+    {
+      "name": "HEADER_CHARS",
+      "line": 60
+    },
+    {
+      "name": "HEADER_STATE",
+      "line": 60
+    },
+    {
+      "name": "HEADERS",
+      "line": 60
+    },
+    {
+      "name": "HEIGHT",
+      "line": 1026
+    },
+    {
+      "name": "HEURISTIC_EXPIRATION",
+      "line": 60
+    },
+    {
+      "name": "HEX",
+      "line": 60
+    },
+    {
+      "name": "HEX_MAP",
+      "line": 60
+    },
+    {
+      "name": "HEXCOLOR",
+      "line": 5791
+    },
+    {
+      "name": "HGROUP",
+      "line": 256
+    },
+    {
+      "name": "HIERARCHY_REQUEST_ERR",
+      "line": 944
+    },
+    {
+      "name": "HINT",
+      "line": 5618
+    },
+    {
+      "name": "HISTOGRAM",
+      "line": 5742
+    },
+    {
+      "name": "HKCU",
+      "line": 1203
+    },
+    {
+      "name": "HOME",
+      "line": 686
+    },
+    {
+      "name": "HOME_ACCOUNT_ID",
+      "line": 1180
+    },
+    {
+      "name": "HOOK_END",
+      "line": 5742
+    },
+    {
+      "name": "HOOK_ERROR",
+      "line": 5742
+    },
+    {
+      "name": "HOOK_ERROR_MESSAGE",
+      "line": 5742
+    },
+    {
+      "name": "HOOK_INVOCATION_ID",
+      "line": 5742
+    },
+    {
+      "name": "HOOK_START",
+      "line": 5742
+    },
+    {
+      "name": "HOOK_TYPE",
+      "line": 5742
+    },
+    {
+      "name": "HOOKS_INVOKE",
+      "line": 6063
+    },
+    {
+      "name": "HOST_UNREACHABLE",
+      "line": 99
+    },
+    {
+      "name": "HTAB_SP_VCHAR_OBS_TEXT",
+      "line": 60
+    },
+    {
+      "name": "HTML",
+      "line": 256
+    },
+    {
+      "name": "HTML_ESCAPE_MAP",
+      "line": 927
+    },
+    {
+      "name": "HTTP",
+      "line": 4339
+    },
+    {
+      "name": "HTTP_BAD_REQUEST",
+      "line": 1178
+    },
+    {
+      "name": "HTTP_CLIENT_ERROR",
+      "line": 1178
+    },
+    {
+      "name": "HTTP_CLIENT_ERROR_RANGE_END",
+      "line": 1178
+    },
+    {
+      "name": "HTTP_CLIENT_ERROR_RANGE_START",
+      "line": 1178
+    },
+    {
+      "name": "HTTP_GATEWAY_TIMEOUT",
+      "line": 1178
+    },
+    {
+      "name": "HTTP_GONE",
+      "line": 1178
+    },
+    {
+      "name": "HTTP_MULTI_SIDED_ERROR",
+      "line": 1178
+    },
+    {
+      "name": "HTTP_NOT_FOUND",
+      "line": 1178
+    },
+    {
+      "name": "HTTP_PROTOCOL",
+      "line": 1184
+    },
+    {
+      "name": "HTTP_REDIRECT",
+      "line": 1178
+    },
+    {
+      "name": "HTTP_REQUEST_SENT_TO_HTTPS_PORT",
+      "line": 60
+    },
+    {
+      "name": "HTTP_REQUEST_TIMEOUT",
+      "line": 1178
+    },
+    {
+      "name": "HTTP_SERVER_ERROR",
+      "line": 1178
+    },
+    {
+      "name": "HTTP_SERVER_ERROR_RANGE_END",
+      "line": 1178
+    },
+    {
+      "name": "HTTP_SERVER_ERROR_RANGE_START",
+      "line": 1178
+    },
+    {
+      "name": "HTTP_SERVICE_UNAVAILABLE",
+      "line": 1178
+    },
+    {
+      "name": "HTTP_STATUS_GONE_RETRY_AFTER_MS",
+      "line": 1186
+    },
+    {
+      "name": "HTTP_SUCCESS",
+      "line": 1178
+    },
+    {
+      "name": "HTTP_SUCCESS_RANGE_END",
+      "line": 1178
+    },
+    {
+      "name": "HTTP_SUCCESS_RANGE_START",
+      "line": 1178
+    },
+    {
+      "name": "HTTP_TOKEN_CODEPOINTS",
+      "line": 60
+    },
+    {
+      "name": "HTTP_TOO_MANY_REQUESTS",
+      "line": 1178
+    },
+    {
+      "name": "HTTP_UNAUTHORIZED",
+      "line": 1178
+    },
+    {
+      "name": "HTTP_VERSION_NOT_SUPPORTED",
+      "line": 60
+    },
+    {
+      "name": "HTTP2_HEADER_AUTHORITY",
+      "line": 97
+    },
+    {
+      "name": "HTTP2_HEADER_CONTENT_LENGTH",
+      "line": 97
+    },
+    {
+      "name": "HTTP2_HEADER_EXPECT",
+      "line": 97
+    },
+    {
+      "name": "HTTP2_HEADER_METHOD",
+      "line": 97
+    },
+    {
+      "name": "HTTP2_HEADER_PATH",
+      "line": 97
+    },
+    {
+      "name": "HTTP2_HEADER_PROTOCOL",
+      "line": 97
+    },
+    {
+      "name": "HTTP2_HEADER_SCHEME",
+      "line": 97
+    },
+    {
+      "name": "HTTP2_HEADER_STATUS",
+      "line": 97
+    },
+    {
+      "name": "HTTPS",
+      "line": 4339
+    },
+    {
+      "name": "HTTPS_CURRENT",
+      "line": 216
+    },
+    {
+      "name": "HTTPS_LEGACY_SUFFIX",
+      "line": 216
+    },
+    {
+      "name": "HTTPS_PROXY",
+      "line": 631
+    },
+    {
+      "name": "HYPHEN_MINUS",
+      "line": 5797
+    },
+    {
+      "name": "ICON",
+      "line": 1024
+    },
+    {
+      "name": "ID_TOKEN",
+      "line": 1178
+    },
+    {
+      "name": "ID_TOKEN_HINT",
+      "line": 1178
+    },
+    {
+      "name": "IDE",
+      "line": 3818
+    },
+    {
+      "name": "IDENT_RE",
+      "line": 5786
+    },
+    {
+      "name": "IDENTITY_ENDPOINT",
+      "line": 1184
+    },
+    {
+      "name": "IDENTITY_HEADER",
+      "line": 1184
+    },
+    {
+      "name": "IDENTITY_PROVIDER_AUTHENTICATION_ERROR",
+      "line": 60
+    },
+    {
+      "name": "IDENTITY_SERVER_THUMBPRINT",
+      "line": 1184
+    },
+    {
+      "name": "IDTOKEN_TOKEN",
+      "line": 1178
+    },
+    {
+      "name": "IDTOKEN_TOKEN_REFRESHTOKEN",
+      "line": 1178
+    },
+    {
+      "name": "IFRAME",
+      "line": 256
+    },
+    {
+      "name": "IM_A_TEAPOT",
+      "line": 60
+    },
+    {
+      "name": "IM_USED",
+      "line": 60
+    },
+    {
+      "name": "IMAGE",
+      "line": 5797
+    },
+    {
+      "name": "IMDS",
+      "line": 1178
+    },
+    {
+      "name": "IMDS_ENDPOINT",
+      "line": 1178
+    },
+    {
+      "name": "IMDS_TIMEOUT",
+      "line": 1178
+    },
+    {
+      "name": "IMDS_VERSION",
+      "line": 1178
+    },
+    {
+      "name": "IMG",
+      "line": 256
+    },
+    {
+      "name": "IMPLICIT_GRANT",
+      "line": 1178
+    },
+    {
+      "name": "IMPORTANT",
+      "line": 600
+    },
+    {
+      "name": "INDEX_SIZE_ERR",
+      "line": 944
+    },
+    {
+      "name": "INF",
+      "line": 1156
+    },
+    {
+      "name": "INFINITY",
+      "line": 1156
+    },
+    {
+      "name": "INFLATE",
+      "line": 736
+    },
+    {
+      "name": "INFLATERAW",
+      "line": 736
+    },
+    {
+      "name": "INFO",
+      "line": 187
+    },
+    {
+      "name": "INITIAL",
+      "line": 99
+    },
+    {
+      "name": "INPUT",
+      "line": 256
+    },
+    {
+      "name": "INS",
+      "line": 256
+    },
+    {
+      "name": "INSERT",
+      "line": 947
+    },
+    {
+      "name": "INSTANCE_AWARE",
+      "line": 1178
+    },
+    {
+      "name": "INSUFFICIENT_STORAGE",
+      "line": 60
+    },
+    {
+      "name": "INT",
+      "line": 5754
+    },
+    {
+      "name": "INTERNAL",
+      "line": 60
+    },
+    {
+      "name": "INTERNAL_CACHE",
+      "line": 1178
+    },
+    {
+      "name": "INTERNAL_SERVER_ERROR",
+      "line": 60
+    },
+    {
+      "name": "INTERVAL_MS",
+      "line": 1184
+    },
+    {
+      "name": "INUSE_ATTRIBUTE_ERR",
+      "line": 944
+    },
+    {
+      "name": "INVALID",
+      "line": 220
+    },
+    {
+      "name": "INVALID_ACCESS_ERR",
+      "line": 944
+    },
+    {
+      "name": "INVALID_CHARACTER_ERR",
+      "line": 944
+    },
+    {
+      "name": "INVALID_CHUNK_SIZE",
+      "line": 60
+    },
+    {
+      "name": "INVALID_CONSTANT",
+      "line": 60
+    },
+    {
+      "name": "INVALID_CONTENT_LENGTH",
+      "line": 60
+    },
+    {
+      "name": "INVALID_EOF_STATE",
+      "line": 60
+    },
+    {
+      "name": "INVALID_GRANT_ERROR",
+      "line": 1178
+    },
+    {
+      "name": "INVALID_HEADER_TOKEN",
+      "line": 60
+    },
+    {
+      "name": "INVALID_INSTANCE",
+      "line": 1178
+    },
+    {
+      "name": "INVALID_METHOD",
+      "line": 60
+    },
+    {
+      "name": "INVALID_MODIFICATION_ERR",
+      "line": 944
+    },
+    {
+      "name": "INVALID_NODE_TYPE_ERR",
+      "line": 944
+    },
+    {
+      "name": "INVALID_SPAN_CONTEXT",
+      "line": 5742
+    },
+    {
+      "name": "INVALID_SPANID",
+      "line": 5742
+    },
+    {
+      "name": "INVALID_SSL_CERTIFICATE",
+      "line": 60
+    },
+    {
+      "name": "INVALID_STATE_ERR",
+      "line": 944
+    },
+    {
+      "name": "INVALID_STATUS",
+      "line": 60
+    },
+    {
+      "name": "INVALID_TOKEN",
+      "line": 60
+    },
+    {
+      "name": "INVALID_TRACEID",
+      "line": 5742
+    },
+    {
+      "name": "INVALID_TRANSFER_ENCODING",
+      "line": 60
+    },
+    {
+      "name": "INVALID_URL",
+      "line": 60
+    },
+    {
+      "name": "INVALID_VERSION",
+      "line": 60
+    },
+    {
+      "name": "INVALID_X_FORWARDED_FOR",
+      "line": 60
+    },
+    {
+      "name": "INVESTIGATION",
+      "line": 1491
+    },
+    {
+      "name": "IPV4",
+      "line": 99
+    },
+    {
+      "name": "IPV6",
+      "line": 99
+    },
+    {
+      "name": "IS_ALLOWED_URI",
+      "line": 241
+    },
+    {
+      "name": "IS_REACT_ACT_ENVIRONMENT",
+      "line": 5938
+    },
+    {
+      "name": "IS_SCRIPT_OR_DATA",
+      "line": 241
+    },
+    {
+      "name": "ISSUER",
+      "line": 1184
+    },
+    {
+      "name": "JSON",
+      "line": 525
+    },
+    {
+      "name": "JUSTIFY_CENTER",
+      "line": 6170
+    },
+    {
+      "name": "JUSTIFY_FLEX_END",
+      "line": 6170
+    },
+    {
+      "name": "JUSTIFY_FLEX_START",
+      "line": 6170
+    },
+    {
+      "name": "JUSTIFY_SPACE_AROUND",
+      "line": 6170
+    },
+    {
+      "name": "JUSTIFY_SPACE_BETWEEN",
+      "line": 6170
+    },
+    {
+      "name": "JUSTIFY_SPACE_EVENLY",
+      "line": 6170
+    },
+    {
+      "name": "JWT_BEARER",
+      "line": 1178
+    },
+    {
+      "name": "JWT_BEARER_ASSERTION_TYPE",
+      "line": 1184
+    },
+    {
+      "name": "JWT_ID",
+      "line": 1184
+    },
+    {
+      "name": "KANJI",
+      "line": 5806
+    },
+    {
+      "name": "KBD",
+      "line": 256
+    },
+    {
+      "name": "KEEP_ALIVE",
+      "line": 60
+    },
+    {
+      "name": "KEEP_CONTENT",
+      "line": 471
+    },
+    {
+      "name": "KEY_SEPARATOR",
+      "line": 1184
+    },
+    {
+      "name": "KEYGEN",
+      "line": 5797
+    },
+    {
+      "name": "KNOWN_PUBLIC_CLOUDS",
+      "line": 1178
+    },
+    {
+      "name": "L123",
+      "line": 5456
+    },
+    {
+      "name": "LABEL",
+      "line": 256
+    },
+    {
+      "name": "LAST_VALUE",
+      "line": 5742
+    },
+    {
+      "name": "LATIN_CAPITAL_A",
+      "line": 5797
+    },
+    {
+      "name": "LATIN_CAPITAL_F",
+      "line": 5797
+    },
+    {
+      "name": "LATIN_CAPITAL_X",
+      "line": 5797
+    },
+    {
+      "name": "LATIN_CAPITAL_Z",
+      "line": 5797
+    },
+    {
+      "name": "LATIN_SMALL_A",
+      "line": 5797
+    },
+    {
+      "name": "LATIN_SMALL_F",
+      "line": 5797
+    },
+    {
+      "name": "LATIN_SMALL_X",
+      "line": 5797
+    },
+    {
+      "name": "LATIN_SMALL_Z",
+      "line": 5797
+    },
+    {
+      "name": "LDD_PATH",
+      "line": 1051
+    },
+    {
+      "name": "LEAK",
+      "line": 924
+    },
+    {
+      "name": "LEFT_BRACKET",
+      "line": 6172
+    },
+    {
+      "name": "LEGEND",
+      "line": 256
+    },
+    {
+      "name": "LENGTH_REQUIRED",
+      "line": 60
+    },
+    {
+      "name": "LENIENT_FLAGS",
+      "line": 60
+    },
+    {
+      "name": "LESS_THAN_SIGN",
+      "line": 5797
+    },
+    {
+      "name": "LETTER_M",
+      "line": 6172
+    },
+    {
+      "name": "LF_EXPECTED",
+      "line": 60
+    },
+    {
+      "name": "LIMITED_QUIRKS",
+      "line": 5797
+    },
+    {
+      "name": "LINE",
+      "line": 256
+    },
+    {
+      "name": "LINE_FEED",
+      "line": 5797
+    },
+    {
+      "name": "LINES_ADDED",
+      "line": 5742
+    },
+    {
+      "name": "LINES_REMOVED",
+      "line": 5742
+    },
+    {
+      "name": "LINK",
+      "line": 60
+    },
+    {
+      "name": "LISTING",
+      "line": 5797
+    },
+    {
+      "name": "LLM",
+      "line": 6863
+    },
+    {
+      "name": "LOADED",
+      "line": 947
+    },
+    {
+      "name": "LOADING",
+      "line": 675
+    },
+    {
+      "name": "LOCAL_FILE_HEADER",
+      "line": 894
+    },
+    {
+      "name": "LOCAL_FILE_HEADER_SUFFIX",
+      "line": 894
+    },
+    {
+      "name": "LOCALHOST",
+      "line": 1184
+    },
+    {
+      "name": "LOCK",
+      "line": 60
+    },
+    {
+      "name": "LOCKED",
+      "line": 60
+    },
+    {
+      "name": "LOG_LEVEL_DEBUG",
+      "line": 6170
+    },
+    {
+      "name": "LOG_LEVEL_ERROR",
+      "line": 6170
+    },
+    {
+      "name": "LOG_LEVEL_FATAL",
+      "line": 6170
+    },
+    {
+      "name": "LOG_LEVEL_INFO",
+      "line": 6170
+    },
+    {
+      "name": "LOG_LEVEL_VERBOSE",
+      "line": 6170
+    },
+    {
+      "name": "LOG_LEVEL_WARN",
+      "line": 6170
+    },
+    {
+      "name": "LOGIN",
+      "line": 1178
+    },
+    {
+      "name": "LOGIN_HINT",
+      "line": 1178
+    },
+    {
+      "name": "LOGIN_TIMEOUT",
+      "line": 60
+    },
+    {
+      "name": "LOGOUT_HINT",
+      "line": 1178
+    },
+    {
+      "name": "LONG",
+      "line": 1024
+    },
+    {
+      "name": "LONG8",
+      "line": 1024
+    },
+    {
+      "name": "LOOP_DETECTED",
+      "line": 60
+    },
+    {
+      "name": "LTE",
+      "line": 4120
+    },
+    {
+      "name": "MACHINE_LEARNING",
+      "line": 1184
+    },
+    {
+      "name": "MAIN",
+      "line": 256
+    },
+    {
+      "name": "MAJOR",
+      "line": 60
+    },
+    {
+      "name": "MALIGNMARK",
+      "line": 5797
+    },
+    {
+      "name": "MANAGED_IDENTITY_CLIENT_ID",
+      "line": 1186
+    },
+    {
+      "name": "MANAGED_IDENTITY_CLIENT_ID_2017",
+      "line": 1186
+    },
+    {
+      "name": "MANAGED_IDENTITY_OBJECT_ID",
+      "line": 1186
+    },
+    {
+      "name": "MANAGED_IDENTITY_RESOURCE_ID_IMDS",
+      "line": 1186
+    },
+    {
+      "name": "MANAGED_IDENTITY_RESOURCE_ID_NON_IMDS",
+      "line": 1186
+    },
+    {
+      "name": "MAP",
+      "line": 256
+    },
+    {
+      "name": "MARK",
+      "line": 60
+    },
+    {
+      "name": "MARQUEE",
+      "line": 5797
+    },
+    {
+      "name": "MATCH_NOTHING_RE",
+      "line": 5786
+    },
+    {
+      "name": "MATH",
+      "line": 256
+    },
+    {
+      "name": "MATHML",
+      "line": 944
+    },
+    {
+      "name": "MAX_BUFFER_SIZE",
+      "line": 5610
+    },
+    {
+      "name": "MAX_LENGTH",
+      "line": 239
+    },
+    {
+      "name": "MAX_RECENT_RELEASES",
+      "line": 1599
+    },
+    {
+      "name": "MAX_SAFE_BUILD_LENGTH",
+      "line": 1051
+    },
+    {
+      "name": "MAX_SAFE_COMPONENT_LENGTH",
+      "line": 1051
+    },
+    {
+      "name": "MAX_SAFE_INTEGER",
+      "line": 1051
+    },
+    {
+      "name": "MCP",
+      "line": 6195
+    },
+    {
+      "name": "MCP_ALLOWLIST",
+      "line": 239
+    },
+    {
+      "name": "MCP_ENTERPRISE_ALLOWLIST",
+      "line": 239
+    },
+    {
+      "name": "MCP_REGISTRY_INSTALL",
+      "line": 239
+    },
+    {
+      "name": "MCP_TASKS",
+      "line": 239
+    },
+    {
+      "name": "MCP_TASKS_SEP2669",
+      "line": 239
+    },
+    {
+      "name": "MCP_TASKS_SEP2694",
+      "line": 239
+    },
+    {
+      "name": "MEASURE_MODE_AT_MOST",
+      "line": 6170
+    },
+    {
+      "name": "MEASURE_MODE_EXACTLY",
+      "line": 6170
+    },
+    {
+      "name": "MEASURE_MODE_UNDEFINED",
+      "line": 6170
+    },
+    {
+      "name": "MENU",
+      "line": 256
+    },
+    {
+      "name": "MENUITEM",
+      "line": 256
+    },
+    {
+      "name": "MERGE",
+      "line": 60
+    },
+    {
+      "name": "MESSAGE",
+      "line": 5742
+    },
+    {
+      "name": "MESSAGES_LENGTH",
+      "line": 5742
+    },
+    {
+      "name": "MESSAGES_REMOVED",
+      "line": 5742
+    },
+    {
+      "name": "META",
+      "line": 256
+    },
+    {
+      "name": "METADATA_HEADER_NAME",
+      "line": 1184
+    },
+    {
+      "name": "METER",
+      "line": 256
+    },
+    {
+      "name": "METHOD_GUARD",
+      "line": 5786
+    },
+    {
+      "name": "METHOD_MAP",
+      "line": 60
+    },
+    {
+      "name": "METHOD_NOT_ALLOWED",
+      "line": 60
+    },
+    {
+      "name": "METHODS",
+      "line": 60
+    },
+    {
+      "name": "METHODS_HTTP",
+      "line": 60
+    },
+    {
+      "name": "METHODS_ICE",
+      "line": 60
+    },
+    {
+      "name": "METHODS_RTSP",
+      "line": 60
+    },
+    {
+      "name": "MGLYPH",
+      "line": 5797
+    },
+    {
+      "name": "MINOR",
+      "line": 60
+    },
+    {
+      "name": "MINUS_INFINITY",
+      "line": 1156
+    },
+    {
+      "name": "MISCELLANEOUS_PERSISTENT_WARNING",
+      "line": 60
+    },
+    {
+      "name": "MISCELLANEOUS_WARNING",
+      "line": 60
+    },
+    {
+      "name": "MISDIRECTED_REQUEST",
+      "line": 60
+    },
+    {
+      "name": "MKACTIVITY",
+      "line": 60
+    },
+    {
+      "name": "MKCALENDAR",
+      "line": 60
+    },
+    {
+      "name": "MKCOL",
+      "line": 60
+    },
+    {
+      "name": "ML_AND_SF_SECRET_HEADER_NAME",
+      "line": 1184
+    },
+    {
+      "name": "MOVE",
+      "line": 60
+    },
+    {
+      "name": "MOVED_PERMANENTLY",
+      "line": 60
+    },
+    {
+      "name": "MSA",
+      "line": 1178
+    },
+    {
+      "name": "MSAL_SKU",
+      "line": 1184
+    },
+    {
+      "name": "MSI_ENDPOINT",
+      "line": 1184
+    },
+    {
+      "name": "MSI_SECRET",
+      "line": 1184
+    },
+    {
+      "name": "MSSTS",
+      "line": 1178
+    },
+    {
+      "name": "MTEXT",
+      "line": 5797
+    },
+    {
+      "name": "MULTI_STATUS",
+      "line": 60
+    },
+    {
+      "name": "MULTI_TURN_AGENTS",
+      "line": 239
+    },
+    {
+      "name": "MULTIPLE_CHOICES",
+      "line": 60
+    },
+    {
+      "name": "MUSL",
+      "line": 1051
+    },
+    {
+      "name": "MUSTACHE_EXPR",
+      "line": 241
+    },
+    {
+      "name": "NAME",
+      "line": 5797
+    },
+    {
+      "name": "NAMESPACE_ERR",
+      "line": 944
+    },
+    {
+      "name": "NAN",
+      "line": 1156
+    },
+    {
+      "name": "NATIVE_BROKER",
+      "line": 1178
+    },
+    {
+      "name": "NATIVE_CURSOR",
+      "line": 239
+    },
+    {
+      "name": "NAV",
+      "line": 256
+    },
+    {
+      "name": "NEGATIVE_INFINITY",
+      "line": 788
+    },
+    {
+      "name": "NEQ",
+      "line": 4120
+    },
+    {
+      "name": "NETLIFY",
+      "line": 5805
+    },
+    {
+      "name": "NETWORK",
+      "line": 1178
+    },
+    {
+      "name": "NETWORK_AUTHENTICATION_REQUIRED",
+      "line": 60
+    },
+    {
+      "name": "NETWORK_CONNECT_TIMEOUT",
+      "line": 60
+    },
+    {
+      "name": "NETWORK_ERR",
+      "line": 944
+    },
+    {
+      "name": "NETWORK_READ_TIMEOUT",
+      "line": 60
+    },
+    {
+      "name": "NETWORK_UNREACHABLE",
+      "line": 99
+    },
+    {
+      "name": "NEVER",
+      "line": 220
+    },
+    {
+      "name": "NGHTTP2_NO_ERROR",
+      "line": 97
+    },
+    {
+      "name": "NGHTTP2_REFUSED_STREAM",
+      "line": 97
+    },
+    {
+      "name": "NO_ACCEPTABLE",
+      "line": 99
+    },
+    {
+      "name": "NO_AUTH",
+      "line": 99
+    },
+    {
+      "name": "NO_CACHED_ACCESS_TOKEN",
+      "line": 1178
+    },
+    {
+      "name": "NO_CONTENT",
+      "line": 60
+    },
+    {
+      "name": "NO_DATA_ALLOWED_ERR",
+      "line": 944
+    },
+    {
+      "name": "NO_DOT",
+      "line": 239
+    },
+    {
+      "name": "NO_DOT_SLASH",
+      "line": 239
+    },
+    {
+      "name": "NO_DOTS",
+      "line": 239
+    },
+    {
+      "name": "NO_DOTS_SLASH",
+      "line": 239
+    },
+    {
+      "name": "NO_MODIFICATION_ALLOWED_ERR",
+      "line": 944
+    },
+    {
+      "name": "NO_QUIRKS",
+      "line": 5797
+    },
+    {
+      "name": "NO_RESPONSE",
+      "line": 60
+    },
+    {
+      "name": "NO_SESSION",
+      "line": 1178
+    },
+    {
+      "name": "NOBR",
+      "line": 5797
+    },
+    {
+      "name": "NODE_TYPE_DEFAULT",
+      "line": 6170
+    },
+    {
+      "name": "NODE_TYPE_TEXT",
+      "line": 6170
+    },
+    {
+      "name": "NOEMBED",
+      "line": 945
+    },
+    {
+      "name": "NOFRAMES",
+      "line": 945
+    },
+    {
+      "name": "NON_AUTHORITATIVE_INFORMATION",
+      "line": 60
+    },
+    {
+      "name": "NONCE",
+      "line": 1178
+    },
+    {
+      "name": "NONE",
+      "line": 947
+    },
+    {
+      "name": "NOOP",
+      "line": 455
+    },
+    {
+      "name": "NOSCRIPT",
+      "line": 256
+    },
+    {
+      "name": "NOT",
+      "line": 4120
+    },
+    {
+      "name": "NOT_ACCEPTABLE",
+      "line": 60
+    },
+    {
+      "name": "NOT_APPLICABLE",
+      "line": 1178
+    },
+    {
+      "name": "NOT_AVAILABLE",
+      "line": 1178
+    },
+    {
+      "name": "NOT_BEFORE",
+      "line": 1184
+    },
+    {
+      "name": "NOT_EXTENDED",
+      "line": 60
+    },
+    {
+      "name": "NOT_FOUND",
+      "line": 60
+    },
+    {
+      "name": "NOT_FOUND_ERR",
+      "line": 944
+    },
+    {
+      "name": "NOT_IMPLEMENTED",
+      "line": 60
+    },
+    {
+      "name": "NOT_MODIFIED",
+      "line": 60
+    },
+    {
+      "name": "NOT_RECORD",
+      "line": 5742
+    },
+    {
+      "name": "NOT_SENT",
+      "line": 675
+    },
+    {
+      "name": "NOT_SUPPORTED_ERR",
+      "line": 944
+    },
+    {
+      "name": "NOTATION_NODE",
+      "line": 947
+    },
+    {
+      "name": "NOTE",
+      "line": 620
+    },
+    {
+      "name": "NOTIFY",
+      "line": 60
+    },
+    {
+      "name": "NULL",
+      "line": 60
+    },
+    {
+      "name": "NUM",
+      "line": 60
+    },
+    {
+      "name": "NUM_MAP",
+      "line": 60
+    },
+    {
+      "name": "NUMBER",
+      "line": 60
+    },
+    {
+      "name": "NUMBER_FORMAT_RANGES",
+      "line": 4092
+    },
+    {
+      "name": "NUMBER_MODE",
+      "line": 5786
+    },
+    {
+      "name": "NUMBER_RE",
+      "line": 5786
+    },
+    {
+      "name": "NUMBER_SIGN",
+      "line": 5797
+    },
+    {
+      "name": "NUMERIC",
+      "line": 5806
+    },
+    {
+      "name": "O_CREAT",
+      "line": 738
+    },
+    {
+      "name": "O_TRUNC",
+      "line": 738
+    },
+    {
+      "name": "O_WRONLY",
+      "line": 738
+    },
+    {
+      "name": "OBJ",
+      "line": 1156
+    },
+    {
+      "name": "OBJECT",
+      "line": 60
+    },
+    {
+      "name": "OBO_ASSERTION",
+      "line": 1178
+    },
+    {
+      "name": "OBSERVABLE_COUNTER",
+      "line": 5742
+    },
+    {
+      "name": "OBSERVABLE_GAUGE",
+      "line": 5742
+    },
+    {
+      "name": "OBSERVABLE_UP_DOWN_COUNTER",
+      "line": 5742
+    },
+    {
+      "name": "ODR",
+      "line": 6024
+    },
+    {
+      "name": "OFFLINE_ACCESS_SCOPE",
+      "line": 1178
+    },
+    {
+      "name": "OIDC",
+      "line": 1178
+    },
+    {
+      "name": "OIDC_DEFAULT_SCOPES",
+      "line": 1178
+    },
+    {
+      "name": "OIDC_SCOPES",
+      "line": 1178
+    },
+    {
+      "name": "OKLCH",
+      "line": 1609
+    },
+    {
+      "name": "ON_BEHALF_OF",
+      "line": 1178
+    },
+    {
+      "name": "ON_DEMAND_INSTRUCTIONS",
+      "line": 239
+    },
+    {
+      "name": "ONE_CHAR",
+      "line": 239
+    },
+    {
+      "name": "ONE_DAY_IN_MS",
+      "line": 1178
+    },
+    {
+      "name": "OPEN",
+      "line": 187
+    },
+    {
+      "name": "OPENID_SCOPE",
+      "line": 1178
+    },
+    {
+      "name": "OPTGROUP",
+      "line": 256
+    },
+    {
+      "name": "OPTION",
+      "line": 256
+    },
+    {
+      "name": "OPTIONAL_CR_BEFORE_LF",
+      "line": 60
+    },
+    {
+      "name": "OPTIONAL_CRLF_AFTER_CHUNK",
+      "line": 60
+    },
+    {
+      "name": "OPTIONAL_LF_AFTER_CR",
+      "line": 60
+    },
+    {
+      "name": "OPTIONS",
+      "line": 60
+    },
+    {
+      "name": "ORGANIZATIONS",
+      "line": 1178
+    },
+    {
+      "name": "ORIGIN_IS_UNREACHABLE",
+      "line": 60
+    },
+    {
+      "name": "OUTPUT",
+      "line": 256
+    },
+    {
+      "name": "OVERFLOW",
+      "line": 924
+    },
+    {
+      "name": "OVERFLOW_HIDDEN",
+      "line": 6170
+    },
+    {
+      "name": "OVERFLOW_PRIORITY",
+      "line": 924
+    },
+    {
+      "name": "OVERFLOW_SCROLL",
+      "line": 6170
+    },
+    {
+      "name": "OVERFLOW_VISIBLE",
+      "line": 6170
+    },
+    {
+      "name": "PAGE_EXPIRED",
+      "line": 60
+    },
+    {
+      "name": "PARAM",
+      "line": 256
+    },
+    {
+      "name": "PARAMS_CONTAINS",
+      "line": 5791
+    },
+    {
+      "name": "PARTIAL_CONTENT",
+      "line": 60
+    },
+    {
+      "name": "PAT",
+      "line": 676
+    },
+    {
+      "name": "PATCH",
+      "line": 60
+    },
+    {
+      "name": "PATH",
+      "line": 256
+    },
+    {
+      "name": "PATTERN000",
+      "line": 5805
+    },
+    {
+      "name": "PATTERN001",
+      "line": 5805
+    },
+    {
+      "name": "PATTERN010",
+      "line": 5805
+    },
+    {
+      "name": "PATTERN011",
+      "line": 5805
+    },
+    {
+      "name": "PATTERN100",
+      "line": 5805
+    },
+    {
+      "name": "PATTERN101",
+      "line": 5805
+    },
+    {
+      "name": "PATTERN110",
+      "line": 5805
+    },
+    {
+      "name": "PATTERN111",
+      "line": 5805
+    },
+    {
+      "name": "PAUSE",
+      "line": 60
+    },
+    {
+      "name": "PAUSED",
+      "line": 60
+    },
+    {
+      "name": "PAUSED_H2_UPGRADE",
+      "line": 60
+    },
+    {
+      "name": "PAUSED_UPGRADE",
+      "line": 60
+    },
+    {
+      "name": "PAYLOAD_TOO_LARGE",
+      "line": 60
+    },
+    {
+      "name": "PAYLOADLENGTH_16",
+      "line": 187
+    },
+    {
+      "name": "PAYLOADLENGTH_64",
+      "line": 187
+    },
+    {
+      "name": "PAYMENT_REQUIRED",
+      "line": 60
+    },
+    {
+      "name": "PERFORMED_BY",
+      "line": 5742
+    },
+    {
+      "name": "PERMANENT_REDIRECT",
+      "line": 60
+    },
+    {
+      "name": "PERMISSION_KIND",
+      "line": 5742
+    },
+    {
+      "name": "PERMISSION_REQUEST",
+      "line": 6063
+    },
+    {
+      "name": "PERMISSION_RESULT",
+      "line": 5742
+    },
+    {
+      "name": "PERMISSION_TOOL_NAME",
+      "line": 5742
+    },
+    {
+      "name": "PHASE",
+      "line": 1467
+    },
+    {
+      "name": "PHONY",
+      "line": 5792
+    },
+    {
+      "name": "PHRASAL_WORDS_MODE",
+      "line": 5786
+    },
+    {
+      "name": "PHRASING_ELEMS",
+      "line": 927
+    },
+    {
+      "name": "PICTURE",
+      "line": 256
+    },
+    {
+      "name": "PID",
+      "line": 4784
+    },
+    {
+      "name": "PING",
+      "line": 187
+    },
+    {
+      "name": "PKG_CONFIG_PATH",
+      "line": 1051
+    },
+    {
+      "name": "PLAIN",
+      "line": 770
+    },
+    {
+      "name": "PLAINTEXT",
+      "line": 945
+    },
+    {
+      "name": "PLAY",
+      "line": 60
+    },
+    {
+      "name": "PLUGIN_ROOT",
+      "line": 525
+    },
+    {
+      "name": "PLUS_LITERAL",
+      "line": 239
+    },
+    {
+      "name": "PNG_SIGNATURE",
+      "line": 5811
+    },
+    {
+      "name": "POLYGON",
+      "line": 256
+    },
+    {
+      "name": "POLYLINE",
+      "line": 256
+    },
+    {
+      "name": "PONG",
+      "line": 187
+    },
+    {
+      "name": "POP",
+      "line": 1178
+    },
+    {
+      "name": "POSITION_TYPE_ABSOLUTE",
+      "line": 6170
+    },
+    {
+      "name": "POSITION_TYPE_RELATIVE",
+      "line": 6170
+    },
+    {
+      "name": "POSITION_TYPE_STATIC",
+      "line": 6170
+    },
+    {
+      "name": "POSITIVE_INFINITY",
+      "line": 7344
+    },
+    {
+      "name": "POSIX_REGEX_SOURCE",
+      "line": 239
+    },
+    {
+      "name": "POST",
+      "line": 60
+    },
+    {
+      "name": "POST_LOGOUT_URI",
+      "line": 1178
+    },
+    {
+      "name": "POST_MESSAGES",
+      "line": 5742
+    },
+    {
+      "name": "POST_TOKENS",
+      "line": 5742
+    },
+    {
+      "name": "POWERSHELL_UPDATECHECK",
+      "line": 2790
+    },
+    {
+      "name": "PRE",
+      "line": 256
+    },
+    {
+      "name": "PRE_MESSAGES",
+      "line": 5742
+    },
+    {
+      "name": "PRE_TOKENS",
+      "line": 5742
+    },
+    {
+      "name": "PRECONDITION_FAILED",
+      "line": 60
+    },
+    {
+      "name": "PRECONDITION_REQUIRED",
+      "line": 60
+    },
+    {
+      "name": "PRESENTATIONAL_ATTRIBUTES",
+      "line": 927
+    },
+    {
+      "name": "PRI",
+      "line": 60
+    },
+    {
+      "name": "PROACTIVELY_REFRESHED",
+      "line": 1178
+    },
+    {
+      "name": "PROCESSING",
+      "line": 60
+    },
+    {
+      "name": "PROCESSING_INSTRUCTION_NODE",
+      "line": 947
+    },
+    {
+      "name": "PROFILE_SCOPE",
+      "line": 1178
+    },
+    {
+      "name": "PROGRESS",
+      "line": 256
+    },
+    {
+      "name": "PROMPT",
+      "line": 1178
+    },
+    {
+      "name": "PROMPT_FRAME",
+      "line": 239
+    },
+    {
+      "name": "PROPFIND",
+      "line": 60
+    },
+    {
+      "name": "PROPPATCH",
+      "line": 60
+    },
+    {
+      "name": "PROXY_AUTHENTICATION_REQUIRED",
+      "line": 60
+    },
+    {
+      "name": "PSS_256",
+      "line": 1184
+    },
+    {
+      "name": "PUBLIC_STRING",
+      "line": 5797
+    },
+    {
+      "name": "PURGE",
+      "line": 60
+    },
+    {
+      "name": "PUT",
+      "line": 60
+    },
+    {
+      "name": "PYTHONUNBUFFERED",
+      "line": 4135
+    },
+    {
+      "name": "QMARK",
+      "line": 239
+    },
+    {
+      "name": "QMARK_LITERAL",
+      "line": 239
+    },
+    {
+      "name": "QMARK_NO_DOT",
+      "line": 239
+    },
+    {
+      "name": "QUERY",
+      "line": 60
+    },
+    {
+      "name": "QUESTION_MARK",
+      "line": 5797
+    },
+    {
+      "name": "QUEUED_COMMANDS",
+      "line": 239
+    },
+    {
+      "name": "QUIRKS",
+      "line": 5797
+    },
+    {
+      "name": "QUOT",
+      "line": 948
+    },
+    {
+      "name": "QUOTA_EXCEEDED_ERR",
+      "line": 944
+    },
+    {
+      "name": "QUOTATION_MARK",
+      "line": 5797
+    },
+    {
+      "name": "QUOTE_DOUBLE",
+      "line": 770
+    },
+    {
+      "name": "QUOTE_SINGLE",
+      "line": 770
+    },
+    {
+      "name": "QUOTE_STRING_MODE",
+      "line": 5786
+    },
+    {
+      "name": "QUOTED_STRING",
+      "line": 60
+    },
+    {
+      "name": "RAILGUN_ERROR",
+      "line": 60
+    },
+    {
+      "name": "RANGE_NOT_SATISFIABLE",
+      "line": 60
+    },
+    {
+      "name": "RAWTEXT",
+      "line": 5797
+    },
+    {
+      "name": "RCDATA",
+      "line": 5797
+    },
+    {
+      "name": "RE_STARTERS_RE",
+      "line": 5786
+    },
+    {
+      "name": "READ_DATA",
+      "line": 187
+    },
+    {
+      "name": "README",
+      "line": 5024
+    },
+    {
+      "name": "REBIND",
+      "line": 60
+    },
+    {
+      "name": "RECEIVED",
+      "line": 187
+    },
+    {
+      "name": "RECORD",
+      "line": 60
+    },
+    {
+      "name": "RECORD_AND_SAMPLED",
+      "line": 5742
+    },
+    {
+      "name": "RECT",
+      "line": 256
+    },
+    {
+      "name": "REDIRECT",
+      "line": 60
+    },
+    {
+      "name": "REDIRECT_URI",
+      "line": 1178
+    },
+    {
+      "name": "REFRESH_TOKEN",
+      "line": 1178
+    },
+    {
+      "name": "REFRESH_TOKEN_EXPIRES_IN",
+      "line": 1178
+    },
+    {
+      "name": "REFRESH_TOKEN_GRANT",
+      "line": 1178
+    },
+    {
+      "name": "REG",
+      "line": 948
+    },
+    {
+      "name": "REGEX_BACKSLASH",
+      "line": 239
+    },
+    {
+      "name": "REGEX_NON_SPECIAL_CHARS",
+      "line": 239
+    },
+    {
+      "name": "REGEX_REMOVE_BACKSLASH",
+      "line": 239
+    },
+    {
+      "name": "REGEX_SPECIAL_CHARS",
+      "line": 239
+    },
+    {
+      "name": "REGEX_SPECIAL_CHARS_BACKREF",
+      "line": 239
+    },
+    {
+      "name": "REGEX_SPECIAL_CHARS_GLOBAL",
+      "line": 239
+    },
+    {
+      "name": "REGEXP_MODE",
+      "line": 5786
+    },
+    {
+      "name": "REGEXPS",
+      "line": 927
+    },
+    {
+      "name": "REGIONAL_AUTH_PUBLIC_CLOUD_SUFFIX",
+      "line": 1178
+    },
+    {
+      "name": "RELEASE_TYPES",
+      "line": 1051
+    },
+    {
+      "name": "REMOTE_KICKSTART",
+      "line": 239
+    },
+    {
+      "name": "REMOVE",
+      "line": 947
+    },
+    {
+      "name": "REMOVE_ATTR",
+      "line": 947
+    },
+    {
+      "name": "REMOVE_CWD_LISTING",
+      "line": 239
+    },
+    {
+      "name": "REMOVE_PARALLEL_TOOL_PROMPT",
+      "line": 239
+    },
+    {
+      "name": "REPLACEMENT_BLOCKS",
+      "line": 239
+    },
+    {
+      "name": "REPLACEMENT_CHARACTER",
+      "line": 5797
+    },
+    {
+      "name": "REPLACEMENTS",
+      "line": 239
+    },
+    {
+      "name": "REPLY_CODES",
+      "line": 99
+    },
+    {
+      "name": "REPORT",
+      "line": 60
+    },
+    {
+      "name": "REPOSITORY",
+      "line": 5742
+    },
+    {
+      "name": "REQ_CNF",
+      "line": 1178
+    },
+    {
+      "name": "REQUEST",
+      "line": 60
+    },
+    {
+      "name": "REQUEST_HEADER_FIELDS_TOO_LARGE",
+      "line": 60
+    },
+    {
+      "name": "REQUEST_HEADER_FIELDS_TOO_LARGE_UNOFFICIAL",
+      "line": 60
+    },
+    {
+      "name": "REQUEST_HEADER_TOO_LARGE",
+      "line": 60
+    },
+    {
+      "name": "REQUEST_TIMEOUT",
+      "line": 60
+    },
+    {
+      "name": "REQUESTED_TOKEN_USE",
+      "line": 1178
+    },
+    {
+      "name": "REQUIREMENT",
+      "line": 3167
+    },
+    {
+      "name": "RESET_CONTENT",
+      "line": 60
+    },
+    {
+      "name": "RESOURCE",
+      "line": 1178
+    },
+    {
+      "name": "RESOURCE_DELIM",
+      "line": 1178
+    },
+    {
+      "name": "RESOURCE_OWNER_PASSWORD_GRANT",
+      "line": 1178
+    },
+    {
+      "name": "RESPONSE",
+      "line": 60
+    },
+    {
+      "name": "RESPONSE_IS_STALE",
+      "line": 60
+    },
+    {
+      "name": "RESPONSE_MODE",
+      "line": 1178
+    },
+    {
+      "name": "RESPONSE_TYPE",
+      "line": 1178
+    },
+    {
+      "name": "RETRY_AFTER",
+      "line": 1178
+    },
+    {
+      "name": "RETRY_WITH",
+      "line": 60
+    },
+    {
+      "name": "RETURN_DOM",
+      "line": 471
+    },
+    {
+      "name": "RETURN_DOM_FRAGMENT",
+      "line": 471
+    },
+    {
+      "name": "RETURN_SPA_CODE",
+      "line": 1178
+    },
+    {
+      "name": "RETURN_TRUSTED_TYPE",
+      "line": 471
+    },
+    {
+      "name": "REVALIDATION_FAILED",
+      "line": 60
+    },
+    {
+      "name": "RFC1738",
+      "line": 1148
+    },
+    {
+      "name": "RFC3986",
+      "line": 1148
+    },
+    {
+      "name": "RIGHT_SQUARE_BRACKET",
+      "line": 5797
+    },
+    {
+      "name": "ROOT_CONTEXT",
+      "line": 5742
+    },
+    {
+      "name": "RSA_256",
+      "line": 1184
+    },
+    {
+      "name": "RTC",
+      "line": 256
+    },
+    {
+      "name": "RUBBER_DUCK_AGENT",
+      "line": 239
+    },
+    {
+      "name": "RUBY",
+      "line": 256
+    },
+    {
+      "name": "RULES",
+      "line": 4124
+    },
+    {
+      "name": "S256",
+      "line": 1178
+    },
+    {
+      "name": "S256_CODE_CHALLENGE_METHOD",
+      "line": 1178
+    },
+    {
+      "name": "SAFE",
+      "line": 60
+    },
+    {
+      "name": "SAFE_FOR_TEMPLATES",
+      "line": 471
+    },
+    {
+      "name": "SAFE_FOR_XML",
+      "line": 471
+    },
+    {
+      "name": "SAFE_WITH_CB",
+      "line": 60
+    },
+    {
+      "name": "SAMP",
+      "line": 256
+    },
+    {
+      "name": "SAMPLED",
+      "line": 5742
+    },
+    {
+      "name": "SANDBOX",
+      "line": 239
+    },
+    {
+      "name": "SANITIZE_DOM",
+      "line": 471
+    },
+    {
+      "name": "SCHEMES",
+      "line": 4124
+    },
+    {
+      "name": "SCOPE",
+      "line": 1178
+    },
+    {
+      "name": "SCRIPT",
+      "line": 256
+    },
+    {
+      "name": "SCRIPT_DATA",
+      "line": 5797
+    },
+    {
+      "name": "SCRIPT_STRING",
+      "line": 5797
+    },
+    {
+      "name": "SCROLLBAR",
+      "line": 6155
+    },
+    {
+      "name": "SDK_CLIENT_NAME",
+      "line": 6096
+    },
+    {
+      "name": "SEARCH",
+      "line": 60
+    },
+    {
+      "name": "SECTION",
+      "line": 256
+    },
+    {
+      "name": "SECURITY_ERR",
+      "line": 944
+    },
+    {
+      "name": "SEE_OTHER",
+      "line": 60
+    },
+    {
+      "name": "SELECT",
+      "line": 256
+    },
+    {
+      "name": "SELECT_ACCOUNT",
+      "line": 1178
+    },
+    {
+      "name": "SELF_PATH",
+      "line": 1051
+    },
+    {
+      "name": "SEMICOLON",
+      "line": 5797
+    },
+    {
+      "name": "SEMVER_SPEC_VERSION",
+      "line": 1051
+    },
+    {
+      "name": "SENT",
+      "line": 187
+    },
+    {
+      "name": "SEP",
+      "line": 239
+    },
+    {
+      "name": "SERVER_TELEM_CACHE_KEY",
+      "line": 1178
+    },
+    {
+      "name": "SERVER_TELEM_CATEGORY_SEPARATOR",
+      "line": 1178
+    },
+    {
+      "name": "SERVER_TELEM_MAX_CACHED_ERRORS",
+      "line": 1178
+    },
+    {
+      "name": "SERVER_TELEM_MAX_CUR_HEADER_BYTES",
+      "line": 1178
+    },
+    {
+      "name": "SERVER_TELEM_MAX_LAST_HEADER_BYTES",
+      "line": 1178
+    },
+    {
+      "name": "SERVER_TELEM_OVERFLOW_FALSE",
+      "line": 1178
+    },
+    {
+      "name": "SERVER_TELEM_OVERFLOW_TRUE",
+      "line": 1178
+    },
+    {
+      "name": "SERVER_TELEM_SCHEMA_VERSION",
+      "line": 1178
+    },
+    {
+      "name": "SERVER_TELEM_UNKNOWN_ERROR",
+      "line": 1178
+    },
+    {
+      "name": "SERVER_TELEM_VALUE_SEPARATOR",
+      "line": 1178
+    },
+    {
+      "name": "SERVICE_FABRIC",
+      "line": 1184
+    },
+    {
+      "name": "SERVICE_UNAVAILABLE",
+      "line": 60
+    },
+    {
+      "name": "SESSION_ABORT",
+      "line": 5742
+    },
+    {
+      "name": "SESSION_BASED_SUBAGENTS",
+      "line": 239
+    },
+    {
+      "name": "SESSION_COMPACTION_COMPLETE",
+      "line": 5742
+    },
+    {
+      "name": "SESSION_COMPACTION_START",
+      "line": 5742
+    },
+    {
+      "name": "SESSION_CONTEXT_CHANGED",
+      "line": 5742
+    },
+    {
+      "name": "SESSION_CREATE",
+      "line": 6063
+    },
+    {
+      "name": "SESSION_DELETE",
+      "line": 6063
+    },
+    {
+      "name": "SESSION_DESTROY",
+      "line": 6063
+    },
+    {
+      "name": "SESSION_EVENT",
+      "line": 6063
+    },
+    {
+      "name": "SESSION_GET_FOREGROUND",
+      "line": 6063
+    },
+    {
+      "name": "SESSION_GET_LAST_ID",
+      "line": 6063
+    },
+    {
+      "name": "SESSION_GET_MESSAGES",
+      "line": 6063
+    },
+    {
+      "name": "SESSION_GET_METADATA",
+      "line": 6063
+    },
+    {
+      "name": "SESSION_ID",
+      "line": 6096
+    },
+    {
+      "name": "SESSION_INDEXING",
+      "line": 239
+    },
+    {
+      "name": "SESSION_INDEXING_REPO",
+      "line": 239
+    },
+    {
+      "name": "SESSION_LIFECYCLE",
+      "line": 6063
+    },
+    {
+      "name": "SESSION_LIST",
+      "line": 6063
+    },
+    {
+      "name": "SESSION_RESUME",
+      "line": 6063
+    },
+    {
+      "name": "SESSION_SEND",
+      "line": 6063
+    },
+    {
+      "name": "SESSION_SET_FOREGROUND",
+      "line": 6063
+    },
+    {
+      "name": "SESSION_SHUTDOWN",
+      "line": 5742
+    },
+    {
+      "name": "SESSION_SNAPSHOT_REWIND",
+      "line": 5742
+    },
+    {
+      "name": "SESSION_STATE",
+      "line": 1178
+    },
+    {
+      "name": "SESSION_STORE",
+      "line": 239
+    },
+    {
+      "name": "SESSION_TRUNCATION",
+      "line": 5742
+    },
+    {
+      "name": "SESSION_USAGE_INFO",
+      "line": 5742
+    },
+    {
+      "name": "SET_PARAMETER",
+      "line": 60
+    },
+    {
+      "name": "SETUP",
+      "line": 60
+    },
+    {
+      "name": "SGR",
+      "line": 5611
+    },
+    {
+      "name": "SGR_PIXELS",
+      "line": 5611
+    },
+    {
+      "name": "SHA",
+      "line": 731
+    },
+    {
+      "name": "SHA256",
+      "line": 1184
+    },
+    {
+      "name": "SHA256_TOKEN_TO_REFRESH",
+      "line": 1184
+    },
+    {
+      "name": "SHEBANG",
+      "line": 5786
+    },
+    {
+      "name": "SHELL_ERROR_CLASSIFICATION",
+      "line": 239
+    },
+    {
+      "name": "SHELL_EXIT",
+      "line": 6063
+    },
+    {
+      "name": "SHELL_OUTPUT",
+      "line": 6063
+    },
+    {
+      "name": "SHELL_SPAWN_BACKEND",
+      "line": 239
+    },
+    {
+      "name": "SHORT",
+      "line": 1024
+    },
+    {
+      "name": "SHOW_ALL",
+      "line": 370
+    },
+    {
+      "name": "SHOW_ATTRIBUTE",
+      "line": 370
+    },
+    {
+      "name": "SHOW_CDATA_SECTION",
+      "line": 370
+    },
+    {
+      "name": "SHOW_COMMENT",
+      "line": 370
+    },
+    {
+      "name": "SHOW_DOCUMENT",
+      "line": 370
+    },
+    {
+      "name": "SHOW_DOCUMENT_FRAGMENT",
+      "line": 370
+    },
+    {
+      "name": "SHOW_DOCUMENT_TYPE",
+      "line": 370
+    },
+    {
+      "name": "SHOW_ELEMENT",
+      "line": 370
+    },
+    {
+      "name": "SHOW_ENTITY",
+      "line": 370
+    },
+    {
+      "name": "SHOW_ENTITY_REFERENCE",
+      "line": 370
+    },
+    {
+      "name": "SHOW_NOTATION",
+      "line": 370
+    },
+    {
+      "name": "SHOW_PROCESSING_INSTRUCTION",
+      "line": 370
+    },
+    {
+      "name": "SHOW_TEXT",
+      "line": 370
+    },
+    {
+      "name": "SHR_NONCE_VALIDITY",
+      "line": 1178
+    },
+    {
+      "name": "SHUTDOWN_TYPE",
+      "line": 5742
+    },
+    {
+      "name": "SID",
+      "line": 1178
+    },
+    {
+      "name": "SITE_IS_FROZEN",
+      "line": 60
+    },
+    {
+      "name": "SITE_IS_OVERLOADED",
+      "line": 60
+    },
+    {
+      "name": "SIZE",
+      "line": 5797
+    },
+    {
+      "name": "SKILL_CONTENT",
+      "line": 5742
+    },
+    {
+      "name": "SKILL_INVOKED",
+      "line": 5742
+    },
+    {
+      "name": "SKILL_NAME",
+      "line": 5742
+    },
+    {
+      "name": "SKILL_PATH",
+      "line": 5742
+    },
+    {
+      "name": "SKILL_PLUGIN_NAME",
+      "line": 5742
+    },
+    {
+      "name": "SKILL_PLUGIN_VERSION",
+      "line": 5742
+    },
+    {
+      "name": "SKILLS_INSTRUCTIONS",
+      "line": 239
+    },
+    {
+      "name": "SKIPBODY",
+      "line": 60
+    },
+    {
+      "name": "SKU",
+      "line": 1178
+    },
+    {
+      "name": "SLASH_LITERAL",
+      "line": 239
+    },
+    {
+      "name": "SLOT",
+      "line": 256
+    },
+    {
+      "name": "SMALL",
+      "line": 256
+    },
+    {
+      "name": "SNIPPETS",
+      "line": 1499
+    },
+    {
+      "name": "SOLIDUS",
+      "line": 5797
+    },
+    {
+      "name": "SOURCE",
+      "line": 60
+    },
+    {
+      "name": "SPACE",
+      "line": 5797
+    },
+    {
+      "name": "SPACES_AFTER_CHUNK_SIZE",
+      "line": 60
+    },
+    {
+      "name": "SPAN",
+      "line": 256
+    },
+    {
+      "name": "SPECIAL",
+      "line": 1156
+    },
+    {
+      "name": "SPECIAL_HEADERS",
+      "line": 60
+    },
+    {
+      "name": "SPINNER_CIRCLE",
+      "line": 6155
+    },
+    {
+      "name": "SPINNER_DOT",
+      "line": 6155
+    },
+    {
+      "name": "SPINNER_DOT_SMALL",
+      "line": 6155
+    },
+    {
+      "name": "SPINNER_FILLED",
+      "line": 6155
+    },
+    {
+      "name": "SPINNER_RING",
+      "line": 6155
+    },
+    {
+      "name": "SQL",
+      "line": 5205
+    },
+    {
+      "name": "SQLITE_OK",
+      "line": 4643
+    },
+    {
+      "name": "SSH",
+      "line": 1178
+    },
+    {
+      "name": "SSH_CURRENT",
+      "line": 216
+    },
+    {
+      "name": "SSH_LEGACY",
+      "line": 216
+    },
+    {
+      "name": "SSL_CERTIFICATE_ERROR",
+      "line": 60
+    },
+    {
+      "name": "SSL_CERTIFICATE_REQUIRED",
+      "line": 60
+    },
+    {
+      "name": "SSL_HANDSHAKE_FAILED",
+      "line": 60
+    },
+    {
+      "name": "SSV",
+      "line": 1202
+    },
+    {
+      "name": "STANDARD",
+      "line": 1026
+    },
+    {
+      "name": "STAR",
+      "line": 239
+    },
+    {
+      "name": "START",
+      "line": 894
+    },
+    {
+      "name": "START_ANCHOR",
+      "line": 239
+    },
+    {
+      "name": "STATE",
+      "line": 1178
+    },
+    {
+      "name": "STATES",
+      "line": 99
+    },
+    {
+      "name": "STATUS_CODES",
+      "line": 99
+    },
+    {
+      "name": "STATUS_GET",
+      "line": 6063
+    },
+    {
+      "name": "STATUS_LINE",
+      "line": 239
+    },
+    {
+      "name": "STATUSES",
+      "line": 60
+    },
+    {
+      "name": "STATUSES_HTTP",
+      "line": 60
+    },
+    {
+      "name": "STOP",
+      "line": 256
+    },
+    {
+      "name": "STR",
+      "line": 1156
+    },
+    {
+      "name": "STREAM_START",
+      "line": 894
+    },
+    {
+      "name": "STRICT",
+      "line": 60
+    },
+    {
+      "name": "STRIKE",
+      "line": 5797
+    },
+    {
+      "name": "STRING",
+      "line": 60
+    },
+    {
+      "name": "STRONG",
+      "line": 256
+    },
+    {
+      "name": "STYLE",
+      "line": 256
+    },
+    {
+      "name": "SUB",
+      "line": 256
+    },
+    {
+      "name": "SUBAGENT_PARALLELISM_PROMPTS",
+      "line": 239
+    },
+    {
+      "name": "SUBJECT",
+      "line": 1184
+    },
+    {
+      "name": "SUBSCRIBE",
+      "line": 60
+    },
+    {
+      "name": "SUCCEEDED",
+      "line": 99
+    },
+    {
+      "name": "SUCCESS",
+      "line": 5742
+    },
+    {
+      "name": "SUM",
+      "line": 5742
+    },
+    {
+      "name": "SUMMARY",
+      "line": 256
+    },
+    {
+      "name": "SUP",
+      "line": 256
+    },
+    {
+      "name": "SUPPORTED",
+      "line": 4124
+    },
+    {
+      "name": "SVG",
+      "line": 256
+    },
+    {
+      "name": "SWITCH_PROXY",
+      "line": 60
+    },
+    {
+      "name": "SWITCHING_PROTOCOLS",
+      "line": 60
+    },
+    {
+      "name": "SYMBOL",
+      "line": 60
+    },
+    {
+      "name": "SYNTAX_ERR",
+      "line": 944
+    },
+    {
+      "name": "SYSTEM_ASSIGNED",
+      "line": 1184
+    },
+    {
+      "name": "SYSTEM_MESSAGE_TRANSFORM",
+      "line": 6063
+    },
+    {
+      "name": "SYSTEM_NOTIFICATION",
+      "line": 5742
+    },
+    {
+      "name": "SYSTEM_NOTIFICATION_AGENT_ID",
+      "line": 5742
+    },
+    {
+      "name": "SYSTEM_NOTIFICATION_AGENT_TYPE",
+      "line": 5742
+    },
+    {
+      "name": "SYSTEM_NOTIFICATION_EXIT_CODE",
+      "line": 5742
+    },
+    {
+      "name": "SYSTEM_NOTIFICATION_SHELL_ID",
+      "line": 5742
+    },
+    {
+      "name": "SYSTEM_NOTIFICATION_STATUS",
+      "line": 5742
+    },
+    {
+      "name": "SYSTEM_NOTIFICATION_TYPE",
+      "line": 5742
+    },
+    {
+      "name": "SYSTEM_STRING",
+      "line": 5797
+    },
+    {
+      "name": "T00",
+      "line": 791
+    },
+    {
+      "name": "TABLE",
+      "line": 256
+    },
+    {
+      "name": "TABULATION",
+      "line": 5797
+    },
+    {
+      "name": "TAG",
+      "line": 1026
+    },
+    {
+      "name": "TAR_SYMLINK_ERROR",
+      "line": 738
+    },
+    {
+      "name": "TASK",
+      "line": 6155
+    },
+    {
+      "name": "TBODY",
+      "line": 256
+    },
+    {
+      "name": "TEAMCITY_VERSION",
+      "line": 5805
+    },
+    {
+      "name": "TEARDOWN",
+      "line": 60
+    },
+    {
+      "name": "TEMPLATE",
+      "line": 256
+    },
+    {
+      "name": "TEMPORARY_REDIRECT",
+      "line": 60
+    },
+    {
+      "name": "TERM",
+      "line": 5805
+    },
+    {
+      "name": "TERM_PROGRAM",
+      "line": 5805
+    },
+    {
+      "name": "TERM_PROGRAM_VERSION",
+      "line": 5805
+    },
+    {
+      "name": "TEXT",
+      "line": 187
+    },
+    {
+      "name": "TEXT_HTML",
+      "line": 5799
+    },
+    {
+      "name": "TEXT_NODE",
+      "line": 927
+    },
+    {
+      "name": "TEXTAREA",
+      "line": 256
+    },
+    {
+      "name": "TFOOT",
+      "line": 256
+    },
+    {
+      "name": "THE_FAMILY_ID",
+      "line": 1178
+    },
+    {
+      "name": "THEAD",
+      "line": 256
+    },
+    {
+      "name": "THORN",
+      "line": 948
+    },
+    {
+      "name": "THROTTLING_PREFIX",
+      "line": 1178
+    },
+    {
+      "name": "TIME",
+      "line": 256
+    },
+    {
+      "name": "TIMEOUT_ERR",
+      "line": 944
+    },
+    {
+      "name": "TIMEOUT_MS",
+      "line": 1184
+    },
+    {
+      "name": "TIMEOUT_OCCURED",
+      "line": 60
+    },
+    {
+      "name": "TITLE",
+      "line": 256
+    },
+    {
+      "name": "TITLE_MODE",
+      "line": 5786
+    },
+    {
+      "name": "TMP",
+      "line": 5638
+    },
+    {
+      "name": "TMPLIT_EXPR",
+      "line": 241
+    },
+    {
+      "name": "TOKEN",
+      "line": 60
+    },
+    {
+      "name": "TOKEN_LIMIT",
+      "line": 5742
+    },
+    {
+      "name": "TOKEN_TYPE",
+      "line": 1178
+    },
+    {
+      "name": "TOKENS_REMOVED",
+      "line": 5742
+    },
+    {
+      "name": "TOO_EARLY",
+      "line": 60
+    },
+    {
+      "name": "TOO_MANY_REQUESTS",
+      "line": 60
+    },
+    {
+      "name": "TOOL_CALL",
+      "line": 6063
+    },
+    {
+      "name": "TOOL_SEARCH",
+      "line": 239
+    },
+    {
+      "name": "TOOL_SEARCH_ANTHROPIC",
+      "line": 239
+    },
+    {
+      "name": "TOOL_SEARCH_OPENAI",
+      "line": 239
+    },
+    {
+      "name": "TOTAL_API_DURATION_MS",
+      "line": 5742
+    },
+    {
+      "name": "TOTAL_PREMIUM_REQUESTS",
+      "line": 5742
+    },
+    {
+      "name": "TRACE",
+      "line": 60
+    },
+    {
+      "name": "TRACK",
+      "line": 256
+    },
+    {
+      "name": "TRAILING",
+      "line": 60
+    },
+    {
+      "name": "TRAILING_JUNK",
+      "line": 894
+    },
+    {
+      "name": "TRANSFER_ENCODING",
+      "line": 60
+    },
+    {
+      "name": "TRANSFER_ENCODING_CHUNKED",
+      "line": 60
+    },
+    {
+      "name": "TRANSFORMATION_APPLIED",
+      "line": 60
+    },
+    {
+      "name": "TSV",
+      "line": 1202
+    },
+    {
+      "name": "TTL_EXPIRED",
+      "line": 99
+    },
+    {
+      "name": "TUIKIT_COMMAND",
+      "line": 239
+    },
+    {
+      "name": "TUNNEL",
+      "line": 632
+    },
+    {
+      "name": "TYPE",
+      "line": 60
+    },
+    {
+      "name": "TYPE_IDAT",
+      "line": 5811
+    },
+    {
+      "name": "TYPE_IEND",
+      "line": 5811
+    },
+    {
+      "name": "TYPE_IHDR",
+      "line": 5811
+    },
+    {
+      "name": "TYPE_MISMATCH_ERR",
+      "line": 944
+    },
+    {
+      "name": "TYPE_PLTE",
+      "line": 5811
+    },
+    {
+      "name": "UDP_ASSOCIATE",
+      "line": 99
+    },
+    {
+      "name": "UNAUTHORIZED",
+      "line": 60
+    },
+    {
+      "name": "UNAVAILABLE_FOR_LEGAL_REASONS",
+      "line": 60
+    },
+    {
+      "name": "UNBIND",
+      "line": 60
+    },
+    {
+      "name": "UNDEFINED",
+      "line": 60
+    },
+    {
+      "name": "UNDERSCORE_IDENT_RE",
+      "line": 5786
+    },
+    {
+      "name": "UNDERSCORE_TITLE_MODE",
+      "line": 5786
+    },
+    {
+      "name": "UNEXPECTED_CONTENT_LENGTH",
+      "line": 60
+    },
+    {
+      "name": "UNEXPECTED_SPACE",
+      "line": 60
+    },
+    {
+      "name": "UNIT_AUTO",
+      "line": 6170
+    },
+    {
+      "name": "UNIT_PERCENT",
+      "line": 6170
+    },
+    {
+      "name": "UNIT_POINT",
+      "line": 6170
+    },
+    {
+      "name": "UNIT_UNDEFINED",
+      "line": 6170
+    },
+    {
+      "name": "UNLIKELY_ROLES",
+      "line": 927
+    },
+    {
+      "name": "UNLINK",
+      "line": 60
+    },
+    {
+      "name": "UNLOCK",
+      "line": 60
+    },
+    {
+      "name": "UNPROCESSABLE_ENTITY",
+      "line": 60
+    },
+    {
+      "name": "UNSAFE",
+      "line": 60
+    },
+    {
+      "name": "UNSUBSCRIBE",
+      "line": 60
+    },
+    {
+      "name": "UNSUPPORTED_MEDIA_TYPE",
+      "line": 60
+    },
+    {
+      "name": "UNZIP",
+      "line": 736
+    },
+    {
+      "name": "UP_DOWN_COUNTER",
+      "line": 5742
+    },
+    {
+      "name": "UP_TO_EVENT_ID",
+      "line": 5742
+    },
+    {
+      "name": "UPGRADE",
+      "line": 60
+    },
+    {
+      "name": "UPGRADE_REQUIRED",
+      "line": 60
+    },
+    {
+      "name": "UPN",
+      "line": 1178
+    },
+    {
+      "name": "URI",
+      "line": 1186
+    },
+    {
+      "name": "URI_TOO_LONG",
+      "line": 60
+    },
+    {
+      "name": "URL",
+      "line": 60
+    },
+    {
+      "name": "URL_CHAR",
+      "line": 60
+    },
+    {
+      "name": "URL_FORM_CONTENT_TYPE",
+      "line": 1178
+    },
+    {
+      "name": "URL_MISMATCH_ERR",
+      "line": 944
+    },
+    {
+      "name": "USE",
+      "line": 256
+    },
+    {
+      "name": "USE_PROFILES",
+      "line": 241
+    },
+    {
+      "name": "USE_PROXY",
+      "line": 60
+    },
+    {
+      "name": "USER",
+      "line": 60
+    },
+    {
+      "name": "USER_ASSIGNED_CLIENT_ID",
+      "line": 1184
+    },
+    {
+      "name": "USER_ASSIGNED_OBJECT_ID",
+      "line": 1184
+    },
+    {
+      "name": "USER_ASSIGNED_RESOURCE_ID",
+      "line": 1184
+    },
+    {
+      "name": "USER_INPUT_REQUEST",
+      "line": 6063
+    },
+    {
+      "name": "USER_MESSAGE",
+      "line": 5742
+    },
+    {
+      "name": "USER_MESSAGE_AGENT_MODE",
+      "line": 5742
+    },
+    {
+      "name": "USER_MESSAGE_INTERACTION_ID",
+      "line": 5742
+    },
+    {
+      "name": "USER_MESSAGE_SOURCE",
+      "line": 5742
+    },
+    {
+      "name": "USERINFO_CHARS",
+      "line": 60
+    },
+    {
+      "name": "USERNAME_PASSWORD",
+      "line": 99
+    },
+    {
+      "name": "UTF8",
+      "line": 1178
+    },
+    {
+      "name": "VALIDATION_ERR",
+      "line": 944
+    },
+    {
+      "name": "VALUE",
+      "line": 947
+    },
+    {
+      "name": "VALUE_LENGTH",
+      "line": 927
+    },
+    {
+      "name": "VAR",
+      "line": 256
+    },
+    {
+      "name": "VARIANT_ALSO_NEGOTIATES",
+      "line": 60
+    },
+    {
+      "name": "VERBOSE",
+      "line": 5754
+    },
+    {
+      "name": "VERSION",
+      "line": 60
+    },
+    {
+      "name": "VIDEO",
+      "line": 256
+    },
+    {
+      "name": "VOICE",
+      "line": 239
+    },
+    {
+      "name": "VT200",
+      "line": 5611
+    },
+    {
+      "name": "VTE_VERSION",
+      "line": 5805
+    },
+    {
+      "name": "WARN",
+      "line": 5754
+    },
+    {
+      "name": "WARNING",
+      "line": 5084
+    },
+    {
+      "name": "WBR",
+      "line": 256
+    },
+    {
+      "name": "WEB_SERVER_IS_DOWN",
+      "line": 60
+    },
+    {
+      "name": "WEB_SERVER_UNKNOWN_ERROR",
+      "line": 60
+    },
+    {
+      "name": "WEBSOCKET_RESPONSES",
+      "line": 239
+    },
+    {
+      "name": "WHITESPACE_CHARACTER_TOKEN",
+      "line": 5797
+    },
+    {
+      "name": "WHOLE_DOCUMENT",
+      "line": 471
+    },
+    {
+      "name": "WIDTH",
+      "line": 1026
+    },
+    {
+      "name": "WIP",
+      "line": 913
+    },
+    {
+      "name": "WRAP_NO_WRAP",
+      "line": 6170
+    },
+    {
+      "name": "WRAP_WRAP",
+      "line": 6170
+    },
+    {
+      "name": "WRAP_WRAP_REVERSE",
+      "line": 6170
+    },
+    {
+      "name": "WRONG_DOCUMENT_ERR",
+      "line": 944
+    },
+    {
+      "name": "X_APP_NAME",
+      "line": 1178
+    },
+    {
+      "name": "X_APP_VER",
+      "line": 1178
+    },
+    {
+      "name": "X_CLIENT_CPU",
+      "line": 1178
+    },
+    {
+      "name": "X_CLIENT_CURR_TELEM",
+      "line": 1178
+    },
+    {
+      "name": "X_CLIENT_EXTRA_SKU",
+      "line": 1178
+    },
+    {
+      "name": "X_CLIENT_LAST_TELEM",
+      "line": 1178
+    },
+    {
+      "name": "X_CLIENT_OS",
+      "line": 1178
+    },
+    {
+      "name": "X_CLIENT_SKU",
+      "line": 1178
+    },
+    {
+      "name": "X_CLIENT_VER",
+      "line": 1178
+    },
+    {
+      "name": "X_MS_HTTP_VERSION",
+      "line": 1178
+    },
+    {
+      "name": "X_MS_LIB_CAPABILITY",
+      "line": 1178
+    },
+    {
+      "name": "X_MS_LIB_CAPABILITY_VALUE",
+      "line": 1178
+    },
+    {
+      "name": "X_MS_REQUEST_ID",
+      "line": 1178
+    },
+    {
+      "name": "X10",
+      "line": 5611
+    },
+    {
+      "name": "X5C",
+      "line": 1184
+    },
+    {
+      "name": "X5T",
+      "line": 1184
+    },
+    {
+      "name": "X5T_256",
+      "line": 1184
+    },
+    {
+      "name": "XLINK",
+      "line": 944
+    },
+    {
+      "name": "XML",
+      "line": 944
+    },
+    {
+      "name": "XMLNS",
+      "line": 944
+    },
+    {
+      "name": "XMP",
+      "line": 945
+    },
+    {
+      "name": "XMS_CC",
+      "line": 1178
+    },
+    {
+      "name": "Z_BEST_COMPRESSION",
+      "line": 736
+    },
+    {
+      "name": "Z_BEST_SPEED",
+      "line": 736
+    },
+    {
+      "name": "Z_BLOCK",
+      "line": 736
+    },
+    {
+      "name": "Z_BUF_ERROR",
+      "line": 736
+    },
+    {
+      "name": "Z_DATA_ERROR",
+      "line": 736
+    },
+    {
+      "name": "Z_DEFAULT_CHUNK",
+      "line": 736
+    },
+    {
+      "name": "Z_DEFAULT_COMPRESSION",
+      "line": 736
+    },
+    {
+      "name": "Z_DEFAULT_LEVEL",
+      "line": 736
+    },
+    {
+      "name": "Z_DEFAULT_MEMLEVEL",
+      "line": 736
+    },
+    {
+      "name": "Z_DEFAULT_STRATEGY",
+      "line": 736
+    },
+    {
+      "name": "Z_DEFAULT_WINDOWBITS",
+      "line": 187
+    },
+    {
+      "name": "Z_ERRNO",
+      "line": 736
+    },
+    {
+      "name": "Z_FILTERED",
+      "line": 736
+    },
+    {
+      "name": "Z_FINISH",
+      "line": 736
+    },
+    {
+      "name": "Z_FIXED",
+      "line": 736
+    },
+    {
+      "name": "Z_FULL_FLUSH",
+      "line": 736
+    },
+    {
+      "name": "Z_HUFFMAN_ONLY",
+      "line": 736
+    },
+    {
+      "name": "Z_MAX_CHUNK",
+      "line": 736
+    },
+    {
+      "name": "Z_MAX_LEVEL",
+      "line": 736
+    },
+    {
+      "name": "Z_MAX_MEMLEVEL",
+      "line": 736
+    },
+    {
+      "name": "Z_MAX_WINDOWBITS",
+      "line": 736
+    },
+    {
+      "name": "Z_MEM_ERROR",
+      "line": 736
+    },
+    {
+      "name": "Z_MIN_CHUNK",
+      "line": 736
+    },
+    {
+      "name": "Z_MIN_LEVEL",
+      "line": 736
+    },
+    {
+      "name": "Z_MIN_MEMLEVEL",
+      "line": 736
+    },
+    {
+      "name": "Z_MIN_WINDOWBITS",
+      "line": 736
+    },
+    {
+      "name": "Z_NEED_DICT",
+      "line": 736
+    },
+    {
+      "name": "Z_NO_COMPRESSION",
+      "line": 736
+    },
+    {
+      "name": "Z_NO_FLUSH",
+      "line": 736
+    },
+    {
+      "name": "Z_OK",
+      "line": 736
+    },
+    {
+      "name": "Z_PARTIAL_FLUSH",
+      "line": 736
+    },
+    {
+      "name": "Z_RLE",
+      "line": 736
+    },
+    {
+      "name": "Z_STREAM_END",
+      "line": 736
+    },
+    {
+      "name": "Z_STREAM_ERROR",
+      "line": 736
+    },
+    {
+      "name": "Z_SYNC_FLUSH",
+      "line": 736
+    },
+    {
+      "name": "Z_VERSION_ERROR",
+      "line": 736
+    },
+    {
+      "name": "ZERO",
+      "line": 326
+    },
+    {
+      "name": "ZLIB_VERNUM",
+      "line": 736
+    }
+  ],
+  "experimentFlagStrings": [
+    {
+      "name": "copilot_cli_dynamic_instructions_retrieval",
+      "line": 239
+    },
+    {
+      "name": "copilot_cli_fides_ifc",
+      "line": 239
+    },
+    {
+      "name": "copilot_cli_focused_tools",
+      "line": 239
+    },
+    {
+      "name": "copilot_cli_gh_cli_over_mcp",
+      "line": 239
+    },
+    {
+      "name": "copilot_cli_github_context_sidekick_agent",
+      "line": 239
+    },
+    {
+      "name": "copilot_cli_gpt_5_4_for_subagents",
+      "line": 239
+    },
+    {
+      "name": "copilot_cli_gpt_5_4_mini_for_explore",
+      "line": 239
+    },
+    {
+      "name": "copilot_cli_gpt_default_model",
+      "line": 239
+    },
+    {
+      "name": "copilot_cli_mcp_allowlist",
+      "line": 239
+    },
+    {
+      "name": "copilot_cli_mcp_enterprise_allowlist",
+      "line": 239
+    },
+    {
+      "name": "copilot_cli_multi_turn_agents",
+      "line": 239
+    },
+    {
+      "name": "copilot_cli_opus_1m_default_model",
+      "line": 239
+    },
+    {
+      "name": "copilot_cli_remove_cwd_listing",
+      "line": 239
+    },
+    {
+      "name": "copilot_cli_remove_parallel_tool_prompt",
+      "line": 239
+    },
+    {
+      "name": "copilot_cli_replacement_blocks",
+      "line": 239
+    },
+    {
+      "name": "copilot_cli_rubber_duck_gpt_claude",
+      "line": 239
+    },
+    {
+      "name": "copilot_cli_session_based_subagents",
+      "line": 239
+    },
+    {
+      "name": "copilot_cli_shell_error_classification",
+      "line": 239
+    },
+    {
+      "name": "copilot_cli_shell_spawn_backend",
+      "line": 239
+    },
+    {
+      "name": "copilot_cli_skills_instructions",
+      "line": 239
+    },
+    {
+      "name": "copilot_cli_subagent_parallelism_prompts",
+      "line": 239
+    },
+    {
+      "name": "copilot_cli_tool_search_anthropic",
+      "line": 239
+    },
+    {
+      "name": "copilot_cli_tool_search_openai",
+      "line": 239
+    },
+    {
+      "name": "copilot_cli_websocket_responses",
+      "line": 239
+    }
+  ],
+  "eventStrings": [
+    {
+      "name": "agent.custom_tool_use",
+      "line": 3399
+    },
+    {
+      "name": "agent.mcp_tool_result",
+      "line": 3399
+    },
+    {
+      "name": "agent.mcp_tool_use",
+      "line": 3399
+    },
+    {
+      "name": "agent.message",
+      "line": 3399
+    },
+    {
+      "name": "agent.thinking",
+      "line": 3399
+    },
+    {
+      "name": "agent.thread_context_compacted",
+      "line": 3399
+    },
+    {
+      "name": "agent.tool_result",
+      "line": 3399
+    },
+    {
+      "name": "agent.tool_use",
+      "line": 3399
+    },
+    {
+      "name": "assistant.intent",
+      "line": 4207
+    },
+    {
+      "name": "assistant.message",
+      "line": 4043
+    },
+    {
+      "name": "assistant.message_delta",
+      "line": 4207
+    },
+    {
+      "name": "assistant.message_start",
+      "line": 4207
+    },
+    {
+      "name": "assistant.reasoning",
+      "line": 4361
+    },
+    {
+      "name": "assistant.reasoning_delta",
+      "line": 4207
+    },
+    {
+      "name": "assistant.streaming_delta",
+      "line": 4207
+    },
+    {
+      "name": "assistant.turn_end",
+      "line": 4361
+    },
+    {
+      "name": "assistant.turn_start",
+      "line": 4361
+    },
+    {
+      "name": "assistant.usage",
+      "line": 4361
+    },
+    {
+      "name": "hook.end",
+      "line": 4361
+    },
+    {
+      "name": "hook.start",
+      "line": 4361
+    },
+    {
+      "name": "permission.completed",
+      "line": 4361
+    },
+    {
+      "name": "permission.request",
+      "line": 6063
+    },
+    {
+      "name": "permission.requested",
+      "line": 4210
+    },
+    {
+      "name": "session.abort",
+      "line": 6063
+    },
+    {
+      "name": "session.background",
+      "line": 6096
+    },
+    {
+      "name": "session.background_tasks_changed",
+      "line": 4361
+    },
+    {
+      "name": "session.compaction_complete",
+      "line": 4361
+    },
+    {
+      "name": "session.compaction_start",
+      "line": 4361
+    },
+    {
+      "name": "session.context_changed",
+      "line": 4361
+    },
+    {
+      "name": "session.create",
+      "line": 6063
+    },
+    {
+      "name": "session.created",
+      "line": 6100
+    },
+    {
+      "name": "session.custom_agents_updated",
+      "line": 4361
+    },
+    {
+      "name": "session.custom_notification",
+      "line": 4361
+    },
+    {
+      "name": "session.db",
+      "line": 3559
+    },
+    {
+      "name": "session.delete",
+      "line": 6063
+    },
+    {
+      "name": "session.deleted",
+      "line": 3399
+    },
+    {
+      "name": "session.destroy",
+      "line": 6063
+    },
+    {
+      "name": "session.error",
+      "line": 3399
+    },
+    {
+      "name": "session.event",
+      "line": 6063
+    },
+    {
+      "name": "session.extensions_loaded",
+      "line": 4361
+    },
+    {
+      "name": "session.foreground",
+      "line": 6096
+    },
+    {
+      "name": "session.getForeground",
+      "line": 6063
+    },
+    {
+      "name": "session.getLastId",
+      "line": 6063
+    },
+    {
+      "name": "session.getMessages",
+      "line": 6063
+    },
+    {
+      "name": "session.getMetadata",
+      "line": 6063
+    },
+    {
+      "name": "session.handoff",
+      "line": 4361
+    },
+    {
+      "name": "session.idle",
+      "line": 4361
+    },
+    {
+      "name": "session.import_legacy",
+      "line": 4396
+    },
+    {
+      "name": "session.info",
+      "line": 4361
+    },
+    {
+      "name": "session.lifecycle",
+      "line": 6063
+    },
+    {
+      "name": "session.list",
+      "line": 6063
+    },
+    {
+      "name": "session.mcp_server_status_changed",
+      "line": 4361
+    },
+    {
+      "name": "session.mcp_servers_loaded",
+      "line": 4361
+    },
+    {
+      "name": "session.mode_changed",
+      "line": 4361
+    },
+    {
+      "name": "session.model_change",
+      "line": 4361
+    },
+    {
+      "name": "session.plan_changed",
+      "line": 4361
+    },
+    {
+      "name": "session.remote_steerable_changed",
+      "line": 4361
+    },
+    {
+      "name": "session.requested",
+      "line": 6599
+    },
+    {
+      "name": "session.resume",
+      "line": 4361
+    },
+    {
+      "name": "session.schedule_cancelled",
+      "line": 4210
+    },
+    {
+      "name": "session.schedule_created",
+      "line": 4210
+    },
+    {
+      "name": "session.send",
+      "line": 6063
+    },
+    {
+      "name": "session.setForeground",
+      "line": 6063
+    },
+    {
+      "name": "session.shutdown",
+      "line": 4210
+    },
+    {
+      "name": "session.skills_loaded",
+      "line": 4361
+    },
+    {
+      "name": "session.snapshot_rewind",
+      "line": 4361
+    },
+    {
+      "name": "session.start",
+      "line": 4361
+    },
+    {
+      "name": "session.status_idle",
+      "line": 3399
+    },
+    {
+      "name": "session.status_rescheduled",
+      "line": 3399
+    },
+    {
+      "name": "session.status_running",
+      "line": 3399
+    },
+    {
+      "name": "session.status_terminated",
+      "line": 3399
+    },
+    {
+      "name": "session.task_complete",
+      "line": 4361
+    },
+    {
+      "name": "session.title_changed",
+      "line": 4361
+    },
+    {
+      "name": "session.tools_updated",
+      "line": 4361
+    },
+    {
+      "name": "session.truncation",
+      "line": 4361
+    },
+    {
+      "name": "session.updated",
+      "line": 6100
+    },
+    {
+      "name": "session.usage_info",
+      "line": 4361
+    },
+    {
+      "name": "session.warning",
+      "line": 4361
+    },
+    {
+      "name": "session.workspace_file_changed",
+      "line": 4361
+    },
+    {
+      "name": "subagent.completed",
+      "line": 4361
+    },
+    {
+      "name": "subagent.deselected",
+      "line": 4361
+    },
+    {
+      "name": "subagent.failed",
+      "line": 4361
+    },
+    {
+      "name": "subagent.selected",
+      "line": 4361
+    },
+    {
+      "name": "subagent.started",
+      "line": 4361
+    },
+    {
+      "name": "tool.call",
+      "line": 6063
+    },
+    {
+      "name": "tool.execution_complete",
+      "line": 4043
+    },
+    {
+      "name": "tool.execution_partial_result",
+      "line": 4361
+    },
+    {
+      "name": "tool.execution_progress",
+      "line": 4361
+    },
+    {
+      "name": "tool.execution_start",
+      "line": 4361
+    },
+    {
+      "name": "tool.user_requested",
+      "line": 4361
+    },
+    {
+      "name": "workspace.yaml",
+      "line": 3559
+    }
+  ],
+  "jsonRpcMethods": [
+    {
+      "name": "extensions.md",
+      "line": 6092
+    },
+    {
+      "name": "mcp.config.update",
+      "line": 4396
+    },
+    {
+      "name": "session.abort",
+      "line": 6063
+    },
+    {
+      "name": "session.background",
+      "line": 6096
+    },
+    {
+      "name": "session.background_tasks_changed",
+      "line": 4361
+    },
+    {
+      "name": "session.compaction_complete",
+      "line": 4361
+    },
+    {
+      "name": "session.compaction_start",
+      "line": 4361
+    },
+    {
+      "name": "session.context_changed",
+      "line": 4361
+    },
+    {
+      "name": "session.create",
+      "line": 6063
+    },
+    {
+      "name": "session.created",
+      "line": 6100
+    },
+    {
+      "name": "session.custom_agents_updated",
+      "line": 4361
+    },
+    {
+      "name": "session.custom_notification",
+      "line": 4361
+    },
+    {
+      "name": "session.db",
+      "line": 3559
+    },
+    {
+      "name": "session.delete",
+      "line": 6063
+    },
+    {
+      "name": "session.deleted",
+      "line": 3399
+    },
+    {
+      "name": "session.destroy",
+      "line": 6063
+    },
+    {
+      "name": "session.error",
+      "line": 3399
+    },
+    {
+      "name": "session.event",
+      "line": 6063
+    },
+    {
+      "name": "session.extensions_loaded",
+      "line": 4361
+    },
+    {
+      "name": "session.foreground",
+      "line": 6096
+    },
+    {
+      "name": "session.getForeground",
+      "line": 6063
+    },
+    {
+      "name": "session.getLastId",
+      "line": 6063
+    },
+    {
+      "name": "session.getMessages",
+      "line": 6063
+    },
+    {
+      "name": "session.getMetadata",
+      "line": 6063
+    },
+    {
+      "name": "session.handoff",
+      "line": 4361
+    },
+    {
+      "name": "session.idle",
+      "line": 4361
+    },
+    {
+      "name": "session.import_legacy",
+      "line": 4396
+    },
+    {
+      "name": "session.info",
+      "line": 4361
+    },
+    {
+      "name": "session.lifecycle",
+      "line": 6063
+    },
+    {
+      "name": "session.list",
+      "line": 6063
+    },
+    {
+      "name": "session.mcp_server_status_changed",
+      "line": 4361
+    },
+    {
+      "name": "session.mcp_servers_loaded",
+      "line": 4361
+    },
+    {
+      "name": "session.mode_changed",
+      "line": 4361
+    },
+    {
+      "name": "session.model_change",
+      "line": 4361
+    },
+    {
+      "name": "session.plan_changed",
+      "line": 4361
+    },
+    {
+      "name": "session.remote_steerable_changed",
+      "line": 4361
+    },
+    {
+      "name": "session.requested",
+      "line": 6599
+    },
+    {
+      "name": "session.resume",
+      "line": 4361
+    },
+    {
+      "name": "session.schedule_cancelled",
+      "line": 4210
+    },
+    {
+      "name": "session.schedule_created",
+      "line": 4210
+    },
+    {
+      "name": "session.send",
+      "line": 6063
+    },
+    {
+      "name": "session.setForeground",
+      "line": 6063
+    },
+    {
+      "name": "session.shutdown",
+      "line": 4210
+    },
+    {
+      "name": "session.skills_loaded",
+      "line": 4361
+    },
+    {
+      "name": "session.snapshot_rewind",
+      "line": 4361
+    },
+    {
+      "name": "session.start",
+      "line": 4361
+    },
+    {
+      "name": "session.status_idle",
+      "line": 3399
+    },
+    {
+      "name": "session.status_rescheduled",
+      "line": 3399
+    },
+    {
+      "name": "session.status_running",
+      "line": 3399
+    },
+    {
+      "name": "session.status_terminated",
+      "line": 3399
+    },
+    {
+      "name": "session.task_complete",
+      "line": 4361
+    },
+    {
+      "name": "session.title_changed",
+      "line": 4361
+    },
+    {
+      "name": "session.tools_updated",
+      "line": 4361
+    },
+    {
+      "name": "session.truncation",
+      "line": 4361
+    },
+    {
+      "name": "session.updated",
+      "line": 6100
+    },
+    {
+      "name": "session.usage_info",
+      "line": 4361
+    },
+    {
+      "name": "session.warning",
+      "line": 4361
+    },
+    {
+      "name": "session.workspace_file_changed",
+      "line": 4361
+    }
+  ],
+  "confirmedSlashCommands": [
+    "/add-dir",
+    "/after",
+    "/autopilot",
+    "/compact",
+    "/context",
+    "/env",
+    "/every",
+    "/fleet",
+    "/init",
+    "/list-dirs",
+    "/mcp",
+    "/plan",
+    "/plugin",
+    "/rename",
+    "/research",
+    "/remote",
+    "/reset-allowed-tools",
+    "/review",
+    "/sandbox",
+    "/skills",
+    "/subconscious",
+    "/usage"
+  ],
+  "slashCommandCandidates": [
+    {
+      "name": "/add-dir",
+      "line": 1340
+    },
+    {
+      "name": "/after",
+      "line": 1340
+    },
+    {
+      "name": "/agent",
+      "line": 3625
+    },
+    {
+      "name": "/allow-all",
+      "line": 1340
+    },
+    {
+      "name": "/ask",
+      "line": 4643
+    },
+    {
+      "name": "/assistants",
+      "line": 1161
+    },
+    {
+      "name": "/authorize",
+      "line": 4120
+    },
+    {
+      "name": "/autopilot",
+      "line": 1340
+    },
+    {
+      "name": "/batches",
+      "line": 1161
+    },
+    {
+      "name": "/bin",
+      "line": 1210
+    },
+    {
+      "name": "/boot",
+      "line": 5638
+    },
+    {
+      "name": "/btw",
+      "line": 4942
+    },
+    {
+      "name": "/bug",
+      "line": 4942
+    },
+    {
+      "name": "/c",
+      "line": 525
+    },
+    {
+      "name": "/caffeinate",
+      "line": 5023
+    },
+    {
+      "name": "/cd",
+      "line": 4934
+    },
+    {
+      "name": "/changelog",
+      "line": 4643
+    },
+    {
+      "name": "/chronicle",
+      "line": 4643
+    },
+    {
+      "name": "/clear",
+      "line": 4643
+    },
+    {
+      "name": "/clikit",
+      "line": 4643
+    },
+    {
+      "name": "/collect-debug-logs",
+      "line": 4643
+    },
+    {
+      "name": "/compact",
+      "line": 1340
+    },
+    {
+      "name": "/completions",
+      "line": 1161
+    },
+    {
+      "name": "/containers",
+      "line": 1161
+    },
+    {
+      "name": "/context",
+      "line": 1340
+    },
+    {
+      "name": "/continue",
+      "line": 4917
+    },
+    {
+      "name": "/conversations",
+      "line": 1161
+    },
+    {
+      "name": "/copy",
+      "line": 4643
+    },
+    {
+      "name": "/cwd",
+      "line": 1340
+    },
+    {
+      "name": "/d",
+      "line": 525
+    },
+    {
+      "name": "/delegate",
+      "line": 4643
+    },
+    {
+      "name": "/deployments",
+      "line": 1170
+    },
+    {
+      "name": "/dev",
+      "line": 5638
+    },
+    {
+      "name": "/devicecode",
+      "line": 1180
+    },
+    {
+      "name": "/diagnose",
+      "line": 4643
+    },
+    {
+      "name": "/diff",
+      "line": 4643
+    },
+    {
+      "name": "/downgrade",
+      "line": 4643
+    },
+    {
+      "name": "/embeddings",
+      "line": 1161
+    },
+    {
+      "name": "/emcc",
+      "line": 1051
+    },
+    {
+      "name": "/env",
+      "line": 1340
+    },
+    {
+      "name": "/evals",
+      "line": 1161
+    },
+    {
+      "name": "/every",
+      "line": 1340
+    },
+    {
+      "name": "/exit",
+      "line": 4643
+    },
+    {
+      "name": "/experimental",
+      "line": 4643
+    },
+    {
+      "name": "/export",
+      "line": 5021
+    },
+    {
+      "name": "/extension",
+      "line": 4974
+    },
+    {
+      "name": "/extensions",
+      "line": 4643
+    },
+    {
+      "name": "/feedback",
+      "line": 4643
+    },
+    {
+      "name": "/files",
+      "line": 1161
+    },
+    {
+      "name": "/find",
+      "line": 4643
+    },
+    {
+      "name": "/fleet",
+      "line": 1340
+    },
+    {
+      "name": "/footer",
+      "line": 4783
+    },
+    {
+      "name": "/fork",
+      "line": 4643
+    },
+    {
+      "name": "/graphql",
+      "line": 734
+    },
+    {
+      "name": "/help",
+      "line": 4643
+    },
+    {
+      "name": "/ide",
+      "line": 4643
+    },
+    {
+      "name": "/init",
+      "line": 1305
+    },
+    {
+      "name": "/instructions",
+      "line": 4643
+    },
+    {
+      "name": "/keep-alive",
+      "line": 4643
+    },
+    {
+      "name": "/ld-linux-",
+      "line": 1051
+    },
+    {
+      "name": "/ld-musl-",
+      "line": 1051
+    },
+    {
+      "name": "/list-dirs",
+      "line": 1340
+    },
+    {
+      "name": "/login",
+      "line": 4198
+    },
+    {
+      "name": "/logout",
+      "line": 4643
+    },
+    {
+      "name": "/logs",
+      "line": 6104
+    },
+    {
+      "name": "/lsp",
+      "line": 4643
+    },
+    {
+      "name": "/mcp",
+      "line": 1306
+    },
+    {
+      "name": "/model",
+      "line": 1340
+    },
+    {
+      "name": "/models",
+      "line": 1161
+    },
+    {
+      "name": "/moderations",
+      "line": 1161
+    },
+    {
+      "name": "/new",
+      "line": 4643
+    },
+    {
+      "name": "/on-air",
+      "line": 5023
+    },
+    {
+      "name": "/plan",
+      "line": 1340
+    },
+    {
+      "name": "/plugin",
+      "line": 1315
+    },
+    {
+      "name": "/pr",
+      "line": 4643
+    },
+    {
+      "name": "/proc",
+      "line": 5638
+    },
+    {
+      "name": "/properties",
+      "line": 4127
+    },
+    {
+      "name": "/quit",
+      "line": 4917
+    },
+    {
+      "name": "/readonly",
+      "line": 1343
+    },
+    {
+      "name": "/register",
+      "line": 4120
+    },
+    {
+      "name": "/reindex",
+      "line": 4643
+    },
+    {
+      "name": "/release-notes",
+      "line": 4918
+    },
+    {
+      "name": "/remote",
+      "line": 1340
+    },
+    {
+      "name": "/rename",
+      "line": 1340
+    },
+    {
+      "name": "/research",
+      "line": 1340
+    },
+    {
+      "name": "/reset",
+      "line": 4917
+    },
+    {
+      "name": "/reset-allowed-tools",
+      "line": 1340
+    },
+    {
+      "name": "/responses",
+      "line": 1161
+    },
+    {
+      "name": "/restart",
+      "line": 4643
+    },
+    {
+      "name": "/resume",
+      "line": 4643
+    },
+    {
+      "name": "/review",
+      "line": 1340
+    },
+    {
+      "name": "/rewind",
+      "line": 4643
+    },
+    {
+      "name": "/roll",
+      "line": 3370
+    },
+    {
+      "name": "/s",
+      "line": 525
+    },
+    {
+      "name": "/sandbox",
+      "line": 1340
+    },
+    {
+      "name": "/sbin",
+      "line": 5638
+    },
+    {
+      "name": "/search",
+      "line": 4643
+    },
+    {
+      "name": "/session",
+      "line": 1340
+    },
+    {
+      "name": "/sessions",
+      "line": 4643
+    },
+    {
+      "name": "/share",
+      "line": 4643
+    },
+    {
+      "name": "/sidekicks",
+      "line": 4643
+    },
+    {
+      "name": "/skills",
+      "line": 1314
+    },
+    {
+      "name": "/spawn-helper",
+      "line": 5637
+    },
+    {
+      "name": "/statusline",
+      "line": 4643
+    },
+    {
+      "name": "/streamer-mode",
+      "line": 4643
+    },
+    {
+      "name": "/subconscious",
+      "line": 1337
+    },
+    {
+      "name": "/sys",
+      "line": 5638
+    },
+    {
+      "name": "/tasks",
+      "line": 4643
+    },
+    {
+      "name": "/terminal-setup",
+      "line": 4512
+    },
+    {
+      "name": "/theme",
+      "line": 4643
+    },
+    {
+      "name": "/threads",
+      "line": 1161
+    },
+    {
+      "name": "/tmp",
+      "line": 1026
+    },
+    {
+      "name": "/token",
+      "line": 1180
+    },
+    {
+      "name": "/tuikit",
+      "line": 4643
+    },
+    {
+      "name": "/undo",
+      "line": 4643
+    },
+    {
+      "name": "/update",
+      "line": 4643
+    },
+    {
+      "name": "/upgrade",
+      "line": 4915
+    },
+    {
+      "name": "/upload",
+      "line": 3370
+    },
+    {
+      "name": "/uploads",
+      "line": 1161
+    },
+    {
+      "name": "/usage",
+      "line": 1340
+    },
+    {
+      "name": "/user",
+      "line": 4643
+    },
+    {
+      "name": "/v",
+      "line": 1203
+    },
+    {
+      "name": "/version",
+      "line": 4643
+    },
+    {
+      "name": "/voice",
+      "line": 4643
+    },
+    {
+      "name": "/yolo",
+      "line": 4966
+    }
+  ],
+  "toolNameHits": [
+    {
+      "name": "apply_patch",
+      "line": 1739
+    },
+    {
+      "name": "ask_user",
+      "line": 602
+    },
+    {
+      "name": "bash",
+      "line": 238
+    },
+    {
+      "name": "code_review",
+      "line": 239
+    },
+    {
+      "name": "context_board",
+      "line": 1295
+    },
+    {
+      "name": "create",
+      "line": 9
+    },
+    {
+      "name": "edit",
+      "line": 191
+    },
+    {
+      "name": "glob",
+      "line": 60
+    },
+    {
+      "name": "grep",
+      "line": 555
+    },
+    {
+      "name": "grep_search",
+      "line": 4047
+    },
+    {
+      "name": "lsp",
+      "line": 236
+    },
+    {
+      "name": "parallel_validation",
+      "line": 239
+    },
+    {
+      "name": "powershell",
+      "line": 238
+    },
+    {
+      "name": "read_agent",
+      "line": 1361
+    },
+    {
+      "name": "read_file",
+      "line": 4047
+    },
+    {
+      "name": "report_intent",
+      "line": 1354
+    },
+    {
+      "name": "skill",
+      "line": 239
+    },
+    {
+      "name": "str_replace_editor",
+      "line": 1143
+    },
+    {
+      "name": "task",
+      "line": 60
+    },
+    {
+      "name": "task_complete",
+      "line": 602
+    },
+    {
+      "name": "think",
+      "line": 601
+    },
+    {
+      "name": "view",
+      "line": 60
+    },
+    {
+      "name": "web_fetch",
+      "line": 1144
+    },
+    {
+      "name": "web_search",
+      "line": 1359
+    },
+    {
+      "name": "write_agent",
+      "line": 239
+    }
+  ],
+  "packagedDefinitions": [
+    "copilot-cli-pkg/definitions/code-review.agent.yaml",
+    "copilot-cli-pkg/definitions/explore.agent.yaml",
+    "copilot-cli-pkg/definitions/rem-agent.agent.yaml",
+    "copilot-cli-pkg/definitions/research.agent.yaml",
+    "copilot-cli-pkg/definitions/rubber-duck.agent.yaml",
+    "copilot-cli-pkg/definitions/task.agent.yaml"
+  ]
+}

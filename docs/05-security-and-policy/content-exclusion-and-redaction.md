@@ -213,5 +213,6 @@ sequenceDiagram
 - `permission-system-design.md` explains path/URL permission decisions that can combine with content policies.
 - `built-in-tool-execution-pipeline.md` explains where tool outputs and telemetry are produced.
 - `web-search-url-fetching.md` explains URL allow/deny permissions, a separate network policy layer.
+- `debug-bundle-redaction-boundaries.md` explains how these redaction layers relate to support/debug archives and secret gist uploads.
 - `diagnostics-feedback-debug-bundles.md` explains debug bundle collection where sensitive logs may be packaged.
 - `settings-config-persistence.md` explains where runtime flags/settings and policy-related options are persisted.

@@ -60,12 +60,12 @@ flowchart TD
 | [Overview](./00-overview/README.md) | Start here: what the extracted bundle is, how to read the docs, the high-level feature map, and the context/harness engineering split. | 2 |
 | [Runtime and UI](./01-runtime-and-ui/README.md) | Bootstrap, root command routing, interactive TUI, terminal ergonomics, voice mode, protocol server modes, and rendering support. | 8 |
 | [Context and input](./02-context-and-input/README.md) | Everything that becomes model-visible context: prompts, custom instructions, attachments, memory, compaction, and rewind boundaries. | 7 |
-| [Sessions and remote](./03-sessions-and-remote/README.md) | Local event-sourced sessions, cloud/remote control, SQLite indexing, UI projection, repository metadata, and Mission Control steering. | 8 |
+| [Sessions and remote](./03-sessions-and-remote/README.md) | Local event-sourced sessions, cloud/remote control, SQLite indexing, UI projection, repository metadata, and Mission Control steering. | 10 |
 | [Tools and integrations](./04-tools-and-integrations/README.md) | Built-in tools, validation/review tools, MCP, plugins, SDK extensions, IDE/LSP/editor bridges, web access, and integration overview surfaces. | 10 |
 | [Security and policy](./05-security-and-policy/README.md) | Permissions, content exclusion, hooks, sandboxing, and persistent policy/configuration state. | 6 |
 | [Models and reliability](./06-models-and-reliability/README.md) | Authentication, provider selection, wire APIs, resilience, rate limits, usage metrics, quota, and billing. | 4 |
 | [Agents and automation](./07-agents-and-automation/README.md) | Task orchestration, built-in agents, subagents, autopilot, fleet mode, and scheduled prompt/command automation. | 5 |
-| [Operations and research](./08-operations-and-research/README.md) | Feature gates, diagnostics, debug bundles, observability/update/shutdown, and the original documentation backlog. | 4 |
+| [Operations and research](./08-operations-and-research/README.md) | Feature gates, generated source indexes, diagnostics, debug bundles, observability/update/shutdown, and the original documentation backlog. | 6 |
 
 ## Naming and maintenance conventions
 
@@ -84,7 +84,7 @@ flowchart TD
 |---|---|
 | Get oriented quickly | [Overview](./00-overview/README.md) → [Runtime and UI](./01-runtime-and-ui/README.md) → [Context and input](./02-context-and-input/README.md) |
 | Separate context engineering from harness engineering | [Main feature map](./00-overview/main-feature-map.md) → [Context and input](./02-context-and-input/README.md) → [Tools and integrations](./04-tools-and-integrations/README.md) → [Security and policy](./05-security-and-policy/README.md) |
-| Understand local/remote session behavior | [Sessions and remote](./03-sessions-and-remote/README.md) → [Operations and research](./08-operations-and-research/README.md) |
+| Understand local/remote session behavior | [Sessions and remote](./03-sessions-and-remote/README.md) → [End-to-end session lifecycle](./03-sessions-and-remote/session-lifecycle-end-to-end.md) → [Persistence pipeline](./03-sessions-and-remote/persistence-pipeline.md) → [Operations and research](./08-operations-and-research/README.md) |
 | Trace a model request end to end | [Context and input](./02-context-and-input/README.md) → [Tools and integrations](./04-tools-and-integrations/README.md) → [Models and reliability](./06-models-and-reliability/README.md) |
 | Review safety and trust boundaries | [Security and policy](./05-security-and-policy/README.md) → [Tools and integrations](./04-tools-and-integrations/README.md) → [Operations and research](./08-operations-and-research/README.md) |
 | Study automation and subagents | [Context and input](./02-context-and-input/README.md) → [Agents and automation](./07-agents-and-automation/README.md) → [Sessions and remote](./03-sessions-and-remote/README.md) |
@@ -123,7 +123,9 @@ flowchart TD
 | Context and input | [Memory and dynamic context board in Copilot CLI](./02-context-and-input/memory-and-context-board.md) | Agentic memory API, local memory, dynamic context board, rem-agent, sidekicks, and shutdown consolidation. |
 | Context and input | [Conversation compaction and memory compression in Copilot CLI](./02-context-and-input/conversation-compaction.md) | /compact, automatic compaction, request-time prompt trimming, summary replacement, checkpoints, hooks, telemetry, and UI status. |
 | Context and input | [Checkpoints, undo, rewind, and fork](./02-context-and-input/checkpoints-undo-rewind.md) | /undo, /rewind, /fork, event-log truncation/replay, snapshot_rewind, and workspace events. |
+| Sessions and remote | [End-to-end session lifecycle](./03-sessions-and-remote/session-lifecycle-end-to-end.md) | Creation/resume/continue, event replay, workspace state, tool refresh, UI projection, indexing, remote export, and shutdown. |
 | Sessions and remote | [Session support implementation in the Copilot CLI](./03-sessions-and-remote/session-support-implementation.md) | Event-sourced local persistence, workspace artifacts, startup resolution, APIs, and handoff behavior. |
+| Sessions and remote | [Persistence pipeline for sessions](./03-sessions-and-remote/persistence-pipeline.md) | JSONL events, SessionFs, workspace sidecars, SQLite/FTS, search/reindex, fork, rewind, checkpoints, and cloud sync. |
 | Sessions and remote | [SessionFs provider and state-file lifecycle](./03-sessions-and-remote/session-fs-provider-and-state-files.md) | Local and SDK/RPC-backed session filesystems, reverse calls, state-file layout, large output temp files, and fork-time copying. |
 | Sessions and remote | [API and session event schema contracts](./03-sessions-and-remote/api-and-session-event-schemas.md) | JSON-RPC and session event schemas, SDK generation surfaces, event envelopes, and `app.js` forwarding/replay cross-checks. |
 | Sessions and remote | [Session, remote, cloud, and history workflows](./03-sessions-and-remote/sessions-remote-cloud.md) | Resume/continue/name handling, background sessions, cloud sessions, remote steering, and history. |
@@ -157,7 +159,9 @@ flowchart TD
 | Agents and automation | [Fleet mode implementation in Copilot CLI](./07-agents-and-automation/fleet-mode.md) | /fleet, session.fleet.start, autopilot_fleet, SQL todo coordination, dependencies, and parallel subagents. |
 | Agents and automation | [Scheduled prompts and command queue](./07-agents-and-automation/scheduled-prompts-and-command-queue.md) | /every and /after parsing, ScheduleRegistry replay, queue integration, and ephemeral command dispatch. |
 | Operations and research | [Feature gates and rollout logic in Copilot CLI](./08-operations-and-research/feature-gates.md) | Gate tiers, rollout inputs, env/settings overrides, remote experiments, repo/team allowlists, and MCP permission gates. |
+| Operations and research | [`app.js` source atlas and generated indexes](./08-operations-and-research/app-js-source-atlas.md) | Generated `app.js` symbol/string inventories, main runtime path seeds, semantic anchor seeds, and regeneration workflow. |
 | Operations and research | [Diagnostics, feedback, and debug bundles](./08-operations-and-research/diagnostics-feedback-debug-bundles.md) | /diagnose, /feedback, /bug, /collect-debug-logs, .tgz bundles, secret gist uploads, and debug-log paths. |
+| Operations and research | [Debug bundle and redaction boundaries](./08-operations-and-research/debug-bundle-redaction-boundaries.md) | Diagnostic bundle inputs, redaction layers, local archive versus secret gist risks, and support-sharing caveats. |
 | Operations and research | [Observability, update, and shutdown workflows](./08-operations-and-research/observability-update-shutdown.md) | Logging, telemetry, OpenTelemetry, debug artifacts, update/version paths, and graceful shutdown. |
 | Operations and research | [Further documentation opportunities for Copilot CLI](./08-operations-and-research/documentation-opportunities.md) | Historical scan report, implemented backlog, command surfaces, and future niche follow-ups. |
 

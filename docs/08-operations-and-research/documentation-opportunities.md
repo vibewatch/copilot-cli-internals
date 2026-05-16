@@ -1,6 +1,6 @@
 # Further documentation opportunities for Copilot CLI
 
-This report summarizes a second-pass, script-assisted scan of the extracted Copilot CLI `app.js` bundle to identify areas that are still worth turning into focused implementation documents.
+This report summarizes a second-pass, script-assisted scan of the extracted Copilot CLI `app.js` bundle to identify areas that are still worth turning into focused implementation documents. For the current reusable scan workflow and generated source indexes, see [`app-js-source-atlas.md`](./app-js-source-atlas.md).
 
 The current documentation set already covers the major runtime shape, prompts, memory/context board, compaction, loader/bootstrap, CLI routing, TUI, Tree-sitter, sessions, remote control, MCP, permissions, sandboxing, models/providers/auth, model API routing, resilience, task orchestration, autopilot, fleet mode, feature gates, and observability. The candidates below are therefore biased toward **implementation surfaces that are present in `app.js` but only partially covered or scattered across existing docs**.
 
@@ -78,6 +78,7 @@ Additional iterative gap pass:
 3. [`session-fs-provider-and-state-files.md`](../03-sessions-and-remote/session-fs-provider-and-state-files.md) now covers the SessionFs provider and session-state file lifecycle: local vs RPC-backed filesystems, SDK reverse calls, provider guards, event/workspace files, large-output temp files, and fork/checkpoint state copying.
 4. [`voice-runtime-workers-and-transcription.md`](../01-runtime-and-ui/voice-runtime-workers-and-transcription.md) now covers the voice backend that was only summarized by the voice-mode page: microphone, installer, and Foundry worker state machines; PCM flow; streaming/batch transcription; and cleanup.
 5. A likely next high-value gap is the **request processor and compaction/retry interaction path**: pre-request processors, token-budget checks, automatic compaction, rate-limit/request-size retries, and how those processors mutate chat context before the provider call.
+6. [`session-lifecycle-end-to-end.md`](../03-sessions-and-remote/session-lifecycle-end-to-end.md), [`persistence-pipeline.md`](../03-sessions-and-remote/persistence-pipeline.md), and [`debug-bundle-redaction-boundaries.md`](./debug-bundle-redaction-boundaries.md) now cover the previously scattered reader-path gaps for session lifecycle, persistence layering, and support-bundle redaction boundaries.
 
 ## Extracted command surface
 
@@ -393,7 +394,7 @@ After the high- and medium-priority batches, a final gap scan found several impo
 
 ## Recommended next writing order
 
-The current important `app.js` documentation backlog is now covered by focused docs and indexed in `README.md`. Future writing should be driven by new questions rather than by the existing gap list. Possible niche follow-ups, only if needed, are:
+The current important `app.js` documentation backlog is now covered by focused docs and indexed in `README.md`, including the later session-lifecycle, persistence-pipeline, and debug-bundle redaction boundary pages. Future writing should be driven by new questions rather than by the existing gap list. Possible niche follow-ups, only if needed, are:
 
 1. A very focused cloud-sandbox/detached-child/rem-agent execution deep dive.
 2. A TUI rendering/theme/Tuikit internals document if terminal rendering itself becomes the research target.

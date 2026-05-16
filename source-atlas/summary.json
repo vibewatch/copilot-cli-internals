@@ -1,0 +1,802 @@
+{
+  "generatedAt": "2026-05-16T21:15:13.599Z",
+  "source": {
+    "path": "/home/ythuang/workspace/copilot-cli-internals/copilot-cli-pkg/app.js",
+    "relativePath": "copilot-cli-pkg/app.js",
+    "sha256": "4643c8fe2dc55bb3a988a16001cf9b3d2b70fdbdaec5b7d567102fa7066327db",
+    "bytes": 11865779,
+    "lines": 8684
+  },
+  "output": {
+    "path": "/home/ythuang/workspace/copilot-cli-internals/source-atlas",
+    "relativePath": "source-atlas"
+  },
+  "counts": {
+    "functions": 8597,
+    "classes": 1893,
+    "declarationBlocks": 32661,
+    "envVars": 182,
+    "featureKeys": 1550,
+    "experimentFlagStrings": 24,
+    "eventStrings": 91,
+    "jsonRpcMethods": 58,
+    "confirmedSlashCommands": 22,
+    "slashCommandCandidates": 125,
+    "knownToolNameHits": 25,
+    "packagedAgentDefinitions": 6,
+    "knownSemanticAnchors": 17,
+    "mainPathSeeds": 10
+  },
+  "knownAnchors": [
+    {
+      "semanticAlias": "RootProgram",
+      "anchors": [
+        "mke",
+        "RootProgram"
+      ],
+      "role": "Builds the root copilot command, global options, help topics, and subcommands.",
+      "docs": "docs/00-overview/main-feature-map.md",
+      "resolved": [
+        {
+          "anchor": "mke",
+          "line": 5797
+        }
+      ],
+      "firstLine": 5797
+    },
+    {
+      "semanticAlias": "mainCliAction(...) / runtime dispatcher",
+      "anchors": [
+        "j$o",
+        "u1t",
+        "--server",
+        "--headless"
+      ],
+      "role": "Turns argv/env/settings/session state into TUI, prompt, server/headless, or ACP mode.",
+      "docs": "docs/01-runtime-and-ui/cli-runtime-workflows.md",
+      "resolved": [
+        {
+          "anchor": "j$o",
+          "line": 7441
+        },
+        {
+          "anchor": "u1t",
+          "line": 7350
+        },
+        {
+          "anchor": "--server",
+          "line": 6104
+        },
+        {
+          "anchor": "--headless",
+          "line": 6104
+        }
+      ],
+      "firstLine": 6104
+    },
+    {
+      "semanticAlias": "InteractiveTuiFlow",
+      "anchors": [
+        "j$o",
+        "jQa"
+      ],
+      "role": "Runs the terminal UI, slash commands, dialogs, permissions, and background session UI.",
+      "docs": "docs/01-runtime-and-ui/tui-and-slash-commands.md",
+      "resolved": [
+        {
+          "anchor": "j$o",
+          "line": 7441
+        },
+        {
+          "anchor": "jQa",
+          "line": 7335
+        }
+      ],
+      "firstLine": 7335
+    },
+    {
+      "semanticAlias": "runPromptMode(...)",
+      "anchors": [
+        "u1t",
+        "session.task_complete"
+      ],
+      "role": "Handles -p/stdin/non-TTY execution, streaming, JSONL, autopilot continuation, and pending background work.",
+      "docs": "docs/01-runtime-and-ui/cli-runtime-workflows.md",
+      "resolved": [
+        {
+          "anchor": "u1t",
+          "line": 7350
+        },
+        {
+          "anchor": "session.task_complete",
+          "line": 4361
+        }
+      ],
+      "firstLine": 4361
+    },
+    {
+      "semanticAlias": "buildSystemPrompt(...) / createGeneralPurposeSystemPrompt(...)",
+      "anchors": [
+        "X3e",
+        "Wmt",
+        "currentSystemMessage"
+      ],
+      "role": "Assembles identity, tools, instructions, skills, memory, runtime state, and provider-visible system context.",
+      "docs": "docs/02-context-and-input/prompt-sources.md",
+      "resolved": [
+        {
+          "anchor": "X3e",
+          "line": 3824
+        },
+        {
+          "anchor": "Wmt",
+          "line": 4031
+        },
+        {
+          "anchor": "currentSystemMessage",
+          "line": 4471
+        }
+      ],
+      "firstLine": 3824
+    },
+    {
+      "semanticAlias": "Session runtime / runAgenticLoop",
+      "anchors": [
+        "runAgenticLoop",
+        "getCompletionWithTools",
+        "tool.execution_complete"
+      ],
+      "role": "Queues prompts, builds requests, streams model output, dispatches tools, emits durable events, and handles retries.",
+      "docs": "docs/03-sessions-and-remote/session-support-implementation.md",
+      "resolved": [
+        {
+          "anchor": "runAgenticLoop",
+          "line": 4481
+        },
+        {
+          "anchor": "getCompletionWithTools",
+          "line": 3062
+        },
+        {
+          "anchor": "tool.execution_complete",
+          "line": 4043
+        }
+      ],
+      "firstLine": 3062
+    },
+    {
+      "semanticAlias": "assembleRuntimeTools(...)",
+      "anchors": [
+        "HCr",
+        "assembleRuntimeTools",
+        "session.tools_updated"
+      ],
+      "role": "Builds the final model-visible toolset from built-ins, MCP, SDK extensions, plugins, custom agents, filters, and gates.",
+      "docs": "docs/04-tools-and-integrations/runtime-tool-assembly-and-filtering.md",
+      "resolved": [
+        {
+          "anchor": "HCr",
+          "line": 5734
+        },
+        {
+          "anchor": "session.tools_updated",
+          "line": 4361
+        }
+      ],
+      "firstLine": 4361
+    },
+    {
+      "semanticAlias": "Built-in tool execution pipeline",
+      "anchors": [
+        "tool.execution_start",
+        "tool.execution_partial_result",
+        "tool.execution_complete"
+      ],
+      "role": "Runs model tool calls through permission/hook/execution/event/telemetry boundaries.",
+      "docs": "docs/04-tools-and-integrations/built-in-tool-execution-pipeline.md",
+      "resolved": [
+        {
+          "anchor": "tool.execution_start",
+          "line": 4361
+        },
+        {
+          "anchor": "tool.execution_partial_result",
+          "line": 4361
+        },
+        {
+          "anchor": "tool.execution_complete",
+          "line": 4043
+        }
+      ],
+      "firstLine": 4043
+    },
+    {
+      "semanticAlias": "PermissionService",
+      "anchors": [
+        "PermissionService",
+        "permissionRequest",
+        "allow-tool",
+        "deny-tool"
+      ],
+      "role": "Applies tool/path/URL/MCP/hook approval policy before potentially dangerous actions.",
+      "docs": "docs/05-security-and-policy/permission-system-design.md",
+      "resolved": [
+        {
+          "anchor": "PermissionService",
+          "line": 4361
+        },
+        {
+          "anchor": "permissionRequest",
+          "line": 238
+        },
+        {
+          "anchor": "allow-tool",
+          "line": 8059
+        },
+        {
+          "anchor": "deny-tool",
+          "line": 8059
+        }
+      ],
+      "firstLine": 238
+    },
+    {
+      "semanticAlias": "McpHost and MCP task bridge",
+      "anchors": [
+        "McpHost",
+        "p8e",
+        "callToolStream",
+        "taskSupport"
+      ],
+      "role": "Connects MCP servers, exposes tools/resources/prompts, and maps long-running MCP task streams into task records.",
+      "docs": "docs/04-tools-and-integrations/mcp-support-implementation.md",
+      "resolved": [
+        {
+          "anchor": "McpHost",
+          "line": 4396
+        },
+        {
+          "anchor": "p8e",
+          "line": 4138
+        },
+        {
+          "anchor": "callToolStream",
+          "line": 239
+        },
+        {
+          "anchor": "taskSupport",
+          "line": 239
+        }
+      ],
+      "firstLine": 239
+    },
+    {
+      "semanticAlias": "Plugin and SDK extension loading",
+      "anchors": [
+        "pluginCommand",
+        "setupExtensionsForSession",
+        "session.extensions_loaded",
+        "EXTENSIONS"
+      ],
+      "role": "Loads plugin-contributed skills/agents/hooks/MCP/LSP and SDK extension tools/hooks/commands.",
+      "docs": "docs/04-tools-and-integrations/plugin-extension-architecture.md",
+      "resolved": [
+        {
+          "anchor": "pluginCommand",
+          "line": 4917
+        },
+        {
+          "anchor": "setupExtensionsForSession",
+          "line": 6100
+        },
+        {
+          "anchor": "session.extensions_loaded",
+          "line": 4361
+        },
+        {
+          "anchor": "EXTENSIONS",
+          "line": 239
+        }
+      ],
+      "firstLine": 239
+    },
+    {
+      "semanticAlias": "TaskRegistry",
+      "anchors": [
+        "B3",
+        "TaskRegistry",
+        "agent_completed",
+        "agent_idle"
+      ],
+      "role": "Tracks background, multi-turn, and MCP task state, results, cancellation, and notifications.",
+      "docs": "docs/07-agents-and-automation/agent-task-orchestration.md",
+      "resolved": [
+        {
+          "anchor": "B3",
+          "line": 60
+        },
+        {
+          "anchor": "TaskRegistry",
+          "line": 4138
+        },
+        {
+          "anchor": "agent_completed",
+          "line": 4361
+        },
+        {
+          "anchor": "agent_idle",
+          "line": 4361
+        }
+      ],
+      "firstLine": 60
+    },
+    {
+      "semanticAlias": "createTaskTool(...)",
+      "anchors": [
+        "I6n",
+        "H3=\"task\"",
+        "agent_type"
+      ],
+      "role": "Exposes subagent dispatch to the main model via the task tool schema and callback.",
+      "docs": "docs/07-agents-and-automation/agent-task-orchestration.md",
+      "resolved": [
+        {
+          "anchor": "I6n",
+          "line": 3735
+        },
+        {
+          "anchor": "H3=\"task\"",
+          "line": 3815
+        },
+        {
+          "anchor": "agent_type",
+          "line": 1336
+        }
+      ],
+      "firstLine": 1336
+    },
+    {
+      "semanticAlias": "BUILT_IN_AGENTS",
+      "anchors": [
+        "nHn",
+        "general-purpose",
+        "rem-agent"
+      ],
+      "role": "Catalogs built-in agent types and their runtime availability filters.",
+      "docs": "docs/07-agents-and-automation/built-in-agents.md",
+      "resolved": [
+        {
+          "anchor": "nHn",
+          "line": 4037
+        },
+        {
+          "anchor": "general-purpose",
+          "line": 3347
+        },
+        {
+          "anchor": "rem-agent",
+          "line": 1336
+        }
+      ],
+      "firstLine": 1336
+    },
+    {
+      "semanticAlias": "SessionAgentExecutor",
+      "anchors": [
+        "dZ",
+        "SessionAgentExecutor.execute"
+      ],
+      "role": "Runs built-in/custom session-based subagents, hook loops, multi-turn waits, and teardown.",
+      "docs": "docs/07-agents-and-automation/agent-task-orchestration.md",
+      "resolved": [
+        {
+          "anchor": "dZ",
+          "line": 103
+        },
+        {
+          "anchor": "SessionAgentExecutor.execute",
+          "line": 4037
+        }
+      ],
+      "firstLine": 103
+    },
+    {
+      "semanticAlias": "Feature gates",
+      "anchors": [
+        "gLt",
+        "v1e",
+        "LiveFeatureFlagService",
+        "COPILOT_EXP_"
+      ],
+      "role": "Resolves static gates, environment/settings overrides, and experiment treatments.",
+      "docs": "docs/08-operations-and-research/feature-gates.md",
+      "resolved": [
+        {
+          "anchor": "gLt",
+          "line": 239
+        },
+        {
+          "anchor": "v1e",
+          "line": 239
+        },
+        {
+          "anchor": "COPILOT_EXP_",
+          "line": 239
+        }
+      ],
+      "firstLine": 239
+    },
+    {
+      "semanticAlias": "Observability and shutdown",
+      "anchors": [
+        "ShutdownService",
+        "OpenTelemetry",
+        "COLLECT_DEBUG_LOGS",
+        "debug"
+      ],
+      "role": "Handles logging, telemetry, diagnostics, update/version flows, signal handling, and cleanup.",
+      "docs": "docs/08-operations-and-research/observability-update-shutdown.md",
+      "resolved": [
+        {
+          "anchor": "OpenTelemetry",
+          "line": 5742
+        },
+        {
+          "anchor": "COLLECT_DEBUG_LOGS",
+          "line": 239
+        },
+        {
+          "anchor": "debug",
+          "line": 60
+        }
+      ],
+      "firstLine": 60
+    }
+  ],
+  "mainPaths": [
+    {
+      "path": "Startup and runtime mode routing",
+      "trigger": "`copilot` argv, stdin, TTY, and global options",
+      "anchorSeeds": [
+        "RootProgram",
+        "mainCliAction",
+        "j$o",
+        "u1t",
+        "--server",
+        "--headless",
+        "--acp"
+      ],
+      "output": "Interactive TUI, prompt mode, server/headless JSON-RPC, or ACP mode.",
+      "docs": "docs/00-overview/main-feature-map.md",
+      "resolvedSeeds": [
+        {
+          "anchor": "j$o",
+          "line": 7441
+        },
+        {
+          "anchor": "u1t",
+          "line": 7350
+        },
+        {
+          "anchor": "--server",
+          "line": 6104
+        },
+        {
+          "anchor": "--headless",
+          "line": 6104
+        },
+        {
+          "anchor": "--acp",
+          "line": 6104
+        }
+      ]
+    },
+    {
+      "path": "Session and event lifecycle",
+      "trigger": "new/resume/continue/name/fork/session APIs",
+      "anchorSeeds": [
+        "session.start",
+        "Session.send",
+        "tool.execution_complete",
+        "session.task_complete",
+        "session.idle"
+      ],
+      "output": "Durable event log, UI projection, state files, background work, and completion/idle signals.",
+      "docs": "docs/03-sessions-and-remote/session-support-implementation.md",
+      "resolvedSeeds": [
+        {
+          "anchor": "session.start",
+          "line": 4361
+        },
+        {
+          "anchor": "tool.execution_complete",
+          "line": 4043
+        },
+        {
+          "anchor": "session.task_complete",
+          "line": 4361
+        },
+        {
+          "anchor": "session.idle",
+          "line": 4361
+        }
+      ]
+    },
+    {
+      "path": "Prompt and context assembly",
+      "trigger": "session initialization, subagent creation, slash command prompt macro, provider request",
+      "anchorSeeds": [
+        "buildSystemPrompt",
+        "X3e",
+        "Wmt",
+        "loadCustomInstructions",
+        "loadSkills",
+        "currentSystemMessage"
+      ],
+      "output": "System/developer/user/tool messages shaped for a provider request.",
+      "docs": "docs/02-context-and-input/prompt-sources.md",
+      "resolvedSeeds": [
+        {
+          "anchor": "buildSystemPrompt",
+          "line": 4037
+        },
+        {
+          "anchor": "X3e",
+          "line": 3824
+        },
+        {
+          "anchor": "Wmt",
+          "line": 4031
+        },
+        {
+          "anchor": "loadSkills",
+          "line": 4967
+        },
+        {
+          "anchor": "currentSystemMessage",
+          "line": 4471
+        }
+      ]
+    },
+    {
+      "path": "Model request, streaming, retry, and compaction",
+      "trigger": "agent turn needs a completion with tools",
+      "anchorSeeds": [
+        "getCompletionWithTools",
+        "preRequest",
+        "BasicTruncator",
+        "CompactionProcessor",
+        "rate limit"
+      ],
+      "output": "Provider request/response stream, retry/fallback behavior, request-size handling, and token-budget mutation.",
+      "docs": "docs/06-models-and-reliability/resilience-rate-limits-concurrency.md",
+      "resolvedSeeds": [
+        {
+          "anchor": "getCompletionWithTools",
+          "line": 3062
+        },
+        {
+          "anchor": "preRequest",
+          "line": 1054
+        },
+        {
+          "anchor": "BasicTruncator",
+          "line": 3062
+        },
+        {
+          "anchor": "CompactionProcessor",
+          "line": 3092
+        },
+        {
+          "anchor": "rate limit",
+          "line": 620
+        }
+      ]
+    },
+    {
+      "path": "Runtime tool assembly",
+      "trigger": "session/subagent tool initialization or tool surface invalidation",
+      "anchorSeeds": [
+        "HCr",
+        "assembleRuntimeTools",
+        "initializeAndValidateTools",
+        "session.tools_updated"
+      ],
+      "output": "Final model-visible tool definitions, filters, permissions, and dynamic tool invalidation.",
+      "docs": "docs/04-tools-and-integrations/runtime-tool-assembly-and-filtering.md",
+      "resolvedSeeds": [
+        {
+          "anchor": "HCr",
+          "line": 5734
+        },
+        {
+          "anchor": "initializeAndValidateTools",
+          "line": 4043
+        },
+        {
+          "anchor": "session.tools_updated",
+          "line": 4361
+        }
+      ]
+    },
+    {
+      "path": "Tool execution lifecycle",
+      "trigger": "model emits a tool call",
+      "anchorSeeds": [
+        "tool.execution_start",
+        "preToolUse",
+        "permissionRequest",
+        "tool.execution_complete"
+      ],
+      "output": "Permissioned execution, partial/progress/result events, telemetry, and session history records.",
+      "docs": "docs/04-tools-and-integrations/built-in-tool-execution-pipeline.md",
+      "resolvedSeeds": [
+        {
+          "anchor": "tool.execution_start",
+          "line": 4361
+        },
+        {
+          "anchor": "preToolUse",
+          "line": 238
+        },
+        {
+          "anchor": "permissionRequest",
+          "line": 238
+        },
+        {
+          "anchor": "tool.execution_complete",
+          "line": 4043
+        }
+      ]
+    },
+    {
+      "path": "Subagent and task orchestration",
+      "trigger": "main model calls `task` or slash macro steers toward an agent",
+      "anchorSeeds": [
+        "I6n",
+        "TaskRegistry",
+        "B3",
+        "SessionAgentExecutor",
+        "dZ",
+        "agent_completed"
+      ],
+      "output": "Sync/background/multi-turn agent state, result handoff, and subagent lifecycle events.",
+      "docs": "docs/07-agents-and-automation/agent-task-orchestration.md",
+      "resolvedSeeds": [
+        {
+          "anchor": "I6n",
+          "line": 3735
+        },
+        {
+          "anchor": "TaskRegistry",
+          "line": 4138
+        },
+        {
+          "anchor": "B3",
+          "line": 60
+        },
+        {
+          "anchor": "SessionAgentExecutor",
+          "line": 4037
+        },
+        {
+          "anchor": "dZ",
+          "line": 103
+        },
+        {
+          "anchor": "agent_completed",
+          "line": 4361
+        }
+      ]
+    },
+    {
+      "path": "Integrations and extension loading",
+      "trigger": "MCP config, plugin dirs, installed plugins, SDK extension feature gate, IDE bridge",
+      "anchorSeeds": [
+        "McpHost",
+        "plugin",
+        "setupExtensionsForSession",
+        "session.extensions_loaded",
+        "callIdeTool"
+      ],
+      "output": "External tools, hooks, prompts, resources, agents, skills, LSP/IDE surfaces, and SDK commands.",
+      "docs": "docs/04-tools-and-integrations/plugin-extension-architecture.md",
+      "resolvedSeeds": [
+        {
+          "anchor": "McpHost",
+          "line": 4396
+        },
+        {
+          "anchor": "plugin",
+          "line": 326
+        },
+        {
+          "anchor": "setupExtensionsForSession",
+          "line": 6100
+        },
+        {
+          "anchor": "session.extensions_loaded",
+          "line": 4361
+        },
+        {
+          "anchor": "callIdeTool",
+          "line": 6024
+        }
+      ]
+    },
+    {
+      "path": "Permissions, policy, and sandbox boundaries",
+      "trigger": "tool/path/URL/MCP/hook/shell action needs approval or policy check",
+      "anchorSeeds": [
+        "PermissionService",
+        "allow-tool",
+        "deny-tool",
+        "content exclusion",
+        "sandbox"
+      ],
+      "output": "Allow/deny/redaction/sandbox decisions before dangerous or policy-sensitive work.",
+      "docs": "docs/05-security-and-policy/permission-system-design.md",
+      "resolvedSeeds": [
+        {
+          "anchor": "PermissionService",
+          "line": 4361
+        },
+        {
+          "anchor": "allow-tool",
+          "line": 8059
+        },
+        {
+          "anchor": "deny-tool",
+          "line": 8059
+        },
+        {
+          "anchor": "content exclusion",
+          "line": 561
+        },
+        {
+          "anchor": "sandbox",
+          "line": 239
+        }
+      ]
+    },
+    {
+      "path": "Operations, diagnostics, and shutdown",
+      "trigger": "diagnostic command, telemetry/logging event, update check, signal/shutdown",
+      "anchorSeeds": [
+        "/diagnose",
+        "/collect-debug-logs",
+        "ShutdownService",
+        "OpenTelemetry",
+        "update"
+      ],
+      "output": "Debug bundles, telemetry/logs/traces, update/version behavior, and cleanup.",
+      "docs": "docs/08-operations-and-research/observability-update-shutdown.md",
+      "resolvedSeeds": [
+        {
+          "anchor": "/diagnose",
+          "line": 4643
+        },
+        {
+          "anchor": "/collect-debug-logs",
+          "line": 4643
+        },
+        {
+          "anchor": "OpenTelemetry",
+          "line": 5742
+        },
+        {
+          "anchor": "update",
+          "line": 60
+        }
+      ]
+    }
+  ],
+  "generatedFiles": [
+    "README.md",
+    "constants.md",
+    "symbols.md",
+    "summary.json",
+    "surface-index.json",
+    "declarations.json"
+  ]
+}
