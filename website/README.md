@@ -7,6 +7,16 @@ defined in the repo-root [`DESIGN.md`](../DESIGN.md).
 The markdown source of truth lives in [`../docs/`](../docs/) and is
 read directly by Astro's content loader — no copy step, no symlinks.
 
+## Semantic alias and minified anchor mapping
+
+This README documents the website wrapper, not the minified runtime. Concrete mappings live in the loaded docs pages.
+
+| Semantic alias | Minified anchor | Scope |
+|---|---|---|
+| Website wrapper | N/A — project tooling page | Explains Astro/Starlight development, build, deployment, and layout. |
+| Loaded documentation pages | See `../docs/` page-level mappings | Each rendered wiki page maps stable semantic aliases to version-specific minified anchors. |
+| Extracted package artifacts | N/A — vendor/source artifacts | `copilot-cli-pkg/` Markdown files preserve upstream package content and are not part of the website source set. |
+
 ## Develop
 
 ```sh

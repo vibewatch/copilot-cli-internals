@@ -95,6 +95,7 @@ export default defineConfig({
           items: [
             { label: 'Overview', link: '/02-context-and-input/' },
             { label: 'Prompt sources', link: '/02-context-and-input/prompt-sources/' },
+            { label: 'app.js prompt catalog', link: '/02-context-and-input/app-js-prompt-catalog/' },
             { label: 'Custom agents and skills', link: '/02-context-and-input/custom-agents-and-skills-packaging/' },
             { label: 'Attachments and file ingestion', link: '/02-context-and-input/attachments-and-file-ingestion/' },
             { label: 'Memory and context board', link: '/02-context-and-input/memory-and-context-board/' },
@@ -107,6 +108,7 @@ export default defineConfig({
           items: [
             { label: 'Overview', link: '/03-sessions-and-remote/' },
             { label: 'Session support', link: '/03-sessions-and-remote/session-support-implementation/' },
+            { label: 'API and event schemas', link: '/03-sessions-and-remote/api-and-session-event-schemas/' },
             { label: 'Sessions, remote, cloud', link: '/03-sessions-and-remote/sessions-remote-cloud/' },
             { label: 'Session-store SQLite indexing', link: '/03-sessions-and-remote/session-store-sqlite-indexing/' },
             { label: 'System events and UI projection', link: '/03-sessions-and-remote/system-events-and-ui-projection/' },
@@ -134,6 +136,7 @@ export default defineConfig({
             { label: 'Content exclusion and redaction', link: '/05-security-and-policy/content-exclusion-and-redaction/' },
             { label: 'Hooks and lifecycle automation', link: '/05-security-and-policy/hooks-lifecycle-automation/' },
             { label: 'Sandboxing', link: '/05-security-and-policy/sandboxing/' },
+            { label: 'MXC binary reverse engineering', link: '/05-security-and-policy/mxc-bin-reverse-engineering/' },
             { label: 'Settings and config persistence', link: '/05-security-and-policy/settings-config-persistence/' },
           ],
         },

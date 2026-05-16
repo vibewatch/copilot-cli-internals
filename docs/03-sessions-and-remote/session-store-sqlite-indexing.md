@@ -11,7 +11,7 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 
 ## Source anchors
 
-| Area | Anchor strings / minified symbols | Approx. `app.js` line | What it shows |
+| Semantic alias | Minified anchor | Approx. `app.js` line | Role |
 |---|---|---:|---|
 | SQLite store | `session-store.db`, `node:sqlite`, `DatabaseSync` | 4518, 7449 | Store lives in Copilot state and uses Node’s SQLite binding. |
 | Store feature gate | `SESSION_STORE:"on"` | 239 | Local session store is enabled by default in the analyzed bundle. |

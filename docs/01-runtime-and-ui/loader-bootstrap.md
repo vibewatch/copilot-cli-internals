@@ -10,6 +10,19 @@ Relevant files:
 
 The SEA-internal artifacts referenced by the diagrams below (`sea-loader.js` and the embedded `copilot.tgz`) live inside the native `copilot` binary and are not committed to this repository; only the expanded package contents under `copilot-cli-pkg/` are tracked.
 
+## Source anchors
+
+`app.js` is bundled and minified, so the semantic aliases below are documentation names. Loader filenames are stable package anchors, while minified anchors are version-specific lookup aids.
+
+| Semantic alias | Minified anchor | Location | Role |
+|---|---|---|---|
+| npm launcher | `copilot-cli-pkg/npm-loader.js` | package bin | Selects the native platform package or falls back to the JavaScript loader. |
+| JavaScript restart wrapper | `copilot-cli-pkg/index.js`, `COPILOT_RUN_APP`, restart code `75` | package loader | Selects active package version, spawns child runtime, forwards signals, and restarts on update handoff. |
+| App bootstrap module | `copilot-cli-pkg/app.js` | bundle entry | Installs restricted module loading, Git safety config, and runtime services before CLI dispatch. |
+| Restricted require shim | `createRequire`, app-path containment check | early `app.js` bootstrap | Allows Node built-ins and approved vendored native modules while rejecting resolved paths outside the app directory. |
+| Git hardening | `LVe()`, `safe.bareRepository=explicit`, `GIT_CONFIG_COUNT` | early `app.js` bootstrap | Adds environment-backed Git safety configuration. |
+| Config migration | `COPILOT_HOME`, XDG `.copilot` migration helpers | early `app.js` bootstrap | Resolves state/config roots and compatibility migration behavior. |
+
 ## Distribution layout
 
 The extracted binary is a Node/V8 single executable application (SEA) that carries a loader and a tarball asset. The tarball expands into the `@github/copilot` package.

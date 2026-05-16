@@ -6,7 +6,7 @@ The key implementation point in `app.js` is that a tool call is not just a funct
 
 ## Source anchors
 
-| Area | `app.js` anchor | Evidence |
+| Semantic alias | Minified anchor | Evidence |
 |---|---|---|
 | User-requested tool event | `tool.user_requested` | Records direct/user-initiated invocations. |
 | Start event | `tool.execution_start` | Contains tool call ID, tool name, arguments, optional MCP server metadata, and turn information. |

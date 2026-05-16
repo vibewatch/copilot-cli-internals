@@ -8,7 +8,7 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 
 ## Source anchors
 
-| Area | Anchor strings / minified symbols | Approx. `app.js` line | What it shows |
+| Semantic alias | Minified anchor | Approx. `app.js` line | Role |
 |---|---|---:|---|
 | Hook schema | `sessionStart`, `sessionEnd`, `userPromptSubmitted`, `preToolUse`, `postToolUse`, `postToolUseFailure`, `preCompact`, `permissionRequest`, `notification` | 238 | The main hook configuration object and supported hook arrays. |
 | Command hooks | `bash`, `powershell`, `command`, `cwd`, `env`, `timeoutSec` | 238 | Command hook schema and command alias normalization. |

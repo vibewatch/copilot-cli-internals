@@ -8,7 +8,7 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 
 ## Source anchors
 
-| Area | Anchor strings / minified symbols | Approx. `app.js` line | What it shows |
+| Semantic alias | Minified anchor | Approx. `app.js` line | Role |
 |---|---|---:|---|
 | Slash command | `/terminal-setup` | 4512, 4643, 7351 | User-facing command and TUI prompt callback. |
 | Opt-out env var | `COPILOT_SETUP_TERMINAL` | 4512 | Setting this to `false` suppresses automatic setup prompting. |

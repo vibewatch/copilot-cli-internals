@@ -6,6 +6,16 @@ This wiki organizes the implementation notes for the extracted `@github/copilot`
 
 The docs are based on static inspection of the extracted package, command/help output, string/anchor extraction, and script-assisted scans. Because `app.js` is bundled/minified, symbol names are unstable; source anchors are intended for searching the analyzed bundle, not as public API names.
 
+## Semantic alias and minified anchor mapping
+
+This home page is a navigation index, not a direct `app.js` implementation analysis. Concrete topic pages map stable semantic aliases to version-specific minified anchors.
+
+| Semantic alias | Minified anchor | Scope |
+|---|---|---|
+| Wiki home | N/A — navigation page | Orients readers to sections and reading paths. |
+| Section indexes | N/A — see linked section README pages | Each section index points to topic pages with concrete mappings. |
+| Topic implementation pages | See page-level `Minified anchor` tables | Bundle-specific anchors live in the focused implementation documents. |
+
 ## Wiki map
 
 ```mermaid
@@ -36,8 +46,8 @@ flowchart TD
 |---|---|---:|
 | [Overview](./00-overview/README.md) | Start here: what the extracted bundle is, how to read the docs, and the high-level feature map. | 2 |
 | [Runtime and UI](./01-runtime-and-ui/README.md) | Bootstrap, root command routing, interactive TUI, terminal ergonomics, voice mode, protocol server modes, and rendering support. | 7 |
-| [Context and input](./02-context-and-input/README.md) | Everything that becomes model-visible context: prompts, custom instructions, attachments, memory, compaction, and rewind boundaries. | 6 |
-| [Sessions and remote](./03-sessions-and-remote/README.md) | Local event-sourced sessions, cloud/remote control, SQLite indexing, UI projection, repository metadata, and Mission Control steering. | 6 |
+| [Context and input](./02-context-and-input/README.md) | Everything that becomes model-visible context: prompts, custom instructions, attachments, memory, compaction, and rewind boundaries. | 7 |
+| [Sessions and remote](./03-sessions-and-remote/README.md) | Local event-sourced sessions, cloud/remote control, SQLite indexing, UI projection, repository metadata, and Mission Control steering. | 7 |
 | [Tools and integrations](./04-tools-and-integrations/README.md) | Built-in tools, MCP, plugins, IDE/LSP/editor bridges, web access, and integration overview surfaces. | 6 |
 | [Security and policy](./05-security-and-policy/README.md) | Permissions, content exclusion, hooks, sandboxing, and persistent policy/configuration state. | 6 |
 | [Models and reliability](./06-models-and-reliability/README.md) | Authentication, provider selection, wire APIs, resilience, rate limits, usage metrics, quota, and billing. | 4 |
@@ -90,12 +100,14 @@ flowchart TD
 | Runtime and UI | [Embedded server, ACP, and JSON-RPC protocol](./01-runtime-and-ui/embedded-server-acp-protocol.md) | JSON-RPC/ACP server modes, external tool calls, elicitation, sampling, and commands. |
 | Runtime and UI | [Tree-sitter WASM usage in the Copilot CLI](./01-runtime-and-ui/tree-sitter-wasm-usage.md) | Packaged Tree-sitter grammars, highlight queries, rich diff rendering, and fallback behavior. |
 | Context and input | [Prompt sources in Copilot CLI](./02-context-and-input/prompt-sources.md) | Static/runtime prompt sources, YAML package prompts, instructions, MCP prompts, hooks, and provider mapping. |
+| Context and input | [`app.js` prompt catalog](./02-context-and-input/app-js-prompt-catalog.md) | Curated extracted prompts from `app.js`, normalized placeholders, prompt families, and system prompt composition workflows. |
 | Context and input | [Custom agents and skills packaging](./02-context-and-input/custom-agents-and-skills-packaging.md) | AGENTS.md, SKILL.md, built-in skills, plugin/remote/provided agents, skill directories, and enable/disable events. |
 | Context and input | [Attachment and file-ingestion pipeline](./02-context-and-input/attachments-and-file-ingestion.md) | Native image/document attachments, tagged-file fallback, MIME detection, payload mapping, and limits. |
 | Context and input | [Memory and dynamic context board in Copilot CLI](./02-context-and-input/memory-and-context-board.md) | Agentic memory API, local memory, dynamic context board, rem-agent, sidekicks, and shutdown consolidation. |
 | Context and input | [Conversation compaction and memory compression in Copilot CLI](./02-context-and-input/conversation-compaction.md) | /compact, automatic compaction, summary replacement, checkpoints, hooks, telemetry, and UI status. |
 | Context and input | [Checkpoints, undo, rewind, and fork](./02-context-and-input/checkpoints-undo-rewind.md) | /undo, /rewind, /fork, event-log truncation/replay, snapshot_rewind, and workspace events. |
 | Sessions and remote | [Session support implementation in the Copilot CLI](./03-sessions-and-remote/session-support-implementation.md) | Event-sourced local persistence, workspace artifacts, startup resolution, APIs, and handoff behavior. |
+| Sessions and remote | [API and session event schema contracts](./03-sessions-and-remote/api-and-session-event-schemas.md) | JSON-RPC and session event schemas, SDK generation surfaces, event envelopes, and `app.js` forwarding/replay cross-checks. |
 | Sessions and remote | [Session, remote, cloud, and history workflows](./03-sessions-and-remote/sessions-remote-cloud.md) | Resume/continue/name handling, background sessions, cloud sessions, remote steering, and history. |
 | Sessions and remote | [Session-store SQLite indexing](./03-sessions-and-remote/session-store-sqlite-indexing.md) | session-store.db schema, FTS/search, /reindex, Chronicle, refs, cloud sync, and backfill. |
 | Sessions and remote | [System events and UI projection](./03-sessions-and-remote/system-events-and-ui-projection.md) | System messages, notifications, info/warning/error events, timeline entries, and ephemeral UI projection. |

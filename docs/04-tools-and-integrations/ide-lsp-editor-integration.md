@@ -8,7 +8,7 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 
 ## Source anchors
 
-| Area | Anchor strings / minified symbols | Approx. `app.js` line | What it shows |
+| Semantic alias | Minified anchor | Approx. `app.js` line | Role |
 |---|---|---:|---|
 | IDE tool names | `get_diagnostics`, `get_selection`, `open_diff`, `$S="ide"` | 1340 | Built-in IDE method names and selection/diagnostic schemas. |
 | IDE config | `ide:{autoConnect,openDiffOnEdit}` | 239 | User/runtime settings for IDE auto-connect and diff display. |

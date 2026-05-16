@@ -2,6 +2,15 @@
 
 Authentication, provider selection, wire APIs, resilience, rate limits, usage metrics, quota, and billing.
 
+## Semantic alias and minified anchor mapping
+
+This is a section index, not a direct `app.js` implementation analysis. Topic pages linked below carry the concrete bundle mappings.
+
+| Semantic alias | Minified anchor | Scope |
+|---|---|---|
+| Models and reliability section index | N/A — navigation page | Groups auth/provider, API routing, resilience, and usage/quota docs. |
+| Models and reliability topic pages | See linked page-level mappings | Concrete `app.js` anchors are documented in the child pages. |
+
 ## How this section fits
 
 ```mermaid

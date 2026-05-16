@@ -2,6 +2,20 @@
 
 This file focuses on the major cross-cutting systems wired into `app.js`: MCP, plugins/extensions, permission rules, authentication/provider selection, login, and update behavior.
 
+## Source anchors
+
+`app.js` is bundled/minified, so semantic aliases below are stable documentation names. Minified anchors are lookup aids for the analyzed artifact.
+
+| Semantic alias | Minified anchor | Approx. location | Role |
+|---|---|---:|---|
+| Runtime settings merge | settings schema, `writeKey`, `load`, `COPILOT_HOME` | `app.js` 236-239 | Combines persisted settings, config roots, CLI flags, and environment inputs. |
+| Auth manager | `tryHMACLogin`, `tryApiKeyLogin`, `tryCopilotApiTokenLogin`, `tryGhCliTokenLogin` | `app.js` 5742 | Selects GitHub, GH CLI, token, API-key, and custom-provider authentication sources. |
+| Login subcommand | `m9o()`, OAuth device/browser flow strings | `app.js` 4942, 5742 | Implements `copilot login` and token storage behavior. |
+| MCP config merge | `.mcp.json`, `mcp.config.*`, `mcpServers`, `D0(...)` | `app.js` 4288-5742 | Merges user/workspace/plugin/builtin MCP server definitions and management commands. |
+| Plugin manager | `ET`, `installedPlugins`, `enabledPlugins`, `--plugin-dir` | `app.js` 525-528, 7445, 8221 | Installs/discovers plugin contributions and local plugin directories. |
+| Permission service | `permission.requested`, `permission.completed`, `--allow-all`, `--deny-url` | `app.js` 4210, 8221 | Assembles rule sets and mediates tool/path/URL approvals. |
+| Update/restart path | restart code `75`, update cache selection | `index.js`, tail `app.js` | Handles auto-update handoff and process restart behavior. |
+
 ## Configuration inputs
 
 `app.js` merges information from command-line flags, environment variables, user config, workspace config, plugin metadata, and runtime state.

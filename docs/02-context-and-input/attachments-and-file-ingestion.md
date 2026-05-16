@@ -6,7 +6,7 @@ The implementation in `app.js` is not a single attachment subsystem. It is a cro
 
 ## Source anchors
 
-| Area | `app.js` anchor | Evidence |
+| Semantic alias | Minified anchor | Evidence |
 |---|---|---|
 | Native file payloads | `input_file` | File attachments are converted into Responses-style `input_file` content parts. |
 | Native image payloads | `input_image`, `image_url` | Images are represented either as `input_image` or image URL/data content depending on provider path. |

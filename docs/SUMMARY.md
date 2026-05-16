@@ -1,5 +1,14 @@
 # Wiki table of contents
 
+## Semantic alias and minified anchor mapping
+
+This file is a table-of-contents document, not a direct `app.js` implementation analysis. Topic pages linked below carry the concrete bundle mappings.
+
+| Semantic alias | Minified anchor | Scope |
+|---|---|---|
+| Wiki table of contents | N/A — navigation page | Lists every section and topic page. |
+| Linked implementation pages | See linked page-level mappings | Concrete `app.js` anchors are documented in the destination pages. |
+
 - [Wiki home](./README.md)
 - [Overview](./00-overview/README.md)
   - [`app.js` overview](./00-overview/what-is-app-js.md)
@@ -22,6 +31,7 @@
   - [Checkpoints, undo, rewind, and fork](./02-context-and-input/checkpoints-undo-rewind.md)
 - [Sessions and remote](./03-sessions-and-remote/README.md)
   - [Session support implementation in the Copilot CLI](./03-sessions-and-remote/session-support-implementation.md)
+  - [API and session event schema contracts](./03-sessions-and-remote/api-and-session-event-schemas.md)
   - [Session, remote, cloud, and history workflows](./03-sessions-and-remote/sessions-remote-cloud.md)
   - [Session-store SQLite indexing](./03-sessions-and-remote/session-store-sqlite-indexing.md)
   - [System events and UI projection](./03-sessions-and-remote/system-events-and-ui-projection.md)

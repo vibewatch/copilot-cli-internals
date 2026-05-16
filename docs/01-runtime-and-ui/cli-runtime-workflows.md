@@ -9,6 +9,19 @@ The root program is built through a Commander-like API and ends with:
 - installing a top-level async action;
 - calling `parseAsync(...)`.
 
+## Source anchors
+
+`app.js` is bundled and minified, so the semantic aliases below are documentation names. The minified anchors are lookup aids for this analyzed bundle only.
+
+| Semantic alias | Minified anchor | Approx. `app.js` line | Role |
+|---|---|---:|---|
+| Root program builder | `mke` | 8221 | Commander-like root `copilot` program object. |
+| Root runtime action | root `.action(async t => { ... })` | 8221-8347 | Main option normalization, service initialization, session resolution, and mode dispatch. |
+| Interactive TUI workflow | `j$o(...)` | 7344 | Launches the terminal UI flow and embedded session wiring. |
+| Non-interactive prompt workflow | `u1t(...)` | 7344 | Runs prompt mode for direct prompts, stdin, and non-TTY execution. |
+| Server/headless branch | `--server`, `--headless`, dynamic server import | 8225-8347 | Starts JSON-RPC/headless server mode after shared initialization. |
+| ACP branch | `--acp`, dynamic ACP import | 8225-8347 | Starts Agent Client Protocol mode after shared initialization. |
+
 ## Root parse flow
 
 ```mermaid
