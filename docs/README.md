@@ -30,9 +30,9 @@ flowchart TD
     A --> Ops
 ```
 
-## Volumes
+## Sections
 
-| Volume | Purpose | Pages |
+| Section | Purpose | Pages |
 |---|---|---:|
 | [Overview](./00-overview/README.md) | Start here: what the extracted bundle is, how to read the docs, and the high-level feature map. | 2 |
 | [Runtime and UI](./01-runtime-and-ui/README.md) | Bootstrap, root command routing, interactive TUI, terminal ergonomics, voice mode, protocol server modes, and rendering support. | 7 |
@@ -48,11 +48,11 @@ flowchart TD
 
 | Area | Convention |
 |---|---|
-| Volume directories | Numbered prefixes preserve a stable reading order while keeping related pages together. |
+| Section directories | Numbered prefixes preserve a stable reading order while keeping related pages together. |
 | Topic filenames | Use short lower-kebab-case wiki slugs. Rename only when a page's scope changes, not just because a title is reworded. |
 | Topic titles | Prefer reader-facing titles over historical source filenames. Keep `app.js` in the title only when the page is specifically about bundle-level behavior. |
-| Merging pages | Merge only when two pages describe the same lifecycle or runtime boundary. Otherwise keep focused implementation pages and connect them through volume indexes. |
-| Adding pages | Add the page under the closest volume, then update that volume `README.md`, the root page index, and `SUMMARY.md`. |
+| Merging pages | Merge only when two pages describe the same lifecycle or runtime boundary. Otherwise keep focused implementation pages and connect them through section indexes. |
+| Adding pages | Add the page under the closest section, then update that section `README.md`, the root page index, and `SUMMARY.md`. |
 | Link text | Use human-readable page titles in prose; reserve raw filenames for tables or maintenance notes. |
 
 ## Recommended reading paths
@@ -67,7 +67,7 @@ flowchart TD
 
 ## Cross-cutting implementation matrix
 
-| Concern | Primary volume | Key supporting volumes |
+| Concern | Primary section | Key supporting sections |
 |---|---|---|
 | Prompt/context assembly | [Context and input](./02-context-and-input/README.md) | [Tools and integrations](./04-tools-and-integrations/README.md), [Models and reliability](./06-models-and-reliability/README.md) |
 | Session/event lifecycle | [Sessions and remote](./03-sessions-and-remote/README.md) | [Runtime and UI](./01-runtime-and-ui/README.md), [Operations and research](./08-operations-and-research/README.md) |
@@ -78,7 +78,7 @@ flowchart TD
 
 ## Complete page index
 
-| Volume | Page | Covers |
+| Section | Page | Covers |
 |---|---|---|
 | Overview | [`app.js` overview](./00-overview/what-is-app-js.md) | Bundle identity, responsibilities, and caveats. |
 | Overview | [Main feature map for Copilot CLI](./00-overview/main-feature-map.md) | High-level map of feature areas and runtime ownership. |

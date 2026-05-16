@@ -2,7 +2,7 @@
 
 Permissions, content exclusion, hooks, sandboxing, and persistent policy/configuration state.
 
-## How this volume fits
+## How this section fits
 
 ```mermaid
 flowchart TD

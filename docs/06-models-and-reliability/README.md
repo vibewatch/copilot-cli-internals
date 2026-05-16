@@ -2,7 +2,7 @@
 
 Authentication, provider selection, wire APIs, resilience, rate limits, usage metrics, quota, and billing.
 
-## How this volume fits
+## How this section fits
 
 ```mermaid
 flowchart TD

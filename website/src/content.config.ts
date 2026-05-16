@@ -25,7 +25,7 @@ const SITE_ROOT = path.resolve(here, '..');
 /**
  * Files we never want to surface as routes. Currently empty —
  * `SUMMARY.md` is rendered as `/summary/` (see `deriveId`) so that the
- * "Full table of contents" links from each volume README resolve to a
+ * "Full table of contents" links from each section README resolve to a
  * real page instead of bouncing back to the directory index.
  */
 const EXCLUDE_BASENAMES = new Set<string>();

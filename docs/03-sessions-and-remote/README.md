@@ -2,7 +2,7 @@
 
 Local event-sourced sessions, cloud/remote control, SQLite indexing, UI projection, repository metadata, and Mission Control steering.
 
-## How this volume fits
+## How this section fits
 
 ```mermaid
 flowchart TD

@@ -2,7 +2,7 @@
 
 Everything that becomes model-visible context: prompts, custom instructions, attachments, memory, compaction, and rewind boundaries.
 
-## How this volume fits
+## How this section fits
 
 ```mermaid
 flowchart TD
@@ -27,7 +27,7 @@ flowchart TD
 
 ## Reading guidance
 
-- This volume explains how input becomes prompt/context.
+- This section explains how input becomes prompt/context.
 - Compaction and rewind describe how context is later rewritten or replayed.
 
 ## Back to wiki home

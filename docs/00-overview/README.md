@@ -2,7 +2,7 @@
 
 Start here: what the extracted bundle is, how to read the docs, and the high-level feature map.
 
-## How this volume fits
+## How this section fits
 
 ```mermaid
 flowchart LR
@@ -24,7 +24,7 @@ flowchart LR
 ## Reading guidance
 
 - Read these first before jumping into internals.
-- Use the feature map to choose the correct volume.
+- Use the feature map to choose the correct section.
 
 ## Back to wiki home
 

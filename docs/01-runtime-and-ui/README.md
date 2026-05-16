@@ -2,7 +2,7 @@
 
 Bootstrap, root command routing, interactive TUI, terminal ergonomics, voice mode, protocol server modes, and rendering support.
 
-## How this volume fits
+## How this section fits
 
 ```mermaid
 flowchart TD

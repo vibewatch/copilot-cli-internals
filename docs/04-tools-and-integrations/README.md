@@ -2,7 +2,7 @@
 
 Built-in tools, MCP, plugins, IDE/LSP/editor bridges, web access, and integration overview surfaces.
 
-## How this volume fits
+## How this section fits
 
 ```mermaid
 flowchart TD

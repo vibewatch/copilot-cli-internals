@@ -2,7 +2,7 @@
 
 Task orchestration, subagents, autopilot, fleet mode, and scheduled prompt/command automation.
 
-## How this volume fits
+## How this section fits
 
 ```mermaid
 flowchart TD
@@ -24,7 +24,7 @@ flowchart TD
 ## Reading guidance
 
 - Task orchestration is the base; autopilot, fleet, and schedules build on it.
-- Read this volume with custom agents/skills in Context and input.
+- Read this section with custom agents/skills in Context and input.
 
 ## Back to wiki home
 

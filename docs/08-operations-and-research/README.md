@@ -2,7 +2,7 @@
 
 Feature gates, diagnostics, debug bundles, observability/update/shutdown, and the original documentation backlog.
 
-## How this volume fits
+## How this section fits
 
 ```mermaid
 flowchart TD
