@@ -64,7 +64,7 @@ flowchart TD
 | [Tools and integrations](./04-tools-and-integrations/README.md) | Built-in tools, validation/review tools, MCP, plugins, SDK extensions, IDE/LSP/editor bridges, web access, and integration overview surfaces. | 10 |
 | [Security and policy](./05-security-and-policy/README.md) | Permissions, content exclusion, hooks, sandboxing, and persistent policy/configuration state. | 6 |
 | [Models and reliability](./06-models-and-reliability/README.md) | Authentication, provider selection, wire APIs, resilience, rate limits, usage metrics, quota, and billing. | 4 |
-| [Agents and automation](./07-agents-and-automation/README.md) | Task orchestration, subagents, autopilot, fleet mode, and scheduled prompt/command automation. | 4 |
+| [Agents and automation](./07-agents-and-automation/README.md) | Task orchestration, built-in agents, subagents, autopilot, fleet mode, and scheduled prompt/command automation. | 5 |
 | [Operations and research](./08-operations-and-research/README.md) | Feature gates, diagnostics, debug bundles, observability/update/shutdown, and the original documentation backlog. | 4 |
 
 ## Naming and maintenance conventions
@@ -152,6 +152,7 @@ flowchart TD
 | Models and reliability | [Rate limits, concurrency, retries, and error recovery](./06-models-and-reliability/resilience-rate-limits-concurrency.md) | Retry policy, rate-limit recovery, auto-mode switching, queue pauses, concurrency limits, fallback, and cancellation. |
 | Models and reliability | [Usage, quota, and billing metrics](./06-models-and-reliability/usage-quota-billing-metrics.md) | /usage, assistant.usage, session.usage_info, premium/AI-unit metrics, token details, and billing/quota errors. |
 | Agents and automation | [Agent and task orchestration in Copilot CLI](./07-agents-and-automation/agent-task-orchestration.md) | Task tool dispatch, TaskRegistry, main/subagent/custom-agent collaboration, hooks, MCP tasks, research, and fleet. |
+| Agents and automation | [Built-in agents in Copilot CLI](./07-agents-and-automation/built-in-agents.md) | Catalog of built-in agent types, YAML-backed versus runtime-defined prompt sources, selection, execution, and slash-command entry points. |
 | Agents and automation | [Autopilot and no-ask-user flags](./07-agents-and-automation/autopilot-and-no-ask-user.md) | Implementation comparison of --autopilot, --no-ask-user, continuation, task_complete, ask_user, and permission boundaries. |
 | Agents and automation | [Fleet mode implementation in Copilot CLI](./07-agents-and-automation/fleet-mode.md) | /fleet, session.fleet.start, autopilot_fleet, SQL todo coordination, dependencies, and parallel subagents. |
 | Agents and automation | [Scheduled prompts and command queue](./07-agents-and-automation/scheduled-prompts-and-command-queue.md) | /every and /after parsing, ScheduleRegistry replay, queue integration, and ephemeral command dispatch. |

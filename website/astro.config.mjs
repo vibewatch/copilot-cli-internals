@@ -157,6 +157,7 @@ export default defineConfig({
           items: [
             { label: 'Overview', link: '/07-agents-and-automation/' },
             { label: 'Agent and task orchestration', link: '/07-agents-and-automation/agent-task-orchestration/' },
+            { label: 'Built-in agents', link: '/07-agents-and-automation/built-in-agents/' },
             { label: 'Autopilot and no-ask-user', link: '/07-agents-and-automation/autopilot-and-no-ask-user/' },
             { label: 'Fleet mode', link: '/07-agents-and-automation/fleet-mode/' },
             { label: 'Scheduled prompts', link: '/07-agents-and-automation/scheduled-prompts-and-command-queue/' },
