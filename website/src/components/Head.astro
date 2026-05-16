@@ -1,17 +1,14 @@
 ---
 /**
  * Head override — extends Starlight's default <head> with the mermaid
- * client-side renderer and the source-anchor popup script. Per Starlight's
- * component override docs we render the built-in <Default /> component
- * first so all standard <head> tags remain.
+ * client-side renderer. Per Starlight's component override docs we render
+ * the built-in <Default /> component first so all standard <head> tags remain.
  */
 import Default from '@astrojs/starlight/components/Head.astro';
 import GoogleAnalytics from './GoogleAnalytics.astro';
 import MermaidRenderer from './MermaidRenderer.astro';
-import SourceAnchorPopup from './SourceAnchorPopup.astro';
 ---
 
 <Default {...Astro.props}><slot /></Default>
 <GoogleAnalytics />
 <MermaidRenderer />
-<SourceAnchorPopup />

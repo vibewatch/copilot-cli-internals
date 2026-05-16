@@ -1,6 +1,6 @@
 # Custom agents and skills packaging
 
-This document explains how custom agents and skills are packaged, discovered, loaded, enabled/disabled, and surfaced in the extracted Copilot CLI `app.js` bundle. Existing docs cover prompts and task orchestration broadly; this document focuses on the packaging surfaces: `AGENTS.md`, `SKILL.md`, skill directories, plugin contributions, remote/custom-agent sources, and session events such as `session.skills_loaded` and `session.custom_agents_updated`.
+This document explains how custom agents and skills are packaged, discovered, loaded, enabled/disabled, and surfaced in the extracted Copilot CLI `app.js` bundle. Existing docs cover prompts and task orchestration broadly; this document focuses on the packaging surfaces: `AGENTS.md`, `SKILL.md`, built-in skills, skill directories, plugin contributions, remote/custom-agent sources, and session events such as `session.skills_loaded` and `session.custom_agents_updated`.
 
 The important implementation point is that “customization” is multi-layered:
 
@@ -18,6 +18,7 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 |---|---|---:|---|
 | Instruction files | `AGENTS.md`, `Nested AGENTS.md`, `Child instruction files` | 499 | Repo/cwd/inherited instruction files are discovered and folded into prompt context. |
 | Skill files | `SKILL.md`, `skillsParseSkillMarkdown`, `allowedTools`, `userInvocable`, `disableModelInvocation` | 525 | Skills are parsed from markdown files and normalized into runtime metadata. |
+| Built-in skills | `copilot-cli-pkg/builtin-skills/**/SKILL.md`, `customize-cloud-agent` | package tree | Packaged skills are loaded through the same skill loader as user/plugin skill roots. |
 | Skill settings | `skillDirectories`, `disabledSkills` | 239, 4471 | Settings can add skill search roots and disable named skills. |
 | Skill events | `session.skills_loaded`, `enableSkill`, `disableSkill`, `emitSkillsChanged` | 4361, 4396, 4471 | Loaded/enabled skill metadata is emitted to clients and updated dynamically. |
 | Custom-agent settings | `customAgents:{defaultLocalOnly}`, `customAgentsLocalOnly` | 239, 4471 | Settings/runtime options control custom-agent discovery scope. |
@@ -78,10 +79,42 @@ Skills are loaded from multiple roots:
 
 - configured `skillDirectories`;
 - plugin-contributed skill directories;
-- built-in/default skill locations;
+- built-in/default skill locations such as `copilot-cli-pkg/builtin-skills`;
 - markdown command files that can be parsed as user-invocable skills/commands.
 
 The loader checks each directory for a direct `SKILL.md` or for child directories containing `SKILL.md`. It deduplicates by real path and skill name, collects warnings/errors, and returns normalized skill metadata.
+
+## Built-in skills in this artifact
+
+The extracted package currently contains one built-in skill directory:
+
+| Skill | File | User-invocable | Trigger/selection intent | What it contributes |
+|---|---|---:|---|---|
+| `customize-cloud-agent` | `copilot-cli-pkg/builtin-skills/customize-cloud-agent/SKILL.md` | `false` | Use when the user mentions `copilot-setup-steps`, Copilot setup steps, or configuring the Copilot cloud agent environment. | Guidance for `.github/workflows/copilot-setup-steps.yml`, preinstalling dependencies/tools, larger or self-hosted runners, Windows environments, Git LFS, environment variables/secrets, and cloud-agent firewall/proxy constraints. |
+
+This skill is packaged content rather than JavaScript logic. Its YAML frontmatter provides the runtime metadata:
+
+| Frontmatter field | Observed value / meaning |
+|---|---|
+| `name` | `customize-cloud-agent` |
+| `description` | Describes customization of the Copilot cloud agent environment, including setup steps, tools/dependencies, runners, and settings. |
+| `user-invocable` | `false`, so it is intended for model/runtime selection rather than direct user invocation. |
+
+The Markdown body is effectively an embedded GitHub Docs-style guide. It explains that Copilot cloud agent setup is controlled by `.github/workflows/copilot-setup-steps.yml`, whose single required job must be named `copilot-setup-steps`. The documented accepted job customizations are `steps`, `permissions`, `runs-on`, `services`, `snapshot`, and `timeout-minutes` with a maximum of `59`.
+
+Notable implementation-relevant content in the built-in skill:
+
+- setup steps only trigger for the cloud agent after the workflow exists on the repository default branch;
+- changes to the setup workflow can be validated through normal GitHub Actions triggers such as `workflow_dispatch`, `push`, and `pull_request` on the setup file;
+- `actions/checkout` `fetch-depth` is overridden by the platform so the agent can roll back commits while reducing security risk;
+- setup failures skip remaining setup steps and let the agent continue with the current environment state;
+- larger runners and self-hosted runners require network/firewall planning for GitHub/Copilot endpoints;
+- self-hosted runner guidance emphasizes ephemeral, single-use runners;
+- Windows cloud-agent environments are supported through appropriate Windows runners, but the integrated cloud-agent firewall is called out as incompatible with Windows;
+- Git LFS requires `actions/checkout` with `lfs: true`;
+- environment variables should be configured through the GitHub Actions `copilot` environment, using secrets for sensitive values.
+
+Because the skill content includes external documentation links and operational guidance, it can materially change the model's answer when users ask about cloud-agent setup even though it does not add a new executable tool.
 
 ## Skill metadata
 
