@@ -13,6 +13,8 @@ This is a section index, not a direct `app.js` implementation analysis. Topic pa
 
 ## How this section fits
 
+Click a node in the map to jump to that page.
+
 ```mermaid
 flowchart TD
     Events[Event-sourced session] --> Store[Local state]
@@ -21,6 +23,14 @@ flowchart TD
     Git[Git/repo context] --> Store
     Store --> Remote[Remote/cloud sessions]
     Remote --> MC[Mission Control]
+
+    click Events "./session-support-implementation/" "Open session support implementation"
+    click Store "./session-fs-provider-and-state-files/" "Open SessionFs and state files"
+    click UI "./system-events-and-ui-projection/" "Open system events and UI projection"
+    click SQLite "./session-store-sqlite-indexing/" "Open session-store SQLite indexing"
+    click Git "./git-repository-context/" "Open git and repository context"
+    click Remote "./sessions-remote-cloud/" "Open remote and cloud sessions"
+    click MC "./remote-control-implementation/" "Open remote control implementation"
 ```
 
 ## Pages

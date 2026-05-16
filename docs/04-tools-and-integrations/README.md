@@ -13,6 +13,8 @@ This is a section index, not a direct `app.js` implementation analysis. Topic pa
 
 ## How this section fits
 
+Click a node in the map to jump to that page or related section.
+
 ```mermaid
 flowchart TD
     Tools[Built-in tools] --> Permissions[Permission hooks]
@@ -22,6 +24,15 @@ flowchart TD
     IDE[IDE/LSP bridge] --> Tools
     Web[Web fetch/search] --> Tools
     Overview[Integration overview] --> MCP
+
+    click Tools "./built-in-tool-execution-pipeline/" "Open built-in tool execution pipeline"
+    click Permissions "../05-security-and-policy/permission-system-design/" "Open permission system design"
+    click Validation "./coding-agent-validation-toolchain/" "Open validation and review toolchain"
+    click MCP "./mcp-support-implementation/" "Open MCP support"
+    click Plugins "./plugin-extension-architecture/" "Open plugin and extension architecture"
+    click IDE "./ide-lsp-editor-integration/" "Open IDE and LSP integration"
+    click Web "./web-search-url-fetching/" "Open web search and URL fetching"
+    click Overview "./integrations-permissions-config/" "Open integration overview"
 ```
 
 ## Pages

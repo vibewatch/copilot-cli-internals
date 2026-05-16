@@ -18,6 +18,8 @@ This home page is a navigation index, not a direct `app.js` implementation analy
 
 ## Wiki map
 
+Click a node in the map to jump to that section.
+
 ```mermaid
 flowchart TD
     Home[Wiki home] --> O[00 Overview]
@@ -38,6 +40,17 @@ flowchart TD
     P --> M
     M --> A
     A --> Ops
+
+    click Home "./" "Open wiki home"
+    click O "./00-overview/" "Open Overview"
+    click R "./01-runtime-and-ui/" "Open Runtime and UI"
+    click C "./02-context-and-input/" "Open Context and input"
+    click S "./03-sessions-and-remote/" "Open Sessions and remote"
+    click T "./04-tools-and-integrations/" "Open Tools and integrations"
+    click P "./05-security-and-policy/" "Open Security and policy"
+    click M "./06-models-and-reliability/" "Open Models and reliability"
+    click A "./07-agents-and-automation/" "Open Agents and automation"
+    click Ops "./08-operations-and-research/" "Open Operations and research"
 ```
 
 ## Sections

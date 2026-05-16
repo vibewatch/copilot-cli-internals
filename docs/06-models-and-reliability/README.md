@@ -13,12 +13,20 @@ This is a section index, not a direct `app.js` implementation analysis. Topic pa
 
 ## How this section fits
 
+Click a node in the map to jump to that page.
+
 ```mermaid
 flowchart TD
     Auth[Auth/providers] --> Routing[Model API routing]
     Routing --> Usage[Usage/quota metrics]
     Routing --> Resilience[Retries/rate limits/concurrency]
     Resilience --> Fallback[Fallback and cancellation]
+
+    click Auth "./models-providers-auth/" "Open models, providers, and auth"
+    click Routing "./model-api-routing/" "Open model API routing"
+    click Usage "./usage-quota-billing-metrics/" "Open usage, quota, and billing"
+    click Resilience "./resilience-rate-limits-concurrency/" "Open resilience and rate limits"
+    click Fallback "./resilience-rate-limits-concurrency/" "Open fallback and cancellation details"
 ```
 
 ## Pages

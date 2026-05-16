@@ -1,8 +1,8 @@
 # Copilot CLI Internals — Documentation Website
 
 A static documentation site built with [Astro](https://astro.build) +
-[Starlight](https://starlight.astro.build), styled per the brand system
-defined in the repo-root [`DESIGN.md`](../DESIGN.md).
+[Starlight](https://starlight.astro.build), styled with the site-local
+CSS token system under `src/styles/`.
 
 The markdown source of truth lives in [`../docs/`](../docs/) and is
 read directly by Astro's content loader — no copy step, no symlinks.
@@ -61,17 +61,17 @@ and output directory `dist`.
 |---|---|
 | `astro.config.mjs` | Site config, sidebar, Starlight integration |
 | `src/content.config.ts` | Content collection — reads `../docs/**/*.md` |
-| `src/styles/` | DESIGN.md tokens + theme overrides (split by concern) |
+| `src/styles/` | CSS tokens + theme overrides (split by concern) |
 | `src/components/` | Hedgehog mascot + Starlight slot overrides |
 | `src/assets/` | Self-hosted fonts, hedgehog SVGs |
 | `public/` | Favicon and other static files served at root |
 
 ## Notes on the design system
 
-See [`../DESIGN.md`](../DESIGN.md) for the canonical token table.
-The CSS layer mirrors that document file-by-file:
+The canonical token definitions live in `src/styles/tokens.css`.
+The rest of the CSS layer mirrors those tokens file-by-file:
 
-| DESIGN.md section | Style file |
+| Design-system area | Style file |
 |---|---|
 | Colors / Surface | `src/styles/tokens.css` + `src/styles/theme.css` |
 | Typography | `src/styles/typography.css` |

@@ -13,12 +13,20 @@ This is a section index, not a direct `app.js` implementation analysis. Topic pa
 
 ## How this section fits
 
+Click a node in the map to jump to that page or related section.
+
 ```mermaid
 flowchart TD
     Tasks[Task orchestration] --> Subagents[Subagents/custom agents]
     Autopilot[Autopilot/no-ask-user] --> Tasks
     Fleet[Fleet mode] --> Subagents
     Schedules[Scheduled prompts/commands] --> Tasks
+
+    click Tasks "./agent-task-orchestration/" "Open agent and task orchestration"
+    click Subagents "../02-context-and-input/custom-agents-and-skills-packaging/" "Open custom agents and skills"
+    click Autopilot "./autopilot-and-no-ask-user/" "Open autopilot and no-ask-user"
+    click Fleet "./fleet-mode/" "Open fleet mode"
+    click Schedules "./scheduled-prompts-and-command-queue/" "Open scheduled prompts and command queue"
 ```
 
 ## Pages

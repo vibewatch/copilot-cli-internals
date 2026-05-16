@@ -13,12 +13,21 @@ This is a section index, not a direct `app.js` implementation analysis. Topic pa
 
 ## How this section fits
 
+Click a node in the map to jump to that page or related section.
+
 ```mermaid
 flowchart TD
     Gates[Feature gates] --> Runtime[Runtime behavior]
     Runtime --> Observability[Logs/telemetry/shutdown]
     Runtime --> Diagnostics[Diagnostics/debug bundles]
     Research[Documentation opportunities] --> Backlog[Future niche follow-ups]
+
+    click Gates "./feature-gates/" "Open feature gates"
+    click Runtime "../01-runtime-and-ui/cli-runtime-workflows/" "Open CLI runtime workflows"
+    click Observability "./observability-update-shutdown/" "Open observability and shutdown"
+    click Diagnostics "./diagnostics-feedback-debug-bundles/" "Open diagnostics and debug bundles"
+    click Research "./documentation-opportunities/" "Open documentation opportunities"
+    click Backlog "./documentation-opportunities/" "Open future follow-ups"
 ```
 
 ## Pages

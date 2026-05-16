@@ -183,7 +183,7 @@ Example configuration:
 
 Check configured LSP servers using the `/lsp` command in an interactive session, or view your configuration files directly.
 
-For more information, see the [changelog](./changelog.md).
+For more information, see the [changelog data](./changelog.json).
 
 ## 📢 Feedback and Participation
 

@@ -259,6 +259,10 @@
   font-family: var(--tk-font-sans);
 }
 
+.mermaid-rendered svg a {
+  cursor: pointer;
+}
+
 .mermaid-rendered--error {
   background: var(--tk-color-accent-red-soft);
   color: var(--tk-color-ink);

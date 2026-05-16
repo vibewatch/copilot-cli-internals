@@ -24,7 +24,11 @@
     import('mermaid').then(async ({ default: mermaid }) => {
       mermaid.initialize({
         startOnLoad: false,
-        securityLevel: 'strict',
+        // The docs use Mermaid `click` directives for same-site navigation
+        // from high-level maps to deep-dive pages. Mermaid only emits those
+        // links outside strict mode; the source diagrams are repository-owned
+        // Markdown, so `loose` is acceptable here.
+        securityLevel: 'loose',
         theme: 'base',
         themeVariables: {
           // Pull the rendered diagram into the cream/olive/yellow palette
@@ -266,9 +270,13 @@
         });
 
         // Keep the whole card clickable as a fallback affordance — but only
-        // fire when the click did not originate inside the actions toolbar.
+        // fire when the click did not originate inside the actions toolbar or
+        // a Mermaid-generated link. This lets diagram nodes navigate normally.
         wrapper.addEventListener('click', (e) => {
           if ((e.target as HTMLElement).closest('.mermaid-rendered__actions')) {
+            return;
+          }
+          if ((e.target as HTMLElement).closest('a')) {
             return;
           }
           triggerZoom();

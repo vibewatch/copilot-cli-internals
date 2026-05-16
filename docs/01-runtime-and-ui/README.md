@@ -13,6 +13,8 @@ This is a section index, not a direct `app.js` implementation analysis. Topic pa
 
 ## How this section fits
 
+Click a node in the map to jump to that page.
+
 ```mermaid
 flowchart TD
     Loader[Loader/bootstrap] --> CLI[CLI workflows]
@@ -22,6 +24,15 @@ flowchart TD
     Voice --> VoiceWorkers[Voice workers]
     CLI --> Server[Embedded server / ACP]
     TUI --> Render[Tree-sitter rich diff rendering]
+
+    click Loader "./loader-bootstrap/" "Open loader and bootstrap workflows"
+    click CLI "./cli-runtime-workflows/" "Open CLI runtime workflows"
+    click TUI "./tui-and-slash-commands/" "Open TUI and slash commands"
+    click Terminal "./terminal-setup-and-shell-environment/" "Open terminal setup"
+    click Voice "./voice-mode-foundry-local/" "Open voice mode"
+    click VoiceWorkers "./voice-runtime-workers-and-transcription/" "Open voice workers"
+    click Server "./embedded-server-acp-protocol/" "Open embedded server and ACP"
+    click Render "./tree-sitter-wasm-usage/" "Open Tree-sitter WASM usage"
 ```
 
 ## Pages

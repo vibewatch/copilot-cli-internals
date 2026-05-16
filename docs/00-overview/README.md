@@ -4,7 +4,7 @@ Start here: what the extracted bundle is, how to read the docs, and the high-lev
 
 ## All-systems component map
 
-This is a navigation-level component diagram for the whole reverse-engineered CLI runtime. It intentionally uses semantic component names instead of minified aliases; the linked child pages carry the concrete `app.js` anchors and call paths.
+This is a navigation-level component diagram for the whole reverse-engineered CLI runtime. It intentionally uses semantic component names instead of minified aliases; the linked child pages carry the concrete `app.js` anchors and call paths. Click a component node to jump to the closest deep-dive page.
 
 ```mermaid
 flowchart TB
@@ -116,6 +116,40 @@ flowchart TB
         EventStore --> Memory
         AgentLoop --> EventStore
         EventStore --> Indexing
+
+        click Entry "./what-is-app-js/" "Open app.js overview"
+        click Root "../01-runtime-and-ui/cli-runtime-workflows/" "Open CLI runtime workflows"
+        click Config "../05-security-and-policy/settings-config-persistence/" "Open settings and config persistence"
+        click Gates "../08-operations-and-research/feature-gates/" "Open feature gates"
+        click Auth "../06-models-and-reliability/models-providers-auth/" "Open models, providers, and auth"
+        click Ops "../08-operations-and-research/observability-update-shutdown/" "Open observability, update, and shutdown"
+        click TUI "../01-runtime-and-ui/tui-and-slash-commands/" "Open TUI and slash commands"
+        click Prompt "../01-runtime-and-ui/cli-runtime-workflows/" "Open prompt-mode workflows"
+        click Server "../01-runtime-and-ui/embedded-server-acp-protocol/" "Open embedded server and JSON-RPC"
+        click ACP "../01-runtime-and-ui/embedded-server-acp-protocol/" "Open ACP protocol"
+        click LocalSessions "../03-sessions-and-remote/session-support-implementation/" "Open local session support"
+        click RemoteCloud "../03-sessions-and-remote/sessions-remote-cloud/" "Open remote and cloud sessions"
+        click EventStore "../03-sessions-and-remote/system-events-and-ui-projection/" "Open system events and UI projection"
+        click Indexing "../03-sessions-and-remote/session-store-sqlite-indexing/" "Open session-store indexing"
+        click PromptAssembly "../02-context-and-input/app-js-prompt-catalog/" "Open app.js prompt catalog"
+        click Instructions "../02-context-and-input/prompt-sources/" "Open prompt sources"
+        click SkillsAgents "../02-context-and-input/custom-agents-and-skills-packaging/" "Open custom agents and skills"
+        click Memory "../02-context-and-input/memory-and-context-board/" "Open memory and context board"
+        click Attachments "../02-context-and-input/attachments-and-file-ingestion/" "Open attachments and file ingestion"
+        click Compaction "../02-context-and-input/conversation-compaction/" "Open conversation compaction"
+        click AgentLoop "../04-tools-and-integrations/built-in-tool-execution-pipeline/" "Open tool execution pipeline"
+        click ToolAssembly "../04-tools-and-integrations/runtime-tool-assembly-and-filtering/" "Open runtime tool assembly"
+        click Permissions "../05-security-and-policy/permission-system-design/" "Open permission system design"
+        click Subagents "../07-agents-and-automation/agent-task-orchestration/" "Open agent and task orchestration"
+        click Hooks "../05-security-and-policy/hooks-lifecycle-automation/" "Open hooks lifecycle automation"
+        click MCP "../04-tools-and-integrations/mcp-support-implementation/" "Open MCP support"
+        click Plugins "../04-tools-and-integrations/plugin-extension-architecture/" "Open plugin architecture"
+        click Extensions "../04-tools-and-integrations/plugin-extension-architecture/" "Open extension architecture"
+        click IDE "../04-tools-and-integrations/ide-lsp-editor-integration/" "Open IDE/LSP integration"
+        click WebGitHub "../04-tools-and-integrations/web-search-url-fetching/" "Open web and GitHub integration"
+        click ModelRouting "../06-models-and-reliability/models-providers-auth/" "Open model selection and routing"
+        click Providers "../06-models-and-reliability/model-api-routing/" "Open provider wire formats"
+        click Reliability "../06-models-and-reliability/resilience-rate-limits-concurrency/" "Open resilience and rate limits"
 ```
 
 ### Component groups and where to go next
@@ -141,6 +175,8 @@ This is a section index, not a direct `app.js` implementation analysis. Topic pa
 
 ## How this section fits
 
+Click a node in the map to jump to that page or section.
+
 ```mermaid
 flowchart LR
     Start[Start here] --> Overview[what-is-app-js]
@@ -149,6 +185,14 @@ flowchart LR
     Map --> Context[Context]
     Map --> Sessions[Sessions]
     Map --> Tools[Tools]
+
+    click Start "./" "Open Overview"
+    click Overview "./what-is-app-js/" "Open app.js overview"
+    click Map "./main-feature-map/" "Open main feature map"
+    click Runtime "../01-runtime-and-ui/" "Open Runtime and UI"
+    click Context "../02-context-and-input/" "Open Context and input"
+    click Sessions "../03-sessions-and-remote/" "Open Sessions and remote"
+    click Tools "../04-tools-and-integrations/" "Open Tools and integrations"
 ```
 
 ## Pages
