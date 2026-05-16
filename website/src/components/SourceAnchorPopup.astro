@@ -1,0 +1,135 @@
+---
+/**
+ * SourceAnchorPopup — global click handler that opens a popup showing
+ * the relevant slice of `copilot-cli-pkg/app.js` whenever the user
+ * clicks a `.src-anchor` button injected by `rehype-source-anchors`.
+ *
+ * Snippet shards are fetched lazily from `/snippets/L{N}.json` (written
+ * at build time by `scripts/extract-snippets.mjs`) and cached in a
+ * Map so repeated clicks are instant. The popup is a native `<dialog>`
+ * created on first use, so the script costs nothing on pages that
+ * never trigger it.
+ */
+---
+
+<script>
+  // The popup state lives entirely on the client. Snippet fetches are
+  // memoized so the same line opens instantly on the second click.
+  const cache = new Map();
+
+  function ensureDialog() {
+    let dlg = document.getElementById('src-anchor-dialog');
+    if (dlg) return dlg;
+
+    dlg = document.createElement('dialog');
+    dlg.id = 'src-anchor-dialog';
+    dlg.className = 'src-anchor-dialog';
+    dlg.innerHTML = `
+      <header class="src-anchor-dialog__header">
+        <h2 class="src-anchor-dialog__title">Loading…</h2>
+        <button type="button" class="src-anchor-dialog__close" aria-label="Close">×</button>
+      </header>
+      <div class="src-anchor-dialog__body"></div>
+      <footer class="src-anchor-dialog__footer">
+        <a class="src-anchor-dialog__link" target="_blank" rel="noopener">Open this line on github.dev</a>
+      </footer>
+    `;
+    document.body.appendChild(dlg);
+
+    const closeBtn = dlg.querySelector('.src-anchor-dialog__close');
+    if (closeBtn) closeBtn.addEventListener('click', () => dlg.close());
+    // Click on the backdrop (i.e., on the dialog element itself, not its
+    // content) closes the dialog — matches the usual modal idiom.
+    dlg.addEventListener('click', (ev) => {
+      if (ev.target === dlg) dlg.close();
+    });
+    return dlg;
+  }
+
+  async function fetchSnippet(line) {
+    if (cache.has(line)) return cache.get(line);
+    // Resolve relative to the document root so this works under both
+    // root-domain deploys and base-path deploys.
+    const url = `${import.meta.env.BASE_URL ?? '/'}snippets/L${line}.json`.replace(/\/+/g, '/');
+    const promise = fetch(url).then((r) => {
+      if (!r.ok) throw new Error(`Snippet missing for line ${line}`);
+      return r.json();
+    });
+    cache.set(line, promise);
+    // Drop failed promises from the cache so retries can succeed.
+    promise.catch(() => cache.delete(line));
+    return promise;
+  }
+
+  function renderShard(dlg, shard) {
+    const title = dlg.querySelector('.src-anchor-dialog__title');
+    const body = dlg.querySelector('.src-anchor-dialog__body');
+    const link = dlg.querySelector('.src-anchor-dialog__link');
+
+    if (title) title.textContent = `${shard.file} · line ${shard.line}`;
+    if (link)
+      link.href = `https://github.dev/vibewatch/copilot-cli-internals/blob/main/${shard.file}#L${shard.line}`;
+    if (!body) return;
+
+    body.innerHTML = '';
+    const note = document.createElement('p');
+    note.className = 'src-anchor-dialog__note';
+    const lenStr = shard.length.toLocaleString();
+    if (shard.formatted) {
+      note.textContent = `Line ${shard.line} of the bundle (${lenStr} chars) — showing the surrounding region of the pretty-printed file. Line numbers below refer to the formatted output, not the original.`;
+    } else if (shard.truncated) {
+      note.textContent = `Line ${shard.line} is ${lenStr} chars (truncated). Pretty-printing failed for this region; showing raw bundle text. Open on github.dev for the full content.`;
+    } else if (shard.length > 500) {
+      note.textContent = `Line ${shard.line} is ${lenStr} chars (single minified module wrapper). Pretty-printing didn't locate this line; showing raw bundle text with two lines of context above and below.`;
+    } else {
+      note.textContent = `Line ${shard.line} (${lenStr} chars). Pretty-printing didn't locate this line; showing raw bundle text with two lines of context above and below.`;
+    }
+    body.appendChild(note);
+
+    // The shard's HTML is pre-highlighted by Shiki at build time; it
+    // already contains the line gutter and `line--hit` class. Rendering
+    // is a single innerHTML assignment.
+    const codeWrap = document.createElement('div');
+    codeWrap.className = 'src-anchor-dialog__code';
+    codeWrap.innerHTML = shard.html ?? '';
+    body.appendChild(codeWrap);
+  }
+
+  function renderError(dlg, line, err) {
+    const title = dlg.querySelector('.src-anchor-dialog__title');
+    const body = dlg.querySelector('.src-anchor-dialog__body');
+    const link = dlg.querySelector('.src-anchor-dialog__link');
+    if (title) title.textContent = `app.js · line ${line}`;
+    if (link)
+      link.href = `https://github.dev/vibewatch/copilot-cli-internals/blob/main/copilot-cli-pkg/app.js#L${line}`;
+    if (body)
+      body.innerHTML = `<p class="src-anchor-dialog__note">Snippet not available for line ${line}: ${err.message}. Try the github.dev link below.</p>`;
+  }
+
+  // Event delegation — works for buttons rendered now and for any added
+  // later (e.g. by client-side navigation in dev mode).
+  document.addEventListener('click', async (ev) => {
+    const target = ev.target;
+    if (!(target instanceof HTMLElement)) return;
+    const button = target.closest('button.src-anchor');
+    if (!button) return;
+    ev.preventDefault();
+    const line = Number(button.getAttribute('data-line'));
+    if (!Number.isFinite(line) || line < 1) return;
+
+    const dlg = ensureDialog();
+    const titleEl = dlg.querySelector('.src-anchor-dialog__title');
+    const bodyEl = dlg.querySelector('.src-anchor-dialog__body');
+    if (titleEl) titleEl.textContent = `Loading line ${line}…`;
+    if (bodyEl) bodyEl.textContent = '';
+    if (typeof dlg.showModal === 'function') dlg.showModal();
+    else dlg.setAttribute('open', '');
+
+    try {
+      const shard = await fetchSnippet(line);
+      renderShard(dlg, shard);
+    } catch (err) {
+      renderError(dlg, line, err);
+    }
+  });
+</script>

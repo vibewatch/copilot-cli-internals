@@ -2,6 +2,9 @@
 dist/
 .astro/
 
+# cached intermediates (e.g. pretty-printed app.js for source-anchor popup)
+.cache/
+
 # dependencies
 node_modules/
 

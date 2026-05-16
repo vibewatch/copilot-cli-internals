@@ -31,17 +31,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: pnpm
-          cache-dependency-path: website/pnpm-lock.yaml
+          cache: npm
+          cache-dependency-path: website/package-lock.json
       - name: Install dependencies
         working-directory: website
-        run: pnpm install --frozen-lockfile
+        run: npm ci
       - name: Build site
         working-directory: website
         env:
@@ -49,7 +46,7 @@ jobs:
           # Custom domain served from the root path.
           SITE_URL: https://copilot-cli.genisisiq.com
           SITE_BASE: ''
-        run: pnpm build
+        run: npm run build
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

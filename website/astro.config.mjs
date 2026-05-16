@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import rehypeRewriteDocLinks from './src/plugins/rehype-rewrite-doc-links.mjs';
+import rehypeSourceAnchors from './src/plugins/rehype-source-anchors.mjs';
 
 /**
  * GitHub Pages deploy config.
@@ -16,7 +17,7 @@ import rehypeRewriteDocLinks from './src/plugins/rehype-rewrite-doc-links.mjs';
  *
  * Override either value via env vars when invoking the build, e.g.:
  *   SITE_URL=https://my-org.github.io SITE_BASE=/my-repo \
- *     DEPLOY_TARGET=github-pages pnpm build
+ *     DEPLOY_TARGET=github-pages npm run build
  */
 const isGitHubPages = process.env.DEPLOY_TARGET === 'github-pages';
 const siteUrl = process.env.SITE_URL ?? 'https://copilot-cli.genisisiq.com';
@@ -31,7 +32,11 @@ export default defineConfig({
     // Rewrite GitHub-style `*.md` links in the source docs to Starlight
     // routes. The custom docs loader (see `src/content.config.ts`) reuses
     // this markdown config, so the same rewrite applies to every page.
-    rehypePlugins: [rehypeRewriteDocLinks],
+    //
+    // `rehypeSourceAnchors` is currently gated to a single pilot page; it
+    // turns line-number cells in source-anchor tables into clickable
+    // buttons that open the popup defined in `SourceAnchorPopup.astro`.
+    rehypePlugins: [rehypeRewriteDocLinks, rehypeSourceAnchors],
   },
   integrations: [
     starlight({
@@ -54,6 +59,7 @@ export default defineConfig({
         './src/styles/callouts.css',
         './src/styles/code.css',
         './src/styles/components.css',
+        './src/styles/source-anchor.css',
       ],
       components: {
         Head: './src/components/Head.astro',
