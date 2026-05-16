@@ -61,7 +61,7 @@ flowchart TD
 | [Runtime and UI](./01-runtime-and-ui/README.md) | Bootstrap, root command routing, interactive TUI, terminal ergonomics, voice mode, protocol server modes, and rendering support. | 8 |
 | [Context and input](./02-context-and-input/README.md) | Everything that becomes model-visible context: prompts, custom instructions, attachments, memory, compaction, and rewind boundaries. | 7 |
 | [Sessions and remote](./03-sessions-and-remote/README.md) | Local event-sourced sessions, cloud/remote control, SQLite indexing, UI projection, repository metadata, and Mission Control steering. | 8 |
-| [Tools and integrations](./04-tools-and-integrations/README.md) | Built-in tools, validation/review tools, MCP, plugins, IDE/LSP/editor bridges, web access, and integration overview surfaces. | 9 |
+| [Tools and integrations](./04-tools-and-integrations/README.md) | Built-in tools, validation/review tools, MCP, plugins, SDK extensions, IDE/LSP/editor bridges, web access, and integration overview surfaces. | 10 |
 | [Security and policy](./05-security-and-policy/README.md) | Permissions, content exclusion, hooks, sandboxing, and persistent policy/configuration state. | 6 |
 | [Models and reliability](./06-models-and-reliability/README.md) | Authentication, provider selection, wire APIs, resilience, rate limits, usage metrics, quota, and billing. | 4 |
 | [Agents and automation](./07-agents-and-automation/README.md) | Task orchestration, subagents, autopilot, fleet mode, and scheduled prompt/command automation. | 4 |
@@ -137,6 +137,7 @@ flowchart TD
 | Tools and integrations | [Coding-agent validation and review toolchain](./04-tools-and-integrations/coding-agent-validation-toolchain.md) | `parallel_validation`, `code_review`, CodeQL, secret scanning, advisory checks, trivial-change declarations, budgets, and validation telemetry. |
 | Tools and integrations | [MCP support implementation in the Copilot CLI](./04-tools-and-integrations/mcp-support-implementation.md) | MCP config discovery, transports, host lifecycle, tool exposure, OAuth, permissions, and tasks. |
 | Tools and integrations | [Plugin and extension architecture](./04-tools-and-integrations/plugin-extension-architecture.md) | Plugin install/cache/config lifecycle, marketplaces, local plugin dirs, contributions, and SDK loading. |
+| Tools and integrations | [Copilot SDK extension support](./04-tools-and-integrations/copilot-sdk-extension-support.md) | Programmatic `@github/copilot-sdk` extensions, `joinSession()`, discovery, management APIs, events, and trust boundaries. |
 | Tools and integrations | [IDE, LSP, and editor integration](./04-tools-and-integrations/ide-lsp-editor-integration.md) | IDE tools, selections, diagnostics, diffs, session title sync, LSP config, and extension state. |
 | Tools and integrations | [Web search, URL fetching, and URL permissions](./04-tools-and-integrations/web-search-url-fetching.md) | Built-in web_fetch, GitHub MCP web_search, URL allow/deny persistence, and web-tool gates. |
 | Tools and integrations | [Integrations, permissions, auth, and config workflows](./04-tools-and-integrations/integrations-permissions-config.md) | Cross-cutting overview of MCP, plugins, permissions, auth/provider selection, login, and updates. |

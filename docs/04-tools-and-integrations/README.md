@@ -20,7 +20,8 @@ flowchart TD
     Tools[Built-in tools] --> Permissions[Permission hooks]
     Validation[Validation/review tools] --> Tools
     MCP[MCP host] --> Tools
-    Plugins[Plugins/extensions] --> Tools
+    Plugins[Plugins] --> Tools
+    SDK[SDK extensions] --> Tools
     IDE[IDE/LSP bridge] --> Tools
     Web[Web fetch/search] --> Tools
     Overview[Integration overview] --> MCP
@@ -29,7 +30,8 @@ flowchart TD
     click Permissions "../05-security-and-policy/permission-system-design/" "Open permission system design"
     click Validation "./coding-agent-validation-toolchain/" "Open validation and review toolchain"
     click MCP "./mcp-support-implementation/" "Open MCP support"
-    click Plugins "./plugin-extension-architecture/" "Open plugin and extension architecture"
+    click Plugins "./plugin-extension-architecture/" "Open plugin architecture"
+    click SDK "./copilot-sdk-extension-support/" "Open Copilot SDK extension support"
     click IDE "./ide-lsp-editor-integration/" "Open IDE and LSP integration"
     click Web "./web-search-url-fetching/" "Open web search and URL fetching"
     click Overview "./integrations-permissions-config/" "Open integration overview"
@@ -45,6 +47,7 @@ flowchart TD
 | [Coding-agent validation and review toolchain](./coding-agent-validation-toolchain.md) | `parallel_validation`, `code_review`, CodeQL, secret scanning, advisory checks, trivial-change declarations, budgets, and validation telemetry. | `coding-agent-validation-toolchain.md` |
 | [MCP support implementation in the Copilot CLI](./mcp-support-implementation.md) | MCP config discovery, transports, host lifecycle, tool exposure, OAuth, permissions, and tasks. | `mcp-support-implementation.md` |
 | [Plugin and extension architecture](./plugin-extension-architecture.md) | Plugin install/cache/config lifecycle, marketplaces, local plugin dirs, contributions, and SDK loading. | `plugin-extension-architecture.md` |
+| [Copilot SDK extension support](./copilot-sdk-extension-support.md) | Programmatic `@github/copilot-sdk` extensions, `joinSession()`, discovery, management APIs, events, and trust boundaries. | `copilot-sdk-extension-support.md` |
 | [IDE, LSP, and editor integration](./ide-lsp-editor-integration.md) | IDE tools, selections, diagnostics, diffs, session title sync, LSP config, and extension state. | `ide-lsp-editor-integration.md` |
 | [Web search, URL fetching, and URL permissions](./web-search-url-fetching.md) | Built-in web_fetch, GitHub MCP web_search, URL allow/deny persistence, and web-tool gates. | `web-search-url-fetching.md` |
 | [Integrations, permissions, auth, and config workflows](./integrations-permissions-config.md) | Cross-cutting overview of MCP, plugins, permissions, auth/provider selection, login, and updates. | `integrations-permissions-config.md` |
@@ -54,7 +57,7 @@ flowchart TD
 - Start with the generic tool pipeline, then read validation/review and specific integration sources.
 - Read runtime tool assembly when you need to know why a tool is present, absent, deferred, or overridden before execution starts.
 - Read the shell lifecycle page when tracing actual `bash`/`powershell` command execution rather than generic tool events.
-- MCP, plugins, IDE, and web are different tool providers/bridges.
+- MCP, plugins, SDK extensions, IDE, and web are different tool providers/bridges.
 
 ## Back to wiki home
 

@@ -46,6 +46,7 @@ This file is a table-of-contents document, not a direct `app.js` implementation 
   - [Coding-agent validation and review toolchain](./04-tools-and-integrations/coding-agent-validation-toolchain.md)
   - [MCP support implementation in the Copilot CLI](./04-tools-and-integrations/mcp-support-implementation.md)
   - [Plugin and extension architecture](./04-tools-and-integrations/plugin-extension-architecture.md)
+  - [Copilot SDK extension support](./04-tools-and-integrations/copilot-sdk-extension-support.md)
   - [IDE, LSP, and editor integration](./04-tools-and-integrations/ide-lsp-editor-integration.md)
   - [Web search, URL fetching, and URL permissions](./04-tools-and-integrations/web-search-url-fetching.md)
   - [Integrations, permissions, auth, and config workflows](./04-tools-and-integrations/integrations-permissions-config.md)
