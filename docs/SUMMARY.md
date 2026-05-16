@@ -70,6 +70,7 @@ This file is a table-of-contents document, not a direct `app.js` implementation 
   - [Scheduled prompts and command queue](./07-agents-and-automation/scheduled-prompts-and-command-queue.md)
 - [Operations and research](./08-operations-and-research/README.md)
   - [Feature gates and rollout logic in Copilot CLI](./08-operations-and-research/feature-gates.md)
+  - [`app.js` source atlas and generated indexes](./08-operations-and-research/app-js-source-atlas.md)
   - [Diagnostics, feedback, and debug bundles](./08-operations-and-research/diagnostics-feedback-debug-bundles.md)
   - [Observability, update, and shutdown workflows](./08-operations-and-research/observability-update-shutdown.md)
   - [Further documentation opportunities for Copilot CLI](./08-operations-and-research/documentation-opportunities.md)

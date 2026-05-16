@@ -65,7 +65,7 @@ flowchart TD
 | [Security and policy](./05-security-and-policy/README.md) | Permissions, content exclusion, hooks, sandboxing, and persistent policy/configuration state. | 6 |
 | [Models and reliability](./06-models-and-reliability/README.md) | Authentication, provider selection, wire APIs, resilience, rate limits, usage metrics, quota, and billing. | 4 |
 | [Agents and automation](./07-agents-and-automation/README.md) | Task orchestration, built-in agents, subagents, autopilot, fleet mode, and scheduled prompt/command automation. | 5 |
-| [Operations and research](./08-operations-and-research/README.md) | Feature gates, diagnostics, debug bundles, observability/update/shutdown, and the original documentation backlog. | 4 |
+| [Operations and research](./08-operations-and-research/README.md) | Feature gates, generated source indexes, diagnostics, debug bundles, observability/update/shutdown, and the original documentation backlog. | 5 |
 
 ## Naming and maintenance conventions
 
@@ -157,6 +157,7 @@ flowchart TD
 | Agents and automation | [Fleet mode implementation in Copilot CLI](./07-agents-and-automation/fleet-mode.md) | /fleet, session.fleet.start, autopilot_fleet, SQL todo coordination, dependencies, and parallel subagents. |
 | Agents and automation | [Scheduled prompts and command queue](./07-agents-and-automation/scheduled-prompts-and-command-queue.md) | /every and /after parsing, ScheduleRegistry replay, queue integration, and ephemeral command dispatch. |
 | Operations and research | [Feature gates and rollout logic in Copilot CLI](./08-operations-and-research/feature-gates.md) | Gate tiers, rollout inputs, env/settings overrides, remote experiments, repo/team allowlists, and MCP permission gates. |
+| Operations and research | [`app.js` source atlas and generated indexes](./08-operations-and-research/app-js-source-atlas.md) | Generated `app.js` symbol/string inventories, main runtime path seeds, semantic anchor seeds, and regeneration workflow. |
 | Operations and research | [Diagnostics, feedback, and debug bundles](./08-operations-and-research/diagnostics-feedback-debug-bundles.md) | /diagnose, /feedback, /bug, /collect-debug-logs, .tgz bundles, secret gist uploads, and debug-log paths. |
 | Operations and research | [Observability, update, and shutdown workflows](./08-operations-and-research/observability-update-shutdown.md) | Logging, telemetry, OpenTelemetry, debug artifacts, update/version paths, and graceful shutdown. |
 | Operations and research | [Further documentation opportunities for Copilot CLI](./08-operations-and-research/documentation-opportunities.md) | Historical scan report, implemented backlog, command surfaces, and future niche follow-ups. |

@@ -168,6 +168,7 @@ export default defineConfig({
           items: [
             { label: 'Overview', link: '/08-operations-and-research/' },
             { label: 'Feature gates', link: '/08-operations-and-research/feature-gates/' },
+            { label: 'app.js source atlas', link: '/08-operations-and-research/app-js-source-atlas/' },
             { label: 'Diagnostics and debug bundles', link: '/08-operations-and-research/diagnostics-feedback-debug-bundles/' },
             { label: 'Observability and shutdown', link: '/08-operations-and-research/observability-update-shutdown/' },
             { label: 'Documentation opportunities', link: '/08-operations-and-research/documentation-opportunities/' },
