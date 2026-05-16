@@ -171,6 +171,48 @@ sequenceDiagram
 
 The important distinction is that multi-turn follow-up is explicit. The main agent sends another prompt/message to the idle agent; the agents still do not share a live call stack or streaming internal thoughts.
 
+### Method-level `TaskRegistry` call paths
+
+The source-level registry methods are worth documenting separately because they explain why background agents, sync agents that become promotable, multi-turn agents, and MCP task records all appear in the same task UI.
+
+| Method/path | Internal state touched | Observable behavior |
+|---|---|---|
+| `startAgent(...) -> _startAgentInner(...)` | Allocates an agent record, stores `pendingPromises`, creates an `AbortController`, marks `status: "running"`, starts the executor under `subAgentLimiter`, and calls the agent-start callback. | A background or multi-turn task becomes visible immediately, usually before the child agent has produced its first response. |
+| `register(...)` | Inserts externally-created task records, including shell tasks and MCP task shims, then notifies registry listeners. | The tasks view can show shell/MCP work using the same list/update mechanism as subagents. |
+| `complete(...)` / `fail(...)` | Moves the task to a terminal state, records result/error/completion time, resolves completion waiters, clears pending work, and notifies change/completion callbacks. | `read_agent` can return the final result; `session.idle` can be emitted once foreground and background work are drained. |
+| `cancel(...)` / `cancelRecursive(...)` | Aborts the task controller, marks the task cancelled, propagates to child tasks, and wakes waiters. | Cancelling a parent agent also cancels descendant delegated work instead of leaving orphaned children. |
+| `setLatestResponse(...)` | Appends a `turnHistory` entry and wakes result waiters. | `read_agent({ since_turn })` can return incremental responses without requiring the agent to finish. |
+| `getAgentResult(...)` | Races current status, new-turn waiters, completion waiters, promotion waiters, and timeout. | A caller can either poll immediately or block until a new response/final state/background promotion happens. |
+| `waitForMessage(...)` | Marks a multi-turn agent `idle`, releases the concurrency slot, registers a resolver, and waits for `sendMessage(...)`. | Idle agents stop consuming subagent concurrency while waiting for the main agent to send another instruction. |
+| `sendMessage(...)` | Queues a follow-up message, marks the task `running`, reacquires concurrency, and wakes the waiting agent. | `write_agent`-style follow-up resumes the same multi-turn agent rather than launching a new subagent. |
+| `promoteAgentToBackground(...)` | Resolves promotion waiters and flips execution state for a sync-style in-flight task. | Long-running sync work can be detached so the main agent can continue and later read the result. |
+| `updateMcpTask(...)` / `setSteerCallback(...)` | Stores MCP task progress/status and optional steering callback. | MCP long-running tools can look like background agents and may be steerable when the server supports it. |
+
+```mermaid
+sequenceDiagram
+    participant Tool as task/read/write tool
+    participant Registry as TaskRegistry / B3
+    participant Limiter as subAgentLimiter
+    participant Exec as Agent executor
+
+    Tool->>Registry: startAgent(agent spec)
+    Registry->>Registry: create task record + pending promise
+    Registry->>Limiter: acquire slot
+    Registry->>Exec: run executor closure
+    Exec->>Registry: setLatestResponse(turn 0)
+    Registry-->>Tool: getAgentResult wakes on new turn
+    alt multi-turn wait
+        Exec->>Registry: waitForMessage(agent_id)
+        Registry->>Limiter: release slot
+        Tool->>Registry: sendMessage(agent_id, follow-up)
+        Registry->>Limiter: reacquire slot
+        Registry-->>Exec: follow-up prompt
+    else final state
+        Exec->>Registry: complete / fail
+        Registry-->>Tool: completion waiter resolves
+    end
+```
+
 ### Custom-agent communication path
 
 Custom agents enter through the catalog and then use the same delegation contract as built-ins. Their differences are in setup, not in the high-level communication protocol:
@@ -274,6 +316,31 @@ Important behavior in the dispatch callback:
 - `rubber-duck` may use a complementary model family when enabled.
 - Subagent recursion is capped by `COPILOT_SUBAGENT_MAX_DEPTH`, defaulting to `6`.
 - Concurrent subagents are capped by `COPILOT_SUBAGENT_MAX_CONCURRENT`, with plan-dependent defaults and an env cap up to `256`.
+
+At the method level, the `createTaskTool(...)` callback (`I6n`) has four important branch points:
+
+| Branch | Source-level behavior | Why it matters |
+|---|---|---|
+| Agent lookup | Merges built-ins and active custom agents, then rejects unknown names with a valid-type list. | The model cannot call arbitrary agent names; the valid enum is rebuilt from runtime state. |
+| Model override | Validates `model` against available models, applies cost guard logic, and may synthesize model choices for `explore` or `rubber-duck`. | Subagent model choice is policy-controlled rather than a raw model string passthrough. |
+| Depth/concurrency | Checks `subAgentDepth` against `COPILOT_SUBAGENT_MAX_DEPTH` and schedules execution through the subagent limiter. | Recursive delegation is possible but bounded. |
+| Execution mode | `background` calls `launchBackgroundAgent(...)`; sync may execute directly, or create a registry-backed multi-turn task when multi-turn support is active. | A sync `task` call is not always just `await executor(...)`; it can still produce registry state for turn history, promotion, and idle messaging. |
+
+```mermaid
+flowchart TD
+    Input["task tool input"] --> Parse["validate v6n schema"]
+    Parse --> Agent{"known built-in/custom agent?"}
+    Agent -->|no| AgentError["return valid agent_type list"]
+    Agent -->|yes| Model{"model override?"}
+    Model -->|invalid| ModelError["return valid model list"]
+    Model -->|valid/none| Guard["cost guard + explore/rubber-duck model defaults"]
+    Guard --> Depth{"subAgentDepth within cap?"}
+    Depth -->|no| DepthError["reject recursion"]
+    Depth -->|yes| Mode{"mode"}
+    Mode -->|background| Background["launchBackgroundAgent / Bur -> TaskRegistry.startAgent"]
+    Mode -->|sync + multi-turn| SyncRegistry["pre-create agent id -> startAgent -> getAgentResult"]
+    Mode -->|plain sync| Direct["execute agent closure through limiter"]
+```
 
 ## Sync vs background execution
 
@@ -387,6 +454,45 @@ flowchart TD
 ```
 
 `assembleSubagentTools(...)` is the recursive tool-assembly point for subagents. It increments `subAgentDepth`, disables background notifications inside subagents, assembles tools by recursively calling `assembleRuntimeTools(...)`, and injects the `task` tool plus helpers such as agent read/write tools when enabled. It chooses between session-based subagents and executor-based subagents behind the `SESSION_BASED_SUBAGENTS` feature flag.
+
+### `SessionAgentExecutor` method flow
+
+The session-based executor (`dZ`) is the built-in-agent path behind `SESSION_BASED_SUBAGENTS`. It creates a child session rather than running a loose callback. That makes hooks, skills, tool initialization, selected model, events, and teardown look like a normal session lifecycle.
+
+| Method | Main responsibilities |
+|---|---|
+| `execute(...)` | Checks required `createSubagentSession` and `toolCallId`, emits start boundary, initializes the child session, runs turns, handles hook-forced continuations, handles multi-turn waits, emits end/failure boundary, and tears down. |
+| `initializeSession(...)` | Creates or reuses the child subagent session, sets the chosen model, loads skills, initializes/validates the child toolset, applies subagent instructions/system-message replacement, and runs `subagentStart` hooks. |
+| `runTurn(...)` | Sends the prompt into the child session, then scans emitted events for the latest `assistant.message` and `tool.execution_complete` count so registry progress can reflect tool activity. |
+| `teardown(...)` | Stops or releases the child session resources after normal completion, hook-blocked loops, failures, or cancellation. |
+
+```mermaid
+sequenceDiagram
+    participant Registry as TaskRegistry
+    participant Exec as SessionAgentExecutor / dZ
+    participant Child as Child session
+    participant Hooks as Hook runner
+
+    Registry->>Exec: execute(prompt, agent, modelOverride)
+    Exec->>Child: createSubagentSession
+    Exec->>Child: setSelectedModel + initializeAndValidateTools
+    Exec->>Hooks: subagentStart
+    Hooks-->>Exec: optional additionalContext
+    loop until allowed stop or multi-turn exit
+        Exec->>Child: runTurn(prompt/additionalContext)
+        Child-->>Exec: assistant.message + tool events
+        Exec->>Hooks: subagentStop(stopReason)
+        alt hook blocks
+            Hooks-->>Exec: decision=block + reason
+            Exec->>Child: run another turn with reason
+        else multi-turn enabled
+            Exec->>Registry: setLatestResponse + waitForMessage
+            Registry-->>Exec: optional follow-up message
+        end
+    end
+    Exec->>Child: teardown
+    Exec-->>Registry: final response/result
+```
 
 ## Hooks around agent orchestration
 

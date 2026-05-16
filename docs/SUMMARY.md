@@ -39,6 +39,7 @@ This file is a table-of-contents document, not a direct `app.js` implementation 
   - [Remote control implementation in Copilot CLI](./03-sessions-and-remote/remote-control-implementation.md)
 - [Tools and integrations](./04-tools-and-integrations/README.md)
   - [Built-in tool execution pipeline](./04-tools-and-integrations/built-in-tool-execution-pipeline.md)
+  - [Coding-agent validation and review toolchain](./04-tools-and-integrations/coding-agent-validation-toolchain.md)
   - [MCP support implementation in the Copilot CLI](./04-tools-and-integrations/mcp-support-implementation.md)
   - [Plugin and extension architecture](./04-tools-and-integrations/plugin-extension-architecture.md)
   - [IDE, LSP, and editor integration](./04-tools-and-integrations/ide-lsp-editor-integration.md)

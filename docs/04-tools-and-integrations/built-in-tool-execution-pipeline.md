@@ -238,6 +238,7 @@ MCP-specific additions include:
 ## Relationship to other docs
 
 - `permission-system-design.md` explains approval rules and persistence scopes.
+- `coding-agent-validation-toolchain.md` explains completion-time validation tools such as `parallel_validation`, `code_review`, CodeQL, secret scanning, and advisory checks.
 - `mcp-support-implementation.md` explains MCP tool discovery and invocation.
 - `hooks-lifecycle-automation.md` explains hook schemas and lifecycle effects.
 - `agent-task-orchestration.md` explains tools that launch or communicate with agents.

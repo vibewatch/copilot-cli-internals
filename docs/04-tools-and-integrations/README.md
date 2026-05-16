@@ -1,6 +1,6 @@
 # Tools and integrations
 
-Built-in tools, MCP, plugins, IDE/LSP/editor bridges, web access, and integration overview surfaces.
+Built-in tools, validation/review tools, MCP, plugins, IDE/LSP/editor bridges, web access, and integration overview surfaces.
 
 ## Semantic alias and minified anchor mapping
 
@@ -16,6 +16,7 @@ This is a section index, not a direct `app.js` implementation analysis. Topic pa
 ```mermaid
 flowchart TD
     Tools[Built-in tools] --> Permissions[Permission hooks]
+    Validation[Validation/review tools] --> Tools
     MCP[MCP host] --> Tools
     Plugins[Plugins/extensions] --> Tools
     IDE[IDE/LSP bridge] --> Tools
@@ -28,6 +29,7 @@ flowchart TD
 | Page | Why read it | File |
 |---|---|---|
 | [Built-in tool execution pipeline](./built-in-tool-execution-pipeline.md) | Tool registration, model-visible schemas, permission/hook flow, execution events, streaming, and telemetry. | `built-in-tool-execution-pipeline.md` |
+| [Coding-agent validation and review toolchain](./coding-agent-validation-toolchain.md) | `parallel_validation`, `code_review`, CodeQL, secret scanning, advisory checks, trivial-change declarations, budgets, and validation telemetry. | `coding-agent-validation-toolchain.md` |
 | [MCP support implementation in the Copilot CLI](./mcp-support-implementation.md) | MCP config discovery, transports, host lifecycle, tool exposure, OAuth, permissions, and tasks. | `mcp-support-implementation.md` |
 | [Plugin and extension architecture](./plugin-extension-architecture.md) | Plugin install/cache/config lifecycle, marketplaces, local plugin dirs, contributions, and SDK loading. | `plugin-extension-architecture.md` |
 | [IDE, LSP, and editor integration](./ide-lsp-editor-integration.md) | IDE tools, selections, diagnostics, diffs, session title sync, LSP config, and extension state. | `ide-lsp-editor-integration.md` |
@@ -36,7 +38,7 @@ flowchart TD
 
 ## Reading guidance
 
-- Start with the generic tool pipeline, then read specific integration sources.
+- Start with the generic tool pipeline, then read validation/review and specific integration sources.
 - MCP, plugins, IDE, and web are different tool providers/bridges.
 
 ## Back to wiki home
