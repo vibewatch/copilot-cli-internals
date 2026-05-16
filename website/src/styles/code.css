@@ -26,20 +26,173 @@
 }
 
 .expressive-code .frame {
+  position: relative;
   border-radius: var(--tk-radius-md);
   overflow: hidden;
   box-shadow: none;
   border: none;
 }
 
+.expressive-code .frame .header:empty {
+  display: none;
+}
+
 .expressive-code pre,
 .expressive-code pre > code {
   background: var(--tk-color-surface-dark);
   color: var(--tk-color-on-dark);
-  padding: var(--tk-space-lg) var(--tk-space-xl);
   font-family: var(--tk-font-mono);
   font-size: var(--tk-fs-code-sm);
   line-height: var(--tk-lh-code);
+}
+
+.expressive-code pre {
+  padding: var(--tk-space-lg) var(--tk-space-xl);
+}
+
+.expressive-code pre > code {
+  display: block;
+  padding: 0;
+}
+
+/* Prompt/text fences are prose-like source material, not horizontally scanned
+ * source code. Wrap these blocks so long prompt sentences remain readable on
+ * the docs site while preserving normal no-wrap behavior for real code.
+ * Expressive Code normally lays lines out as a grid optimized for source code;
+ * text prompts are easier and safer to render as block lines. */
+.sl-markdown-content .expressive-code pre[data-language='text'] {
+  overflow-x: auto;
+}
+
+.sl-markdown-content .expressive-code pre[data-language='text'] > code {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.sl-markdown-content .expressive-code pre[data-language='text'] .ec-line {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.sl-markdown-content .expressive-code pre[data-language='text'] .ec-line .code {
+  box-sizing: border-box;
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  padding-inline-start: 0;
+  padding-inline-end: var(--ec-codePadInl, var(--tk-space-xl));
+  border-inline-start: 0;
+  text-indent: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.sl-markdown-content .expressive-code pre[data-language='text'] .ec-line .code span.indent {
+  white-space: pre;
+}
+
+/* Make Expressive Code's copy control match the custom mermaid action buttons:
+ * a visible card-surface icon button with hairline border and clear hover state. */
+.sl-markdown-content .expressive-code .copy {
+  position: absolute;
+  top: var(--tk-space-md);
+  right: var(--tk-space-md);
+  inset-block-start: var(--tk-space-md);
+  inset-inline-end: var(--tk-space-md);
+  width: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--tk-space-xxs);
+  z-index: 2;
+}
+
+.sl-markdown-content .expressive-code .copy button {
+  position: relative;
+  width: 2.25rem;
+  min-width: 2.25rem;
+  height: 2.25rem;
+  margin: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--tk-color-surface-card);
+  color: var(--tk-color-mute);
+  border: 1px solid var(--tk-color-hairline);
+  border-radius: var(--tk-radius-xs);
+  font-family: var(--tk-font-sans);
+  font-size: var(--tk-fs-caption-sm);
+  font-weight: var(--tk-fw-medium);
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.55;
+  transition:
+    opacity 0.15s ease,
+    background 0.12s ease,
+    color 0.12s ease,
+    border-color 0.12s ease,
+    transform 0.08s ease;
+}
+
+.sl-markdown-content .expressive-code .copy button div {
+  display: none;
+}
+
+.sl-markdown-content .expressive-code .copy button::before {
+  content: none;
+}
+
+.sl-markdown-content .expressive-code .copy button::after {
+  --code-copy-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='11' height='11' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E");
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  transform: translate(-50%, -50%);
+  background-color: currentColor;
+  -webkit-mask-image: var(--code-copy-icon);
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+  mask-image: var(--code-copy-icon);
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  pointer-events: none;
+}
+
+.sl-markdown-content .expressive-code .frame:hover .copy button,
+.sl-markdown-content .expressive-code .frame:focus-within .copy button,
+.sl-markdown-content .expressive-code .copy button:hover,
+.sl-markdown-content .expressive-code .copy button:focus-visible {
+  opacity: 1;
+}
+
+.sl-markdown-content .expressive-code .copy button:hover,
+.sl-markdown-content .expressive-code .copy button:focus-visible {
+  background: var(--tk-color-primary);
+  color: var(--tk-color-ink);
+  border-color: var(--tk-color-primary);
+  outline: none;
+}
+
+.sl-markdown-content .expressive-code .copy button:active {
+  transform: scale(0.94);
+}
+
+.sl-markdown-content .expressive-code .copy .feedback {
+  font-family: var(--tk-font-sans);
+  font-size: var(--tk-fs-caption-sm);
+}
+
+.sl-markdown-content .expressive-code :nth-child(1 of .ec-line) .code {
+  padding-inline-end: calc(3.5rem + var(--ec-codePadInl, var(--tk-space-xl)));
 }
 
 /* Plain <pre> fallback (used for fenced code if Expressive Code is bypassed) */

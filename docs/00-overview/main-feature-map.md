@@ -10,6 +10,11 @@ This document continues the static analysis of the extracted `@github/copilot` C
 
 It also owns most prompt assembly rules. The bundle contains many static prompt templates, but the final model-visible prompt is assembled from runtime inputs such as user messages, custom instructions, skills, custom agents, MCP prompts/resources, hooks, memories, tools, session state, and provider-specific request formatting. See [`prompt-sources.md`](../02-context-and-input/prompt-sources.md) for the dedicated prompt-source taxonomy and [`memory-and-context-board.md`](../02-context-and-input/memory-and-context-board.md) for memory and dynamic-context behavior.
 
+Two useful lenses for the bundle are **context engineering** and **harness engineering**. These are not literal product/source terms in `app.js`; they are reverse-engineering labels for two interacting implementation layers:
+
+- **Context engineering** decides what the model can see, remember, and fit into the context window.
+- **Harness engineering** decides how the model is embedded in a usable agent runtime: modes, turns, tools, permissions, retries, events, and integration boundaries.
+
 ```mermaid
 flowchart TB
     App["app.js bundled runtime"] --> CLI["CLI command surface"]
@@ -43,6 +48,38 @@ flowchart TB
     Prompts --> Provider["provider request mapping"]
 ```
 
+## Context engineering versus harness engineering
+
+The analyzed CLI is not only a collection of prompts. It also contains the execution harness that repeatedly builds model requests, exposes tools, enforces approvals, handles errors, and projects events to UIs or hosts.
+
+| Lens | Question it answers | Main mechanisms in this bundle | Primary docs |
+|---|---|---|---|
+| Context engineering | What should be model-visible for this turn, and how should it be shaped? | System prompt builders, instruction discovery, skills and custom-agent prompts, attachments, MCP prompts/resources, git/IDE/session metadata, memory/context board, compaction, request-time prompt trimming, provider request mapping. | [`prompt-sources.md`](../02-context-and-input/prompt-sources.md), [`app-js-prompt-catalog.md`](../02-context-and-input/app-js-prompt-catalog.md), [`custom-agents-and-skills-packaging.md`](../02-context-and-input/custom-agents-and-skills-packaging.md), [`memory-and-context-board.md`](../02-context-and-input/memory-and-context-board.md), [`conversation-compaction.md`](../02-context-and-input/conversation-compaction.md) |
+| Harness engineering | How is the model run as an agent instead of a raw completion call? | Root mode routing, session/event state, `runAgenticLoop(...)`, request processors, tool assembly, permission service, MCP/plugin/extension integration, `TaskRegistry`, subagents, streaming, retries, quota checks, shutdown/telemetry. | [`cli-runtime-workflows.md`](../01-runtime-and-ui/cli-runtime-workflows.md), [`runtime-tool-assembly-and-filtering.md`](../04-tools-and-integrations/runtime-tool-assembly-and-filtering.md), [`built-in-tool-execution-pipeline.md`](../04-tools-and-integrations/built-in-tool-execution-pipeline.md), [`permission-system-design.md`](../05-security-and-policy/permission-system-design.md), [`agent-task-orchestration.md`](../07-agents-and-automation/agent-task-orchestration.md), [`resilience-rate-limits-concurrency.md`](../06-models-and-reliability/resilience-rate-limits-concurrency.md) |
+
+```mermaid
+flowchart LR
+    Inputs["user input / repo / IDE / config / services"] --> Context["context engineering\nselect, format, compress"]
+    Context --> Request["model request\nmessages + tools + headers"]
+
+    Harness["harness engineering\nturn loop + tools + policy"] --> Request
+    Request --> Model["model/provider"]
+    Model --> ToolCalls["tool calls / text"]
+    ToolCalls --> Harness
+    Harness --> Events["session events / UI / telemetry"]
+    Harness --> State["history / tasks / permissions"]
+    State --> Context
+```
+
+Several components deliberately straddle the boundary:
+
+- **Tools** are context because their schemas and instructions are shown to the model, but harness because execution is mediated by permissions, hooks, streaming, and telemetry.
+- **Skills** are context when their `SKILL.md` bodies are injected through `<skill-context>`, but harness when the model-visible `skill` tool loads them and applies `allowed-tools` approval rules.
+- **Compaction and `BasicTruncator`** are context engineering outcomes, but they are implemented as request processors inside the harness.
+- **Custom agents** are context when they replace or augment system prompts, but harness when `TaskRegistry` schedules them and tracks lifecycle state.
+
+This distinction is useful when reading the rest of the wiki: if a question is about **what the model sees**, start in Context and input; if it is about **how the model is allowed to act**, start in Runtime/UI, Tools, Security, or Agents.
+
 ## Source anchors
 
 | Area | Semantic alias | Minified anchor | Approx. line | Role |
@@ -54,8 +91,10 @@ flowchart TB
 | Embedded server | `EmbeddedServer` | `p1t` | 7441 | Hosts foreground sessions for TUI, JSON-RPC, and extension integration. |
 | Feature gates | `LiveFeatureFlagService`, `StaticFeatureFlagService` | `Pfe`, `ILt` | 239 | Resolves local gates, environment/settings overrides, and remote experiment values. |
 | Task orchestration | `TaskRegistry`, `createTaskTool(...)` | `B3`, `I6n(...)` | 3367, 3735 | Tracks subagents, background agents, multi-turn agents, and MCP task records. |
-| Tool assembly | `assembleRuntimeTools(...)`, `assembleSubagentTools(...)` | `HCr(...)`, `Gjs(...)` | 5734 | Injects file, shell, MCP, skill, SQL, and task tools into a session or subagent. |
+| Tool assembly | `assembleRuntimeTools(...)`, `initializeAndValidateTools(...)`, `assembleSubagentTools(...)` | `HCr(...)`, `Gjs(...)` | 4481, 5734 | Injects file, shell, MCP, skill, external, deferred-search, and task tools into a session or subagent; final session filtering is covered in [`runtime-tool-assembly-and-filtering.md`](../04-tools-and-integrations/runtime-tool-assembly-and-filtering.md). |
 | Prompt assembly | `buildSystemPrompt(...)`, `createGeneralPurposeSystemPrompt(...)`, prompt-source loaders | `X3e(...)`, `Wmt(...)`, `q4(...)`, `I9(...)` | 499, 525, 3824, 4031 | Combines static templates with custom instructions, skills, tools, memory, hooks, MCP, and provider request formatting. |
+| Agentic loop harness | `Session.runAgenticLoop(...)`, `getCompletionWithTools(...)` | method name preserved, completion loop | 3439, 4481 | Builds each turn, applies request processors, streams model output, dispatches tool calls, and handles retries/errors. |
+| Request processors | `preRequest`, `postRequest`, `onRequestError`, `ImmediatePromptProcessor`, `BasicTruncator`, `CompactionProcessor` | `Qyr`, `M3`, `ECe`, `zJ`, `_Ce` | 3062, 3092, 3439, 4471, 4483 | Last-mile context shaping and reliability hooks around provider requests. |
 | MCP host | `McpHost` and transport layer | `p8e`, `T6o(...)` | 4138, 7320 | Connects MCP servers, loads tools, and handles task support, elicitation, and sampling. |
 | Plugins | `pluginCommand`, plugin loaders | `z6o(...)` and loaders | 2789, 8298 | Manages plugins and loads plugin-provided agents, skills, hooks, MCP, and LSP servers. |
 | Permissions | `PermissionService` | `Kge(...)` usage | 7420, 8298 | Applies tool, path, URL, hook, and MCP approval rules. |

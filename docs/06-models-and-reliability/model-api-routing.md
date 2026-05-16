@@ -33,6 +33,8 @@ The short version: the CLI normalizes every agent turn into internal messages an
 | Azure provider | `AzureProviderFactory` | `L3e` | `app.js` 3472 | Creates Azure OpenAI clients using versionless `/openai/v1` or versioned `/openai` plus `api-version` and deployment routing. |
 | Custom Anthropic provider | `CustomAnthropicProviderFactory` | `w3e`, `Mcr` | `app.js` 3437 | Creates an Anthropic client from BYOK base URL, API key or bearer token. |
 | Copilot API client wrapper | `CopilotApiClientWrapper` | `Tmt`, `wmt` | `app.js` 3457 | Adds Copilot integration, auth, HMAC, session, interaction, feature-assignment, and API-version headers. |
+| Streaming/final response normalizers | `mergeChoices(...)`, `toChatCompletionChunk(...)`, `normalizeFinishReason(...)` | `eCn(...)`, `nCn(...)`, `oCn(...)` | `app.js` 1026 | Merge multi-choice assistant outputs, preserve reasoning/annotation fields, normalize finish reasons, and build the final `model_call_success.responseChunk`. |
+| Streaming UI callbacks | `StreamingChunkDisplay` | `ubt` | `app.js` 4207 | Converts provider stream chunks into ephemeral assistant streaming events and response-size updates. |
 
 ## High-level routing flow
 
@@ -312,6 +314,30 @@ All adapters feed the rest of the runtime through a common normalized output sha
 | Responses HTTP | `responses.create(..., stream: true)` | `response.created`, text deltas, reasoning summary/text deltas, function/custom tool argument deltas, output item events, `response.completed`. |
 | Responses WebSocket | WebSocket `response.create` event | Same conceptual Responses event stream, plus connection state and `previous_response_id` tracking. |
 | Anthropic Messages | `messages.stream(...)` | Content-block starts/stops, text deltas, thinking/reasoning deltas, tool-use deltas, message deltas, usage. |
+
+## Normalized response and streaming lifecycle
+
+The provider adapters do more than change HTTP payload shape. They also converge very different stream semantics into a common sequence of model-loop events.
+
+```mermaid
+flowchart TD
+    ProviderStream["provider stream chunks"] --> AdapterDelta["adapter-specific delta parser"]
+    AdapterDelta --> ChunkCallbacks["onStreamingChunk callbacks"]
+    ChunkCallbacks --> UiEvents["assistant.message_start / assistant.streaming_delta / reasoning events"]
+    AdapterDelta --> Accumulator["accumulate final provider response"]
+    Accumulator --> Normalize["merge choices and normalize finish reasons"]
+    Normalize --> Success["model_call_success with responseChunk, usage, latency, quota snapshots"]
+```
+
+Observed normalization steps include:
+
+- The Chat Completions path measures time-to-first-token and inter-token latency while streaming, then includes `ttftMs` and `interTokenLatencyMs` in the final `model_call_success` event.
+- The final response is converted back into a `chat.completion.chunk`-like shape by `nCn(...)`, even when the original provider API was Responses or Anthropic Messages.
+- `eCn(...)` merges assistant messages across choices while preserving text content, `reasoning_content`, `encrypted_reasoning_content`, Copilot annotations, output phase, and tool calls.
+- `oCn(...)` maps provider-specific stop reasons into the small finish-reason vocabulary consumed by the rest of the session runtime.
+- `StreamingChunkDisplay` turns streaming text and reasoning deltas into ephemeral session events. Those events are UI-facing and size-tracking; the durable session history still depends on final assistant/tool messages and `model_call_success` records.
+
+This normalization layer is the reason downstream code can treat Anthropic, OpenAI Responses, WebSocket Responses, and Chat Completions as one model-turn abstraction for history, tool calls, telemetry, and rendering.
 
 ## What is not statically recoverable
 

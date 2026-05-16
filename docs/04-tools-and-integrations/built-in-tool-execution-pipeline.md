@@ -1,6 +1,6 @@
 # Built-in tool execution pipeline
 
-This document explains how tool calls move through the extracted Copilot CLI runtime, with emphasis on built-in tools. The same session event and permission infrastructure is also shared by MCP tools, SDK extension tools, custom tools, and task/subagent tools.
+This document explains how tool calls move through the extracted Copilot CLI runtime, with emphasis on built-in tools. The same session event and permission infrastructure is also shared by MCP tools, SDK extension tools, custom tools, and task/subagent tools. [Runtime tool assembly and filtering](./runtime-tool-assembly-and-filtering.md) covers the preceding step: how candidate tools become the final model-visible toolset before execution starts.
 
 The key implementation point in `app.js` is that a tool call is not just a function invocation. It is modeled as an evented lifecycle with schema generation, permission requests, hook intervention, streaming/progress events, completion records, telemetry, and replay behavior.
 
@@ -17,6 +17,8 @@ The key implementation point in `app.js` is that a tool call is not just a funct
 | Search/read tools | `read_file`, `grep_search`, `file_search`, `semantic_search` | Workspace inspection tool definitions. |
 | Permission bridge | `permission.requested`, `permission.completed` | Tool execution can pause for approvals. |
 | Hook bridge | `preToolUse`, `postToolUse`, `postToolUseFailure` | Hooks can approve, deny, modify, or add context around tools. |
+| Model request processors | `preToolsExecution`, `postToolExecution` | Model-loop middleware can inspect or synthesize tool results before/after ordinary tool execution. |
+| Public-code annotation gate | `SnippyProcessor` | Uses Copilot annotations to block tool execution and retry or synthesize denial results. |
 
 Representative line anchors from the analyzed bundle:
 
@@ -89,6 +91,8 @@ The scan found conversion logic around line `3439` that maps internal tool objec
 
 The bundle uses both concrete tool names and compatibility aliases.
 
+For the detailed `bash`/`powershell` path after the generic tool callback is invoked, see [`shell-command-execution-lifecycle.md`](./shell-command-execution-lifecycle.md). That page traces the shell manager, PTY and process backends, sync/async/detached execution, output buffering, and background task state.
+
 | Family | Representative names | Purpose |
 |---|---|---|
 | Shell execution | `bash`, `powershell`, shell/execute aliases | Run commands with sandbox/permission handling. |
@@ -99,6 +103,32 @@ The bundle uses both concrete tool names and compatibility aliases.
 | Agent/task | `task`, subagent tools, sidekick tools | Launch or communicate with agent sessions. |
 
 Around line `4149`, a compatibility map links groups such as `edit`, `MultiEdit`, `Write`, `Grep`, and `Glob` to concrete CLI tool names. This is why higher-level prompts can talk about capabilities while the runtime executes concrete tools.
+
+## Model request processors around tools
+
+One gap that is easy to miss from the tool definitions alone: some tool behavior is mediated by the model request loop before the concrete tool callback runs.
+
+```mermaid
+flowchart TD
+    Response["assistant response with tool calls"] --> PostRequest["postRequest processors"]
+    PostRequest --> PreTools["preToolsExecution processors"]
+    PreTools --> Synthetic{"synthetic tool result?"}
+    Synthetic -->|yes| History["append processor-generated tool result"]
+    Synthetic -->|no| Execute["execute concrete tool"]
+    Execute --> PostTool["postToolExecution processors"]
+    History --> Loop["continue model/tool loop"]
+    PostTool --> Loop
+```
+
+The key observed example is the public-code annotation processor. When Copilot annotations indicate a soft block, it can prevent annotated tool calls from executing, emit `snippy_blocking` telemetry, and return model-visible tool results explaining that the tool call was blocked. If retries remain, it asks the model loop for another pass; after the retry budget is exhausted, it falls back to blocked tool-result messages instead of letting the annotated action proceed.
+
+This processor layer is separate from both permissions and hooks:
+
+| Layer | Trigger | Can block or change tool behavior? | Main purpose |
+|---|---|---|---|
+| Request processor | Model-loop phase before/after tool batches | Yes; can synthesize tool results or request retry. | Safety/recovery middleware tied to model responses. |
+| Permission service | Concrete tool asks for approval | Yes; returns approved, denied, or user-unavailable. | User/policy authorization for a visible tool call. |
+| Hook system | Configured lifecycle hooks | Yes; can approve, deny, modify args, or add context. | User/admin automation around tool use. |
 
 ## Start event
 
@@ -210,6 +240,7 @@ MCP-specific additions include:
 ## Relationship to other docs
 
 - `permission-system-design.md` explains approval rules and persistence scopes.
+- `coding-agent-validation-toolchain.md` explains completion-time validation tools such as `parallel_validation`, `code_review`, CodeQL, secret scanning, and advisory checks.
 - `mcp-support-implementation.md` explains MCP tool discovery and invocation.
 - `hooks-lifecycle-automation.md` explains hook schemas and lifecycle effects.
 - `agent-task-orchestration.md` explains tools that launch or communicate with agents.

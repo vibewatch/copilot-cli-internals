@@ -1,12 +1,18 @@
 # Conversation compaction and memory compression in Copilot CLI
 
-This document explains the implementation behind the Copilot CLI behavior that is easy to describe as "memory compression". In the analyzed bundle, the main local mechanism is **conversation compaction**: old chat history is summarized by a model call, then the session replaces many prior messages with a compact summary so the next request fits within the model context window.
+This document explains the implementation behind the Copilot CLI behavior that is easy to describe as "memory compression" or "prompt trimming". In the analyzed bundle, there are two local context-window mechanisms:
 
-This is different from binary compression and also different from long-term memory consolidation. The CLI uses three adjacent concepts:
+- **conversation compaction**: old chat history is summarized by a model call, then the session replaces many prior messages with a compact summary; and
+- **request-time prompt truncation**: immediately before a provider request, a `BasicTruncator` can remove older message/tool-call material from the request message array so the current request fits the effective token budget.
+
+Compaction is the semantic, state-mutating mechanism. Basic truncation is the last-mile, message-aware request guardrail.
+
+This is different from binary compression and also different from long-term memory consolidation. The CLI uses four adjacent concepts:
 
 | Concept | Primary purpose | Main output | Scope |
 |---|---|---|---|
 | Conversation compaction | Reduce current context-window usage. | Summary-backed replacement messages and optional checkpoints. | Current session. |
+| Request-time prompt truncation | Make an individual provider request fit the token budget. | In-place request-message pruning plus `session.truncation`/`session.usage_info`. | Current model request. |
 | Memory consolidation | Extract reusable learnings for future sessions. | Dynamic context board entries via `context_board add/prune`. | Repository and branch board. |
 | Provider-side compaction | Let a provider or remote agent report context compaction events. | Provider stream events or SDK-level edits. | Provider request internals. |
 
@@ -26,6 +32,10 @@ This is different from binary compression and also different from long-term memo
 | Tool-boundary adjustment | `adjustCompactionBoundary(...)` | `ift(...)`, `g4n(...)` | `app.js` 3090-3092 | Avoids orphaned tool-result messages when splitting compacted and new history. |
 | Model call | `runCompactionModelCall(...)` | `sft(...)` | `app.js` 3090 | Calls the selected model with compaction-specific headers and returns summary plus token usage. |
 | Automatic processor | `CompactionProcessor` | `ECe` | `app.js` 3092 | Starts background compaction around context thresholds and applies it before requests that need space. |
+| Request-time truncator | `BasicTruncator` | `M3` | `app.js` 3062 | Counts message/tool-definition tokens, removes older request messages when necessary, emits usage/truncation callback events, and adjusts retry token limits after provider errors. |
+| Truncation helpers | `truncateAssistantToolMaterial`, `truncateOldMessages`, `removeOrphanToolMessages` | `u4n(...)`, `g0s(...)`, `p4n(...)` | `app.js` 3062 | Implements message-aware pruning while preserving system messages, the latest user prompt, and tool-call boundaries. |
+| Truncation events | `history_truncated`, `session.truncation`, `session.usage_info` | callback/event cases | `app.js` 4361, 4487 | Projects request-time token pruning and current context usage to session/UI events. |
+| Token accounting | `countMessagesAndTools`, tool-definition tokens | `$T(...)`, `Y2(...)`, `Wbe(...)` | `app.js` 1026 | Separately counts system, conversation, and tool-definition tokens. |
 | Context-limit detection | `isContextLimitError(...)` | `ise(...)` | `app.js` 1026 | Detects provider context-limit errors and forces compaction on retry. |
 | Checkpoint persistence | `persistCompactionCheckpoint(...)` | method name preserved | `app.js` 4479 | Writes the summary as a workspace checkpoint when workspace state is enabled. |
 | Workspace checkpoints | `WorkspaceManager.addSummary(...)` | `qq.addSummary(...)` | `app.js` 3559 | Writes checkpoint Markdown files and updates the checkpoint index. |
@@ -115,6 +125,80 @@ The default thresholds are encoded in `CompactionProcessor`:
 
 The background path is intentionally opportunistic. At roughly 80 percent utilization, it starts a summary request in the background while the current turn can continue. At roughly 95 percent utilization, or after a provider context-limit failure, it waits for the summary and applies it before sending the next request.
 
+## Request-time prompt trimming: `BasicTruncator`
+
+Compaction is not the only protection against an overlong prompt. In the main agentic request pipeline, processors are registered in this order around the model call:
+
+1. attachment/native-document processor, when present;
+2. `CompactionProcessor`;
+3. `BasicTruncator`;
+4. immediate-prompt and premium-request processors;
+5. MCP/file-content request processors.
+
+That ordering is important: compaction gets the first chance to reduce history semantically, and `BasicTruncator` then performs request-local pruning if the prepared message array still exceeds the effective model token budget.
+
+```mermaid
+flowchart TD
+    Build[Build provider request messages] --> Compact[CompactionProcessor]
+    Compact -->|summary already available or forced| ApplySummary[Replace old history with summary]
+    Compact -->|background compaction can continue| Trim[BasicTruncator]
+    ApplySummary --> Trim
+    Trim --> Count[Count messages + tool definitions]
+    Count --> Fits{Within effective token limit?}
+    Fits -->|yes| Usage[Emit usage_info only]
+    Fits -->|no| AssistantPrune[Drop older assistant/tool material]
+    AssistantPrune --> StillTooLarge{Still too large?}
+    StillTooLarge -->|yes| OldTurnPrune[Drop older user + assistant/tool turns, preserving latest user prompt]
+    StillTooLarge -->|no| Cleanup
+    OldTurnPrune --> Cleanup[Remove orphaned tool messages]
+    Cleanup --> Events[Emit usage_info and, if changed, history_truncated]
+    Events --> Provider[Send pruned request]
+```
+
+### What gets trimmed
+
+`BasicTruncator` is message-aware rather than byte/string slicing:
+
+- it derives the limit from `modelInfo.capabilities.limits.max_prompt_tokens` or `max_context_window_tokens`, falling back to `128000`;
+- it counts normal chat messages separately from tool definitions, because tool schemas consume prompt tokens too;
+- if the request already fits, it still removes orphaned trailing `tool` messages that no longer have matching assistant tool calls;
+- its first truncation pass removes older assistant messages and matching tool-result messages before the latest user prompt where possible;
+- if that is insufficient, it can remove older user messages and assistant/tool-call pairs while preserving the latest user prompt;
+- it avoids removing `system` messages;
+- after pruning, it removes orphaned tool-result messages and emits token/message deltas.
+
+The helper uses an internal safety target below the hard effective limit, so truncation aims to create some headroom instead of landing exactly on the boundary.
+
+There is also a small character-level clipping path inside compaction replacement construction: original user messages copied into the compacted-history reminder are capped and represented with markers such as `...<truncated>...` or omitted-message text. That clipping is for the compaction reminder payload, not the general request-time token-pruning algorithm.
+
+### What does **not** get trimmed
+
+This path is not the same as `/undo`, `/rewind`, or event-log truncation:
+
+- it mutates the request message array sent to the model, not the persisted JSONL event log;
+- `session.truncation` is handled as a no-op during state replay, which is a clue that it is an observation about a request rather than a durable session-state rewrite;
+- the durable semantic rewrite remains `session.compaction_complete`, where the session replay path reapplies the summary replacement.
+
+### Events from trimming
+
+`BasicTruncator` yields internal callback events that the session projects outward:
+
+| Internal callback | Session event | Meaning |
+|---|---|---|
+| `usage_info` | `session.usage_info` | Current token limit, token count, message count, system/conversation/tool-definition token breakdown, and `isInitial` flag. |
+| `history_truncated` | `session.truncation` | Pre/post token counts, pre/post message counts, tokens/messages removed, and `performedBy:"BasicTruncator"`. |
+
+`session.usage_info` can appear even when no trimming happened; it is the live context-window measurement. `session.truncation` appears only when request messages were actually removed.
+
+### Retry behavior after provider context-limit errors
+
+Both processors react to context-limit failures:
+
+- `CompactionProcessor` marks the next retry for forced compaction after HTTP `413` or recognized context-window error text.
+- `BasicTruncator` inspects the same errors, can lower the model token limit if the provider reports a concrete limit, or increase its retry buffer up to a maximum buffer when the nominal limit was still too optimistic.
+
+So the recovery path is layered: force semantic compaction when possible, then retry with a more conservative request-time truncation budget.
+
 ## How the replacement history is built
 
 The compacted history is not a single plain string appended to the transcript. The implementation builds a replacement message list that preserves the important scaffolding the agent needs after compaction.
@@ -187,6 +271,7 @@ Compaction is visible as a first-class session event, not just an internal mutat
 |---|---|
 | `session.compaction_start` | Records token breakdown when compaction starts. |
 | `session.compaction_complete` | Records success/failure, token deltas, summary, checkpoint data, request id, and model usage. |
+| `session.truncation` | Records request-time prompt pruning by `BasicTruncator`; this is not event-log truncation. |
 | `session.usage_info` | Updates current token and message counts after compaction. |
 | `session_compaction_start` telemetry | Captures pre-compaction context breakdown. |
 | `session_compaction_complete` telemetry | Captures tokens removed, messages removed, checkpoint number, model, duration, and request id. |
@@ -248,6 +333,7 @@ Observed failure handling is conservative:
 - The core implementation is semantic summary compaction, not binary compression.
 - `/compact` is a thin slash-command wrapper over `session.compactHistory()`.
 - Automatic compaction is request-pipeline logic in `CompactionProcessor`, using 80 percent and 95 percent context-utilization defaults.
+- Prompt trimming is handled by `BasicTruncator` after compaction has had a chance to run; it prunes request messages and emits `session.truncation`, but it does not rewrite the persisted event log.
 - The summary replaces prior chat messages and can be persisted as a checkpoint.
 - Hooks, events, telemetry, timeline rendering, and TUI status all treat compaction as a first-class session lifecycle event.
 - Long-term memory consolidation is handled separately by `rem-agent` and the dynamic context board.

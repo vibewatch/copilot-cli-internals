@@ -54,7 +54,7 @@ flowchart TD
 | `session` | 60 | Client → active session | Calls that require `sessionId`, such as model/mode/name/plan/workspace APIs, skills/MCP/extensions, tool and command responses, UI elicitation, permissions, shell execution, history, usage, and remote toggles. |
 | `clientSession` | 10 | CLI server → SDK client | Delegated `sessionFs.*` calls implemented by the client-provided session filesystem provider. |
 
-The schema marks **32 methods as `experimental`** and one method, `connect`, as `internal`. Those flags are preserved in the generated TypeScript declarations as comments such as `@experimental` and `@internal`.
+The schema marks **32 methods as `experimental`** and one method, `connect`, as `internal`. Those flags are preserved in the generated TypeScript declarations as comments such as `@experimental` and `@internal`. The `sessionFs.*` reverse-call implementation behind the `clientSession` group is documented in [SessionFs provider and state-file lifecycle](./session-fs-provider-and-state-files.md).
 
 ### Method inventory
 
@@ -155,6 +155,7 @@ Use this page when answering questions such as:
 
 - [Embedded server, ACP, and JSON-RPC protocol](../01-runtime-and-ui/embedded-server-acp-protocol.md)
 - [Session support implementation in the Copilot CLI](./session-support-implementation.md)
+- [SessionFs provider and state-file lifecycle](./session-fs-provider-and-state-files.md)
 - [System events and UI projection](./system-events-and-ui-projection.md)
 - [Remote control implementation in Copilot CLI](./remote-control-implementation.md)
 - [Built-in tool execution pipeline](../04-tools-and-integrations/built-in-tool-execution-pipeline.md)

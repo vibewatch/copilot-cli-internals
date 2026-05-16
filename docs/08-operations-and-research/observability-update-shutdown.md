@@ -9,6 +9,9 @@ This document expands the operational coverage for `app.js`: logging, telemetry,
 | Logging setup | `LoggingService` | log setup in root action | 8298 | Applies `--log-dir`, `--log-level`, color/debug flags, and log writers. |
 | Telemetry setup | `TelemetryService` | telemetry setup in root action | 8298 | Chooses active/no-op telemetry depending on auth, offline mode, and config. |
 | OpenTelemetry | `OpenTelemetryBridge` | OTel environment handling | 8298 | Enables trace/metric export when OTel environment is configured. |
+| Model-call telemetry | `model_call_success`, `model_call_failure`, `assistant.usage` | `getCompletionWithTools(...)`, session event handlers | 3439, 4149, 4487 | Carries request IDs, provider call IDs, latency, token usage, quota snapshots, and conversation-structure summaries. |
+| Streaming UI telemetry | `StreamingChunkDisplay` | `ubt` | 4207 | Emits ephemeral assistant streaming events and response-size updates from normalized chunks. |
+| Session token metrics | `session_usage_info`, `session_truncation`, `session_compaction_complete` | `q6n(...)`, `j6n(...)`, OTel mappings | 4033, 5742 | Reports token counts, truncation, compaction, removed messages/tokens, checkpoint numbers, and compaction model usage. |
 | Update command | `buildUpdateCommand()` | update command builder | 8298 | Implements `copilot update [channel]`. |
 | Loader update wrapper | `index.js update/restart wrapper` | `index.js` | package loader | Selects cached/bundled packages and restarts on update exit code. |
 | Version command | `buildVersionCommand()` | version command builder | 8298 | Reports CLI/package version metadata. |
@@ -84,6 +87,33 @@ Observable event families include:
 - MCP connection/tool/task behavior;
 - update and shutdown outcomes;
 - error and crash paths.
+
+## Model-turn and streaming observability
+
+Model calls expose both durable accounting events and ephemeral UI progress.
+
+```mermaid
+flowchart TD
+    Adapter["provider adapter"] --> Success["model_call_success / model_call_failure"]
+    Adapter --> Stream["normalized streaming chunks"]
+    Stream --> Ui["assistant.message_start / assistant.streaming_delta"]
+    Success --> Usage["assistant.usage"]
+    Success --> Telemetry["telemetry + OTel attributes"]
+    Session["session context manager"] --> TokenEvents["usage_info / truncation / compaction"]
+    TokenEvents --> Telemetry
+```
+
+Observed model-call metadata includes:
+
+| Field family | Examples | Notes |
+|---|---|---|
+| Request identity | request ID, provider call ID, model API ID | Used for support correlation and provider debugging. |
+| Latency | model-call duration, time-to-first-token, inter-token latency | Streaming adapters fill token-timing fields when available. |
+| Usage | prompt, completion, total, cached, cache-creation, reasoning tokens | Also surfaced through ephemeral `assistant.usage` events for UI accounting. |
+| Quota/rate snapshots | `x-quota-snapshot-*`, `x-usage-ratelimit-*` derived values | Feed usage-limit warnings and diagnostic telemetry. |
+| Prompt shape | conversation-structure summaries | Lets telemetry report structure without logging full prompt content by default. |
+
+Streaming deltas are intentionally ephemeral. They drive live rendering, response-size warnings, advisor/reasoning indicators, and prompt-mode output, but the durable audit trail is built from final assistant messages, tool completion events, model-call success/failure records, and session token-management events.
 
 ## Update behavior
 

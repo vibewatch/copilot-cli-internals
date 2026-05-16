@@ -71,6 +71,13 @@ Remaining gap-review set:
 8. [`session-store-sqlite-indexing.md`](../03-sessions-and-remote/session-store-sqlite-indexing.md)
 9. [`content-exclusion-and-redaction.md`](../05-security-and-policy/content-exclusion-and-redaction.md)
 
+Additional iterative gap pass:
+
+1. [`shell-command-execution-lifecycle.md`](../04-tools-and-integrations/shell-command-execution-lifecycle.md) now covers the previously scattered shell execution path: shell tool assembly, PTY vs process backends, sync/async/detached command handling, task tracking, background promotion, completion notifications, and large-output buffering.
+2. [`runtime-tool-assembly-and-filtering.md`](../04-tools-and-integrations/runtime-tool-assembly-and-filtering.md) now covers the final model-visible toolset path across built-ins, MCP, extensions, custom agents, feature gates, allow/exclude filters, deferred `tool_search`, request-time refresh, and `session.tools_updated` invalidation.
+3. [`session-fs-provider-and-state-files.md`](../03-sessions-and-remote/session-fs-provider-and-state-files.md) now covers the SessionFs provider and session-state file lifecycle: local vs RPC-backed filesystems, SDK reverse calls, provider guards, event/workspace files, large-output temp files, and fork/checkpoint state copying.
+4. A likely next high-value gap is the **request processor and compaction/retry interaction path**: pre-request processors, token-budget checks, automatic compaction, rate-limit/request-size retries, and how those processors mutate chat context before the provider call.
+
 ## Extracted command surface
 
 The script found these runtime slash commands:

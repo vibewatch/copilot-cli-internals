@@ -28,6 +28,7 @@ flowchart TD
 | Page | Why read it | File |
 |---|---|---|
 | [Session support implementation in the Copilot CLI](./session-support-implementation.md) | Event-sourced local persistence, workspace artifacts, startup resolution, APIs, and handoff behavior. | `session-support-implementation.md` |
+| [SessionFs provider and state-file lifecycle](./session-fs-provider-and-state-files.md) | Local vs SDK/RPC-backed session filesystems, reverse calls, workspace files, large-output temp files, and fork-time state copying. | `session-fs-provider-and-state-files.md` |
 | [API and session event schema contracts](./api-and-session-event-schemas.md) | Public/package schema contracts for JSON-RPC methods and session events, cross-checked against SDK generation and `app.js` runtime forwarding. | `api-and-session-event-schemas.md` |
 | [Session, remote, cloud, and history workflows](./sessions-remote-cloud.md) | Resume/continue/name handling, background sessions, cloud sessions, remote steering, and history. | `sessions-remote-cloud.md` |
 | [Session-store SQLite indexing](./session-store-sqlite-indexing.md) | session-store.db schema, FTS/search, /reindex, Chronicle, refs, cloud sync, and backfill. | `session-store-sqlite-indexing.md` |
@@ -38,6 +39,7 @@ flowchart TD
 ## Reading guidance
 
 - Start with local session support, then move to remote/cloud/indexing.
+- Read SessionFs when debugging where session files live or how SDK clients take over persistence.
 - Read the schema contract page when building SDK/JSON-RPC clients or interpreting raw session event logs.
 - Repository context feeds both session selection and indexing.
 

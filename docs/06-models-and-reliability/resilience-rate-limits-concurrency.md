@@ -18,6 +18,7 @@ This document explains how the extracted `@github/copilot` CLI bundle handles mo
 | Area | Semantic alias | Minified anchor | Approx. line | Role |
 |---|---|---:|---:|---|
 | Model request loop | `ModelRequestLoop` | `U3.getCompletionWithTools(...)` | `app.js` 3439 | Owns per-turn retry, tool loops, model success/failure events, and final failure construction. |
+| Model request processors | `preRequest`, `postRequest`, `preToolsExecution`, `postToolExecution`, `onRequestError`, `preErrorThrow` | processor arrays in `getCompletionWithTools(...)` | `app.js` 3439 | Middleware around each model attempt, response, tool batch, tool result, retryable error, and final throw. |
 | Retry-delay resolver | `resolveModelRetryDelay(...)` | `p3n(...)` | `app.js` 3439 | Reads `x-should-retry`, `retry-after-ms`, `retry-after`, status codes, configured retry codes, exponential backoff, and jitter. |
 | Default model retry options | `initDefaultModelOptions(...)` | `U3.initDefaultOptions(...)` | `app.js` 3439 | Sets default `maxRetries: 5`, default rate-limit wait, exponential growth, and maximum retry-after window. |
 | Streaming transport retry processor | `StreamingErrorRetryProcessor` | `_Ce` | `app.js` 3103 | Retries non-API streaming errors after a short delay, excluding abort/timeout errors. |
@@ -90,6 +91,45 @@ The observed default model retry policy is:
 | configured status/range | Extra retryable statuses from runtime settings/env. |
 
 When no explicit reset delay is available, 429 uses a rate-limit-specific exponential delay; other retryable errors use a shorter exponential delay. Both paths add jitter so concurrent clients do not retry at exactly the same instant.
+
+## Request processor lifecycle
+
+The retry loop is also a middleware runner. Request processors can observe or modify the model attempt at several points, and some processors can yield model-loop events directly.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Loop as Model request loop
+    participant Proc as Request processors
+    participant Adapter as Provider adapter
+    participant Tools as Tool executor
+
+    Loop->>Proc: preRequest(messages, tools, options)
+    Proc-->>Loop: events or modified context
+    Loop->>Adapter: provider request
+    Adapter-->>Loop: response messages / stream result
+    Loop->>Proc: postRequest(responseMessages)
+    Proc-->>Loop: telemetry, retry, or advisory events
+    Loop->>Proc: preToolsExecution(tool calls)
+    Proc-->>Loop: optional synthetic tool results
+    Loop->>Tools: execute remaining tool calls
+    Tools-->>Loop: tool results
+    Loop->>Proc: postToolExecution(tool result)
+    alt request error
+        Loop->>Proc: onRequestError(error)
+        Proc-->>Loop: retry guidance or telemetry
+    end
+    alt final failure
+        Loop->>Proc: preErrorThrow(error)
+    end
+```
+
+Important consequences:
+
+- Retry behavior is not only header/status based. Processors such as streaming-error recovery and content-annotation handling can request another attempt from inside the loop.
+- `preToolsExecution` can synthesize tool results before ordinary tool callbacks run. This is used by the public-code annotation gate to block tool execution while still returning model-visible tool-call results.
+- Processor-emitted telemetry flows through the same event stream as model success/failure and tool events, which keeps observability centralized.
+- Because processors are per-request-loop middleware, they apply across provider adapters after the adapter has normalized responses back into the internal shape.
 
 ## Rate-limit lifecycle
 

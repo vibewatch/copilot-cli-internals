@@ -13,6 +13,7 @@ This document deepens the model/auth/provider coverage that was previously summa
 | Model option | `--model` / model picker | root option and TUI handlers | 7000-8298 | Selects the session model or opens interactive selection. |
 | Reasoning effort | `--effort`, `--reasoning-effort` | root option | 8298 | Sets reasoning effort for supported models. |
 | Subagent model override | `task` model validation | `createTaskTool(...)` | 3735-3815 | Validates and may downshift subagent model overrides. |
+| Session subagent model selection | `selectSubagentModel(...)`, `emitSubagentModelTelemetry(...)` | `Vur(...)`, `jur(...)` | 4030-4036 | Chooses treatment/default/session models for built-in subagents and emits `subagent_model_selection` telemetry. |
 | Feature gates | `FeatureFlagService` | `Pfe`, `ILt` | 239 | Enables model-adjacent behavior such as special subagent models or advisor paths. |
 
 ## Authentication and provider decision tree
@@ -160,6 +161,37 @@ flowchart TD
 ```
 
 Feature gates and experiments can also influence model behavior, such as special defaults for explore/rubber-duck subagents.
+
+### Session-based subagent selection details
+
+The session-based subagent path adds a second model-selection layer before `SessionAgentExecutor` runs. The relevant source anchors are `Vur(...)` and `jur(...)` around line `4030`.
+
+`Vur(...)` considers:
+
+| Input | Meaning |
+|---|---|
+| `sessionModel` | The current foreground session model. This is the fallback and the model used when no treatment is active. |
+| `controlModel` / default selected model | The selected/default model metadata available to the session runtime. |
+| `treatmentModel` | Experiment-provided subagent model, when the feature gate says a special subagent model should be tried. |
+| `isGpt54ForSubagentsEnabled` | Feature gate that allows the treatment model path for eligible subagents. |
+| availability/cost checks | Guards that prevent unavailable or too-expensive treatment/override models from being used. |
+
+`jur(...)` emits `subagent_model_selection` telemetry with the decision context. That means subagent model selection is observable as an explicit policy decision, not just a side effect of the `task` tool argument.
+
+```mermaid
+flowchart TD
+    Start["built-in subagent execution"] --> Session["session model"]
+    Start --> Treatment{"treatment model enabled and available?"}
+    Treatment -->|no| UseSession["use session/default model"]
+    Treatment -->|yes| Cost{"cost/compatibility guard passes?"}
+    Cost -->|no| UseSession
+    Cost -->|yes| UseTreatment["use treatment subagent model"]
+    UseSession --> Telemetry["jur emits subagent_model_selection"]
+    UseTreatment --> Telemetry
+    Telemetry --> Exec["SessionAgentExecutor.setSelectedModel"]
+```
+
+This complements the `task`-tool override validation: `I6n(...)` validates the optional user/model-requested override at dispatch time, while `Vur(...)` chooses the final session-based subagent model after feature flags, treatment availability, and guardrails are known.
 
 ## Offline mode implications
 
