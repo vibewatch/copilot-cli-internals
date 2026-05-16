@@ -1,0 +1,195 @@
+/* ============================================================================
+ * source-anchor.css — styles for the click-to-popup source-anchor prototype.
+ * Pairs with `src/plugins/rehype-source-anchors.mjs` (button injection)
+ * and `src/components/SourceAnchorPopup.astro` (popup behaviour).
+ * ========================================================================= */
+
+/* Inline button rendered in place of a bare line number in source-anchor
+ * tables. Designed to read like a code-styled link, not a heavy CTA. */
+button.src-anchor {
+  appearance: none;
+  background: var(--sl-color-bg-inline-code);
+  color: var(--sl-color-accent);
+  border: 1px solid var(--sl-color-hairline);
+  border-radius: 0.25rem;
+  padding: 0.05em 0.4em;
+  font-family: var(--sl-font-mono);
+  font-size: 0.95em;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+}
+
+button.src-anchor:hover,
+button.src-anchor:focus-visible {
+  background: var(--sl-color-accent);
+  color: var(--sl-color-text-invert);
+  border-color: var(--sl-color-accent);
+  outline: none;
+}
+
+/* Snippet popup. Native <dialog> handles modality, focus trapping, and
+ * Esc-to-close for free; we just style the box. */
+dialog.src-anchor-dialog {
+  width: min(960px, 95vw);
+  max-height: 85vh;
+  padding: 0;
+  border: 1px solid var(--sl-color-hairline);
+  border-radius: 0.5rem;
+  background: var(--sl-color-bg);
+  color: var(--sl-color-text);
+  box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+dialog.src-anchor-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.src-anchor-dialog__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--sl-color-hairline);
+  background: var(--sl-color-bg-nav);
+}
+
+.src-anchor-dialog__title {
+  margin: 0;
+  font-size: 1rem;
+  font-family: var(--sl-font-mono);
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.src-anchor-dialog__close {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--sl-color-gray-3);
+  cursor: pointer;
+  padding: 0 0.5rem;
+}
+
+.src-anchor-dialog__close:hover {
+  color: var(--sl-color-text);
+}
+
+.src-anchor-dialog__body {
+  padding: 1rem;
+  overflow: auto;
+  max-height: calc(85vh - 6rem);
+}
+
+.src-anchor-dialog__note {
+  margin: 0 0 0.75rem;
+  font-size: var(--sl-text-sm);
+  color: var(--sl-color-gray-3);
+}
+
+.src-anchor-dialog__code {
+  margin: 0;
+  padding: 0;
+  font-family: var(--sl-font-mono);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+  overflow: hidden;
+  max-height: 60vh;
+}
+
+/* The shard ships pre-highlighted by Shiki at build time; what follows
+ * styles that output. Each `<span class="line">` carries an inline
+ * `--shiki-light` / `--shiki-dark` per token; we just decide which one
+ * to read based on the active Starlight theme. */
+.src-anchor-dialog__code pre.shiki,
+.src-anchor-dialog__code pre.astro-code {
+  margin: 0;
+  padding: 0.75rem 0;
+  overflow: auto;
+  max-height: 60vh;
+  background: var(--shiki-light-bg, var(--sl-color-bg-inline-code));
+  color: var(--shiki-light, inherit);
+  border-radius: 0.25rem;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+[data-theme='dark'] .src-anchor-dialog__code pre.shiki,
+[data-theme='dark'] .src-anchor-dialog__code pre.astro-code {
+  background: var(--shiki-dark-bg, var(--sl-color-bg-inline-code));
+  color: var(--shiki-dark, inherit);
+}
+
+.src-anchor-dialog__code .shiki span,
+.src-anchor-dialog__code .astro-code span {
+  color: var(--shiki-light, inherit);
+}
+
+[data-theme='dark'] .src-anchor-dialog__code .shiki span,
+[data-theme='dark'] .src-anchor-dialog__code .astro-code span {
+  color: var(--shiki-dark, inherit);
+}
+
+/* Per-line layout: lineno gutter on the left, wrapping code on the right. */
+.src-anchor-dialog__code .line {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0 0.75rem;
+}
+
+.src-anchor-dialog__code .line.line--hit {
+  background: rgba(255, 200, 0, 0.18);
+}
+
+[data-theme='dark'] .src-anchor-dialog__code .line.line--hit {
+  background: rgba(255, 200, 0, 0.12);
+}
+
+.src-anchor-dialog__code .src-anchor-lineno {
+  flex: 0 0 5ch;
+  text-align: right;
+  color: var(--sl-color-gray-4);
+  user-select: none;
+  /* The gutter must NOT inherit Shiki token colours. */
+}
+
+[data-theme='dark'] .src-anchor-dialog__code .src-anchor-lineno {
+  color: var(--sl-color-gray-3);
+}
+
+.src-anchor-dialog__code .src-anchor-linecode {
+  flex: 1 1 auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+  min-width: 0;
+}
+
+/* Fallback when Shiki couldn't tokenize. */
+.src-anchor-dialog__code pre.src-anchor-fallback {
+  margin: 0;
+  padding: 0.75rem;
+  background: var(--sl-color-bg-inline-code);
+  color: var(--sl-color-text);
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.src-anchor-dialog__footer {
+  padding: 0.5rem 1rem;
+  border-top: 1px solid var(--sl-color-hairline);
+  background: var(--sl-color-bg-nav);
+  text-align: right;
+  font-size: var(--sl-text-sm);
+}
+
+.src-anchor-dialog__link {
+  color: var(--sl-color-text-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

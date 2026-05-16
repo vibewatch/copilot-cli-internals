@@ -11,15 +11,15 @@ read directly by Astro's content loader — no copy step, no symlinks.
 
 ```sh
 cd website
-pnpm install
-pnpm dev          # http://localhost:4321
+npm install
+npm run dev       # http://localhost:4321
 ```
 
 ## Build
 
 ```sh
-pnpm build        # outputs static site to ./dist
-pnpm preview      # serve ./dist locally
+npm run build     # outputs static site to ./dist
+npm run preview   # serve ./dist locally
 ```
 
 ## Deploy
@@ -30,7 +30,7 @@ publishes `./dist` to GitHub Pages on every push to `main`. Enable
 Pages in the repo settings (Source: GitHub Actions) to activate it.
 
 For other hosts (Cloudflare Pages, Netlify, Vercel) point the
-deploy at the `website/` directory with build command `pnpm build`
+deploy at the `website/` directory with build command `npm run build`
 and output directory `dist`.
 
 ## Layout

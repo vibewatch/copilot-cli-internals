@@ -21,8 +21,8 @@ To run the site locally:
 
 ```sh
 cd website
-pnpm install
-pnpm dev
+npm install
+npm run dev
 ```
 
 ## Author
