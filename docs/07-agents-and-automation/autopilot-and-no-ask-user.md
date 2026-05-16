@@ -39,6 +39,8 @@ In practical terms:
 | TUI continuation loop | `useAutopilotContinuation(...)` | `F5o(...)` | 6615 | Continues after `session.idle` until `task_complete`, error, abort, or max count. |
 | Prompt-mode continuation loop | `executePromptDirectly(...)` | `session.task_complete`, `session.idle`, `UTe` | 7416 | Non-interactive autopilot loop. |
 | Slash command | `/autopilot` | `Rps(...)`, `Deo` | 1300, 4918 | Runtime and TUI slash-command paths for toggling autopilot. |
+| Plan slash command | `/plan` | `Fps(...)`, `[[PLAN]]`, `mode: "plan"` | 1305, 1340 | Converts a slash command into a plan-mode agent prompt and prefixes plan prompts. |
+| Plan-mode prompt block | `<plan_mode>` | `plan_mode`, `exit_plan_mode` | 3934 | Instructs the model to create/update `plan.md`, avoid implementation, and end with plan approval when required. |
 | Plan exit actions | `exit_plan_mode` | `autopilot`, `autopilot_fleet` | 3624, 4481, 7340 | Plan approval can switch into autopilot or autopilot plus fleet. |
 
 ## CLI parsing and dispatch
@@ -304,6 +306,27 @@ Common combinations:
 | `--no-ask-user --allow-all` | The model cannot use `ask_user` in the TUI path, and permissions are broadly approved, but the agent is not in autopilot unless mode is set separately. |
 
 ## Relationship to plan mode and fleet
+
+Plan mode has its own entry and exit protocol, and autopilot plugs into the exit side of that protocol.
+
+### Entering plan mode
+
+The `/plan` slash command is implemented as a runtime command that returns an `agent-prompt` with `mode: "plan"`. Its prompt is prefixed with `[[PLAN]]`; when no existing plan is present, the command prepends a bootstrap planning instruction before the user's text. Separately, when `session.currentMode` is already `plan`, normal non-system sends are automatically prefixed with `[[PLAN]]` if they do not already have it.
+
+```mermaid
+flowchart TD
+    Slash["/plan <prompt>"] --> Command["Fps slash-command handler"]
+    Command --> Existing{"existing plan?"}
+    Existing -->|yes| Prefix["[[PLAN]] user prompt"]
+    Existing -->|no| Bootstrap["[[PLAN]] bootstrap + user prompt"]
+    Prefix --> Mode["send with mode = plan"]
+    Bootstrap --> Mode
+    Mode --> PromptBlock["<plan_mode> system instructions"]
+```
+
+The `<plan_mode>` system block tells the model to inspect the codebase, write or update `plan.md`, avoid starting implementation until explicitly requested, and use `exit_plan_mode` for approval when the runtime requires a plan-review turn. This is distinct from autopilot: plan mode is for deciding and recording the implementation plan, not for autonomous execution.
+
+### Exiting plan mode
 
 Autopilot is also an exit option from plan mode. The `exit_plan_mode` tool can present actions including:
 

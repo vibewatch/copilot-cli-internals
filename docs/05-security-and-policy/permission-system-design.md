@@ -24,6 +24,7 @@ This document explains the permission subsystem in the extracted `@github/copilo
 | Session runtime permission lifecycle | `SessionRuntimePermissionHost` | `vEt` permission methods | 4471 | Creates the service, wires user prompt callbacks, evaluates hooks, toggles allow-all mode, and loads persisted location approvals. |
 | Pending permission RPC facade | `SessionPermissionsRpc` | `FYn(...)` | 4361 | Implements `handlePendingPermissionRequest`, `setApproveAll`, and `resetSessionApprovals`. |
 | Permission event schemas | `PermissionEventSchemas` | `P6s`, `D6s`, `OYn`, `LYn`, `Y5s`, `UYn` | 4361 | Defines `permission.requested`, `permission.completed`, request, result, and decision shapes. |
+| Pending request broker | `PendingRequestsManager` | `Ebt` | 4210 | Tracks permission, command execution, user-input, elicitation, sampling, external-tool, exit-plan, and auto-mode-switch request resolvers. |
 | Remote prompt manager | `PromptManagerPermissionBridge` | `jve` methods | 5767 | Converts remote UI responses into approve-once, approve-for-session, or reject decisions. |
 | Remote command poller | `CommandPollerPermissionResponse` | `Vve` branch | 5767 | Receives remote `permission_response` commands and forwards them to the prompt bridge. |
 | Location permission persistence | `LocationPermissionStore` | `Ldt(...)`, `s5e(...)`, `CJ(...)`, `OBn(...)` | 1299 | Loads, saves, keys, and resets per-location approvals and directories. |
@@ -425,6 +426,23 @@ Remote steering uses a similar bridge. The command poller receives a `permission
 
 ACP sessions build their own permission service at session creation time. They use the same central service but set baseline behavior from ACP options, including allow-all flags, approved/denied rules, URL rules, path-manager choice, and approve-all-read behavior.
 
+## Broader pending-request broker
+
+Permission prompts are one member of a broader human-in-the-loop request system. The session owns a pending-request broker that creates request IDs, stores promise resolvers, emits ephemeral request events, and resolves them when the TUI, remote client, ACP bridge, or direct handler responds.
+
+| Request family | Events or methods | Purpose |
+|---|---|---|
+| Permissions | `permission.requested`, `permission.completed`, `respondToPermission(...)` | Tool/path/URL/memory/custom-tool approvals. |
+| Shell command execution | command execution request maps | Track cancellable command prompts and reject them when capabilities disappear. |
+| User input | `user_input.requested`, `user_input.completed` | Structured `ask_user` questions. |
+| Elicitation | `elicitation.requested`, `elicitation.completed` | MCP or protocol-level user elicitation. |
+| MCP sampling | `sampling.requested`, `sampling.completed` | Human approval for MCP-hosted sampling/model requests. |
+| External tools | `external_tool.requested`, `external_tool.completed` | Remote/custom tool invocation prompts. |
+| Plan exit | `exit_plan_mode.requested`, `exit_plan_mode.completed` | Plan approval and selected action, including autopilot transitions. |
+| Auto-mode switch | `auto_mode_switch.requested`, `auto_mode_switch.completed` | Ask the UI whether to switch models after eligible rate limits. |
+
+This broker explains why many unrelated features have similar request/complete event shapes. It also gives the runtime one place to cancel pending prompts when a session aborts, when a capability disappears, or when a remote client cannot answer. The permission service still owns authorization policy; the broker owns asynchronous request bookkeeping.
+
 ## Persistence scopes
 
 ```mermaid
@@ -518,6 +536,7 @@ This is why the CLI exposes explicit allow/deny flags: they let automation choos
 - User approvals can be one-shot, session-scoped, location-scoped, or URL-persistent.
 - Hooks can participate in authorization, so hook transport and destination validation are stricter for authorization-affecting hooks.
 - Remote, TUI, and ACP modes converge on the same permission-result vocabulary, which keeps the core service reusable.
+- Permission prompts share a pending-request broker with user-input, elicitation, sampling, external-tool, plan-exit, and auto-mode-switch prompts.
 - Memory, MCP, extensions, and custom tools are first-class permission domains rather than ad-hoc prompts.
 
 Related docs: [`integrations-permissions-config.md`](../04-tools-and-integrations/integrations-permissions-config.md), [`tui-and-slash-commands.md`](../01-runtime-and-ui/tui-and-slash-commands.md), [`sessions-remote-cloud.md`](../03-sessions-and-remote/sessions-remote-cloud.md), [`sandboxing.md`](./sandboxing.md), [`feature-gates.md`](../08-operations-and-research/feature-gates.md), [`memory-and-context-board.md`](../02-context-and-input/memory-and-context-board.md), and [`agent-task-orchestration.md`](../07-agents-and-automation/agent-task-orchestration.md).
