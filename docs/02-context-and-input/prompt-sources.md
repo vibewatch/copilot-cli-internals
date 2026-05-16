@@ -189,7 +189,7 @@ So the immediate source of a provider request's system text is usually **the ses
 
 This catalog lists the major prompt families found during static inspection. It intentionally uses semantic names as the primary names. Minified symbols are kept only in the `Minified anchor` column so the analyzed bundle can still be searched.
 
-| Prompt family | Semantic source | Minified anchor | Approx. location | Example content or role |
+| Prompt family | Semantic alias | Minified anchor | Approx. location | Example content or role |
 |---|---|---|---:|---|
 | Custom instruction loader | `loadCustomInstructions(...)`, `discoverCustomInstructionSources(...)`, `mergeCustomInstructions(...)` | `q4(...)`, `YAi(...)`, `z7r(...)` | `app.js` 499-512 | Loads and wraps custom instruction files, including repo, cwd, inherited, VS Code, nested, and child sources. |
 | Scoped instruction tables | `buildInstructionReferenceTables(...)` | `KAi(...)`, `pyi(...)`, `fyi(...)` | `app.js` 499-512 | Tells the model about applicable `.instructions.md` and nested `AGENTS.md` files, often instructing it to read them with `view`. |

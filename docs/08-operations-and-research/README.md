@@ -2,6 +2,15 @@
 
 Feature gates, diagnostics, debug bundles, observability/update/shutdown, and the original documentation backlog.
 
+## Semantic alias and minified anchor mapping
+
+This is a section index, not a direct `app.js` implementation analysis. Topic pages linked below carry the concrete bundle mappings.
+
+| Semantic alias | Minified anchor | Scope |
+|---|---|---|
+| Operations and research section index | N/A — navigation page | Groups feature gates, diagnostics, observability, and documentation-research docs. |
+| Operations and research topic pages | See linked page-level mappings | Concrete `app.js` anchors are documented in the child pages. |
+
 ## How this section fits
 
 ```mermaid

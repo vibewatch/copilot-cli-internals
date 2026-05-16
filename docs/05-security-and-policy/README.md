@@ -2,6 +2,15 @@
 
 Permissions, content exclusion, hooks, sandboxing, and persistent policy/configuration state.
 
+## Semantic alias and minified anchor mapping
+
+This is a section index, not a direct `app.js` implementation analysis. Topic pages linked below carry the concrete bundle mappings.
+
+| Semantic alias | Minified anchor | Scope |
+|---|---|---|
+| Security and policy section index | N/A — navigation page | Groups permission, content-exclusion, hook, sandbox, MXC, and settings docs. |
+| Security and policy topic pages | See linked page-level mappings | Concrete `app.js` anchors and binary/package anchors are documented in the child pages. |
+
 ## How this section fits
 
 ```mermaid

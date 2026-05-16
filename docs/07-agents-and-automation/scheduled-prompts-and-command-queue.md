@@ -11,7 +11,7 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 
 ## Source anchors
 
-| Area | Anchor strings / minified symbols | Approx. `app.js` line | What it shows |
+| Semantic alias | Minified anchor | Approx. `app.js` line | Role |
 |---|---|---:|---|
 | Slash commands | `/every`, `/after`, `YBn(...)` | 1303, 1340 | User-visible recurring and one-shot scheduled prompt commands. |
 | Schedule validation | `Invalid interval`, `Minimum interval`, `Maximum interval`, `J7n=1e4`, `Z7n=864e5` | 4210 | Intervals are parsed and bounded between 10 seconds and 1 day. |

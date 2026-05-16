@@ -11,7 +11,7 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 
 ## Source anchors
 
-| Area | Anchor strings / minified symbols | Approx. `app.js` line | What it shows |
+| Semantic alias | Minified anchor | Approx. `app.js` line | Role |
 |---|---|---:|---|
 | Slash command | `/usage`, `Display session usage metrics and statistics` | 4643, 1300 | User command renders accumulated session usage. |
 | Live context usage | `session.usage_info`, `tokenLimit`, `currentTokens`, `messagesLength` | 3062, 4361, 4481 | Ephemeral event reports current context-window size and token breakdown. |

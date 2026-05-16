@@ -16,7 +16,7 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 
 ## Source anchors
 
-| Area | Anchor strings / minified symbols | Approx. `app.js` line | What it shows |
+| Semantic alias | Minified anchor | Approx. `app.js` line | Role |
 |---|---|---:|---|
 | Slash command | `/voice`, `Manage voice mode (dictation transcription via Foundry Local)` | 4643, 4916 | `/voice [on\|off\|models]` is the user-facing management command. |
 | Feature gate | `VOICE:"staff"`, `voiceEnabled:e.VOICE` | 239, 7344 | Voice is gated as staff-only in the analyzed configuration. |

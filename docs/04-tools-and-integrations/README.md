@@ -2,6 +2,15 @@
 
 Built-in tools, MCP, plugins, IDE/LSP/editor bridges, web access, and integration overview surfaces.
 
+## Semantic alias and minified anchor mapping
+
+This is a section index, not a direct `app.js` implementation analysis. Topic pages linked below carry the concrete bundle mappings.
+
+| Semantic alias | Minified anchor | Scope |
+|---|---|---|
+| Tools and integrations section index | N/A — navigation page | Groups tool, MCP, plugin, IDE/LSP, web, and integration overview docs. |
+| Tools and integrations topic pages | See linked page-level mappings | Concrete `app.js` anchors are documented in the child pages. |
+
 ## How this section fits
 
 ```mermaid

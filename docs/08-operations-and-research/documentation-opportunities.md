@@ -4,6 +4,20 @@ This report summarizes a second-pass, script-assisted scan of the extracted Copi
 
 The current documentation set already covers the major runtime shape, prompts, memory/context board, compaction, loader/bootstrap, CLI routing, TUI, Tree-sitter, sessions, remote control, MCP, permissions, sandboxing, models/providers/auth, model API routing, resilience, task orchestration, autopilot, fleet mode, feature gates, and observability. The candidates below are therefore biased toward **implementation surfaces that are present in `app.js` but only partially covered or scattered across existing docs**.
 
+## Source anchors
+
+This report is a scan summary, so the semantic aliases are surface categories extracted from `app.js`. Minified anchors are representative strings used by the scan rather than full implementation names.
+
+| Semantic alias | Minified anchor | Scan source | Role |
+|---|---|---|---|
+| Documentation scan | `/tmp/appjs_documentation_scan.json`, `/tmp/appjs_surface_summary.md` | temporary scan output | Original script-assisted inventory used to prioritize follow-up docs. |
+| Slash command surface | `/plugin`, `/env`, `/every`, `/after`, `/research`, `/review`, `/skills`, `/subconscious` | `app.js` string scan | User-visible interactive command candidates. |
+| CLI option surface | `--plugin-dir`, `--server`, `--headless`, `--allow-url`, `--deny-url` | `app.js` string scan | Root option candidates and cross-cutting behaviors. |
+| Event schema surface | `tool.execution_*`, `session.*`, `permission.*`, `assistant.*` | `app.js` string scan | Event families used to identify lifecycle documents. |
+| JSON-RPC surface | `session.*`, `sessionFs.*`, `mcp.config.*` | schema/string scan | Protocol/API candidates for SDK and server docs. |
+| Environment surface | `COPILOT_*`, `GITHUB_*`, `GH_*` | `app.js` string scan | Configuration and operational environment candidates. |
+| Feature gate surface | `SESSION_STORE`, `EXTENSIONS`, `VOICE`, `CONTENT_EXCLUSION`, `COLLECT_DEBUG_LOGS` | static feature table | Gate-driven implementation candidates. |
+
 ## Scan method
 
 The scan used Python over `copilot-cli-pkg/app.js` and the then-existing flat `docs/*.md` files before this wiki reorganization.

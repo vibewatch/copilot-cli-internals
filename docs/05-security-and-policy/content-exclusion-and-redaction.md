@@ -14,7 +14,7 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 
 ## Source anchors
 
-| Area | Anchor strings / minified symbols | Approx. `app.js` line | What it shows |
+| Semantic alias | Minified anchor | Approx. `app.js` line | Role |
 |---|---|---:|---|
 | Feature gate | `CONTENT_EXCLUSION:"staff"` | 239 | Content exclusion is gated in the analyzed static feature table. |
 | Rule fetching | `/copilot_internal/content_exclusion`, `fetchContentExclusionRules`, `COPILOT_DEBUG_CONTENT_EXCLUSION_API_URL` | 239 | Rules are fetched from Copilot internal API, with a debug override URL. |

@@ -8,7 +8,7 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 
 ## Source anchors
 
-| Area | Anchor strings / minified symbols | Approx. `app.js` line | What it shows |
+| Semantic alias | Minified anchor | Approx. `app.js` line | Role |
 |---|---|---:|---|
 | CLI server flags | `--server`, `--ui-server`, `--headless`, `--acp`, `--stdio`, `--host` | 8225 | Root CLI can run headless JSON-RPC server, embedded UI server, or ACP server. |
 | JSON-RPC schemas | `jsonrpc:"2.0"`, `ParseError`, `InvalidRequest`, `MethodNotFound`, `InvalidParams` | 4120, 6105 | Protocol layer validates JSON-RPC messages and maps standard error codes. |

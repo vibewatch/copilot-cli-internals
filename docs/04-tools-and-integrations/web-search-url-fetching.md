@@ -13,7 +13,7 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 
 ## Source anchors
 
-| Area | Anchor strings / minified symbols | Approx. `app.js` line | What it shows |
+| Semantic alias | Minified anchor | Approx. `app.js` line | Role |
 |---|---|---:|---|
 | Built-in fetch tool | `web_fetch`, `Fetching web content`, `raw`, `start_index` | 1144 | Tool fetches a URL and returns markdown or raw HTML with pagination. |
 | GitHub MCP web search shim | `github-mcp-server-web_search`, `web_search`, `Bgr(...)` | 4149 | GitHub MCP web search can be renamed/exposed as `web_search`. |

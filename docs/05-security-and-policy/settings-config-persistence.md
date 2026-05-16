@@ -6,7 +6,7 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 
 ## Source anchors
 
-| Area | Anchor strings / minified symbols | Approx. `app.js` line | What it shows |
+| Semantic alias | Minified anchor | Approx. `app.js` line | Role |
 |---|---|---:|---|
 | Config root resolution | `Vs(...)`, `configDir`, `COPILOT_HOME`, `.copilot` | 234 | Runtime config root comes from explicit settings, env var, or home directory. |
 | Store factory | `load`, `write`, `writeKey`, `path`, `directoryFiles` | 236 | Reusable JSON/config store helper with caching and key writes. |

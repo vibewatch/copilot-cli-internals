@@ -14,7 +14,7 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 
 ## Source anchors
 
-| Area | Anchor strings / minified symbols | Approx. `app.js` line | What it shows |
+| Semantic alias | Minified anchor | Approx. `app.js` line | Role |
 |---|---|---:|---|
 | Instruction files | `AGENTS.md`, `Nested AGENTS.md`, `Child instruction files` | 499 | Repo/cwd/inherited instruction files are discovered and folded into prompt context. |
 | Skill files | `SKILL.md`, `skillsParseSkillMarkdown`, `allowedTools`, `userInvocable`, `disableModelInvocation` | 525 | Skills are parsed from markdown files and normalized into runtime metadata. |

@@ -8,6 +8,21 @@ This file extracts prompt-related strings from `copilot-cli-pkg/app.js` and norm
 - `{{instructions}}`, `{{tools}}`, `{{environment_context}}`, etc. are prompt fragments assembled elsewhere in the runtime.
 - Conditional fragments from JavaScript expressions are represented with descriptive placeholders rather than minified variable names when the intent is clear.
 
+## Source anchors
+
+`app.js` is bundled/minified, so semantic aliases are stable documentation names. Minified anchors identify the prompt literals/builders in the analyzed artifact and may shift across releases.
+
+| Semantic alias | Minified anchor | Approx. location | Role |
+|---|---|---:|---|
+| Base identity fragment | `fft` | `app.js` 3101-3137 | Defines the core Copilot/agent identity used by system prompt builders. |
+| Top-level prompt builders | `j0s`, `Y0s`, `nxs`, `X3e(...)` | `app.js` 3101-4031 | Assemble identity, rules, tools, custom instructions, and runtime context into active system prompts. |
+| Coding/task rule fragments | `uft`, `CCe`, `X0s`, `TCe` | `app.js` 3101-3230 | Provide coding, validation, task-execution, and general guideline layers. |
+| Tool instruction fragments | `yft`, `Vae`, `H0s(...)` | `app.js` 3203-3230 | Render model-visible tool-use instructions and parallel/direct calling guidance. |
+| Custom instruction wrappers | `I0s`, `hft` | `app.js` 3101-3230 | Wrap instruction priority and org/repo/user custom instruction text. |
+| Slash-command prompt macros | `xSe`, `$Bn`, `WBn`, `Yps(...)`, `Udt` | `app.js` 1254-1545 | Convert `/init`, `/plan`, `/review`, `/research`, and `/subconscious` actions into prompt seeds. |
+| Subagent prompt builders | `v4n(...)`, `x4n(...)`, `ule(...)` | `app.js` 3266-3559 | Build task/coding/custom-agent system prompts. |
+| Fleet prompt | `eKn`, `rKn(...)`, `Lps(...)` | `app.js` 4363, 1305 | Drives fleet-mode SQL todo and parallel subagent instructions. |
+
 ## How the system prompt uses other prompts
 
 The main system prompt is **assembled**, not stored as one final literal. The templates below fall into different roles:

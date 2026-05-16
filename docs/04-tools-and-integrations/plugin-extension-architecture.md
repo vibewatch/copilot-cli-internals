@@ -11,7 +11,7 @@ Both eventually add capabilities to a session, but they enter the runtime throug
 
 ## Source anchors
 
-| Area | `app.js` anchor | Evidence |
+| Semantic alias | Minified anchor | Evidence |
 |---|---|---|
 | Plugin state schema | `installedPlugins`, `enabledPlugins` | User settings store installed records and enabled/disabled state. |
 | Plugin cache layout | `installed-plugins`, `plugin-data` | State directories under the CLI state root. |

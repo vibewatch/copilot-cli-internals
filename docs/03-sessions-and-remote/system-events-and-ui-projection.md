@@ -6,7 +6,7 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 
 ## Source anchors
 
-| Area | Anchor strings / minified symbols | Approx. `app.js` line | What it shows |
+| Semantic alias | Minified anchor | Approx. `app.js` line | Role |
 |---|---|---:|---|
 | System prompt event | `system.message`, `upsertSystemContextMessage` | 4361, 4471, 4475 | System/developer messages update model-visible system context. |
 | System notification event | `system.notification`, `instruction_discovered` | 4361, 4471, 4475, 4481 | Runtime notifications can become chat-like user context, with instruction discovery filtered. |

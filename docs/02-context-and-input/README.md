@@ -2,6 +2,15 @@
 
 Everything that becomes model-visible context: prompts, custom instructions, attachments, memory, compaction, and rewind boundaries.
 
+## Semantic alias and minified anchor mapping
+
+This is a section index, not a direct `app.js` implementation analysis. Topic pages linked below carry the concrete bundle mappings.
+
+| Semantic alias | Minified anchor | Scope |
+|---|---|---|
+| Context and input section index | N/A — navigation page | Groups prompt, instruction, attachment, memory, compaction, and rewind docs. |
+| Context and input topic pages | See linked page-level mappings | Concrete `app.js` anchors are documented in the child pages. |
+
 ## How this section fits
 
 ```mermaid

@@ -2,6 +2,15 @@
 
 Start here: what the extracted bundle is, how to read the docs, and the high-level feature map.
 
+## Semantic alias and minified anchor mapping
+
+This is a section index, not a direct `app.js` implementation analysis. Topic pages linked below carry the concrete bundle mappings.
+
+| Semantic alias | Minified anchor | Scope |
+|---|---|---|
+| Overview section index | N/A — navigation page | Links the bundle overview and feature map. |
+| Overview topic pages | See linked page-level mappings | Concrete `app.js` anchors are documented in the child pages. |
+
 ## How this section fits
 
 ```mermaid

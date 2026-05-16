@@ -12,7 +12,7 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 
 ## Source anchors
 
-| Area | Anchor strings / minified symbols | Approx. `app.js` line | What it shows |
+| Semantic alias | Minified anchor | Approx. `app.js` line | Role |
 |---|---|---:|---|
 | Diagnose command | `/diagnose`, `Analyze the current session log` | 4643, 4934 | Staff-only command builds an agent prompt from session log tail and optional user prompt. |
 | Diagnose gate | `DIAGNOSE:"staff"`, `diagnoseEnabled:e.DIAGNOSE` | 239, 7344 | Command visibility is feature/staff gated. |

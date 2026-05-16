@@ -4,6 +4,20 @@ This page records a static reverse-engineering pass over the bundled MXC sandbox
 
 The goal here is narrower: identify what the packaged binaries are, how they were built, what helper roles they appear to implement, and what sandbox behavior can be inferred from metadata, symbols, imports, SPDX manifests, and strings.
 
+## Source anchors
+
+This page uses semantic aliases for helper roles and file paths/strings as minified anchors. The MXC helpers are separate binaries, so some anchors are binary symbols or package paths rather than JavaScript symbols.
+
+| Semantic alias | Minified anchor | Location | Role |
+|---|---|---|---|
+| MXC binary root | `copilot-cli-pkg/mxc-bin/{x64,arm64}` | package tree | Architecture-specific sandbox helper payloads. |
+| Copilot MXC adapter | `MXC_BIN_DIR`, `mxc-bin`, `--config-base64` | `app.js` sandbox path | Resolves helper directory, serializes MXC config, and spawns platform helper. |
+| Linux LXC executor | `lxc-exec`, `lxc_exec::main`, `lxc_common::lxc_runner` | `mxc-bin/*/lxc-exec` | Creates/runs LXC containers and executes configured commands. |
+| Windows executor | `wxc-exec.exe`, `appContainer`, `windows_sandbox`, `wslc` | `mxc-bin/*/wxc-exec.exe` | Main Windows sandbox executor across AppContainer and experimental backends. |
+| WinHTTP proxy shim | `winhttp-proxy-shim.exe` | `mxc-bin/*/winhttp-proxy-shim.exe` | Applies per-AppContainer WinHTTP proxy policy. |
+| Windows Sandbox daemon/guest | `wxc-windows-sandbox-daemon.exe`, `wxc-windows-sandbox-guest.exe` | `mxc-bin/*/` | Host/guest helpers for Windows Sandbox execution. |
+| WSLC SDK bridge | `wslcsdk.dll`, `WslcCreateSession`, `WslcStartContainer` | `mxc-bin/*/wslcsdk.dll` | C++ bridge for experimental Windows Subsystem for Linux Containers support. |
+
 ## Scope and method
 
 This analysis used static inspection only. The binaries were not executed.

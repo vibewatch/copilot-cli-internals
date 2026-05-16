@@ -8,7 +8,7 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 
 ## Source anchors
 
-| Area | Anchor strings / minified symbols | Approx. `app.js` line | What it shows |
+| Semantic alias | Minified anchor | Approx. `app.js` line | Role |
 |---|---|---:|---|
 | Slash constants | `/rewind`, `/undo`, `/fork` | 4643, 4942 | The command table exposes rewind/undo/fork surfaces. |
 | Fork command help | `Fork the current session into a new session, optionally with a name` | 4942 | Fork is a separate session-branching surface. |

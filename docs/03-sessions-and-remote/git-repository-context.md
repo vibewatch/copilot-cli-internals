@@ -6,7 +6,7 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 
 ## Source anchors
 
-| Area | Anchor strings / minified symbols | Approx. `app.js` line | What it shows |
+| Semantic alias | Minified anchor | Approx. `app.js` line | Role |
 |---|---|---:|---|
 | Git root discovery | `Mi(...)`, `rev-parse --show-toplevel`, `--git-dir`, `--git-common-dir` | 216 | Working directory is resolved to a git root, with worktree handling and caching. |
 | Branch/head/repo context | `oT(...)`, `branch --show-current`, `headCommit`, `repository`, `hostType`, `repositoryHost` | 219 | Session working-directory context includes branch, commit, and repository identity. |
