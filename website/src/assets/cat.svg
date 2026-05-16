@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Cat icon" fill="none" stroke="#000000" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
-  <title>Copilot CLI Internals</title>
+  <title>Copilot CLI Internal Analysis</title>
   <path d="M14 26 L20 10 L28 24"/>
   <path d="M36 24 L44 10 L50 26"/>
   <path d="M14 26 C8 32 8 44 14 50 C20 55 26 56 32 56 C38 56 44 55 50 50 C56 44 56 32 50 26"/>

@@ -2,6 +2,8 @@
 
 This document explains the voice-mode implementation visible in the extracted Copilot CLI `app.js` bundle. In the analyzed bundle, voice mode is a staff-gated interactive feature that records short dictation input, transcribes it locally through Microsoft Foundry Local runtime components, and feeds the resulting text back into the CLI input loop.
 
+For the lower-level worker state machines that capture microphone PCM, install the Foundry runtime, load speech models, and produce streaming/batch transcription results, see [`voice-runtime-workers-and-transcription.md`](./voice-runtime-workers-and-transcription.md).
+
 The important implementation point is that voice mode is not just a UI toggle. It combines:
 
 - the `/voice` slash command;
@@ -182,6 +184,7 @@ sequenceDiagram
 
 ## Relationship to other docs
 
+- `voice-runtime-workers-and-transcription.md` explains the mic, installer, and Foundry worker internals beneath this user-facing voice flow.
 - `tui-and-slash-commands.md` explains how slash commands and dialogs are surfaced.
 - `settings-config-persistence.md` explains the settings load/write/reload path.
 - `feature-gates.md` explains static feature tiers such as `VOICE:"staff"`.

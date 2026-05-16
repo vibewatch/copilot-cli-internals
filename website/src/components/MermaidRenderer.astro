@@ -24,24 +24,29 @@
     import('mermaid').then(async ({ default: mermaid }) => {
       mermaid.initialize({
         startOnLoad: false,
-        securityLevel: 'strict',
+        // The docs use Mermaid `click` directives for same-site navigation
+        // from high-level maps to deep-dive pages. Mermaid only emits those
+        // links outside strict mode; the source diagrams are repository-owned
+        // Markdown, so `loose` is acceptable here.
+        securityLevel: 'loose',
         theme: 'base',
         themeVariables: {
-          // Pull the rendered diagram into the cream/olive/yellow palette
-          // declared in DESIGN.md. Values mirror tokens.css.
-          background: '#fcfcfa',
-          primaryColor: '#fcfcfa',
+          // Keep diagrams neutral: no yellow/orange fills inside Mermaid SVGs.
+          background: '#ffffff',
+          primaryColor: '#ffffff',
           primaryBorderColor: '#bfc1b7',
           primaryTextColor: '#23251d',
-          secondaryColor: '#e5e7e0',
+          secondaryColor: '#f6f7f2',
           secondaryBorderColor: '#bfc1b7',
           secondaryTextColor: '#33342d',
-          tertiaryColor: '#f7a501',
-          tertiaryBorderColor: '#dd9001',
+          tertiaryColor: '#eef0ea',
+          tertiaryBorderColor: '#bfc1b7',
           tertiaryTextColor: '#23251d',
+          clusterBkg: '#f6f7f2',
+          clusterBorder: '#bfc1b7',
           lineColor: '#6c6e63',
           textColor: '#4d4f46',
-          mainBkg: '#fcfcfa',
+          mainBkg: '#ffffff',
           nodeBorder: '#bfc1b7',
           edgeLabelBackground: '#eeefe9',
           fontFamily:
@@ -52,8 +57,9 @@
       });
 
       // ----- Lightbox: one shared <dialog> for all diagrams on the page ----
-      // Click the rendered SVG to open it fullscreen with wheel-zoom and
-      // pointer-drag pan. Esc / backdrop click / close button dismiss.
+      // Click the rendered SVG to open it fullscreen with viewBox-based
+      // wheel-zoom and pointer-drag pan. Esc / backdrop click / close button
+      // dismiss.
       const lightbox = document.createElement('dialog');
       lightbox.className = 'mermaid-lightbox';
       lightbox.setAttribute('aria-label', 'Diagram zoom view');
@@ -73,57 +79,142 @@
       const viewport = lightbox.querySelector('.mermaid-lightbox__viewport') as HTMLElement;
       const stage = lightbox.querySelector('.mermaid-lightbox__stage') as HTMLElement;
 
-      let scale = 1;
-      let tx = 0;
-      let ty = 0;
+      type ViewBox = { x: number; y: number; width: number; height: number };
 
-      const apply = () => {
-        stage.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+      let baseViewBox: ViewBox | null = null;
+      let currentViewBox: ViewBox | null = null;
+
+      const formatViewBoxNumber = (value: number) =>
+        Number(value.toFixed(3)).toString();
+
+      const parseSvgNumber = (value: string | null) => {
+        if (!value) return null;
+        const parsed = Number.parseFloat(value);
+        return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
+      };
+
+      const parseViewBox = (svg: SVGSVGElement): ViewBox => {
+        const raw = svg.getAttribute('viewBox');
+        const parts = raw?.trim().split(/[\s,]+/).map(Number) ?? [];
+        if (
+          parts.length === 4 &&
+          parts.every(Number.isFinite) &&
+          parts[2] > 0 &&
+          parts[3] > 0
+        ) {
+          return { x: parts[0], y: parts[1], width: parts[2], height: parts[3] };
+        }
+
+        const rect = svg.getBoundingClientRect();
+        return {
+          x: 0,
+          y: 0,
+          width: (parseSvgNumber(svg.getAttribute('width')) ?? rect.width) || 1,
+          height: (parseSvgNumber(svg.getAttribute('height')) ?? rect.height) || 1,
+        };
+      };
+
+      const getLightboxSvg = () =>
+        stage.querySelector('svg') as SVGSVGElement | null;
+
+      const applyViewBox = () => {
+        const svg = getLightboxSvg();
+        if (!svg || !currentViewBox) return;
+        svg.setAttribute(
+          'viewBox',
+          [
+            currentViewBox.x,
+            currentViewBox.y,
+            currentViewBox.width,
+            currentViewBox.height,
+          ]
+            .map(formatViewBoxNumber)
+            .join(' ')
+        );
+      };
+
+      const clientPointToSvg = (clientX: number, clientY: number) => {
+        const svg = getLightboxSvg();
+        if (!svg) return null;
+        const matrix = svg.getScreenCTM();
+        if (!matrix) return null;
+        const point = svg.createSVGPoint();
+        point.x = clientX;
+        point.y = clientY;
+        return point.matrixTransform(matrix.inverse());
+      };
+
+      const renderedContentSize = (rect: DOMRect, box: ViewBox) => {
+        const boxRatio = box.width / Math.max(box.height, 1);
+        const rectRatio = rect.width / Math.max(rect.height, 1);
+        if (rectRatio > boxRatio) {
+          return {
+            width: Math.max(rect.height * boxRatio, 1),
+            height: Math.max(rect.height, 1),
+          };
+        }
+        return {
+          width: Math.max(rect.width, 1),
+          height: Math.max(rect.width / Math.max(boxRatio, 0.0001), 1),
+        };
       };
 
       const fit = () => {
-        const svg = stage.querySelector('svg') as SVGSVGElement | null;
+        const svg = getLightboxSvg();
         if (!svg) return;
-        // Strip any width/height set by mermaid so we can measure intrinsic size.
-        svg.removeAttribute('style');
+        baseViewBox ??= parseViewBox(svg);
+        currentViewBox = { ...baseViewBox };
         svg.style.maxWidth = 'none';
         svg.style.maxHeight = 'none';
-
-        scale = 1;
-        tx = 0;
-        ty = 0;
-        apply();
-
-        const vRect = viewport.getBoundingClientRect();
-        const sRect = svg.getBoundingClientRect();
-        const padding = 0.92;
-        const fitScale = Math.min(
-          vRect.width / Math.max(sRect.width, 1),
-          vRect.height / Math.max(sRect.height, 1)
-        ) * padding;
-
-        scale = Math.max(0.1, fitScale);
-        tx = (vRect.width - sRect.width * scale) / 2;
-        ty = (vRect.height - sRect.height * scale) / 2;
-        apply();
+        svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+        applyViewBox();
       };
 
-      const zoomAt = (factor: number, anchorX?: number, anchorY?: number) => {
+      const zoomAt = (factor: number, clientX?: number, clientY?: number) => {
+        if (!baseViewBox || !currentViewBox) return;
         const vRect = viewport.getBoundingClientRect();
-        const cx = anchorX ?? vRect.width / 2;
-        const cy = anchorY ?? vRect.height / 2;
-        const newScale = Math.max(0.1, Math.min(20, scale * factor));
-        // Keep the point under the cursor stationary in viewport space.
-        tx = cx - (cx - tx) * (newScale / scale);
-        ty = cy - (cy - ty) * (newScale / scale);
-        scale = newScale;
-        apply();
+        const anchor = clientPointToSvg(
+          clientX ?? vRect.left + vRect.width / 2,
+          clientY ?? vRect.top + vRect.height / 2
+        ) ?? {
+          x: currentViewBox.x + currentViewBox.width / 2,
+          y: currentViewBox.y + currentViewBox.height / 2,
+        };
+        const currentZoom = baseViewBox.width / currentViewBox.width;
+        const nextZoom = Math.max(0.1, Math.min(20, currentZoom * factor));
+        const nextWidth = baseViewBox.width / nextZoom;
+        const nextHeight = baseViewBox.height / nextZoom;
+        currentViewBox = {
+          x:
+            anchor.x -
+            (anchor.x - currentViewBox.x) *
+              (nextWidth / currentViewBox.width),
+          y:
+            anchor.y -
+            (anchor.y - currentViewBox.y) *
+              (nextHeight / currentViewBox.height),
+          width: nextWidth,
+          height: nextHeight,
+        };
+        applyViewBox();
       };
 
       const open = (svg: SVGElement) => {
-        stage.replaceChildren(svg.cloneNode(true));
+        const clone = svg.cloneNode(true) as SVGSVGElement;
+        stage.replaceChildren(clone);
+        clone.removeAttribute('width');
+        clone.removeAttribute('height');
+        clone.removeAttribute('style');
+        clone.style.width = '100%';
+        clone.style.height = '100%';
+        clone.style.maxWidth = 'none';
+        clone.style.maxHeight = 'none';
+        clone.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+        baseViewBox = parseViewBox(clone);
+        currentViewBox = { ...baseViewBox };
+        applyViewBox();
         lightbox.showModal();
-        // Wait one frame so the dialog has its measured size before fitting.
+        // Wait one frame so the dialog has its measured size before resetting.
         requestAnimationFrame(fit);
       };
 
@@ -133,8 +224,7 @@
         (e) => {
           e.preventDefault();
           const factor = Math.exp(-e.deltaY * 0.0015);
-          const rect = viewport.getBoundingClientRect();
-          zoomAt(factor, e.clientX - rect.left, e.clientY - rect.top);
+          zoomAt(factor, e.clientX, e.clientY);
         },
         { passive: false }
       );
@@ -144,6 +234,7 @@
       let lastX = 0;
       let lastY = 0;
       viewport.addEventListener('pointerdown', (e) => {
+        if ((e.target as HTMLElement).closest('a')) return;
         dragging = true;
         lastX = e.clientX;
         lastY = e.clientY;
@@ -151,12 +242,19 @@
         viewport.classList.add('is-grabbing');
       });
       viewport.addEventListener('pointermove', (e) => {
-        if (!dragging) return;
-        tx += e.clientX - lastX;
-        ty += e.clientY - lastY;
+        if (!dragging || !currentViewBox) return;
+        const rect = viewport.getBoundingClientRect();
+        const content = renderedContentSize(rect, currentViewBox);
+        const dx = e.clientX - lastX;
+        const dy = e.clientY - lastY;
+        currentViewBox = {
+          ...currentViewBox,
+          x: currentViewBox.x - (dx * currentViewBox.width) / content.width,
+          y: currentViewBox.y - (dy * currentViewBox.height) / content.height,
+        };
         lastX = e.clientX;
         lastY = e.clientY;
-        apply();
+        applyViewBox();
       });
       const endDrag = (e: PointerEvent) => {
         if (!dragging) return;
@@ -266,9 +364,13 @@
         });
 
         // Keep the whole card clickable as a fallback affordance — but only
-        // fire when the click did not originate inside the actions toolbar.
+        // fire when the click did not originate inside the actions toolbar or
+        // a Mermaid-generated link. This lets diagram nodes navigate normally.
         wrapper.addEventListener('click', (e) => {
           if ((e.target as HTMLElement).closest('.mermaid-rendered__actions')) {
+            return;
+          }
+          if ((e.target as HTMLElement).closest('a')) {
             return;
           }
           triggerZoom();

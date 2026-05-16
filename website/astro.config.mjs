@@ -9,10 +9,11 @@ import rehypeRewriteDocLinks from './src/plugins/rehype-rewrite-doc-links.mjs';
  * Production deploys go to the custom domain
  * https://copilot-cli.genisisiq.com (served from the root path).
  *
- * When DEPLOY_TARGET=github-pages, the build emits absolute URLs based on
- * `SITE_URL` and an optional path prefix from `SITE_BASE` (leave empty for
- * a root-domain deployment). Local dev and preview keep the bare-root
- * behaviour so links work without extra setup.
+ * The `site` URL is always set so Astro/Starlight can generate canonical
+ * URLs and a sitemap during any production build. When
+ * DEPLOY_TARGET=github-pages, the build also applies an optional path prefix
+ * from `SITE_BASE` (leave empty for a root-domain deployment). Local dev and
+ * preview keep the bare-root base path so links work without extra setup.
  *
  * Override either value via env vars when invoking the build, e.g.:
  *   SITE_URL=https://my-org.github.io SITE_BASE=/my-repo \
@@ -24,7 +25,7 @@ const basePath = process.env.SITE_BASE ?? '';
 
 // https://astro.build/config
 export default defineConfig({
-  site: isGitHubPages ? siteUrl : undefined,
+  site: siteUrl,
   base: isGitHubPages && basePath ? basePath : undefined,
   trailingSlash: 'always',
   markdown: {
@@ -35,7 +36,7 @@ export default defineConfig({
   },
   integrations: [
     starlight({
-      title: 'Copilot CLI Internals',
+      title: 'Copilot CLI Internal Analysis',
       description:
         'Reverse-engineering wiki for the @github/copilot CLI bundle (app.js).',
       logo: {

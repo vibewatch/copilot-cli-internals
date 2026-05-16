@@ -13,6 +13,8 @@ This is a section index, not a direct `app.js` implementation analysis. Topic pa
 
 ## How this section fits
 
+Click a node in the map to jump to that page or section.
+
 ```mermaid
 flowchart TD
     Prompt[Prompt sources] --> ModelContext[Model-visible context]
@@ -21,6 +23,14 @@ flowchart TD
     Memory[Memory/context board] --> ModelContext
     Compaction[Compaction] --> ModelContext
     Rewind[Checkpoints/rewind] --> ModelContext
+
+    click Prompt "./prompt-sources/" "Open prompt sources"
+    click Agents "./custom-agents-and-skills-packaging/" "Open custom agents and skills"
+    click Attachments "./attachments-and-file-ingestion/" "Open attachments and file ingestion"
+    click Memory "./memory-and-context-board/" "Open memory and context board"
+    click Compaction "./conversation-compaction/" "Open conversation compaction"
+    click Rewind "./checkpoints-undo-rewind/" "Open checkpoints and rewind"
+    click ModelContext "./" "Open Context and input overview"
 ```
 
 ## Pages

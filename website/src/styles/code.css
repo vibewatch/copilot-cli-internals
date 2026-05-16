@@ -248,15 +248,27 @@
   border-radius: var(--tk-radius-md);
   padding: var(--tk-space-xl);
   margin: var(--tk-space-lg) 0;
-  display: flex;
-  justify-content: center;
+  display: block;
   overflow-x: auto;
+  text-align: center;
 }
 
 .mermaid-rendered svg {
+  display: inline-block;
   max-width: 100%;
   height: auto;
+  background: transparent !important;
   font-family: var(--tk-font-sans);
+}
+
+.mermaid-rendered .nodeLabel,
+.mermaid-rendered .edgeLabel,
+.mermaid-rendered .cluster-label {
+  line-height: 1.35;
+}
+
+.mermaid-rendered svg a {
+  cursor: pointer;
 }
 
 .mermaid-rendered--error {
@@ -429,16 +441,14 @@
 
 .mermaid-lightbox__stage {
   position: absolute;
-  top: 0;
-  left: 0;
-  transform-origin: 0 0;
-  will-change: transform;
+  inset: 0;
 }
 
 .mermaid-lightbox__stage svg {
   display: block;
-  /* Override mermaid's max-width:100% rule so the SVG can render at intrinsic
-     size and we can fit/scale it manually. */
+  width: 100%;
+  height: 100%;
+  /* Override mermaid's max-width:100% rule so viewBox-based zoom can use the
+     full lightbox viewport. */
   max-width: none !important;
-  height: auto;
 }

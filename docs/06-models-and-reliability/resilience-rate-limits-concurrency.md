@@ -99,28 +99,28 @@ The retry loop is also a middleware runner. Request processors can observe or mo
 ```mermaid
 sequenceDiagram
     autonumber
-    participant Loop as Model request loop
+    participant RequestFlow as Model request loop
     participant Proc as Request processors
     participant Adapter as Provider adapter
     participant Tools as Tool executor
 
-    Loop->>Proc: preRequest(messages, tools, options)
-    Proc-->>Loop: events or modified context
-    Loop->>Adapter: provider request
-    Adapter-->>Loop: response messages / stream result
-    Loop->>Proc: postRequest(responseMessages)
-    Proc-->>Loop: telemetry, retry, or advisory events
-    Loop->>Proc: preToolsExecution(tool calls)
-    Proc-->>Loop: optional synthetic tool results
-    Loop->>Tools: execute remaining tool calls
-    Tools-->>Loop: tool results
-    Loop->>Proc: postToolExecution(tool result)
+    RequestFlow->>Proc: preRequest(messages, tools, options)
+    Proc-->>RequestFlow: events or modified context
+    RequestFlow->>Adapter: provider request
+    Adapter-->>RequestFlow: response messages / stream result
+    RequestFlow->>Proc: postRequest(responseMessages)
+    Proc-->>RequestFlow: telemetry, retry, or advisory events
+    RequestFlow->>Proc: preToolsExecution(tool calls)
+    Proc-->>RequestFlow: optional synthetic tool results
+    RequestFlow->>Tools: execute remaining tool calls
+    Tools-->>RequestFlow: tool results
+    RequestFlow->>Proc: postToolExecution(tool result)
     alt request error
-        Loop->>Proc: onRequestError(error)
-        Proc-->>Loop: retry guidance or telemetry
+        RequestFlow->>Proc: onRequestError(error)
+        Proc-->>RequestFlow: retry guidance or telemetry
     end
     alt final failure
-        Loop->>Proc: preErrorThrow(error)
+        RequestFlow->>Proc: preErrorThrow(error)
     end
 ```
 

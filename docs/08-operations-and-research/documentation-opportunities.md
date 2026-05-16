@@ -76,7 +76,8 @@ Additional iterative gap pass:
 1. [`shell-command-execution-lifecycle.md`](../04-tools-and-integrations/shell-command-execution-lifecycle.md) now covers the previously scattered shell execution path: shell tool assembly, PTY vs process backends, sync/async/detached command handling, task tracking, background promotion, completion notifications, and large-output buffering.
 2. [`runtime-tool-assembly-and-filtering.md`](../04-tools-and-integrations/runtime-tool-assembly-and-filtering.md) now covers the final model-visible toolset path across built-ins, MCP, extensions, custom agents, feature gates, allow/exclude filters, deferred `tool_search`, request-time refresh, and `session.tools_updated` invalidation.
 3. [`session-fs-provider-and-state-files.md`](../03-sessions-and-remote/session-fs-provider-and-state-files.md) now covers the SessionFs provider and session-state file lifecycle: local vs RPC-backed filesystems, SDK reverse calls, provider guards, event/workspace files, large-output temp files, and fork/checkpoint state copying.
-4. A likely next high-value gap is the **request processor and compaction/retry interaction path**: pre-request processors, token-budget checks, automatic compaction, rate-limit/request-size retries, and how those processors mutate chat context before the provider call.
+4. [`voice-runtime-workers-and-transcription.md`](../01-runtime-and-ui/voice-runtime-workers-and-transcription.md) now covers the voice backend that was only summarized by the voice-mode page: microphone, installer, and Foundry worker state machines; PCM flow; streaming/batch transcription; and cleanup.
+5. A likely next high-value gap is the **request processor and compaction/retry interaction path**: pre-request processors, token-budget checks, automatic compaction, rate-limit/request-size retries, and how those processors mutate chat context before the provider call.
 
 ## Extracted command surface
 
@@ -370,7 +371,7 @@ After the high- and medium-priority batches, a final gap scan found several impo
 
 | Topic | Implemented as |
 |---|---|
-| Voice mode / Foundry Local | [`voice-mode-foundry-local.md`](../01-runtime-and-ui/voice-mode-foundry-local.md) |
+| Voice mode / Foundry Local | [`voice-mode-foundry-local.md`](../01-runtime-and-ui/voice-mode-foundry-local.md), [`voice-runtime-workers-and-transcription.md`](../01-runtime-and-ui/voice-runtime-workers-and-transcription.md) |
 | Terminal setup and shell environment | [`terminal-setup-and-shell-environment.md`](../01-runtime-and-ui/terminal-setup-and-shell-environment.md) |
 | Checkpoints, undo, rewind, and fork | [`checkpoints-undo-rewind.md`](../02-context-and-input/checkpoints-undo-rewind.md) |
 | Usage, quota, and billing metrics | [`usage-quota-billing-metrics.md`](../06-models-and-reliability/usage-quota-billing-metrics.md) |

@@ -656,15 +656,15 @@ sequenceDiagram
     participant Model as Main model
     participant Tool as task_complete tool
     participant Session as Session runtime
-    participant Loop as Autopilot listener
+    participant AutoListener as Autopilot listener
     participant UI as Timeline/UI
 
     Model->>Tool: task_complete({ summary })
     Tool-->>Session: success result + summary
     Session->>Session: emit tool.execution_complete
     Session->>Session: emit session.task_complete({ summary, success })
-    Session-->>Loop: completion event
-    Loop->>Loop: mark taskCompleted when success !== false
+    Session-->>AutoListener: completion event
+    AutoListener->>AutoListener: mark taskCompleted when success !== false
     Session-->>UI: render Task complete entry
 ```
 

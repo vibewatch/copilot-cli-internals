@@ -13,6 +13,8 @@ This is a section index, not a direct `app.js` implementation analysis. Topic pa
 
 ## How this section fits
 
+Click a node in the map to jump to that page.
+
 ```mermaid
 flowchart TD
     Policy[Settings/policy state] --> Permissions[Permission system]
@@ -20,6 +22,12 @@ flowchart TD
     Permissions --> Hooks[Hooks]
     Policy --> Content[Content exclusion/redaction]
     Hooks --> Permissions
+
+    click Policy "./settings-config-persistence/" "Open settings and config persistence"
+    click Permissions "./permission-system-design/" "Open permission system design"
+    click Sandbox "./sandboxing/" "Open sandboxing"
+    click Hooks "./hooks-lifecycle-automation/" "Open hooks lifecycle automation"
+    click Content "./content-exclusion-and-redaction/" "Open content exclusion and redaction"
 ```
 
 ## Pages

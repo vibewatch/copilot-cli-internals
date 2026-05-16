@@ -19,6 +19,7 @@ This file is a table-of-contents document, not a direct `app.js` implementation 
   - [Interactive TUI and slash-command workflows](./01-runtime-and-ui/tui-and-slash-commands.md)
   - [Terminal setup and shell environment](./01-runtime-and-ui/terminal-setup-and-shell-environment.md)
   - [Voice mode and Foundry Local](./01-runtime-and-ui/voice-mode-foundry-local.md)
+  - [Voice runtime workers and transcription pipeline](./01-runtime-and-ui/voice-runtime-workers-and-transcription.md)
   - [Embedded server, ACP, and JSON-RPC protocol](./01-runtime-and-ui/embedded-server-acp-protocol.md)
   - [Tree-sitter WASM usage in the Copilot CLI](./01-runtime-and-ui/tree-sitter-wasm-usage.md)
 - [Context and input](./02-context-and-input/README.md)
