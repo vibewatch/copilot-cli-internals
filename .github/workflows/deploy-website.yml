@@ -46,6 +46,8 @@ jobs:
           # Custom domain served from the root path.
           SITE_URL: https://copilot-cli.genisisiq.com
           SITE_BASE: ''
+          # Configure this as a GitHub repository variable, e.g. G-ABC123DEF4.
+          PUBLIC_GA_ID: ${{ vars.PUBLIC_GA_ID }}
         run: npm run build
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

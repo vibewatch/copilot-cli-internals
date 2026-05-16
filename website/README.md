@@ -22,6 +22,18 @@ npm run build     # outputs static site to ./dist
 npm run preview   # serve ./dist locally
 ```
 
+## Analytics
+
+Set `PUBLIC_GA_ID` to a Google Analytics 4 measurement ID
+such as `G-ABC123DEF4` before building. The tag is only emitted in
+production builds (`npm run build`), not during local dev.
+
+For GitHub Pages, add it as a repository variable:
+
+1. Open **Settings → Secrets and variables → Actions → Variables**.
+2. Add `PUBLIC_GA_ID` with your GA4 measurement ID.
+3. Re-run the **Deploy website to GitHub Pages** workflow, or push to `main`.
+
 ## Deploy
 
 The included workflow at

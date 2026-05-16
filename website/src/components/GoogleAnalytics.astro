@@ -1,0 +1,33 @@
+---
+/**
+ * Google Analytics 4 tag injection.
+ *
+ * Set PUBLIC_GA_ID to a GA4 measurement ID like G-ABC123DEF4.
+ * The ID is intentionally public once rendered into the page; keep secrets out
+ * of PUBLIC_* environment variables.
+ */
+const measurementId = import.meta.env.PUBLIC_GA_ID?.trim();
+const isPlaceholder = measurementId === 'G-XXXXXXXXXX';
+const isEnabled = Boolean(import.meta.env.PROD && measurementId && !isPlaceholder);
+---
+
+{
+  isEnabled && (
+    <>
+      <script
+        async
+        src={`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(
+          measurementId,
+        )}`}
+      />
+      <script define:vars={{ measurementId }}>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+          window.dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', measurementId);
+      </script>
+    </>
+  )
+}
