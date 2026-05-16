@@ -112,7 +112,7 @@ Important details:
 
 ### Session filesystem abstraction
 
-`VC` wraps the local session filesystem by delegating to native `Do.sessionFsLocal*` methods. The session code uses this abstraction rather than direct `fs` calls so the same high-level workspace/event code can operate through a controlled session filesystem. `Zge` provides common path joining and lock-key behavior.
+`VC` wraps the local session filesystem by delegating to native `Do.sessionFsLocal*` methods. The session code uses this abstraction rather than direct `fs` calls so the same high-level workspace/event code can operate through a controlled session filesystem. `Zge` provides common path joining and lock-key behavior. The deeper local-vs-RPC provider path is covered in [SessionFs provider and state-file lifecycle](./session-fs-provider-and-state-files.md).
 
 ## Runtime session reconstruction
 

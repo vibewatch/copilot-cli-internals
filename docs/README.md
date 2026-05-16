@@ -47,7 +47,7 @@ flowchart TD
 | [Overview](./00-overview/README.md) | Start here: what the extracted bundle is, how to read the docs, the high-level feature map, and the context/harness engineering split. | 2 |
 | [Runtime and UI](./01-runtime-and-ui/README.md) | Bootstrap, root command routing, interactive TUI, terminal ergonomics, voice mode, protocol server modes, and rendering support. | 7 |
 | [Context and input](./02-context-and-input/README.md) | Everything that becomes model-visible context: prompts, custom instructions, attachments, memory, compaction, and rewind boundaries. | 7 |
-| [Sessions and remote](./03-sessions-and-remote/README.md) | Local event-sourced sessions, cloud/remote control, SQLite indexing, UI projection, repository metadata, and Mission Control steering. | 7 |
+| [Sessions and remote](./03-sessions-and-remote/README.md) | Local event-sourced sessions, cloud/remote control, SQLite indexing, UI projection, repository metadata, and Mission Control steering. | 8 |
 | [Tools and integrations](./04-tools-and-integrations/README.md) | Built-in tools, validation/review tools, MCP, plugins, IDE/LSP/editor bridges, web access, and integration overview surfaces. | 9 |
 | [Security and policy](./05-security-and-policy/README.md) | Permissions, content exclusion, hooks, sandboxing, and persistent policy/configuration state. | 6 |
 | [Models and reliability](./06-models-and-reliability/README.md) | Authentication, provider selection, wire APIs, resilience, rate limits, usage metrics, quota, and billing. | 4 |
@@ -110,6 +110,7 @@ flowchart TD
 | Context and input | [Conversation compaction and memory compression in Copilot CLI](./02-context-and-input/conversation-compaction.md) | /compact, automatic compaction, request-time prompt trimming, summary replacement, checkpoints, hooks, telemetry, and UI status. |
 | Context and input | [Checkpoints, undo, rewind, and fork](./02-context-and-input/checkpoints-undo-rewind.md) | /undo, /rewind, /fork, event-log truncation/replay, snapshot_rewind, and workspace events. |
 | Sessions and remote | [Session support implementation in the Copilot CLI](./03-sessions-and-remote/session-support-implementation.md) | Event-sourced local persistence, workspace artifacts, startup resolution, APIs, and handoff behavior. |
+| Sessions and remote | [SessionFs provider and state-file lifecycle](./03-sessions-and-remote/session-fs-provider-and-state-files.md) | Local and SDK/RPC-backed session filesystems, reverse calls, state-file layout, large output temp files, and fork-time copying. |
 | Sessions and remote | [API and session event schema contracts](./03-sessions-and-remote/api-and-session-event-schemas.md) | JSON-RPC and session event schemas, SDK generation surfaces, event envelopes, and `app.js` forwarding/replay cross-checks. |
 | Sessions and remote | [Session, remote, cloud, and history workflows](./03-sessions-and-remote/sessions-remote-cloud.md) | Resume/continue/name handling, background sessions, cloud sessions, remote steering, and history. |
 | Sessions and remote | [Session-store SQLite indexing](./03-sessions-and-remote/session-store-sqlite-indexing.md) | session-store.db schema, FTS/search, /reindex, Chronicle, refs, cloud sync, and backfill. |

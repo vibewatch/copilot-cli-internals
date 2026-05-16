@@ -31,6 +31,7 @@ This file is a table-of-contents document, not a direct `app.js` implementation 
   - [Checkpoints, undo, rewind, and fork](./02-context-and-input/checkpoints-undo-rewind.md)
 - [Sessions and remote](./03-sessions-and-remote/README.md)
   - [Session support implementation in the Copilot CLI](./03-sessions-and-remote/session-support-implementation.md)
+  - [SessionFs provider and state-file lifecycle](./03-sessions-and-remote/session-fs-provider-and-state-files.md)
   - [API and session event schema contracts](./03-sessions-and-remote/api-and-session-event-schemas.md)
   - [Session, remote, cloud, and history workflows](./03-sessions-and-remote/sessions-remote-cloud.md)
   - [Session-store SQLite indexing](./03-sessions-and-remote/session-store-sqlite-indexing.md)
