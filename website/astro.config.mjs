@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import { readFileSync } from 'node:fs';
 import rehypeRewriteDocLinks from './src/plugins/rehype-rewrite-doc-links.mjs';
 
 /**
@@ -23,11 +24,34 @@ const isGitHubPages = process.env.DEPLOY_TARGET === 'github-pages';
 const siteUrl = process.env.SITE_URL ?? 'https://copilot-cli.genisisiq.com';
 const basePath = process.env.SITE_BASE ?? '';
 
+function forceStarlightLightTheme() {
+  const starlightPagePath = '/node_modules/@astrojs/starlight/components/Page.astro';
+  const darkThemeShell = "const htmlDataAttributes: DOMStringMap = { 'data-theme': 'dark' };";
+  const lightThemeShell = "const htmlDataAttributes: DOMStringMap = { 'data-theme': 'light' };";
+  const isStarlightPage = (id) => id.split('?', 1)[0].replaceAll('\\', '/').endsWith(starlightPagePath);
+
+  return {
+    name: 'copilot-cli-starlight-light-theme',
+    enforce: 'pre',
+    load(id) {
+      if (!isStarlightPage(id)) return;
+      return readFileSync(id.split('?', 1)[0], 'utf8').replace(darkThemeShell, lightThemeShell);
+    },
+    transform(code, id) {
+      if (!isStarlightPage(id)) return;
+      return code.replace(darkThemeShell, lightThemeShell);
+    },
+  };
+}
+
 // https://astro.build/config
 export default defineConfig({
   site: siteUrl,
   base: isGitHubPages && basePath ? basePath : undefined,
   trailingSlash: 'always',
+  vite: {
+    plugins: [forceStarlightLightTheme()],
+  },
   markdown: {
     // Rewrite GitHub-style `*.md` links in the source docs to Starlight
     // routes. The custom docs loader (see `src/content.config.ts`) reuses
@@ -46,6 +70,10 @@ export default defineConfig({
       tableOfContents: { minHeadingLevel: 2, maxHeadingLevel: 4 },
       lastUpdated: true,
       pagination: true,
+      expressiveCode: {
+        themes: ['github-light'],
+        useStarlightDarkModeSwitch: false,
+      },
       customCss: [
         // Order matters — tokens first, then base layers, then components.
         './src/assets/fonts.css',

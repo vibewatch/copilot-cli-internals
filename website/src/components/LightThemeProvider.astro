@@ -1,9 +1,8 @@
 ---
 /**
- * LightThemeProvider — Starlight is theme-capable by default, but this site is
- * intentionally light-only. Keeping this tiny provider avoids the default
- * auto/dark preference script from briefly switching the document theme during
- * navigation or first paint.
+ * LightThemeProvider — this site intentionally has one visual theme. Keep the
+ * Starlight theme API present for compatibility, but always resolve it to the
+ * light GitHub-style canvas.
  */
 ---
 
@@ -26,10 +25,8 @@
 		/* localStorage can be unavailable in private/locked-down contexts. */
 	}
 
-	// Astro's client router swaps in a freshly parsed document whose root
-	// element comes from Starlight's default `<html data-theme="dark">` shell.
-	// Normalize the incoming document before the swap so users never see a
-	// dark-to-light flash between pages.
+	// Normalize incoming client-routed documents before the swap so the visual
+	// theme stays stable across page changes.
 	document.addEventListener('astro:before-swap', (event) => {
 		applyLightTheme(event.newDocument);
 	});

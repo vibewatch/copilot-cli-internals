@@ -6,6 +6,8 @@
 
 :root,
 :root[data-theme='light'] {
+  color-scheme: light;
+
   /* Accent (yellow-orange CTA) ------------------------------------------ */
   --sl-color-accent-low: #fde9b8;
   --sl-color-accent: var(--tk-color-primary);
@@ -57,32 +59,6 @@
   --sl-nav-height: var(--tk-nav-height);
   --sl-nav-pad-x: var(--tk-space-xl);
   --sl-nav-pad-y: 0px;
-}
-
-/* The site is intentionally light-only (cream canvas IS the brand). Force
- * dark mode to fall back to the same tokens so users with dark OS prefs
- * still see the PostHog-style cream sheet. */
-:root[data-theme='dark'] {
-  color-scheme: light;
-}
-:root[data-theme='dark'],
-:root[data-theme='dark'] :root {
-  --sl-color-white: var(--tk-color-ink);
-  --sl-color-gray-1: var(--tk-color-ink);
-  --sl-color-gray-2: var(--tk-color-charcoal);
-  --sl-color-gray-3: var(--tk-color-body);
-  --sl-color-gray-4: var(--tk-color-mute);
-  --sl-color-gray-5: var(--tk-color-ash);
-  --sl-color-gray-6: var(--tk-color-hairline);
-  --sl-color-gray-7: var(--tk-color-hairline-soft);
-  --sl-color-black: var(--tk-color-canvas);
-  --sl-color-text: var(--tk-color-body);
-  --sl-color-bg: var(--tk-color-canvas);
-  --sl-color-bg-nav: var(--tk-color-canvas);
-  --sl-color-bg-sidebar: var(--tk-color-canvas);
-  --sl-color-bg-inline-code: var(--tk-color-surface-soft);
-  --sl-color-accent: var(--tk-color-primary);
-  --sl-color-bg-accent: var(--tk-color-primary);
 }
 
 /* Background canvas — runs edge to edge (no shaded section bands). */
