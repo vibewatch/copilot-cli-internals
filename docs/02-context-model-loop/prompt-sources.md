@@ -55,7 +55,7 @@ The extractable set includes prompt-like strings and files that ship with the pa
 | Tool descriptions and schemas | `app.js`, MCP servers, SDK extensions, plugins | Medium | Model-visible, but mixed with many non-prompt UI/schema strings. |
 | Provider request formatting | `app.js` around lines 3439-3470 | High for structure, not content | Shows how assembled prompts become provider request payloads. |
 
-## What is not fully extractable from `app.js`
+## What is not fully extractable from app.js
 
 A final prompt cannot be reconstructed from `app.js` alone when it depends on runtime state.
 

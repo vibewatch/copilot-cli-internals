@@ -1,8 +1,6 @@
 # Shell command execution events
 
-## What this page covers
-
-Use this page to answer **what happens inside the shell tool after the generic tool pipeline selects `bash` or `powershell`?** It owns process/session behavior: PTY vs process backend, sync/async/detach modes, background task tracking, large output buffering, input forwarding, completion notifications, and shutdown.
+Shell execution begins after the generic tool pipeline has selected a command tool such as `bash` or `powershell`. From there, the shell manager chooses the PTY or process backend, tracks sync/async/detached commands, buffers large output, forwards input, sends completion notifications, and shuts down shell sessions.
 
 Read [Built-in tools, execution events, and results](built-in-tools-execution-events.md) for the generic tool lifecycle before the shell callback. Read [Sandbox implementation](sandboxing.md) for MXC policy enforcement. Read [Terminal setup and shell environment](../01-runtime-lifecycle/terminal-setup-and-shell-environment.md) for keyboard/multiline setup, which is intentionally separate from command execution.
 

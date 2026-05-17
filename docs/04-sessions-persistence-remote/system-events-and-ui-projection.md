@@ -42,7 +42,7 @@ flowchart TD
 
 The important design point is that session events have multiple projections. The same event stream can drive model replay, terminal UI, ACP/JSON-RPC clients, remote control, telemetry, and persistence.
 
-## `system.message`
+## system.message
 
 `system.message` is the clearest model-visible system event. Its schema includes:
 
@@ -56,7 +56,7 @@ During event processing, `system.message` calls `upsertSystemContextMessage(...)
 
 This means `system.message` is not just UI copy. It mutates the model context used for future calls.
 
-## `system.notification`
+## system.notification
 
 `system.notification` is runtime-generated notification text, typically wrapped in `<system_notification>` XML tags. Its schema includes:
 
@@ -101,7 +101,7 @@ Two details matter:
 - The model sees system notifications as **user-role content** containing the XML-wrapped `<system_notification>` block, not as a new provider-level role.
 - `instruction_discovered` is unusual: the on-demand instruction loader emits `system.notification` directly from the file-access callback instead of calling `sendSystemNotification(...)`, and replay filters it out of model chat history. The actual instruction text is loaded through the dynamic instruction pipeline.
 
-The system prompt includes a companion `<system_notifications>` rule telling the model to acknowledge relevant notifications briefly, avoid repeating them verbatim, and never generate its own `<system_notification>` tags. That prompt contract is cataloged in [`app-js-prompt-catalog.md`](../02-context-model-loop/app-js-prompt-catalog.md#system-notifications-prompt).
+The system prompt includes a companion `<system_notifications>` rule telling the model to acknowledge relevant notifications briefly, avoid repeating them verbatim, and never generate its own `<system_notification>` tags. That prompt contract is cataloged in [Prompt catalog](../02-context-model-loop/prompt-catalog.md#system-notifications-prompt).
 
 ### System notification kinds
 
@@ -148,7 +148,7 @@ system.notification({
 
 The notification is visible as a runtime event and telemetry signal, but the chat-message replay path filters it out from model-visible user content. The actual instruction content is handled through the dynamic instruction loader, not by relying on the notification text as the instruction.
 
-## `session.info`, `session.warning`, and `session.error`
+## session.info, session.warning, and session.error
 
 These events are timeline/status messages rather than prompt messages.
 
@@ -189,7 +189,7 @@ Examples include:
 
 Ephemeral does not mean unimportant. It means the event is primarily a live UI/protocol state update rather than a stable model message.
 
-## `pending_messages.modified`
+## pending_messages.modified
 
 This event has an empty payload. Its only meaning is that the pending prompt/message queue changed.
 
@@ -202,7 +202,7 @@ It is emitted when:
 
 Clients use it to refresh queue indicators, pending prompt counts, or status displays.
 
-## `session.custom_notification`
+## session.custom_notification
 
 `session.custom_notification` carries opaque custom notification data with a source-defined payload. The schema includes version/source/subject/payload-like fields rather than a fixed event-specific shape.
 

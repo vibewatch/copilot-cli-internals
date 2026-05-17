@@ -303,7 +303,7 @@ For CLI-originated remote tasks, the attach path can create a remote-backed sess
 - Organization/repository policy can block remote sessions, reported as `policy_blocked`.
 - Persisted Mission Control IDs allow reattachment and reduce duplicate remote sessions.
 
-## What is not visible from `app.js`
+## What is not visible from app.js
 
 The bundled client reveals the local implementation and the HTTP contract it calls, but not the server-side Mission Control implementation. Specifically, `app.js` does not show:
 

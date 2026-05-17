@@ -48,7 +48,7 @@ This is different from binary compression and also different from long-term memo
 | Memory pressure trigger | Emergency compaction | `respondToMemoryPressure()` | `app.js` 4481 | After garbage collection, can trigger manual-style compaction if session history is large enough. |
 | Remote session gap | Remote compaction unsupported | `RemoteSession.compactHistory()` | `app.js` 4489 | Remote sessions throw because local compaction is not implemented for that class. |
 
-## Manual `/compact` workflow
+## Manual /compact workflow
 
 The manual path starts from the slash command and ends by mutating the session's in-memory chat messages.
 
@@ -125,7 +125,7 @@ The default thresholds are encoded in `CompactionProcessor`:
 
 The background path is intentionally opportunistic. At roughly 80 percent utilization, it starts a summary request in the background while the current turn can continue. At roughly 95 percent utilization, or after a provider context-limit failure, it waits for the summary and applies it before sending the next request.
 
-## Request-time prompt trimming: `BasicTruncator`
+## Request-time prompt trimming: BasicTruncator
 
 Compaction is not the only protection against an overlong prompt. In the main agentic request pipeline, processors are registered in this order around the model call:
 

@@ -44,7 +44,7 @@ flowchart TD
     Forwarder --> RemoteExporter["Mission Control exporter"]
 ```
 
-## `api.schema.json`
+## api.schema.json
 
 `api.schema.json` describes **86 JSON-RPC methods** across three owner groups:
 
@@ -73,7 +73,7 @@ The generated SDK files are the clearest consumer of this schema:
 
 When cross-checking against `app.js`, exact string matching is useful but not sufficient. The bundled/minified server code only exposes some RPC names verbatim, while the generated SDK wrapper contains the full schema method list. Treat `app.js` as the runtime implementation and `copilot-sdk/generated/rpc.d.ts` / `copilot-sdk/index.js` as the canonical generated client surface.
 
-## `session-events.schema.json`
+## session-events.schema.json
 
 `session-events.schema.json` defines a discriminated union rooted at `#/definitions/SessionEvent`. A script-assisted inventory found **99 concrete event type strings**; **40** of those event definitions are explicitly ephemeral-only in the schema.
 
@@ -104,7 +104,7 @@ Every event has the same envelope pattern:
 | Compaction/history/remote | `session.compaction_start`, `session.compaction_complete`, `session.snapshot_rewind`, `session.truncation`, `session.handoff`, `session.remote_steerable_changed` | Supports history mutation, handoff, checkpoint/rewind, and remote session state. |
 | System notifications/hooks | `system.message`, `system.notification`, `hook.start`, `hook.end`, `instruction_discovered`, `new_inbox_message`, `shell_completed`, `shell_detached_completed`, `agent_completed`, `agent_idle` | Powers UI notifications, hook lifecycle output, and shell/task completion notices. |
 
-## `app.js` runtime cross-check
+## app.js runtime cross-check
 
 The runtime behavior in `app.js` lines up with the schema shape:
 
@@ -141,9 +141,9 @@ sequenceDiagram
     Note over Runtime,Remote: Ephemeral events are forwarded live but skipped for replay/backfill markers
 ```
 
-## How to use this chapter
+## Questions this chapter answers
 
-Use this page when answering questions such as:
+This chapter is the schema map for questions such as:
 
 - Which SDK calls are stable versus experimental?
 - Which methods are scoped to a session and therefore require `sessionId`?

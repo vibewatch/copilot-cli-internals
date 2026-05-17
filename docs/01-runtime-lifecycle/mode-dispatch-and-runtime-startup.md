@@ -41,7 +41,7 @@ flowchart TD
     CommanderDispatch -- root --> MainAction["run main app action"]
 ```
 
-## `preAction` setup
+## preAction setup
 
 The `preAction` hook prepares configuration paths before command actions run. It handles `COPILOT_HOME`, deprecated `--config-dir`, and settings migration.
 

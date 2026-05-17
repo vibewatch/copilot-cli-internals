@@ -38,7 +38,7 @@ flowchart TD
     ShellContext --> Subagents[Inherited child shell context]
 ```
 
-## What `/terminal-setup` does
+## What /terminal-setup does
 
 The command checks whether multiline terminal input already works. If so, it returns:
 
@@ -131,7 +131,7 @@ The session class has separate shell-related state:
 
 When subagents are created, the parent shell context can be passed down. On disposal, a session only shuts down shell processes if it owns the context rather than inheriting it.
 
-## Command history and `.copilot` state
+## Command history and .copilot state
 
 The loader/migration area lists `.copilot` state artifacts including:
 

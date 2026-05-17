@@ -1,17 +1,10 @@
 # Plugins, extensions, and capabilities
 
-## What this page covers
-
-Use this page to answer **which external packages or extension processes can add capabilities to a session?** It owns contribution discovery and capability registration, not the final permission decision for each call.
+Plugins and SDK extensions both add capabilities to a session, but they enter the runtime through different paths. Plugins are declarative packages or local directories that contribute skills, agents, hooks, MCP servers, LSP servers, and metadata; extensions are programmatic `@github/copilot-sdk` child processes that register capabilities through a live session bridge.
 
 Read [Runtime tool assembly and filtering](runtime-tool-assembly-and-filtering.md) for how contributed tools join the final model-visible set, [Copilot SDK extension bridge](copilot-sdk-extension-bridge.md) for programmatic extension child processes, and [Hooks, events, and automation](hooks-events-and-automation.md) for hook-specific behavior.
 
-In `app.js`, plugins and extensions are related but not identical:
-
-- **Plugins** are installable packages or local directories that contribute declarative assets such as skills, agents, hooks, MCP servers, LSP servers, and metadata.
-- **Extensions** are programmatic `@github/copilot-sdk` integrations loaded into a session when the `EXTENSIONS` feature gate and config discovery allow it.
-
-Both eventually add capabilities to a session, but they enter the runtime through different loaders and persistence paths.
+The distinction matters because discovery, persistence, and runtime registration are separate even when both ultimately affect the session's available capabilities.
 
 | Contribution path | Owned by this page | Handoff |
 |---|---|---|

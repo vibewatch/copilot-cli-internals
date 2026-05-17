@@ -1,12 +1,10 @@
 # Integration config entrypoints
 
-## What this page covers
-
-Use this page as a cross-reference for **which startup/config/auth entry point feeds which focused implementation page**. It is intentionally an entrypoint map: it keeps root-level flow diagrams and source anchors here, while detailed MCP, plugin, permission, settings, auth/provider, and update behavior lives in narrower pages.
+Startup, configuration, and authentication logic in `app.js` fans out into several narrower runtime systems. This page is the cross-reference map for those entrypoints: it keeps the root flow diagrams and source anchors here, while detailed MCP, plugin, permission, settings, auth/provider, and update behavior lives on focused pages.
 
 If you need depth, jump from this page to [MCP host, transports, and tools](mcp-host-transport-and-tools.md), [Plugins, extensions, and capabilities](plugins-extensions-and-capabilities.md), [Tool, path, and URL permissions](tool-path-url-permissions.md), [Settings and configuration persistence](settings-config-persistence.md), [Models, providers, and authentication workflows](../02-context-model-loop/models-providers-auth.md), or [Telemetry, update, and shutdown](../05-hosted-agent-ops/telemetry-update-and-shutdown.md).
 
-This file focuses on the major cross-cutting systems wired into `app.js`: MCP, plugins/extensions, permission rules, authentication/provider selection, login, and update behavior.
+The anchors below cover the major cross-cutting surfaces wired into startup: MCP, plugins/extensions, permission rules, authentication/provider selection, login, and update behavior.
 
 ## Source anchors
 
@@ -70,7 +68,7 @@ flowchart TD
     NeedsLogin --> Runtime
 ```
 
-## `copilot login` workflow
+## copilot login workflow
 
 The `login` subcommand uses OAuth device/browser flow and stores the resulting token in the system credential store when possible. If the keychain is unavailable, it can ask whether to store the token in a plaintext config file.
 
@@ -138,7 +136,7 @@ flowchart TD
     Get --> Merge
 ```
 
-### `copilot mcp add` decision flow
+### copilot mcp add decision flow
 
 ```mermaid
 flowchart TD

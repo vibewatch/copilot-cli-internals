@@ -1,6 +1,6 @@
 # Further documentation opportunities for Copilot CLI
 
-This report summarizes a second-pass, script-assisted scan of the extracted Copilot CLI `app.js` bundle to identify areas that are still worth turning into focused implementation documents. For the current reusable scan workflow and generated source indexes, see [`app-js-source-atlas.md`](app-js-source-atlas.md).
+This report summarizes a second-pass, script-assisted scan of the extracted Copilot CLI `app.js` bundle to identify areas that are still worth turning into focused implementation documents. For the current reusable scan workflow and generated source indexes, see [Source atlas](source-atlas.md).
 
 The current documentation set already covers the major runtime shape, prompts, memory/context board, compaction, loader/bootstrap, CLI routing, TUI, Tree-sitter, sessions, remote control, MCP, permissions, sandboxing, models/providers/auth, model API routing, resilience, task orchestration, autopilot, fleet mode, feature gates, and observability. The candidates below are therefore biased toward **implementation surfaces that are present in `app.js` but only partially covered or scattered across existing docs**.
 

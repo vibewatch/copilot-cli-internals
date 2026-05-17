@@ -1,10 +1,8 @@
 # Runtime tool assembly and filtering
 
-## What this page covers
+Before a model call can run, the runtime has to decide which tools are visible and executable in the current session. Session options, model/provider config, MCP and external tool discovery, selected-agent filters, and deferred loading all converge here before any specific tool call exists.
 
-Use this page to answer **which tools can the model call in this session, and why this exact set?** It owns the pre-execution boundary: session options, model/provider config, MCP/external tool discovery, selected-agent filters, and deferred loading all converge here before a tool call exists.
-
-This page does **not** explain how a tool runs after selection. Continue to [Built-in tools, execution events, and results](built-in-tools-execution-events.md) for callback execution, [Shell command execution events](shell-command-execution-events.md) for process management, and [Tool, path, and URL permissions](tool-path-url-permissions.md) for approvals.
+For what happens after a tool is selected, continue to [Built-in tools, execution events, and results](built-in-tools-execution-events.md) for callback execution, [Shell command execution events](shell-command-execution-events.md) for process management, and [Tool, path, and URL permissions](tool-path-url-permissions.md) for approvals.
 
 The short version: tool assembly is a two-stage pipeline. First, model/provider configuration selects a `toolInit` function that gathers built-in tools. Then the session runtime merges those built-ins with MCP and external tools, validates allow/exclude filters, applies selected-agent constraints, adds deferred `tool_search` when needed, and publishes `session.tools_updated`.
 
@@ -160,7 +158,7 @@ The selected-agent filter is stricter than the default-agent filter:
 
 This explains a common reverse-engineering pitfall: `availableTools` and custom-agent `tools` are not the same thing. `availableTools` is a session-wide allowlist. A selected custom agent's `tools` field is a top-level agent policy that runs after the session-wide candidate universe exists.
 
-## Deferred loading and `tool_search`
+## Deferred loading and tool_search
 
 Large MCP/custom toolsets can overwhelm the prompt with schemas. The runtime handles this with deferred loading.
 

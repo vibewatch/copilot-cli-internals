@@ -98,7 +98,7 @@ export default defineConfig({
           items: [
             { label: 'Overview', link: '/02-context-model-loop/' },
             { label: 'Prompt sources', link: '/02-context-model-loop/prompt-sources/' },
-            { label: 'app.js prompt catalog', link: '/02-context-model-loop/app-js-prompt-catalog/' },
+            { label: 'Prompt catalog', link: '/02-context-model-loop/prompt-catalog/' },
             { label: 'Attachments and file ingestion', link: '/02-context-model-loop/attachments-and-file-ingestion/' },
             { label: 'Memory and context board', link: '/02-context-model-loop/memory-and-context-board/' },
             { label: 'Conversation compaction', link: '/02-context-model-loop/conversation-compaction/' },
@@ -173,7 +173,7 @@ export default defineConfig({
           label: 'Research atlas',
           items: [
             { label: 'Overview', link: '/99-research-atlas/' },
-            { label: 'app.js source atlas', link: '/99-research-atlas/app-js-source-atlas/' },
+            { label: 'Source atlas', link: '/99-research-atlas/source-atlas/' },
             { label: 'MXC sandbox binary notes', link: '/99-research-atlas/mxc-sandbox-binary-notes/' },
             { label: 'Documentation opportunities', link: '/99-research-atlas/documentation-opportunities/' },
           ],

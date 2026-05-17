@@ -171,7 +171,7 @@ sequenceDiagram
 
 The important distinction is that multi-turn follow-up is explicit. The main agent sends another prompt/message to the idle agent; the agents still do not share a live call stack or streaming internal thoughts.
 
-### Method-level `TaskRegistry` call paths
+### Method-level TaskRegistry call paths
 
 The source-level registry methods are worth documenting separately because they explain why background agents, sync agents that become promotable, multi-turn agents, and MCP task records all appear in the same task UI.
 
@@ -275,7 +275,7 @@ flowchart LR
 
 The `task` tool’s valid agent types are the active built-ins plus custom agents whose names normalize into the custom-agent map. If both a built-in and custom agent could handle a task, the prompt instructions tell the model to prefer the custom agent because it may contain environment-specific knowledge.
 
-## The `task` tool lifecycle
+## The task tool lifecycle
 
 The tool named `task` is constructed by `createTaskTool(...)`. Its input schema requires:
 
@@ -457,7 +457,7 @@ flowchart TD
 
 `assembleSubagentTools(...)` is the recursive tool-assembly point for subagents. It increments `subAgentDepth`, disables background notifications inside subagents, assembles tools by recursively calling `assembleRuntimeTools(...)`, and injects the `task` tool plus helpers such as agent read/write tools when enabled. It chooses between session-based subagents and executor-based subagents behind the `SESSION_BASED_SUBAGENTS` feature flag.
 
-### `SessionAgentExecutor` method flow
+### SessionAgentExecutor method flow
 
 The session-based executor (`dZ`) is the built-in-agent path behind `SESSION_BASED_SUBAGENTS`. It creates a child session rather than running a loose callback. That makes hooks, skills, tool initialization, selected model, events, and teardown look like a normal session lifecycle.
 
@@ -718,7 +718,7 @@ Background subagents and MCP tasks finish through `TaskRegistry.complete(...)`, 
 
 They do **not** automatically call `task_complete` for the main task. A completed background agent means delegated work finished; the main agent still has to synthesize results, perform remaining validation, and call `task_complete` if the overall user request is done.
 
-## Subconscious / `rem-agent`
+## Subconscious / rem-agent
 
 There are two observed paths into the memory-consolidation agent:
 

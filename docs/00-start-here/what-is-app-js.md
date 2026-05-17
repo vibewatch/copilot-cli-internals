@@ -1,4 +1,4 @@
-# `app.js` overview
+# app.js overview
 
 `app.js` is the bundled main implementation of the GitHub Copilot CLI package extracted from the binary distribution.
 
@@ -22,7 +22,7 @@ Observed bundle shape (approximate, will drift release-to-release):
 
 This is the artifact-identity page for [Start here](README.md). Read it before the [main feature map](main-feature-map.md) when you need package boundaries, high-level responsibilities, and caveats about bundled/minified source. It intentionally stays broad; detailed runtime flow begins in [Runtime lifecycle](../01-runtime-lifecycle/README.md), and subsystem-specific source anchors live in the later internals chapters.
 
-## What `app.js` does
+## What app.js does
 
 At a high level, `app.js` is the runtime brain of the Copilot CLI. It:
 

@@ -10,7 +10,7 @@ The analyzed implementation is split across `app.js` and three bundled worker fi
 
 Because these files are bundled/minified, line numbers are approximate. The worker bundles are mostly one-line payloads, so the exact string anchors and offsets are more useful than line numbers.
 
-This is the voice backend deep dive for [Runtime lifecycle](README.md). Read [Voice mode and Foundry Local](voice-mode-foundry-local.md) first for the user-facing command/settings path, then use this page to trace worker-thread RPC, microphone PCM capture, runtime installation, model loading, streaming previews, final transcription, and cleanup. The resulting text re-enters the normal prompt/session flow rather than creating a separate model pipeline.
+For the user-facing command and settings path, start with [Voice mode and Foundry Local](voice-mode-foundry-local.md). The sections below trace worker-thread RPC, microphone PCM capture, runtime installation, model loading, streaming previews, final transcription, and cleanup; the resulting text re-enters the normal prompt/session flow rather than creating a separate model pipeline.
 
 ## Source anchors
 
@@ -58,7 +58,7 @@ The split is deliberate. The main TUI process owns settings, UI state, status te
 - PCM buffers are transferred rather than copied when possible;
 - shutdown can terminate or dispose each subsystem independently.
 
-## Main-thread controller in `app.js`
+## Main-thread controller in app.js
 
 The voice controller created by `qHo(...)` is the runtime coordinator. It keeps a small state machine in React state:
 
@@ -84,7 +84,7 @@ The `enable({ modelId })` path serializes work through an internal promise chain
 
 When the selected model changes, `qHo(...)` cancels any current recording before switching the active model. On fatal backend failure, it aborts the active controller, moves to `error`, and disposes the owned mic/client pair.
 
-## Recording bridge: `$Ho(...)`
+## Recording bridge: $Ho(...)
 
 `$Ho(...)` is the short-lived object for one recording. It joins a loaded model handle from `GHo(...)` with the microphone source from `HHo(...)`.
 

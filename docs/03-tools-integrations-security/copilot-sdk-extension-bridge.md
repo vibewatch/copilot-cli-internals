@@ -1,12 +1,10 @@
 # Copilot SDK extension bridge
 
-## What this page covers
-
-Use this page to answer **how does `@github/copilot-sdk` code join a running CLI session without being imported into the main process?** It owns extension child-process lifecycle, stdio JSON-RPC, `joinSession()`, capability registration, extension management tools, and `session.extensions_loaded` status.
+SDK extensions join a running CLI session as separate Node.js child processes rather than being imported into the main process. The runtime discovers `extension.mjs` files, launches them, lets `joinSession()` register capabilities over stdio JSON-RPC, and reports status through `session.extensions_loaded`.
 
 Read [Plugins, extensions, and capabilities](plugins-extensions-and-capabilities.md) for plugin packaging and manifest contributions. Read [Built-in tools, execution events, and results](built-in-tools-execution-events.md) for what happens when an extension-provided tool is invoked.
 
-The short version: when the `EXTENSIONS` feature gate is active and extension loading is enabled for a session, the runtime discovers `extension.mjs` files, launches them as child processes, lets them call `joinSession()`, wires their registered capabilities into the session, and reports status through `session.extensions_loaded`.
+The main boundaries are:
 
 | Boundary | Runtime behavior |
 |---|---|

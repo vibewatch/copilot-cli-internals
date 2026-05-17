@@ -1,8 +1,6 @@
 # Built-in tools, execution events, and results
 
-## What this page covers
-
-Use this page to answer **what happens after the model emits a tool call?** It owns the execution boundary shared by built-in tools, MCP tools, SDK extension tools, custom tools, and task/subagent tools.
+After the model emits a tool call, every tool source passes through a shared execution boundary. Built-in tools, MCP tools, SDK extension tools, custom tools, and task/subagent tools all converge on the same normalization, guard, callback, event, and result-recording path.
 
 Read [Runtime tool assembly and filtering](runtime-tool-assembly-and-filtering.md) first if the question is why the tool was visible. Read [Tool, path, and URL permissions](tool-path-url-permissions.md) if the question is why the tool was approved or denied. Read [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) when you need to know how these events replay or project to clients.
 

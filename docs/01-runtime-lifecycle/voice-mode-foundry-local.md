@@ -53,7 +53,7 @@ The static feature table includes `VOICE:"staff"`. The slash-command list is the
 
 The `/voice` command itself is marked `staffOnly: true` in the analyzed bundle. That means the command implementation can exist in the binary even when it is not visible to most users.
 
-## `/voice` command behavior
+## /voice command behavior
 
 The command accepts these subcommands:
 

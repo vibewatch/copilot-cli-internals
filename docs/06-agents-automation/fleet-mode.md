@@ -83,7 +83,7 @@ Plan mode can offer an `autopilot_fleet` action. When selected, the runtime exit
 Accept plan and build on autopilot + /fleet
 ```
 
-## What `session.fleet.start` does
+## What session.fleet.start does
 
 The fleet API implementation is small. It builds a prompt and sends it into the existing session:
 

@@ -70,7 +70,7 @@ The key distinction is **cataloged** versus **active** versus **YAML-backed**:
 
 ## Per-agent notes
 
-### `general-purpose`
+### general-purpose
 
 `general-purpose` is the broadest built-in. The runtime constants give it the display name `General Purpose Agent` and describe it as a full-capability agent running in a separate context window with the complete toolset.
 
@@ -81,7 +81,7 @@ Unlike the other built-ins, there is no `copilot-cli-pkg/definitions/general-pur
 
 Use it when a delegated job needs broad autonomy and the full CLI tool surface. Prefer narrower agents when the task is just exploration, command execution, review, research, or critique.
 
-### `explore`
+### explore
 
 `explore` is optimized for quick codebase investigation. Its YAML description says it uses code intelligence plus search/read/shell tools in a separate context window and is safe to call in parallel.
 
@@ -93,7 +93,7 @@ Notable packaged traits:
 
 The task-tool instructions also warn not to use `explore` for tiny lookups that the main agent can do directly with `grep`/`glob`/`view`. Its sweet spot is cross-cutting investigation across many modules or parallel independent search threads.
 
-### `task`
+### task
 
 `task` is a command-execution subagent, not the same thing as the model-visible `task` tool. The shared name is easy to confuse:
 
@@ -110,7 +110,7 @@ The YAML-backed Task Agent has `tools: ["*"]` and model `claude-haiku-4.5`. Its 
 
 This keeps verbose successful command output out of the main conversation while preserving complete failure evidence.
 
-### `code-review`
+### code-review
 
 `code-review` is the high signal-to-noise reviewer. Its YAML prompt explicitly forbids code modification and tells it to surface only material issues:
 
@@ -123,7 +123,7 @@ This keeps verbose successful command output out of the main conversation while 
 
 It intentionally does **not** comment on style, formatting, naming, grammar, minor refactors, or uncertain best-practice advice. The `/review` slash command injects a prompt that routes the main agent toward `task` with `agent_type: "code-review"`.
 
-### `research`
+### research
 
 `research` is the deeper research worker used by the `/research` orchestration flow. Its packaged prompt requires autonomous searches with citations and emphasizes "search to discover, fetch to investigate": use a few searches to find repositories and paths, then fetch/read concrete files.
 
@@ -135,7 +135,7 @@ Notable packaged traits:
 
 The `/research` macro builds a strict top-level orchestrator prompt. That top-level agent is told to manage the project and delegate investigation to several `research` subagents through the `task` tool instead of researching directly.
 
-### `rubber-duck`
+### rubber-duck
 
 `rubber-duck` is a constructive critic. Its YAML prompt frames it as a "devil's advocate" that reviews plans, designs, implementations, or tests and reports only issues that matter to project success.
 
@@ -148,7 +148,7 @@ Important details:
 
 This agent is best understood as an internal quality loop: it gives the main agent independent critique, while the main agent remains responsible for deciding what to do with the feedback.
 
-### `rem-agent`
+### rem-agent
 
 `rem-agent` is the memory-consolidation built-in. Its YAML says it reads a per-session trajectory and updates the dynamic context board through the `context_board` tool. It is not intended for spontaneous use.
 

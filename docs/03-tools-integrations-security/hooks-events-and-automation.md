@@ -1,12 +1,10 @@
 # Hooks, events, and automation
 
-## What this page covers
-
-Use this page to answer **where can user/plugin automation intercept the runtime, and what can it change?** It owns hook configuration, validation, execution events, security restrictions, and the adapters that let hooks modify prompts, permissions, and tool results.
+Hooks are validated runtime integrations that let user configuration or plugins intercept key points in a session. They can add context, influence permission decisions, modify tool arguments or results, emit notifications, and leave `hook.start` / `hook.end` events for replay and diagnostics.
 
 Read [Tool, path, and URL permissions](tool-path-url-permissions.md) for the central approval engine, [Built-in tools, execution events, and results](built-in-tools-execution-events.md) for tool callback timing, and [Plugins, extensions, and capabilities](plugins-extensions-and-capabilities.md) for plugin-provided hooks.
 
-The implementation is not just “run a script.” `app.js` defines a hook schema, compatibility aliases, discovery/merge logic, security restrictions for HTTP hooks, hook start/end events, and output adapters that can change prompts, approvals, and tool results.
+The implementation is more than “run a script.” `app.js` defines a hook schema, compatibility aliases, discovery/merge logic, security restrictions for HTTP hooks, hook start/end events, and output adapters that can change prompts, approvals, and tool results.
 
 | Hook effect | Runtime consequence |
 |---|---|

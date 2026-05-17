@@ -64,7 +64,7 @@ flowchart TD
     IndexRuntime --> App["app.js"]
 ```
 
-## `index.js` update/restart wrapper
+## index.js update/restart wrapper
 
 The JavaScript loader wrapper does more than import `app.js`. It chooses the active package version, supports auto-update cache locations, spawns a child process with `COPILOT_RUN_APP=1`, forwards signals, and handles restart exit code `75`.
 
@@ -90,7 +90,7 @@ flowchart TD
     RestartFile --> SpawnChild
 ```
 
-## Early `app.js` bootstrap
+## Early app.js bootstrap
 
 The beginning of `app.js` sets up ESM/CommonJS compatibility and a restricted `require` shim. It allows built-in Node modules and selected vendored native modules, but rejects resolved module paths outside the application directory.
 

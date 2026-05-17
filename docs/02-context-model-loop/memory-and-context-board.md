@@ -267,7 +267,7 @@ flowchart LR
     ToolGet --> Full["full content + read_count increment"]
 ```
 
-## The `context_board` tool
+## The context_board tool
 
 The `context_board` tool manages dynamic context board entries. It supports four commands:
 
@@ -299,7 +299,7 @@ flowchart TD
     Prune --> Delete["delete src=agent item only"]
 ```
 
-## `rem-agent` consolidation
+## rem-agent consolidation
 
 `rem-agent` is the built-in memory-consolidation agent. Its YAML definition gives it only the `context_board` tool and includes a special consolidation prompt. It does not include environment context, custom-agent instructions, or parallel-tool-calling prompt parts.
 
@@ -329,7 +329,7 @@ sequenceDiagram
 
 The key instruction is that `rem-agent` is an **offline memory-consolidation worker**. Conversation turns, board entries, and checkpoints are historical evidence, not a new user task. The agent is told to treat file paths and symbols as opaque labels and to output only `context_board` add/prune calls.
 
-## Manual `/subconscious run`
+## Manual /subconscious run
 
 The manual path starts from a slash command. The command itself does not directly mutate the board. Instead, it returns an agent prompt that tells the main agent to call `task` exactly once.
 

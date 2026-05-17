@@ -1,14 +1,10 @@
 # Web search, URL fetching, and URL permissions
 
-## What this page covers
-
-Use this page to answer **how can the runtime access web content, and which URL policy gates that access?** It owns the `web_fetch` tool, the GitHub MCP `web_search` shim, URL permission requests, URL allow/deny settings, CLI URL flags, and web feature gates.
+Web access in the bundle is split across several runtime surfaces rather than one generic network capability. `web_fetch` retrieves specific URLs, the built-in GitHub MCP integration can expose `web_search`, and URL allow/deny policy, permission prompts, CLI flags, and feature gates decide whether those tools can reach a target.
 
 Read [MCP host, transports, and tools](mcp-host-transport-and-tools.md) when the search surface comes from GitHub MCP, and [Tool, path, and URL permissions](tool-path-url-permissions.md) when the question is whether a URL can be accessed without prompting.
 
-In the analyzed `app.js`, web access is split across a built-in `web_fetch` tool, a GitHub MCP web-search compatibility shim, URL allow/deny settings, permission requests, CLI flags, and feature gates.
-
-The important implementation point is that “web” capability is not one tool:
+That separation matters in practice:
 
 - `web_fetch` retrieves a specific URL and converts HTML to markdown/raw output.
 - `web_search` is exposed through the built-in GitHub MCP server by renaming `github-mcp-server-web_search` when appropriate.
@@ -49,7 +45,7 @@ flowchart TD
     SearchResults --> Model
 ```
 
-## Built-in `web_fetch`
+## Built-in web_fetch
 
 The built-in `web_fetch` tool is defined around line `1144`. Its description says it:
 
@@ -67,7 +63,7 @@ The input schema includes:
 
 This tool is URL-specific. It does not perform general search by itself.
 
-## `web_search` through GitHub MCP
+## web_search through GitHub MCP
 
 The bundle defines two names:
 

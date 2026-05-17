@@ -1,4 +1,4 @@
-# `app.js` source atlas and generated indexes
+# Source atlas and generated indexes
 
 This page explains how to keep a navigable map of the huge, bundled `copilot-cli-pkg/app.js` file without hand-reading all 8k+ minified lines. It pairs a generated inventory under `source-atlas/` with curated semantic anchors in the wiki.
 
@@ -84,7 +84,7 @@ Use these as top-level routes through the bundle.
 |---|---|---|---|
 | Startup and runtime mode routing | `copilot` argv, stdin, TTY, global options | `RootProgram`, `j$o`, `u1t`, `--server`, `--headless`, `--acp` | [`main-feature-map.md`](../00-start-here/main-feature-map.md), [`mode-dispatch-and-runtime-startup.md`](../01-runtime-lifecycle/mode-dispatch-and-runtime-startup.md) |
 | Session and event lifecycle | new/resume/continue/name/fork/session APIs | `session.start`, `Session.send`, `tool.execution_complete`, `session.task_complete`, `session.idle` | [`session-manager-and-event-replay.md`](../04-sessions-persistence-remote/session-manager-and-event-replay.md), [`system-events-and-ui-projection.md`](../04-sessions-persistence-remote/system-events-and-ui-projection.md) |
-| Prompt and context assembly | session initialization, subagent creation, slash command prompt macro, provider request | `buildSystemPrompt`, `X3e`, `Wmt`, `currentSystemMessage`, custom-instruction and skill loaders | [`prompt-sources.md`](../02-context-model-loop/prompt-sources.md), [`app-js-prompt-catalog.md`](../02-context-model-loop/app-js-prompt-catalog.md) |
+| Prompt and context assembly | session initialization, subagent creation, slash command prompt macro, provider request | `buildSystemPrompt`, `X3e`, `Wmt`, `currentSystemMessage`, custom-instruction and skill loaders | [`prompt-sources.md`](../02-context-model-loop/prompt-sources.md), [`prompt-catalog.md`](../02-context-model-loop/prompt-catalog.md) |
 | Model request, streaming, retry, and compaction | agent turn needs a completion with tools | `getCompletionWithTools`, request processors, `BasicTruncator`, `CompactionProcessor`, rate-limit strings | [`model-api-routing.md`](../02-context-model-loop/model-api-routing.md), [`resilience-rate-limits-concurrency.md`](../02-context-model-loop/resilience-rate-limits-concurrency.md), [`conversation-compaction.md`](../02-context-model-loop/conversation-compaction.md) |
 | Runtime tool assembly | session/subagent tool initialization or tool surface invalidation | `HCr`, `assembleRuntimeTools`, `initializeAndValidateTools`, `session.tools_updated` | [`runtime-tool-assembly-and-filtering.md`](../03-tools-integrations-security/runtime-tool-assembly-and-filtering.md) |
 | Tool execution lifecycle | model emits a tool call | `tool.execution_start`, `preToolUse`, `permissionRequest`, `tool.execution_complete` | [`built-in-tools-execution-events.md`](../03-tools-integrations-security/built-in-tools-execution-events.md) |

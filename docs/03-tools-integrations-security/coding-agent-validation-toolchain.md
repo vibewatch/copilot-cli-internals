@@ -1,14 +1,10 @@
 # Coding-agent validation and review toolchain
 
-## What this page covers
-
-Use this page to answer **which validation tools can a coding-agent session expose before it declares work complete?** It owns the Code Review, CodeQL, secret-scanning, advisory, and `parallel_validation` toolchain, including feature gates, repo/base-commit inputs, budgets, trivial-change declarations, and telemetry.
+Coding-agent sessions can expose completion-time validators before declaring work complete. In the analyzed bundle, that layer includes Code Review, CodeQL, secret scanning, advisory checks, and the `parallel_validation` wrapper, with behavior shaped by feature gates, repo/base-commit inputs, timeout budgets, trivial-change declarations, and telemetry.
 
 Read [Built-in tools, execution events, and results](built-in-tools-execution-events.md) for the generic tool callback/event wrapper. Read [Hosted agent environment](../05-hosted-agent-ops/hosted-agent-environment.md) for hosted validation env toggles such as `COPILOT_AGENT_USE_CODEQL` and related switches.
 
-This page documents the completion-time validation layer in the extracted Copilot CLI bundle. Coding-agent sessions can expose validation tools that are specifically meant to run before the agent declares work complete.
-
-The important implementation detail is that these validators are not only ordinary tool callbacks. `app.js` assembles them from feature flags, repo/base-commit state, settings, and per-tool timeout budgets. Depending on flags, the model may see standalone `code_review` and `codeql_checker` tools, or a higher-level `parallel_validation` tool that runs both checks concurrently against a shared change set.
+These validators are not only ordinary tool callbacks. `app.js` assembles them from feature flags, repo/base-commit state, settings, and per-tool timeout budgets. Depending on flags, the model may see standalone `code_review` and `codeql_checker` tools, or a higher-level `parallel_validation` tool that runs both checks concurrently against a shared change set.
 
 ## Source anchors
 
@@ -75,7 +71,7 @@ Key gates:
 | `tools.validation.timeout` | Feeds the shared budgeter used by Code Review, CodeQL, and `parallel_validation`. |
 | `COPILOT_AGENT_USE_CODEQL`, `COPILOT_AGENT_USE_CCR`, `COPILOT_AGENT_USE_SECRET_SCANNING`, `COPILOT_AGENT_USE_DEPENDENCY_VULN` | Env overrides that can set validation tool enabled/disabled settings when validation-tool-settings support is enabled. |
 
-## `parallel_validation` call path
+## parallel_validation call path
 
 `parallel_validation` exists only when more than one underlying validation tool is active. It is not a generic scheduler; it is a focused wrapper around Code Review and CodeQL.
 
@@ -122,7 +118,7 @@ Implementation details from `Ulo(...)`:
 - `xjs(...)` runs each underlying tool task with `Promise.allSettled(...)`; `kjs(...)` converts each result into `{ success, durationMs, timedOut, alertCount, potentialSavingsMs }`.
 - `Rjs(...)` emits a Markdown report with one section per tool. If any tool timed out, the footer warns not to rerun validation; if any failed, the footer asks the model to address the issues and rerun after changes.
 
-## Code Review (`code_review`) call path
+## Code Review (code_review) call path
 
 The Code Review tool is a PR-shaped adapter around a bundled `autofind` binary and a Copilot callback payload.
 
@@ -169,7 +165,7 @@ Observed behaviors:
 | Result filtering | Returned alerts/comments with `meta.exclusionReason` are excluded from the model-visible comments count. |
 | Telemetry | Emits result class, model (`OKr()` returns `capi-prod-claude-sonnet-4.5` in this bundle), file extensions, reviewed files, comment query IDs, duration, trivial disagreement, and potential-savings metrics. |
 
-## CodeQL (`codeql_checker`) call path
+## CodeQL (codeql_checker) call path
 
 `CodeQLChecker` is a class-like implementation around CodeQL database setup and analysis. It is guarded by `copilot_swe_agent_enable_security_tool` plus settings and `includeCodeQLTool`.
 

@@ -1,14 +1,10 @@
 # IDE, LSP, and editor integration
 
-## What this page covers
-
-Use this page to answer **how does editor state become runtime capability without making the IDE mandatory?** It owns the optional IDE client bridge, selection/diagnostic/diff tools, session-title sync, auto-connect settings, and LSP configuration registry.
+IDE and LSP integration is optional runtime enrichment rather than a startup requirement. The CLI can run headless, but when an IDE client connects it can pull selection and diagnostic context, open editor diffs for file edits, synchronize the session title, and register LSP-related capabilities.
 
 Read [Runtime tool assembly and filtering](runtime-tool-assembly-and-filtering.md) for how IDE/LSP tools become part of the model-visible toolset, and [Plugins, extensions, and capabilities](plugins-extensions-and-capabilities.md) for plugin-contributed LSP servers.
 
-In the analyzed `app.js`, IDE support is built around a session-connected IDE client, a small set of IDE tools, TUI settings for auto-connect and diff display, and an LSP registry that can load user/project/plugin language-server configs.
-
-The implementation is intentionally optional. The CLI can run headless without an IDE, but when an IDE connection is available it can pull selection/diagnostic context, open editor diffs for file edits, synchronize the session title, and register IDE-related capabilities on the MCP/tool host.
+Inside `app.js`, that optional path is built around a session-connected IDE client, a small set of IDE tools, TUI settings for auto-connect and diff display, and an LSP registry that can load user/project/plugin language-server configs.
 
 Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted bundle and will shift across releases.
 

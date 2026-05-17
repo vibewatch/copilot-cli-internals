@@ -1,12 +1,8 @@
 # Settings and configuration persistence
 
-## What this page covers
-
-Use this page to answer **where does a policy or integration setting persist, and how does runtime state override it?** It owns config roots, JSON stores, settings migration, incremental writes, and persistent state for permissions, URLs, MCP, plugins, sandboxing, trusted folders, terminal prompts, and related policy knobs.
+Configuration state in this bundle spans multiple stores rather than one file. User settings, MCP/LSP configs, permission records, plugin metadata, sandbox and URL policy, trusted folders, terminal setup prompts, feature flags, auth metadata, and runtime session options are loaded from persistent roots and then overlaid by CLI or session state.
 
 Read [Tool, path, and URL permissions](tool-path-url-permissions.md) for how stored permission rules are evaluated, [MCP host, transports, and tools](mcp-host-transport-and-tools.md) for MCP config semantics, and [Plugins, extensions, and capabilities](plugins-extensions-and-capabilities.md) for plugin state users.
-
-In the analyzed `app.js`, configuration is not one file or one object. It is a family of stores and runtime overlays covering user settings, location permissions, MCP/LSP config, plugin state, sandbox policy, URL permissions, trusted folders, feature flags, auth metadata, terminal setup prompts, and session runtime options.
 
 | Store family | Main consumers |
 |---|---|
@@ -69,7 +65,7 @@ Each store has helpers for:
 
 The store helper caches loaded values by `configDir` and scope when caching is enabled. It also supports both `.json` and extensionless legacy file names.
 
-## `writeKey` semantics
+## writeKey semantics
 
 `writeKey` is used heavily because many commands update one setting without replacing the entire file.
 

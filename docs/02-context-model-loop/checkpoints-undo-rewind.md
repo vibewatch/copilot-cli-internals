@@ -73,7 +73,7 @@ After replay, it emits an ephemeral event:
 
 The event is ephemeral because it describes a runtime UI update about the snapshot operation rather than durable conversation content to keep for future replay.
 
-## `/undo` versus `/rewind`
+## /undo versus /rewind
 
 The evidence in `app.js` clearly exposes both slash-command constants and the shared `session.snapshot_rewind` mechanism. The exact command-to-target selection logic is minified/scattered, but the likely division is:
 

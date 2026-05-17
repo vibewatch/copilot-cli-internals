@@ -1,6 +1,6 @@
 # SessionFs provider and state-file lifecycle
 
-This page documents the `SessionFs` abstraction in the extracted Copilot CLI bundle: local session-state storage, SDK/RPC-backed filesystem providers, reverse calls, workspace artifacts, large-output files, and fork-time state copying.
+The `SessionFs` abstraction sits underneath session persistence and workspace artifacts in the extracted Copilot CLI bundle. It covers local session-state storage, SDK/RPC-backed filesystem providers, reverse calls, workspace files, large-output spill files, and fork-time state copying.
 
 It fills a gap left by [Session manager and event replay](session-manager-and-event-replay.md), which explains event-sourced sessions at a high level, and [API and session event schema contracts](api-and-session-event-schemas.md), which lists the JSON-RPC method surface.
 

@@ -77,7 +77,7 @@ flowchart TD
 
 The key routing asymmetry in the inspected bundle is that `noAskUser` is explicitly passed into the TUI branch. The prompt-mode branch receives the autopilot boolean and continuation limit, but no separate `noAskUser` property is visible in the root dispatch.
 
-## `--autopilot` implementation
+## --autopilot implementation
 
 `--autopilot` is implemented as an agent mode plus a completion protocol.
 
@@ -213,7 +213,7 @@ Autopilot mode is also treated specially by several human-interaction adapters:
 
 This is why autopilot can be autonomous but still bounded by the permission system.
 
-## `--no-ask-user` implementation
+## --no-ask-user implementation
 
 `--no-ask-user` is implemented by removing a capability and therefore preventing tool assembly from exposing `ask_user`.
 

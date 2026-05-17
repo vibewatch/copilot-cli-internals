@@ -1,4 +1,4 @@
-# Copilot CLI `app.js` reverse-engineering wiki
+# Copilot CLI app.js reverse-engineering wiki
 
 This wiki documents the extracted `@github/copilot` CLI bundle with source-anchored implementation notes. The analyzed artifact is:
 
@@ -73,7 +73,7 @@ flowchart TD
 | Understand hosted/cloud coding-agent behavior | [Hosted agent ops](05-hosted-agent-ops/README.md) → [Hosted agent environment](05-hosted-agent-ops/hosted-agent-environment.md) → [Remote control protocol and steering](04-sessions-persistence-remote/remote-control-protocol-and-steering.md) |
 | Review trust boundaries | [Tools, integrations, and security](03-tools-integrations-security/README.md) → [Tool, path, and URL permissions](03-tools-integrations-security/tool-path-url-permissions.md) → [Content exclusion and redaction](03-tools-integrations-security/content-exclusion-and-redaction.md) → [Debug bundle redaction boundaries](05-hosted-agent-ops/debug-bundle-redaction-boundaries.md) |
 | Study automation and subagents | [Agents and automation](06-agents-automation/README.md) → [Agent and task orchestration](06-agents-automation/agent-task-orchestration.md) → [Built-in agents](06-agents-automation/built-in-agents.md) |
-| Triage a raw constant or minified symbol | [Research atlas](99-research-atlas/README.md) → [`app.js` source atlas](99-research-atlas/app-js-source-atlas.md) → generated `source-atlas/` outputs in the repository root. |
+| Triage a raw constant or minified symbol | [Research atlas](99-research-atlas/README.md) → [Source atlas](99-research-atlas/source-atlas.md) → generated `source-atlas/` outputs in the repository root. |
 
 ## Cross-cutting implementation matrix
 

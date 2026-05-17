@@ -1,12 +1,8 @@
 # MCP host, transports, and tools
 
-## What this page covers
-
-Use this page to answer **how does an MCP server become safe, model-callable runtime capability?** It owns the MCP protocol boundary from config discovery through transport startup, tool discovery, OAuth, instruction loading, progress/task handling, and permission integration.
+MCP support turns configured local, remote, and built-in servers into normal model-callable Copilot tools. Config sources define which servers exist, the MCP host starts the required transports, tool discovery converts server tools into Copilot tool definitions, and calls then flow through permission, telemetry, task, and session-event systems.
 
 Read [Runtime tool assembly and filtering](runtime-tool-assembly-and-filtering.md) when comparing MCP tools to built-in or external tools. Read [Tool, path, and URL permissions](tool-path-url-permissions.md) when the question is approval. Read [Hosted agent environment](../05-hosted-agent-ops/hosted-agent-environment.md) for hosted GitHub MCP/OIDC defaults.
-
-In the analyzed `app.js`, MCP is implemented as a runtime extension layer: configuration files and CLI/session options define MCP servers, an MCP host starts those servers over local or remote transports, discovered MCP tools are converted into normal Copilot tool definitions, and tool calls flow through the same permission, telemetry, task, and session-event systems as built-in tools.
 
 | MCP concern | Runtime owner | Downstream effect |
 |---|---|---|

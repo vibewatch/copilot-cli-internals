@@ -1,4 +1,4 @@
-# `app.js` prompt catalog
+# Prompt catalog
 
 This file extracts prompt-related strings from `copilot-cli-pkg/app.js` and normalizes runtime substitutions to either `{{placeholder}}` form for logical catalog slots or `${sourceStyleExpression}` form when showing the JavaScript-derived rendering rule. It focuses on model-facing prompts and prompt templates; routine UI labels, telemetry messages, and third-party dependency strings are intentionally omitted.
 
@@ -203,7 +203,7 @@ sequenceDiagram
 
 These prompts are not full system prompts. They are request seeds or orchestration instructions injected into the conversation/task loop before the system prompt builders add identity, tool, environment, and safety layers.
 
-### Slash command: `/init` repository instructions
+### Slash command: /init repository instructions
 
 ```text
 Analyze this codebase and create a .github/copilot-instructions.md file to help future Copilot sessions work effectively in this repository.
@@ -245,7 +245,7 @@ End with a brief summary of what you created and ask if the user wants to adjust
 Start by exploring the repository structure.
 ```
 
-### Slash command: `/plan` implementation plan
+### Slash command: /plan implementation plan
 
 ```text
 I want to create an implementation plan. Please:
@@ -256,7 +256,7 @@ I want to create an implementation plan. Please:
 My request: {{user_request}}
 ```
 
-### Slash command: `/review` code review
+### Slash command: /review code review
 
 ```text
 The user has requested a code review via the /review command. Use the task tool with agent_type: "code-review" to perform a code review.
@@ -264,7 +264,7 @@ The user has requested a code review via the /review command. Use the task tool 
 Additional instructions: {{additional_instructions}}
 ```
 
-### Slash command: `/research` orchestration seed
+### Slash command: /research orchestration seed
 
 ```text
 Research the following topic thoroughly: {{topic}}
@@ -273,7 +273,7 @@ Use the research subagent for investigation and synthesize the findings into a c
 Save the final report to: {{report_path}}
 ```
 
-### Slash command: `/subconscious run` memory-consolidation dispatch
+### Slash command: /subconscious run memory-consolidation dispatch
 
 ```text
 Launch the `rem-agent` subagent in the background to consolidate this session's learnings into the dynamic context board.
@@ -1088,7 +1088,7 @@ Keep working autonomously until the task is truly finished, then call task_compl
 
 ## Operation and validation prompt fragments
 
-### `report_progress` prompt: PR-backed mode
+### report_progress prompt: PR-backed mode
 
 ```text
 Report progress on the task. Call when you complete a meaningful unit of work. Updates the PR description and shares progress for code already committed locally.
@@ -1098,7 +1098,7 @@ Report progress on the task. Call when you complete a meaningful unit of work. U
 * Do not include a summary or unrelated information besides the checklist.
 ```
 
-### `report_progress` prompt: commit-and-push mode
+### report_progress prompt: commit-and-push mode
 
 ```text
 Report progress on the task. Call when you complete a meaningful unit of work. Commits and pushes changes that are pending in the repo, then updates the PR description.

@@ -154,7 +154,7 @@ Strings in both Linux and Windows helpers expose a shared config/policy schema.
 
 Network values include `allow` / `block` for default policy and `capabilities`, `firewall`, or `both` for enforcement mode. Containment values include `appcontainer`, `windows_sandbox`, `isolation_session`, `wslc`, `lxc`, `vm`, and `microvm`.
 
-## Linux `lxc-exec` behavior
+## Linux lxc-exec behavior
 
 The Linux executor appears to orchestrate standard LXC command-line tools instead of dynamically linking to `liblxc`.
 
@@ -222,7 +222,7 @@ Notable strings:
 
 ## Windows helper behavior
 
-### `wxc-exec.exe`
+### wxc-exec.exe
 
 `wxc-exec.exe` is the main Windows executor. Its CLI accepts config input and can delete container profiles:
 
@@ -241,7 +241,7 @@ It logs backend selection such as:
 - `Error: Windows Sandbox is an experimental feature. Use --experimental flag.`
 - `Error: MicroVM is an experimental feature. Use --experimental flag.`
 
-### `winhttp-proxy-shim.exe`
+### winhttp-proxy-shim.exe
 
 This helper manages per-AppContainer WinHTTP proxy settings. It expects an AppContainer SID, proxy address/port, a ready file, a cleanup event, and a parent PID.
 
@@ -254,7 +254,7 @@ It dynamically resolves WinHTTP functions including:
 
 The strings explicitly state that access denied while setting policy likely means administrator privileges are needed.
 
-### `wxc-test-proxy.exe`
+### wxc-test-proxy.exe
 
 This is a local test CONNECT proxy, not a production component:
 
@@ -333,6 +333,6 @@ The DLL exports the `Wslc*` API surface used by the Rust executor.
 ## Practical reading path
 
 - Start with [Sandbox implementation](../03-tools-integrations-security/sandboxing.md) for the CLI-level control flow.
-- Use this page when you need binary-level evidence for the MXC helper behavior.
+- Continue here for binary-level evidence about MXC helper behavior.
 - Use [Settings and configuration persistence](../03-tools-integrations-security/settings-config-persistence.md) to understand how `sandbox.enabled`, raw `sandbox.policy`, and raw `sandbox.config` persist.
 - Use [Feature gates and rollout logic](../05-hosted-agent-ops/feature-gates.md) to understand why `/sandbox` may be hidden by default.

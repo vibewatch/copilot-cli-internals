@@ -42,7 +42,7 @@ flowchart TD
 | Order | Page | Context/model question answered |
 |---:|---|---|
 | 1 | [Prompt sources in Copilot CLI](prompt-sources.md) | Which static/runtime prompts, custom instructions, hooks, MCP prompts, and provider mappings feed the request? |
-| 2 | [`app.js` prompt catalog](app-js-prompt-catalog.md) | What prompt families and templates are embedded in the bundle? |
+| 2 | [Prompt catalog](prompt-catalog.md) | What prompt families and templates are embedded in the bundle? |
 | 3 | [Attachment and file-ingestion pipeline](attachments-and-file-ingestion.md) | How are images, documents, tagged files, MIME metadata, and size limits mapped into request payloads? |
 | 4 | [Memory and dynamic context board](memory-and-context-board.md) | How do agentic memory, local memory, context board, rem-agent, sidekicks, and consolidation affect context? |
 | 5 | [Conversation compaction and memory compression](conversation-compaction.md) | How do `/compact`, automatic compaction, request trimming, summaries, and checkpoints manage context pressure? |

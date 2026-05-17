@@ -1,8 +1,6 @@
 # Sandbox implementation
 
-## What this page covers
-
-Use this page to answer **how is local shell-command sandboxing enforced after a shell tool is approved?** It owns the runtime path from `sandbox.enabled` and `/sandbox` to shell config, MXC adapter loading, platform checks, and process spawn constraints.
+Local command sandboxing is an execution constraint applied after a shell command has been approved. The runtime path starts at `sandbox.enabled` and the feature-gated `/sandbox` command, then flows through shell configuration, MXC adapter loading, platform checks, and sandboxed process spawn.
 
 Read [Shell command execution events](shell-command-execution-events.md) for sync/async/detached shell task behavior, [Tool, path, and URL permissions](tool-path-url-permissions.md) for approval before execution, and [MXC sandbox binary notes](../99-research-atlas/mxc-sandbox-binary-notes.md) for binary-level evidence about packaged helpers.
 

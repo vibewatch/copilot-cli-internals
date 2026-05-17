@@ -26,7 +26,7 @@ flowchart TD
     Classify -->|no| Noise[Mark as scan noise]
     MainDoc --> Validate[Links / atlas refs / website build]
 
-    click Atlas "./app-js-source-atlas/" "Open app.js source atlas"
+    click Atlas "./source-atlas/" "Open source atlas"
     click Backlog "./documentation-opportunities/" "Open documentation opportunities"
 ```
 
@@ -34,7 +34,7 @@ flowchart TD
 
 | Order | Page or artifact | Research question answered |
 |---:|---|---|
-| 1 | [`app.js` source atlas and generated indexes](app-js-source-atlas.md) | How are raw symbol/string inventories generated, and which semantic anchors seed source reading? |
+| 1 | [Source atlas and generated indexes](source-atlas.md) | How are raw symbol/string inventories generated, and which semantic anchors seed source reading? |
 | 2 | [Hosted agent environment](../05-hosted-agent-ops/hosted-agent-environment.md) | What does a promoted constants-first finding look like once source-confirmed? |
 | 3 | [Further documentation opportunities](documentation-opportunities.md) | Which historical scan results are closed, narrowed, or still useful as future watchpoints? |
 | 4 | [MXC sandbox binary notes](mxc-sandbox-binary-notes.md) | What binary-level evidence supports the sandbox helper analysis, and which findings remain research notes? |
@@ -44,7 +44,7 @@ flowchart TD
 
 | Starting point | Use this path |
 |---|---|
-| Raw env var or event string | `source-atlas/constants.md` → [app.js source atlas](app-js-source-atlas.md) → focused source read. |
+| Raw env var or event string | `source-atlas/constants.md` → [Source atlas](source-atlas.md) → focused source read. |
 | New package/bundle diff | Regenerate or compare `source-atlas/` → inspect changed strings/events/API surfaces → patch affected internals docs. |
 | Minified symbol with unclear role | `source-atlas/symbols.md` / `declarations.json` → nearby source anchors → existing semantic page. |
 | Documentation gap | [Further documentation opportunities](documentation-opportunities.md) → relevant internals section → source-confirmed update. |

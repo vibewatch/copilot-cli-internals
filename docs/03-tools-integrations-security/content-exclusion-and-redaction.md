@@ -1,14 +1,10 @@
 # Content exclusion and redaction
 
-## What this page covers
-
-Use this page to answer **which data is blocked, filtered, or redacted before it reaches the model, UI, telemetry, or support artifacts?** It owns content-exclusion checks, output filtering, model policy reminders, secret env-var stripping, and redaction-related controls.
+Sensitive-content protection is layered across read-time exclusion, output filtering, prompt policy reminders, secret environment-variable stripping, and redaction/remediation paths. Together, those layers decide which data can reach the model, UI, telemetry, or support artifacts.
 
 Read [Tool, path, and URL permissions](tool-path-url-permissions.md) for approval decisions, [Built-in tools, execution events, and results](built-in-tools-execution-events.md) for where tool outputs are produced, and [Debug bundle and redaction boundaries](../05-hosted-agent-ops/debug-bundle-redaction-boundaries.md) for support-bundle packaging.
 
-The relevant surfaces include the `CONTENT_EXCLUSION` feature gate, the `ContentExclusionService`, additional policy injection, search/output filtering, model-visible policy reminders, secret environment variable redaction, and secret-scanning remediation.
-
-The important implementation point is that sensitive-content handling is layered:
+The runtime layers are:
 
 - content exclusion decides whether certain files/paths/content may be read or shown;
 - output filters remove excluded search/results lines before they reach the model or UI;

@@ -43,7 +43,7 @@ flowchart TD
     Gist --> Redaction
 ```
 
-## `/diagnose`
+## /diagnose
 
 `/diagnose` is a staff-only command enabled by the `DIAGNOSE` feature gate. It accepts an optional free-form prompt. The implementation:
 
@@ -55,7 +55,7 @@ flowchart TD
 
 This command does not itself package logs. It turns the current log into an investigation prompt for the agent.
 
-## `/feedback` and `/bug`
+## /feedback and /bug
 
 `/feedback` has alias `/bug`. It opens a feedback dialog with:
 
@@ -68,7 +68,7 @@ This command does not itself package logs. It turns the current log into an inve
 
 This command is allowed during agent execution, so users can report issues without needing to stop the current session first.
 
-## `/collect-debug-logs`
+## /collect-debug-logs
 
 `/collect-debug-logs` is staff-only and supports these forms:
 

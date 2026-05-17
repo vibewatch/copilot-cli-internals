@@ -201,7 +201,7 @@ This event list is a useful future-diff watchpoint. If a later package starts wi
 
 ## Related docs
 
-- [`app.js` source atlas and generated indexes](../99-research-atlas/app-js-source-atlas.md)
+- [Source atlas and generated indexes](../99-research-atlas/source-atlas.md)
 - [MCP host, transports, and tools](../03-tools-integrations-security/mcp-host-transport-and-tools.md)
 - [Coding-agent validation and review toolchain](../03-tools-integrations-security/coding-agent-validation-toolchain.md)
 - [Telemetry, update, and shutdown](telemetry-update-and-shutdown.md)

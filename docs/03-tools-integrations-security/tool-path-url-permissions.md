@@ -1,8 +1,6 @@
 # Tool, path, and URL permissions
 
-## What this page covers
-
-Use this page to answer **why was a visible tool call allowed, denied, or escalated to a human/remote client?** It owns approval policy, not tool visibility. Tool visibility is covered by [Runtime tool assembly and filtering](runtime-tool-assembly-and-filtering.md); execution events are covered by [Built-in tools, execution events, and results](built-in-tools-execution-events.md).
+Permissions explain why a tool that is already visible is allowed, denied, or escalated to a human or remote client. This page focuses on approval policy; tool visibility is covered by [Runtime tool assembly and filtering](runtime-tool-assembly-and-filtering.md), and execution events are covered by [Built-in tools, execution events, and results](built-in-tools-execution-events.md).
 
 The key idea is that permissions are not a single yes/no switch. The runtime combines static allow/deny rules, path and URL guards, content-exclusion checks, hook decisions, interactive prompts, remote/RPC responses, and persistence scopes before a tool call is allowed to run.
 
@@ -362,7 +360,7 @@ The location key is resolved from the Git repository root when possible; otherwi
 
 There are two permission-adjacent hook systems.
 
-### `preToolUse`
+### preToolUse
 
 `preToolUse` runs before normal tool execution. It can:
 
@@ -374,7 +372,7 @@ There are two permission-adjacent hook systems.
 
 Because `preToolUse` can affect authorization, HTTP hooks in this category are required to use HTTPS unless explicit local-development environment overrides are set.
 
-### `permissionRequest`
+### permissionRequest
 
 `permissionRequest` hooks run from the permission flow itself. The hook input builder maps request kinds into tool-like payloads:
 

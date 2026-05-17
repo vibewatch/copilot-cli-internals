@@ -38,7 +38,7 @@ flowchart TD
     Errors --> RateLimit[rate_limit and auto-mode switch]
 ```
 
-## `/usage` command
+## /usage command
 
 The `/usage` command renders a compact session summary. The implementation builds output similar to:
 
@@ -50,7 +50,7 @@ The `/usage` command renders a compact session summary. The implementation build
 
 The command reads from the session’s `usageMetrics` object rather than recomputing history from raw provider responses.
 
-## Live context usage: `session.usage_info`
+## Live context usage: session.usage_info
 
 `session.usage_info` is an ephemeral event describing current context-window pressure. Its schema includes:
 
@@ -66,7 +66,7 @@ The command reads from the session’s `usageMetrics` object rather than recompu
 
 This event is emitted by truncation/compaction-related code and by context calculation paths. It helps UI surfaces display context usage without waiting for a model API response.
 
-## API usage: `assistant.usage`
+## API usage: assistant.usage
 
 `assistant.usage` is also ephemeral, but it represents a model API call rather than context-window state. Its schema includes:
 

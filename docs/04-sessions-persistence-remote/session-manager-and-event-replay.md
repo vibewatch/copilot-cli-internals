@@ -168,7 +168,7 @@ session-state/<session-id>/
   session.db
 ```
 
-### `workspace.yaml`
+### workspace.yaml
 
 The schema includes:
 
@@ -210,7 +210,7 @@ The session emits `session.compaction_complete` with `checkpointNumber` and `che
 
 `research/` is created with the workspace and used by research/memory workflows.
 
-## Local session manager (`P6`)
+## Local session manager (P6)
 
 `P6` is the central local session manager. It owns active in-memory sessions, event writers, in-use locks, session-store tracking, startup prompts, repo hooks, and handoff/fork helpers.
 
@@ -313,7 +313,7 @@ Important resolution behavior:
 
 ## Slash-command surfaces
 
-### `/session`
+### /session
 
 There are two layers of `/session` handling in the bundle: a lightweight runtime command (`qps`) and a richer TUI/dialog command path (`oeo`). Together they expose:
 
@@ -328,7 +328,7 @@ There are two layers of `/session` handling in the bundle: a lightweight runtime
 | cleanup / prune | Deletes old sessions, with dry-run and skip-named behavior. |
 | delete / delete-all | Deletes one or more sessions after confirmation in the UI path. |
 
-### `/fork`
+### /fork
 
 `/fork` is guarded by `BACKGROUND_SESSIONS`. It creates a new session from the current one, optionally at a specified event/checkpoint boundary.
 
@@ -386,7 +386,7 @@ ACP output is event-derived. Many low-level session events are ignored for displ
 
 Local JSONL is optimized for replay, not search. The CLI therefore mirrors useful session history into a SQLite-like store through `AR(...)` and `JZn(...)` when session-store support is active.
 
-### Live tracking (`JZn`)
+### Live tracking (JZn)
 
 `JZn(session, settings, options)` subscribes to session events and installs post-tool hooks:
 

@@ -83,7 +83,7 @@ The query helper executes SQL in a read-only mode and checks SQLite authorizer c
 
 This keeps interactive/debug query features from mutating the store. The helper also limits returned rows and marks results as truncated when the limit is exceeded.
 
-## `/reindex` command
+## /reindex command
 
 `/reindex` is described as:
 

@@ -71,7 +71,7 @@ The bundle distinguishes three related concepts:
 
 This distinction matters because disabling a skill does not remove a custom agent, and instruction files are prompt context rather than callable tools.
 
-## `AGENTS.md` discovery
+## AGENTS.md discovery
 
 The instruction-discovery path looks for model/instruction files including:
 
@@ -291,7 +291,7 @@ Agent dispatch maps a requested agent name to:
 
 Custom agents can also select or override models, including inherited auto-mode behavior from the parent session.
 
-## `/env` visibility
+## /env visibility
 
 The environment/status command path lists loaded components. Evidence shows output sections for:
 
