@@ -29,7 +29,6 @@ flowchart TD
     Home --> Sessions[04 Sessions, persistence, and remote]
     Home --> Hosted[05 Hosted agent ops]
     Home --> Agents[06 Agents and automation]
-    Home --> Research[99 Research atlas]
 
     Start --> Runtime
     Runtime --> Loop
