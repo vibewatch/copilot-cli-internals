@@ -12,8 +12,9 @@ import { fileURLToPath } from 'node:url';
  *
  * The source files don't carry a YAML `title` frontmatter; they use a
  * markdown H1 as the title. Starlight's schema requires `title`, so this
- * loader injects one derived from the first H1 if none is present, leaving
- * the on-disk content untouched.
+ * loader injects one derived from the first H1 if none is present. The
+ * matching source H1 is removed from the rendered body so Starlight's own
+ * page title and the markdown content do not render duplicate headings.
  */
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -70,6 +71,20 @@ function extractH1(body: string): string | null {
   return m[1].replace(/`/g, '').trim();
 }
 
+/** Remove the first ATX H1 when it is the source of the Starlight page title. */
+function stripMatchingH1(body: string, title: unknown): string {
+  if (typeof title !== 'string') return body;
+  const normalizedTitle = title.replace(/`/g, '').trim();
+  let removed = false;
+
+  return body.replace(/^#\s+(.+?)\s*#*\s*(?:\r?\n|$)/m, (match, h1) => {
+    if (removed) return match;
+    if (String(h1).replace(/`/g, '').trim() !== normalizedTitle) return match;
+    removed = true;
+    return '';
+  }).replace(/^\r?\n/, '');
+}
+
 /** Recursively collect all `.md`/`.mdx` files under a directory. */
 async function collect(dir: string, prefix = ''): Promise<string[]> {
   const entries = await fs.readdir(dir, { withFileTypes: true });
@@ -114,9 +129,11 @@ function docsFromWorkspaceRoot(): Loader {
           data.title = h1 ?? path.basename(rel, path.extname(rel));
         }
 
+        const renderBody = stripMatchingH1(body, data.title);
+
         const id = deriveId(rel);
         const parsed = await parseData({ id, data, filePath: relToSite });
-        const rendered = await processor.render(body, {
+        const rendered = await processor.render(renderBody, {
           frontmatter: parsed,
           fileURL: new URL(`file://${full}`),
         });
@@ -124,7 +141,7 @@ function docsFromWorkspaceRoot(): Loader {
         store.set({
           id,
           data: parsed,
-          body,
+          body: renderBody,
           filePath: relToSite,
           digest: generateDigest(raw),
           rendered: {
