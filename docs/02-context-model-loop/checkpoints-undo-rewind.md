@@ -162,8 +162,8 @@ sequenceDiagram
 
 ## Relationship to other docs
 
-- `session-support-implementation.md` explains event-sourced local session persistence.
+- `session-manager-and-event-replay.md` explains event-sourced local session persistence.
 - `conversation-compaction.md` explains compaction checkpoints and transient-event eviction.
 - `system-events-and-ui-projection.md` explains how `session.snapshot_rewind` reaches UI clients.
 - `embedded-server-acp-protocol.md` explains how session events are forwarded to external clients.
-- `observability-update-shutdown.md` explains telemetry and shutdown metrics.
+- `telemetry-update-and-shutdown.md` explains telemetry and shutdown metrics.

@@ -338,4 +338,4 @@ sequenceDiagram
 - [`voice-mode-foundry-local.md`](voice-mode-foundry-local.md) covers `/voice`, settings, model picker, and TUI affordances.
 - [`loader-bootstrap.md`](loader-bootstrap.md) covers the secure native-module routing that makes `foundry-local-sdk` and `@picovoice/pvrecorder-node` loadable from the extracted package.
 - [`settings-config-persistence.md`](../03-tools-integrations-security/settings-config-persistence.md) covers the settings helpers used to persist `voice.enabled` and `voice.selectedModel`.
-- [`observability-update-shutdown.md`](../05-hosted-agent-ops/observability-update-shutdown.md) covers the broader shutdown-service pattern that voice uses for Foundry client disposal.
+- [`telemetry-update-and-shutdown.md`](../05-hosted-agent-ops/telemetry-update-and-shutdown.md) covers the broader shutdown-service pattern that voice uses for Foundry client disposal.

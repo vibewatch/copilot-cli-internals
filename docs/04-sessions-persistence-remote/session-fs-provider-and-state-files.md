@@ -6,7 +6,7 @@
 
 This page documents the `SessionFs` abstraction in the extracted Copilot CLI bundle: local session-state storage, SDK/RPC-backed filesystem providers, reverse calls, workspace artifacts, large-output files, and fork-time state copying.
 
-It fills a gap left by [Session support implementation](session-support-implementation.md), which explains event-sourced sessions at a high level, and [API and session event schema contracts](api-and-session-event-schemas.md), which lists the JSON-RPC method surface.
+It fills a gap left by [Session manager and event replay](session-manager-and-event-replay.md), which explains event-sourced sessions at a high level, and [API and session event schema contracts](api-and-session-event-schemas.md), which lists the JSON-RPC method surface.
 
 ## Source anchors
 
@@ -264,8 +264,8 @@ Because copy uses the abstract `SessionFs` operations (`stat`, `readdirWithTypes
 
 ## Relationship to other pages
 
-- [Persistence pipeline for sessions](persistence-pipeline.md) shows how SessionFs-backed files fit into JSONL replay, workspace sidecars, SQLite indexing, reindex, fork, and rewind.
-- [Session support implementation](session-support-implementation.md) covers the broader event-sourced session manager and resume/continue flow.
+- [Session persistence, replay, and indexing](session-persistence-replay-and-indexing.md) shows how SessionFs-backed files fit into JSONL replay, workspace sidecars, SQLite indexing, reindex, fork, and rewind.
+- [Session manager and event replay](session-manager-and-event-replay.md) covers the broader event-sourced session manager and resume/continue flow.
 - [API and session event schema contracts](api-and-session-event-schemas.md) lists the generated `sessionFs.*` methods.
 - [Checkpoints, undo, rewind, and fork](../02-context-model-loop/checkpoints-undo-rewind.md) covers the user-visible checkpoint/history workflows that consume these files.
-- [Shell command execution lifecycle](../03-tools-integrations-security/shell-command-execution-lifecycle.md) covers the shell output buffers that use `SessionFs` for large output.
+- [Shell command execution events](../03-tools-integrations-security/shell-command-execution-events.md) covers the shell output buffers that use `SessionFs` for large output.

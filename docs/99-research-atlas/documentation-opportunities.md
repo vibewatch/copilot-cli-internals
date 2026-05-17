@@ -50,9 +50,9 @@ Status update: the highest-priority, medium-priority, and later remaining gap-re
 Highest-priority set:
 
 1. [`attachments-and-file-ingestion.md`](../02-context-model-loop/attachments-and-file-ingestion.md)
-2. [`plugin-extension-architecture.md`](../03-tools-integrations-security/plugin-extension-architecture.md)
-3. [`built-in-tool-execution-pipeline.md`](../03-tools-integrations-security/built-in-tool-execution-pipeline.md)
-4. [`hooks-lifecycle-automation.md`](../03-tools-integrations-security/hooks-lifecycle-automation.md)
+2. [`plugins-extensions-and-capabilities.md`](../03-tools-integrations-security/plugins-extensions-and-capabilities.md)
+3. [`built-in-tools-execution-events.md`](../03-tools-integrations-security/built-in-tools-execution-events.md)
+4. [`hooks-events-and-automation.md`](../03-tools-integrations-security/hooks-events-and-automation.md)
 5. [`ide-lsp-editor-integration.md`](../03-tools-integrations-security/ide-lsp-editor-integration.md)
 6. [`git-repository-context.md`](../04-sessions-persistence-remote/git-repository-context.md)
 
@@ -77,12 +77,12 @@ Remaining gap-review set:
 
 Additional iterative gap pass:
 
-1. [`shell-command-execution-lifecycle.md`](../03-tools-integrations-security/shell-command-execution-lifecycle.md) now covers the previously scattered shell execution path: shell tool assembly, PTY vs process backends, sync/async/detached command handling, task tracking, background promotion, completion notifications, and large-output buffering.
+1. [`shell-command-execution-events.md`](../03-tools-integrations-security/shell-command-execution-events.md) now covers the previously scattered shell execution path: shell tool assembly, PTY vs process backends, sync/async/detached command handling, task tracking, background promotion, completion notifications, and large-output buffering.
 2. [`runtime-tool-assembly-and-filtering.md`](../03-tools-integrations-security/runtime-tool-assembly-and-filtering.md) now covers the final model-visible toolset path across built-ins, MCP, extensions, custom agents, feature gates, allow/exclude filters, deferred `tool_search`, request-time refresh, and `session.tools_updated` invalidation.
 3. [`session-fs-provider-and-state-files.md`](../04-sessions-persistence-remote/session-fs-provider-and-state-files.md) now covers the SessionFs provider and session-state file lifecycle: local vs RPC-backed filesystems, SDK reverse calls, provider guards, event/workspace files, large-output temp files, and fork/checkpoint state copying.
 4. [`voice-runtime-workers-and-transcription.md`](../01-runtime-lifecycle/voice-runtime-workers-and-transcription.md) now covers the voice backend that was only summarized by the voice-mode page: microphone, installer, and Foundry worker state machines; PCM flow; streaming/batch transcription; and cleanup.
 5. A likely next high-value gap is the **request processor and compaction/retry interaction path**: pre-request processors, token-budget checks, automatic compaction, rate-limit/request-size retries, and how those processors mutate chat context before the provider call.
-6. [`session-lifecycle-end-to-end.md`](../04-sessions-persistence-remote/session-lifecycle-end-to-end.md), [`persistence-pipeline.md`](../04-sessions-persistence-remote/persistence-pipeline.md), and [`debug-bundle-redaction-boundaries.md`](../05-hosted-agent-ops/debug-bundle-redaction-boundaries.md) now cover the previously scattered reader-path gaps for session lifecycle, persistence layering, and support-bundle redaction boundaries.
+6. [`conversation-session-end-to-end.md`](../04-sessions-persistence-remote/conversation-session-end-to-end.md), [`session-persistence-replay-and-indexing.md`](../04-sessions-persistence-remote/session-persistence-replay-and-indexing.md), and [`debug-bundle-redaction-boundaries.md`](../05-hosted-agent-ops/debug-bundle-redaction-boundaries.md) now cover the previously scattered reader-path gaps for session lifecycle, persistence layering, and support-bundle redaction boundaries.
 7. [Hosted agent environment](../05-hosted-agent-ops/hosted-agent-environment.md) now covers the constant-first hosted-agent env envelope, MCP/OIDC bootstrap, OTel switches, firewall/trajectory output, and bundled managed-agent SDK surface that were visible in `source-atlas/surface-index.json` but not explained by existing topic pages.
 
 ## Extracted command surface
@@ -146,9 +146,9 @@ Recommended outline:
 5. Security/permissions: file reads, URL reads, content exclusion, redaction.
 6. User-visible failures and retry behavior.
 
-### 2. Plugin and extension architecture
+### 2. Plugins, extensions, and capabilities
 
-Implemented as: [`plugin-extension-architecture.md`](../03-tools-integrations-security/plugin-extension-architecture.md)
+Implemented as: [`plugins-extensions-and-capabilities.md`](../03-tools-integrations-security/plugins-extensions-and-capabilities.md)
 
 Why it is worth documenting:
 
@@ -176,9 +176,9 @@ Recommended outline:
 5. Extension loading, embedded server coupling, extension-provided tools, and permission scopes.
 6. Feature gates and trust boundaries.
 
-### 3. Built-in tool execution pipeline
+### 3. Built-in tools, execution events, and results
 
-Implemented as: [`built-in-tool-execution-pipeline.md`](../03-tools-integrations-security/built-in-tool-execution-pipeline.md)
+Implemented as: [`built-in-tools-execution-events.md`](../03-tools-integrations-security/built-in-tools-execution-events.md)
 
 Why it is worth documenting:
 
@@ -207,9 +207,9 @@ Recommended outline:
 6. Editing tools, shell tools, search/read tools, and web/GitHub tools.
 7. Telemetry, error classification, retry, cancellation, and persistence.
 
-### 4. Hooks and lifecycle automation
+### 4. Hooks, events, and automation
 
-Implemented as: [`hooks-lifecycle-automation.md`](../03-tools-integrations-security/hooks-lifecycle-automation.md)
+Implemented as: [`hooks-events-and-automation.md`](../03-tools-integrations-security/hooks-events-and-automation.md)
 
 Why it is worth documenting:
 
@@ -391,15 +391,15 @@ After the high- and medium-priority batches, a final gap scan found several impo
 
 | Topic | Current coverage |
 |---|---|
-| Cloud sandbox/detached execution | Covered by `sandboxing.md`, `sessions-remote-cloud.md`, `remote-control-implementation.md`, and `memory-and-context-board.md`; a new doc is only warranted for a very narrow detached-child/rem-agent deep dive. |
+| Cloud sandbox/detached execution | Covered by `sandboxing.md`, `sessions-remote-cloud.md`, `remote-control-protocol-and-steering.md`, and `memory-and-context-board.md`; a new doc is only warranted for a very narrow detached-child/rem-agent deep dive. |
 | Model routing/streaming details | Covered by `model-api-routing.md` and `resilience-rate-limits-concurrency.md`. |
-| MCP OAuth/tasks/tools | Covered by `mcp-support-implementation.md`. |
-| Session persistence/handoff | Covered by `session-support-implementation.md` and `session-store-sqlite-indexing.md`. |
-| Remote Mission Control export/control | Covered by `remote-control-implementation.md` and `sessions-remote-cloud.md`. |
+| MCP OAuth/tasks/tools | Covered by `mcp-host-transport-and-tools.md`. |
+| Session persistence/handoff | Covered by `session-manager-and-event-replay.md` and `session-store-sqlite-indexing.md`. |
+| Remote Mission Control export/control | Covered by `remote-control-protocol-and-steering.md` and `sessions-remote-cloud.md`. |
 
 ## Recommended next writing order
 
-The current important `app.js` documentation backlog is now covered by focused docs and indexed in the MVP `README.md`, including the later session-lifecycle, persistence-pipeline, debug-bundle redaction boundary, and hosted-agent environment pages. Future writing should be driven by new questions rather than by the existing gap list. Possible niche follow-ups, only if needed, are:
+The current important `app.js` documentation backlog is now covered by focused docs and indexed in the MVP `README.md`, including the later conversation-session, session-persistence/replay, debug-bundle redaction boundary, and hosted-agent environment pages. Future writing should be driven by new questions rather than by the existing gap list. Possible niche follow-ups, only if needed, are:
 
 1. A very focused cloud-sandbox/detached-child/rem-agent execution deep dive.
 2. A TUI rendering/theme/Tuikit internals document if terminal rendering itself becomes the research target.

@@ -196,7 +196,7 @@ Local memory records include an id, subject, fact, citations, reason, and source
 
 Memory writes and votes are treated as permissioned side effects. The permission kind is `memory`.
 
-The broader permission service, including how `memory` rules interact with deny rules, session/location approvals, allow-all, and prompt/RPC surfaces, is documented in [`permission-system-design.md`](../03-tools-integrations-security/permission-system-design.md).
+The broader permission service, including how `memory` rules interact with deny rules, session/location approvals, allow-all, and prompt/RPC surfaces, is documented in [`tool-path-url-permissions.md`](../03-tools-integrations-security/tool-path-url-permissions.md).
 
 ```mermaid
 sequenceDiagram
@@ -465,4 +465,4 @@ flowchart LR
 - `rem-agent` does not re-open or verify files during consolidation. Its prompt tells it to treat historical paths and symbols as opaque labels.
 - Sidekicks communicate through the inbox, not through direct hidden state sharing. The main agent remains the final judge of whether sidekick context is useful.
 
-Related docs: [`prompt-sources.md`](prompt-sources.md), [`agent-task-orchestration.md`](../06-agents-automation/agent-task-orchestration.md), [`permission-system-design.md`](../03-tools-integrations-security/permission-system-design.md), [`feature-gates.md`](../05-hosted-agent-ops/feature-gates.md), [`observability-update-shutdown.md`](../05-hosted-agent-ops/observability-update-shutdown.md), and [`sessions-remote-cloud.md`](../04-sessions-persistence-remote/sessions-remote-cloud.md).
+Related docs: [`prompt-sources.md`](prompt-sources.md), [`agent-task-orchestration.md`](../06-agents-automation/agent-task-orchestration.md), [`tool-path-url-permissions.md`](../03-tools-integrations-security/tool-path-url-permissions.md), [`feature-gates.md`](../05-hosted-agent-ops/feature-gates.md), [`telemetry-update-and-shutdown.md`](../05-hosted-agent-ops/telemetry-update-and-shutdown.md), and [`sessions-remote-cloud.md`](../04-sessions-persistence-remote/sessions-remote-cloud.md).

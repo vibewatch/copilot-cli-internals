@@ -4,9 +4,20 @@
 
 > **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
 
-This page traces the path from session options in `app.js` to the final tool list visible to the model. It fills the gap between the broad [built-in tool execution pipeline](built-in-tool-execution-pipeline.md), MCP-specific filtering in [MCP support implementation](mcp-support-implementation.md), and the shell-specific lifecycle in [Shell command execution lifecycle](shell-command-execution-lifecycle.md).
+## Reader contract
+
+Use this page to answer **which tools can the model call in this session, and why this exact set?** It owns the pre-execution boundary: session options, model/provider config, MCP/external tool discovery, selected-agent filters, and deferred loading all converge here before a tool call exists.
+
+This page does **not** explain how a tool runs after selection. Continue to [Built-in tools, execution events, and results](built-in-tools-execution-events.md) for callback execution, [Shell command execution events](shell-command-execution-events.md) for process management, and [Tool, path, and URL permissions](tool-path-url-permissions.md) for approvals.
 
 The short version: tool assembly is a two-stage pipeline. First, model/provider configuration selects a `toolInit` function that gathers built-in tools. Then the session runtime merges those built-ins with MCP and external tools, validates allow/exclude filters, applies selected-agent constraints, adds deferred `tool_search` when needed, and publishes `session.tools_updated`.
+
+| Input | Decision made here | Output |
+|---|---|---|
+| CLI/TUI/RPC session options | Apply `availableTools`, `excludedTools`, selected-agent/default-agent rules, and external tool definitions. | Filtered executable callbacks plus model-visible metadata. |
+| MCP host state | Merge server tools, server instructions, namespace metadata, and server-level filters. | MCP tools become normal Copilot tool definitions. |
+| SDK/extension registrations | Deduplicate external definitions and handle explicit built-in overrides. | External callbacks and signed metadata. |
+| Model/provider config | Apply tool config overrides, deferred loading, and provider-specific metadata shaping. | Current prompt/tool metadata and optional `tool_search`. |
 
 ## Source anchors
 
@@ -103,7 +114,7 @@ Model-specific configuration can override the assembly behavior. The `eb(...)` m
 
 ## MCP and external tool candidates
 
-MCP tools are loaded outside `HCr(...)` by the session's MCP host path, then merged beside built-ins in `initializeAndValidateTools()`. MCP-specific allowlists, server-level `tools` filters, GitHub MCP toolset headers, and selected-agent MCP servers are covered in [MCP support implementation](mcp-support-implementation.md).
+MCP tools are loaded outside `HCr(...)` by the session's MCP host path, then merged beside built-ins in `initializeAndValidateTools()`. MCP-specific allowlists, server-level `tools` filters, GitHub MCP toolset headers, and selected-agent MCP servers are covered in [MCP host, transports, and tools](mcp-host-transport-and-tools.md).
 
 External tools enter through two paths:
 
@@ -240,8 +251,8 @@ sequenceDiagram
 
 ## Relationship to other pages
 
-- [Built-in tool execution pipeline](built-in-tool-execution-pipeline.md) covers what happens after a model calls a tool.
-- [Shell command execution lifecycle](shell-command-execution-lifecycle.md) covers the shell subgraph that `Wjs(...)` contributes.
-- [MCP support implementation](mcp-support-implementation.md) covers MCP server startup, MCP tool naming, and MCP-specific filtering before final session merge.
+- [Built-in tools, execution events, and results](built-in-tools-execution-events.md) covers what happens after a model calls a tool.
+- [Shell command execution events](shell-command-execution-events.md) covers the shell subgraph that `Wjs(...)` contributes.
+- [MCP host, transports, and tools](mcp-host-transport-and-tools.md) covers MCP server startup, MCP tool naming, and MCP-specific filtering before final session merge.
 - [Custom agents and skills packaging](../06-agents-automation/custom-agents-and-skills-packaging.md) covers where custom-agent `tools` declarations come from.
 - [System events and UI projection](../04-sessions-persistence-remote/system-events-and-ui-projection.md) covers how `session.tools_updated` is projected to clients.

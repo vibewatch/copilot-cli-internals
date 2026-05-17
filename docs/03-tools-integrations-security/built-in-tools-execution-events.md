@@ -1,12 +1,23 @@
-# Built-in tool execution pipeline
+# Built-in tools, execution events, and results
 
 ## MVP placement
 
 > **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
 
-This document explains how tool calls move through the extracted Copilot CLI runtime, with emphasis on built-in tools. The same session event and permission infrastructure is also shared by MCP tools, SDK extension tools, custom tools, and task/subagent tools. [Runtime tool assembly and filtering](runtime-tool-assembly-and-filtering.md) covers the preceding step: how candidate tools become the final model-visible toolset before execution starts.
+## Reader contract
+
+Use this page to answer **what happens after the model emits a tool call?** It owns the execution boundary shared by built-in tools, MCP tools, SDK extension tools, custom tools, and task/subagent tools.
+
+Read [Runtime tool assembly and filtering](runtime-tool-assembly-and-filtering.md) first if the question is why the tool was visible. Read [Tool, path, and URL permissions](tool-path-url-permissions.md) if the question is why the tool was approved or denied. Read [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) when you need to know how these events replay or project to clients.
 
 The key implementation point in `app.js` is that a tool call is not just a function invocation. It is modeled as an evented lifecycle with schema generation, permission requests, hook intervention, streaming/progress events, completion records, telemetry, and replay behavior.
+
+| Execution phase | Runtime artifact | Why it matters |
+|---|---|---|
+| Normalize | Tool name, arguments, MCP provenance | Prevents source-specific tools from bypassing one common callback path. |
+| Guard | Request processors, hooks, permissions | Lets policy deny, modify, or synthesize results before side effects happen. |
+| Run | Built-in/MCP/external callback | Produces streaming output, progress, result, or error. |
+| Persist/project | `tool.execution_*` events and metrics | Gives TUI, ACP, remote, telemetry, and session replay one shared event model. |
 
 ## Source anchors
 
@@ -95,7 +106,7 @@ The scan found conversion logic around line `3439` that maps internal tool objec
 
 The bundle uses both concrete tool names and compatibility aliases.
 
-For the detailed `bash`/`powershell` path after the generic tool callback is invoked, see [`shell-command-execution-lifecycle.md`](shell-command-execution-lifecycle.md). That page traces the shell manager, PTY and process backends, sync/async/detached execution, output buffering, and background task state.
+For the detailed `bash`/`powershell` path after the generic tool callback is invoked, see [`shell-command-execution-events.md`](shell-command-execution-events.md). That page traces the shell manager, PTY and process backends, sync/async/detached execution, output buffering, and background task state.
 
 | Family | Representative names | Purpose |
 |---|---|---|
@@ -243,9 +254,9 @@ MCP-specific additions include:
 
 ## Relationship to other docs
 
-- `permission-system-design.md` explains approval rules and persistence scopes.
+- `tool-path-url-permissions.md` explains approval rules and persistence scopes.
 - `coding-agent-validation-toolchain.md` explains completion-time validation tools such as `parallel_validation`, `code_review`, CodeQL, secret scanning, and advisory checks.
-- `mcp-support-implementation.md` explains MCP tool discovery and invocation.
-- `hooks-lifecycle-automation.md` explains hook schemas and lifecycle effects.
+- `mcp-host-transport-and-tools.md` explains MCP tool discovery and invocation.
+- `hooks-events-and-automation.md` explains hook schemas and lifecycle effects.
 - `agent-task-orchestration.md` explains tools that launch or communicate with agents.
 - This document focuses on the shared lifecycle that all those tool classes pass through.

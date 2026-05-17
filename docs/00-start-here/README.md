@@ -24,8 +24,8 @@ This page is an orientation document, not a direct implementation trace. Concret
 |---:|---|---|
 | 1 | [`app.js` overview](what-is-app-js.md) | Defines what the artifact is and what it is not. |
 | 2 | [Main feature map](main-feature-map.md) | Shows how CLI modes, sessions, tools, models, agents, policy, and ops connect. |
-| 3 | [CLI runtime workflows](../01-runtime-lifecycle/cli-runtime-workflows.md) | Explains how argv/stdin/TTY/options route into TUI, prompt, server/headless, or ACP mode. |
-| 4 | [End-to-end session lifecycle](../04-sessions-persistence-remote/session-lifecycle-end-to-end.md) | Shows the durable path through replay, tools, UI projection, persistence, remote export, and shutdown. |
+| 3 | [Mode dispatch and runtime startup](../01-runtime-lifecycle/mode-dispatch-and-runtime-startup.md) | Explains how argv/stdin/TTY/options route into TUI, prompt, server/headless, or ACP mode. |
+| 4 | [Conversation session end-to-end](../04-sessions-persistence-remote/conversation-session-end-to-end.md) | Shows the durable path through replay, tools, UI projection, persistence, remote export, and shutdown. |
 
 ## Choose your route
 

@@ -59,7 +59,7 @@ The analyzed CLI is not only a collection of prompts. It also contains the execu
 | Lens | Question it answers | Main mechanisms in this bundle | Primary docs |
 |---|---|---|---|
 | Context engineering | What should be model-visible for this turn, and how should it be shaped? | System prompt builders, instruction discovery, skills and custom-agent prompts, attachments, MCP prompts/resources, git/IDE/session metadata, memory/context board, compaction, request-time prompt trimming, provider request mapping. | [`prompt-sources.md`](../02-context-model-loop/prompt-sources.md), [`app-js-prompt-catalog.md`](../02-context-model-loop/app-js-prompt-catalog.md), [`custom-agents-and-skills-packaging.md`](../06-agents-automation/custom-agents-and-skills-packaging.md), [`memory-and-context-board.md`](../02-context-model-loop/memory-and-context-board.md), [`conversation-compaction.md`](../02-context-model-loop/conversation-compaction.md) |
-| Harness engineering | How is the model run as an agent instead of a raw completion call? | Root mode routing, session/event state, `runAgenticLoop(...)`, request processors, tool assembly, permission service, MCP/plugin/extension integration, `TaskRegistry`, subagents, streaming, retries, quota checks, shutdown/telemetry. | [`cli-runtime-workflows.md`](../01-runtime-lifecycle/cli-runtime-workflows.md), [`runtime-tool-assembly-and-filtering.md`](../03-tools-integrations-security/runtime-tool-assembly-and-filtering.md), [`built-in-tool-execution-pipeline.md`](../03-tools-integrations-security/built-in-tool-execution-pipeline.md), [`permission-system-design.md`](../03-tools-integrations-security/permission-system-design.md), [`agent-task-orchestration.md`](../06-agents-automation/agent-task-orchestration.md), [`resilience-rate-limits-concurrency.md`](../02-context-model-loop/resilience-rate-limits-concurrency.md) |
+| Harness engineering | How is the model run as an agent instead of a raw completion call? | Root mode routing, session/event state, `runAgenticLoop(...)`, request processors, tool assembly, permission service, MCP/plugin/extension integration, `TaskRegistry`, subagents, streaming, retries, quota checks, shutdown/telemetry. | [`mode-dispatch-and-runtime-startup.md`](../01-runtime-lifecycle/mode-dispatch-and-runtime-startup.md), [`runtime-tool-assembly-and-filtering.md`](../03-tools-integrations-security/runtime-tool-assembly-and-filtering.md), [`built-in-tools-execution-events.md`](../03-tools-integrations-security/built-in-tools-execution-events.md), [`tool-path-url-permissions.md`](../03-tools-integrations-security/tool-path-url-permissions.md), [`agent-task-orchestration.md`](../06-agents-automation/agent-task-orchestration.md), [`resilience-rate-limits-concurrency.md`](../02-context-model-loop/resilience-rate-limits-concurrency.md) |
 
 ```mermaid
 flowchart LR
@@ -356,7 +356,7 @@ Safety boundaries include:
 - Offline mode disables online paths such as GitHub auth, telemetry, web tools, GitHub MCP, and auto-update.
 - Local command sandboxing is a separate shell-spawn layer controlled by `/sandbox` and `settings.sandbox.enabled`; see [`sandboxing.md`](../03-tools-integrations-security/sandboxing.md).
 
-For the full permission architecture, including rule parsing, deny/allow precedence, path and URL managers, hooks, prompt/RPC flow, approval scopes, and allow-all toggles, see [`permission-system-design.md`](../03-tools-integrations-security/permission-system-design.md). For sandbox-specific shell enforcement, see [`sandboxing.md`](../03-tools-integrations-security/sandboxing.md).
+For the full permission architecture, including rule parsing, deny/allow precedence, path and URL managers, hooks, prompt/RPC flow, approval scopes, and allow-all toggles, see [`tool-path-url-permissions.md`](../03-tools-integrations-security/tool-path-url-permissions.md). For sandbox-specific shell enforcement, see [`sandboxing.md`](../03-tools-integrations-security/sandboxing.md).
 
 ## MCP, plugins, extensions, and IDE integration
 
@@ -432,11 +432,11 @@ Representative gates:
 ```mermaid
 flowchart TD
   Main["main-feature-map.md"] --> Overview["what-is-app-js.md\nwhat app.js owns"]
-    Main --> Runtime["cli-runtime-workflows.md\nroot action and mode dispatch"]
+    Main --> Runtime["mode-dispatch-and-runtime-startup.md\nroot action and mode dispatch"]
     Main --> TUI["tui-and-slash-commands.md\ninteractive UI and slash commands"]
     Main --> Sessions["sessions-remote-cloud.md\nlocal/remote/cloud sessions"]
-    Main --> Integrations["integrations-permissions-config.md\nMCP/plugins/permissions"]
-    Main --> Permissions["permission-system-design.md\npermission service and approval flow"]
+    Main --> Integrations["integration-config-entrypoints.md\nMCP/plugins/permissions"]
+    Main --> Permissions["tool-path-url-permissions.md\npermission service and approval flow"]
     Main --> Sandbox["sandboxing.md\nlocal command sandboxing"]
     Main --> Models["models-providers-auth.md\nauth/providers/model selection"]
     Main --> Agents["agent-task-orchestration.md\ntask tool and subagents"]
@@ -444,7 +444,7 @@ flowchart TD
     Main --> Fleet["fleet-mode.md\n/fleet and parallel subagents"]
     Main --> Gates["feature-gates.md\nrollouts and overrides"]
     Main --> Bootstrap["loader-bootstrap.md\nSEA/npm loader chain"]
-    Main --> Ops["observability-update-shutdown.md\nlogs/update/shutdown"]
+    Main --> Ops["telemetry-update-and-shutdown.md\nlogs/update/shutdown"]
 ```
 
 Read this document first if you want the feature map. Then follow the links above for deeper implementation notes.

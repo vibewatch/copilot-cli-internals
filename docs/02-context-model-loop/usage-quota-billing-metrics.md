@@ -206,4 +206,4 @@ sequenceDiagram
 - `model-api-routing.md` explains provider response normalization and where usage arrives from.
 - `conversation-compaction.md` explains context-window pressure and compaction triggers.
 - `system-events-and-ui-projection.md` explains how ephemeral usage events reach UI clients.
-- `observability-update-shutdown.md` explains telemetry and shutdown reporting.
+- `telemetry-update-and-shutdown.md` explains telemetry and shutdown reporting.

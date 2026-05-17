@@ -158,9 +158,9 @@ Use this page when answering questions such as:
 ## Related docs
 
 - [Embedded server, ACP, and JSON-RPC protocol](../01-runtime-lifecycle/embedded-server-acp-protocol.md)
-- [Session support implementation in the Copilot CLI](session-support-implementation.md)
+- [Session manager and event replay](session-manager-and-event-replay.md)
 - [SessionFs provider and state-file lifecycle](session-fs-provider-and-state-files.md)
 - [System events and UI projection](system-events-and-ui-projection.md)
-- [Remote control implementation in Copilot CLI](remote-control-implementation.md)
-- [Built-in tool execution pipeline](../03-tools-integrations-security/built-in-tool-execution-pipeline.md)
-- [MCP support implementation in the Copilot CLI](../03-tools-integrations-security/mcp-support-implementation.md)
+- [Remote control protocol and steering](remote-control-protocol-and-steering.md)
+- [Built-in tools, execution events, and results](../03-tools-integrations-security/built-in-tools-execution-events.md)
+- [MCP host, transports, and tools](../03-tools-integrations-security/mcp-host-transport-and-tools.md)

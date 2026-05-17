@@ -334,7 +334,7 @@ flowchart TD
 
 This path is intentionally separate from `COPILOT_CLI_ENABLED_FEATURE_FLAGS` and the canonical `FEATURE_AVAILABILITY_TIERS` table. It is an ad-hoc raw environment gate used by MCP setup.
 
-The generic permission service, including how MCP tool requests are approved or denied after they are available, is covered in [`permission-system-design.md`](../03-tools-integrations-security/permission-system-design.md).
+The generic permission service, including how MCP tool requests are approved or denied after they are available, is covered in [`tool-path-url-permissions.md`](../03-tools-integrations-security/tool-path-url-permissions.md).
 
 ## How gates affect behavior
 
@@ -359,4 +359,4 @@ The gate usually does not perform permission enforcement by itself. Permission e
 - `SANDBOX` is a local gate for exposing `/sandbox`; it is not the same as the hidden `--cloud` cloud-session feature.
 - The MCP permission gate is a raw `COPILOT_FEATURE_FLAGS` check that controls whether the default GitHub MCP URL is readonly.
 
-Related docs: [`sandboxing.md`](../03-tools-integrations-security/sandboxing.md), [`permission-system-design.md`](../03-tools-integrations-security/permission-system-design.md), [`sessions-remote-cloud.md`](../04-sessions-persistence-remote/sessions-remote-cloud.md), and [Main feature map](../00-start-here/main-feature-map.md).
+Related docs: [`sandboxing.md`](../03-tools-integrations-security/sandboxing.md), [`tool-path-url-permissions.md`](../03-tools-integrations-security/tool-path-url-permissions.md), [`sessions-remote-cloud.md`](../04-sessions-persistence-remote/sessions-remote-cloud.md), and [Main feature map](../00-start-here/main-feature-map.md).

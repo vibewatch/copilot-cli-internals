@@ -34,7 +34,7 @@ flowchart TD
     click Gates "./feature-gates/" "Open feature gates"
     click Diagnostics "./diagnostics-feedback-debug-bundles/" "Open diagnostics"
     click Redaction "./debug-bundle-redaction-boundaries/" "Open redaction boundaries"
-    click OTel "./observability-update-shutdown/" "Open observability and shutdown"
+    click OTel "./telemetry-update-and-shutdown/" "Open observability and shutdown"
 ```
 
 ## Primary reading order
@@ -45,16 +45,16 @@ flowchart TD
 | 2 | [Feature gates and rollout logic](feature-gates.md) | How do static gates, env/settings overrides, remote experiments, repo/team allowlists, and MCP permission gates affect behavior? |
 | 3 | [Diagnostics, feedback, and debug bundles](diagnostics-feedback-debug-bundles.md) | How do `/diagnose`, `/feedback`, `/bug`, `/collect-debug-logs`, local archives, and secret gist uploads work? |
 | 4 | [Debug bundle and redaction boundaries](debug-bundle-redaction-boundaries.md) | What can enter a diagnostic bundle, which redaction layers apply, and where support-sharing caveats remain? |
-| 5 | [Observability, update, and shutdown workflows](observability-update-shutdown.md) | How are logging, telemetry, OpenTelemetry, update/version behavior, debug artifacts, signal handling, and graceful shutdown coordinated? |
+| 5 | [Telemetry, update, and shutdown](telemetry-update-and-shutdown.md) | How are logging, telemetry, OpenTelemetry, update/version behavior, debug artifacts, signal handling, and graceful shutdown coordinated? |
 
 ## Operational boundaries
 
 | Boundary | Primary page | Notes |
 |---|---|---|
 | Hosted settings construction | [Hosted agent environment](hosted-agent-environment.md) | `TWe()` turns job/env state into a settings envelope. |
-| Default hosted MCP policy | [Hosted agent environment](hosted-agent-environment.md) and [MCP support implementation](../03-tools-integrations-security/mcp-support-implementation.md) | Hosted defaults overlay generic MCP host behavior. |
+| Default hosted MCP policy | [Hosted agent environment](hosted-agent-environment.md) and [MCP host, transports, and tools](../03-tools-integrations-security/mcp-host-transport-and-tools.md) | Hosted defaults overlay generic MCP host behavior. |
 | Redaction and support artifacts | [Debug bundle and redaction boundaries](debug-bundle-redaction-boundaries.md) | Debug bundles are operational artifacts, not guaranteed clean-room exports. |
-| Runtime telemetry | [Observability, update, and shutdown workflows](observability-update-shutdown.md) | OTel can be enabled by Copilot-specific or standard OTLP env vars. |
+| Runtime telemetry | [Telemetry, update, and shutdown](telemetry-update-and-shutdown.md) | OTel can be enabled by Copilot-specific or standard OTLP env vars. |
 
 ## Handoffs
 

@@ -6,7 +6,7 @@ This document fills the standalone coverage gap for the interactive terminal UI 
 
 ## MVP placement
 
-This page explains the human-facing branch of [Runtime lifecycle](README.md). It sits between [CLI runtime workflows](cli-runtime-workflows.md) and the subsystems the TUI hosts: [Context and model loop](../02-context-model-loop/README.md), [Tools, integrations, and security](../03-tools-integrations-security/README.md), [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md), and [Agents and automation](../06-agents-automation/README.md). Read it when a slash command or dialog appears to be “UI-only” but actually routes into deeper runtime behavior.
+This page explains the human-facing branch of [Runtime lifecycle](README.md). It sits between [Mode dispatch and runtime startup](mode-dispatch-and-runtime-startup.md) and the subsystems the TUI hosts: [Context and model loop](../02-context-model-loop/README.md), [Tools, integrations, and security](../03-tools-integrations-security/README.md), [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md), and [Agents and automation](../06-agents-automation/README.md). Read it when a slash command or dialog appears to be “UI-only” but actually routes into deeper runtime behavior.
 
 ## Source anchors
 
@@ -168,7 +168,7 @@ flowchart LR
     Decision --> PermissionService["PermissionService or request resolver"]
 ```
 
-The TUI acts as the human-interaction adapter for these requests. The underlying permission service still owns rule precedence and persistence decisions. The full permission pipeline is documented in [`permission-system-design.md`](../03-tools-integrations-security/permission-system-design.md).
+The TUI acts as the human-interaction adapter for these requests. The underlying permission service still owns rule precedence and persistence decisions. The full permission pipeline is documented in [`tool-path-url-permissions.md`](../03-tools-integrations-security/tool-path-url-permissions.md).
 
 `/sandbox` looks adjacent to permission commands because it affects command execution safety, but it is not a permission approval. It writes `settings.sandbox.enabled`; later shell-session construction decides whether to spawn through the local sandbox path. See [`sandboxing.md`](../03-tools-integrations-security/sandboxing.md) for the full flow and platform caveats.
 
@@ -213,4 +213,4 @@ This explains why extension loading is tied closely to the interactive branch: t
 - `/sandbox` is a settings-backed local shell-sandbox toggle, not a model prompt macro and not a permission-rule decision.
 - Embedded server registration makes the foreground TUI session available to extension/protocol integrations.
 
-Related docs: [`sandboxing.md`](../03-tools-integrations-security/sandboxing.md), [`permission-system-design.md`](../03-tools-integrations-security/permission-system-design.md), [`agent-task-orchestration.md`](../06-agents-automation/agent-task-orchestration.md), [`fleet-mode.md`](../06-agents-automation/fleet-mode.md), [`memory-and-context-board.md`](../02-context-model-loop/memory-and-context-board.md), and [`conversation-compaction.md`](../02-context-model-loop/conversation-compaction.md).
+Related docs: [`sandboxing.md`](../03-tools-integrations-security/sandboxing.md), [`tool-path-url-permissions.md`](../03-tools-integrations-security/tool-path-url-permissions.md), [`agent-task-orchestration.md`](../06-agents-automation/agent-task-orchestration.md), [`fleet-mode.md`](../06-agents-automation/fleet-mode.md), [`memory-and-context-board.md`](../02-context-model-loop/memory-and-context-board.md), and [`conversation-compaction.md`](../02-context-model-loop/conversation-compaction.md).

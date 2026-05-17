@@ -4,7 +4,20 @@
 
 > **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
 
-This document explains how the extracted Copilot CLI bundle loads, merges, migrates, and writes settings/configuration. In the analyzed `app.js`, configuration is not one file or one object. It is a family of stores and runtime overlays covering user settings, location permissions, MCP/LSP config, plugin state, sandbox policy, URL permissions, trusted folders, feature flags, auth metadata, terminal setup prompts, and session runtime options.
+## Reader contract
+
+Use this page to answer **where does a policy or integration setting persist, and how does runtime state override it?** It owns config roots, JSON stores, settings migration, incremental writes, and persistent state for permissions, URLs, MCP, plugins, sandboxing, trusted folders, terminal prompts, and related policy knobs.
+
+Read [Tool, path, and URL permissions](tool-path-url-permissions.md) for how stored permission rules are evaluated, [MCP host, transports, and tools](mcp-host-transport-and-tools.md) for MCP config semantics, and [Plugins, extensions, and capabilities](plugins-extensions-and-capabilities.md) for plugin state users.
+
+In the analyzed `app.js`, configuration is not one file or one object. It is a family of stores and runtime overlays covering user settings, location permissions, MCP/LSP config, plugin state, sandbox policy, URL permissions, trusted folders, feature flags, auth metadata, terminal setup prompts, and session runtime options.
+
+| Store family | Main consumers |
+|---|---|
+| Settings | URLs, plugins, MCP enablement, sandbox, UI, model/runtime preferences. |
+| MCP/LSP config | MCP host and IDE/LSP integration startup. |
+| Permissions | Location approvals, allowed directories, and persistent policy state. |
+| State/cache directories | Plugins, sessions, terminal prompts, migration targets, and runtime artifacts. |
 
 Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted bundle and will shift across releases.
 
@@ -233,8 +246,8 @@ Some sources merge maps (`enabledPlugins`, marketplaces), some append arrays (ad
 
 ## Relationship to other docs
 
-- `integrations-permissions-config.md` gives the broad integration view.
-- `permission-system-design.md` explains how persisted approvals are interpreted.
-- `plugin-extension-architecture.md` explains plugin install/cache state.
-- `mcp-support-implementation.md` explains MCP config merging.
+- `integration-config-entrypoints.md` gives the broad integration view.
+- `tool-path-url-permissions.md` explains how persisted approvals are interpreted.
+- `plugins-extensions-and-capabilities.md` explains plugin install/cache state.
+- `mcp-host-transport-and-tools.md` explains MCP config merging.
 - `sandboxing.md` explains how persisted sandbox settings affect shell execution.

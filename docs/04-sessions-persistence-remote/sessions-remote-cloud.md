@@ -163,7 +163,7 @@ Remote behavior is shaped by:
 - the `REMOTE_KICKSTART` feature gate;
 - authentication, because remote control is tied to GitHub-hosted state.
 
-Permission prompts can also travel over remote steering paths: remote clients send permission responses back into the prompt manager, which converts them into the same approval decisions used by the local TUI. See [`permission-system-design.md`](../03-tools-integrations-security/permission-system-design.md) for that prompt/RPC bridge.
+Permission prompts can also travel over remote steering paths: remote clients send permission responses back into the prompt manager, which converts them into the same approval decisions used by the local TUI. See [`tool-path-url-permissions.md`](../03-tools-integrations-security/tool-path-url-permissions.md) for that prompt/RPC bridge.
 
 ## Cloud sessions
 

@@ -1,12 +1,23 @@
-# Copilot SDK extension support
+# Copilot SDK extension bridge
 
 ## MVP placement
 
 > **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
 
-This page is a standalone map for Copilot CLI's programmatic extension support. It complements [Plugin and extension architecture](plugin-extension-architecture.md): plugins are mostly manifest/package contributions, while SDK extensions are Node.js child processes that join the active session through `@github/copilot-sdk` and register programmatic tools, hooks, commands, and callbacks.
+## Reader contract
+
+Use this page to answer **how does `@github/copilot-sdk` code join a running CLI session without being imported into the main process?** It owns extension child-process lifecycle, stdio JSON-RPC, `joinSession()`, capability registration, extension management tools, and `session.extensions_loaded` status.
+
+Read [Plugins, extensions, and capabilities](plugins-extensions-and-capabilities.md) for plugin packaging and manifest contributions. Read [Built-in tools, execution events, and results](built-in-tools-execution-events.md) for what happens when an extension-provided tool is invoked.
 
 The short version: when the `EXTENSIONS` feature gate is active and extension loading is enabled for a session, the runtime discovers `extension.mjs` files, launches them as child processes, lets them call `joinSession()`, wires their registered capabilities into the session, and reports status through `session.extensions_loaded`.
+
+| Boundary | Runtime behavior |
+|---|---|
+| Process boundary | Extensions run as child Node.js processes; stdout is protocol traffic, not user logging. |
+| Session boundary | `joinSession()` binds the extension to the foreground/session RPC surface. |
+| Tool boundary | Registered tools become external tools and still flow through permissions/events. |
+| Management boundary | Enable/disable/reload/list operations are exposed through session APIs and management tools. |
 
 ## Source anchors
 
@@ -197,10 +208,10 @@ The runtime's built-in extension guide points to these package files, which are 
 
 ## Related docs
 
-- [Plugin and extension architecture](plugin-extension-architecture.md) explains plugins and contains the shorter SDK lifecycle overview.
+- [Plugins, extensions, and capabilities](plugins-extensions-and-capabilities.md) explains plugins and contains the shorter SDK lifecycle overview.
 - [Runtime tool assembly and filtering](runtime-tool-assembly-and-filtering.md) explains where extension tools enter the final model-visible toolset.
-- [Built-in tool execution pipeline](built-in-tool-execution-pipeline.md) explains the generic tool execution lifecycle that extension tools join.
-- [Hooks and lifecycle automation](hooks-lifecycle-automation.md) explains runtime hook semantics and permission-sensitive hook behavior.
+- [Built-in tools, execution events, and results](built-in-tools-execution-events.md) explains the generic tool execution lifecycle that extension tools join.
+- [Hooks, events, and automation](hooks-events-and-automation.md) explains runtime hook semantics and permission-sensitive hook behavior.
 - [API and session event schema contracts](../04-sessions-persistence-remote/api-and-session-event-schemas.md) explains generated API/session-event schemas used by SDK clients.
 
 ## Reverse-engineering takeaways

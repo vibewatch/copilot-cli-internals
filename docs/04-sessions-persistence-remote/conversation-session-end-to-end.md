@@ -1,4 +1,4 @@
-# End-to-end session lifecycle
+# Conversation session end-to-end
 
 ## MVP placement
 
@@ -6,7 +6,7 @@
 
 This page stitches together the full session path in the extracted Copilot CLI bundle: session creation, resume/continue selection, event-log replay, workspace state, tool configuration refresh, UI projection, indexing, remote export, and shutdown cleanup.
 
-It intentionally does not replace the focused pages on [session support](session-support-implementation.md), [SessionFs](session-fs-provider-and-state-files.md), [session-store indexing](session-store-sqlite-indexing.md), [UI projection](system-events-and-ui-projection.md), or [runtime tool assembly](../03-tools-integrations-security/runtime-tool-assembly-and-filtering.md). Instead, it is the missing reader path for following one conversation from startup to durable state and visible UI.
+It intentionally does not replace the focused pages on [session manager](session-manager-and-event-replay.md), [SessionFs](session-fs-provider-and-state-files.md), [session-store indexing](session-store-sqlite-indexing.md), [UI projection](system-events-and-ui-projection.md), or [runtime tool assembly](../03-tools-integrations-security/runtime-tool-assembly-and-filtering.md). Instead, it is the missing reader path for following one conversation from startup to durable state and visible UI.
 
 Because `app.js` is bundled/minified, names below are semantic aliases with version-specific search anchors for the analyzed artifact.
 
@@ -157,9 +157,9 @@ This explains why a raw `events.jsonl` inspection, SQLite search result, and ter
 
 ## Relationship to other docs
 
-- [Session support implementation](session-support-implementation.md) is the detailed local/remote manager reference.
-- [Persistence pipeline for sessions](persistence-pipeline.md) zooms in on event logs, workspace sidecars, SQLite, indexing, fork, and rewind.
+- [Session manager and event replay](session-manager-and-event-replay.md) is the detailed local/remote manager reference.
+- [Session persistence, replay, and indexing](session-persistence-replay-and-indexing.md) zooms in on event logs, workspace sidecars, SQLite, indexing, fork, and rewind.
 - [SessionFs provider and state-file lifecycle](session-fs-provider-and-state-files.md) explains local versus SDK/RPC-backed file storage.
 - [System events and UI projection](system-events-and-ui-projection.md) explains model-visible versus UI-only event projection.
 - [Runtime tool assembly and filtering](../03-tools-integrations-security/runtime-tool-assembly-and-filtering.md) explains the tool configuration phase in detail.
-- [Observability, update, and shutdown workflows](../05-hosted-agent-ops/observability-update-shutdown.md) covers logs, telemetry, and graceful exit.
+- [Telemetry, update, and shutdown](../05-hosted-agent-ops/telemetry-update-and-shutdown.md) covers logs, telemetry, and graceful exit.

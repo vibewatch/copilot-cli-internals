@@ -1,8 +1,14 @@
-# Integrations, permissions, auth, and config workflows
+# Integration config entrypoints
 
 ## MVP placement
 
 > **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
+
+## Reader contract
+
+Use this page as a cross-reference for **which startup/config/auth entry point feeds which focused implementation page**. It is intentionally an index-like bridge: detailed MCP, plugin, permission, settings, auth/provider, and update behavior now lives in narrower pages.
+
+If you need depth, jump from this page to [MCP host, transports, and tools](mcp-host-transport-and-tools.md), [Plugins, extensions, and capabilities](plugins-extensions-and-capabilities.md), [Tool, path, and URL permissions](tool-path-url-permissions.md), [Settings and configuration persistence](settings-config-persistence.md), [Models, providers, and authentication workflows](../02-context-model-loop/models-providers-auth.md), or [Telemetry, update, and shutdown](../05-hosted-agent-ops/telemetry-update-and-shutdown.md).
 
 This file focuses on the major cross-cutting systems wired into `app.js`: MCP, plugins/extensions, permission rules, authentication/provider selection, login, and update behavior.
 
@@ -204,7 +210,7 @@ flowchart TD
 
 Permissions are assembled from config and CLI flags before tools are initialized. Rules cover tools, paths, and URLs. Deny rules generally take precedence over allow rules, and non-interactive mode cannot freely ask the user.
 
-For the detailed subsystem design, including rule precedence, path/URL managers, hooks, session/location approval persistence, remote/RPC prompts, and allow-all behavior, see [`permission-system-design.md`](permission-system-design.md).
+For the detailed subsystem design, including rule precedence, path/URL managers, hooks, session/location approval persistence, remote/RPC prompts, and allow-all behavior, see [`tool-path-url-permissions.md`](tool-path-url-permissions.md).
 
 ```mermaid
 flowchart TD

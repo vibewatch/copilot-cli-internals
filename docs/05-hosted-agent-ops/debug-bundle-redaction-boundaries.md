@@ -4,7 +4,7 @@
 
 > **Why this page is here:** This page belongs to [Hosted agent ops](README.md). It documents hosted-job operational contracts such as environment envelopes, feature gates, validation, debug bundles, redaction, telemetry, update, or shutdown. Pair it with [Tools, integrations, and security](../03-tools-integrations-security/README.md) for trust boundaries and [Agents and automation](../06-agents-automation/README.md) when hosted runs execute delegated agent workflows.
 
-This page documents the safety boundary around Copilot CLI diagnostics, feedback bundles, debug-log collection, and redaction. It fills a gap between [Diagnostics, feedback, and debug bundles](diagnostics-feedback-debug-bundles.md), [Content exclusion and redaction](../03-tools-integrations-security/content-exclusion-and-redaction.md), and [Observability, update, and shutdown workflows](observability-update-shutdown.md).
+This page documents the safety boundary around Copilot CLI diagnostics, feedback bundles, debug-log collection, and redaction. It fills a gap between [Diagnostics, feedback, and debug bundles](diagnostics-feedback-debug-bundles.md), [Content exclusion and redaction](../03-tools-integrations-security/content-exclusion-and-redaction.md), and [Telemetry, update, and shutdown](telemetry-update-and-shutdown.md).
 
 The important conclusion is conservative: debug collection has filtering/redaction helpers and relies on existing secret/content-exclusion mechanisms, but the analyzed bundle does not prove a total data-loss-prevention guarantee for every possible log or user-supplied additional file. Debug bundles should be treated as deliberate support artifacts that may contain sensitive operational context.
 
@@ -179,5 +179,5 @@ The extracted bundle confirms the presence of redaction/filtering helpers and se
 
 - [Diagnostics, feedback, and debug bundles](diagnostics-feedback-debug-bundles.md) documents command syntax, bundle files, archive/gist output, and feature gates.
 - [Content exclusion and redaction](../03-tools-integrations-security/content-exclusion-and-redaction.md) documents content policy, output filtering, secret env vars, command redaction, and secret-scanning remediation.
-- [Observability, update, and shutdown workflows](observability-update-shutdown.md) documents logging setup, telemetry, debug artifacts, and shutdown flushing.
-- [Persistence pipeline for sessions](../04-sessions-persistence-remote/persistence-pipeline.md) explains how session event logs and derived stores differ from runtime logs.
+- [Telemetry, update, and shutdown](telemetry-update-and-shutdown.md) documents logging setup, telemetry, debug artifacts, and shutdown flushing.
+- [Session persistence, replay, and indexing](../04-sessions-persistence-remote/session-persistence-replay-and-indexing.md) explains how session event logs and derived stores differ from runtime logs.

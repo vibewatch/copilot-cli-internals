@@ -1,4 +1,4 @@
-# Remote control implementation in Copilot CLI
+# Remote control protocol and steering
 
 ## MVP placement
 

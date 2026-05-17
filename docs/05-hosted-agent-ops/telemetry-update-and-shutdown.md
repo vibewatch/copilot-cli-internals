@@ -1,4 +1,4 @@
-# Observability, update, and shutdown workflows
+# Telemetry, update, and shutdown
 
 ## MVP placement
 

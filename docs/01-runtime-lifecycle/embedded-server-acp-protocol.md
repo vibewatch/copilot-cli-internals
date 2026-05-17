@@ -198,7 +198,7 @@ sequenceDiagram
 ## Relationship to other docs
 
 - `tui-and-slash-commands.md` explains the interactive client that coexists with embedded server mode.
-- `session-support-implementation.md` explains session events and server/ACP APIs from the session perspective.
-- `built-in-tool-execution-pipeline.md` explains normal tool execution events that the server forwards.
-- `mcp-support-implementation.md` explains MCP elicitation, OAuth, sampling, and tools from the MCP host perspective.
-- `plugin-extension-architecture.md` explains extension-provided tools and SDK command registration.
+- `session-manager-and-event-replay.md` explains session events and server/ACP APIs from the session perspective.
+- `built-in-tools-execution-events.md` explains normal tool execution events that the server forwards.
+- `mcp-host-transport-and-tools.md` explains MCP elicitation, OAuth, sampling, and tools from the MCP host perspective.
+- `plugins-extensions-and-capabilities.md` explains extension-provided tools and SDK command registration.

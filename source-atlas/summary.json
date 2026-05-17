@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-17T01:33:16.173Z",
+  "generatedAt": "2026-05-17T01:59:52.889Z",
   "source": {
     "path": "/home/ythuang/workspace/copilot-cli-internals/copilot-cli-pkg/app.js",
     "relativePath": "copilot-cli-pkg/app.js",
@@ -32,22 +32,22 @@
   "documentation": {
     "referencedDocs": [
       "docs/00-start-here/main-feature-map.md",
-      "docs/01-runtime-lifecycle/cli-runtime-workflows.md",
+      "docs/01-runtime-lifecycle/mode-dispatch-and-runtime-startup.md",
       "docs/01-runtime-lifecycle/tui-and-slash-commands.md",
       "docs/02-context-model-loop/prompt-sources.md",
       "docs/02-context-model-loop/resilience-rate-limits-concurrency.md",
-      "docs/03-tools-integrations-security/built-in-tool-execution-pipeline.md",
-      "docs/03-tools-integrations-security/mcp-support-implementation.md",
-      "docs/03-tools-integrations-security/permission-system-design.md",
-      "docs/03-tools-integrations-security/plugin-extension-architecture.md",
+      "docs/03-tools-integrations-security/built-in-tools-execution-events.md",
+      "docs/03-tools-integrations-security/mcp-host-transport-and-tools.md",
+      "docs/03-tools-integrations-security/plugins-extensions-and-capabilities.md",
       "docs/03-tools-integrations-security/runtime-tool-assembly-and-filtering.md",
-      "docs/04-sessions-persistence-remote/persistence-pipeline.md",
-      "docs/04-sessions-persistence-remote/session-lifecycle-end-to-end.md",
-      "docs/04-sessions-persistence-remote/session-support-implementation.md",
+      "docs/03-tools-integrations-security/tool-path-url-permissions.md",
+      "docs/04-sessions-persistence-remote/conversation-session-end-to-end.md",
+      "docs/04-sessions-persistence-remote/session-manager-and-event-replay.md",
+      "docs/04-sessions-persistence-remote/session-persistence-replay-and-indexing.md",
       "docs/05-hosted-agent-ops/debug-bundle-redaction-boundaries.md",
       "docs/05-hosted-agent-ops/feature-gates.md",
       "docs/05-hosted-agent-ops/hosted-agent-environment.md",
-      "docs/05-hosted-agent-ops/observability-update-shutdown.md",
+      "docs/05-hosted-agent-ops/telemetry-update-and-shutdown.md",
       "docs/06-agents-automation/agent-task-orchestration.md",
       "docs/06-agents-automation/built-in-agents.md"
     ],
@@ -79,7 +79,7 @@
         "--headless"
       ],
       "role": "Turns argv/env/settings/session state into TUI, prompt, server/headless, or ACP mode.",
-      "docs": "docs/01-runtime-lifecycle/cli-runtime-workflows.md",
+      "docs": "docs/01-runtime-lifecycle/mode-dispatch-and-runtime-startup.md",
       "resolved": [
         {
           "anchor": "j$o",
@@ -127,7 +127,7 @@
         "session.task_complete"
       ],
       "role": "Handles -p/stdin/non-TTY execution, streaming, JSONL, autopilot continuation, and pending background work.",
-      "docs": "docs/01-runtime-lifecycle/cli-runtime-workflows.md",
+      "docs": "docs/01-runtime-lifecycle/mode-dispatch-and-runtime-startup.md",
       "resolved": [
         {
           "anchor": "u1t",
@@ -173,7 +173,7 @@
         "tool.execution_complete"
       ],
       "role": "Queues prompts, builds requests, streams model output, dispatches tools, emits durable events, and handles retries.",
-      "docs": "docs/04-sessions-persistence-remote/session-support-implementation.md",
+      "docs": "docs/04-sessions-persistence-remote/session-manager-and-event-replay.md",
       "resolved": [
         {
           "anchor": "runAgenticLoop",
@@ -191,7 +191,7 @@
       "firstLine": 3062
     },
     {
-      "semanticAlias": "End-to-end session lifecycle",
+      "semanticAlias": "Conversation session end-to-end",
       "anchors": [
         "--resume",
         "--continue",
@@ -200,7 +200,7 @@
         "session.tools_updated"
       ],
       "role": "Connects startup selection, event replay, workspace state, tool refresh, UI projection, indexing, remote export, and shutdown.",
-      "docs": "docs/04-sessions-persistence-remote/session-lifecycle-end-to-end.md",
+      "docs": "docs/04-sessions-persistence-remote/conversation-session-end-to-end.md",
       "resolved": [
         {
           "anchor": "--resume",
@@ -235,7 +235,7 @@
         "session_store_sql"
       ],
       "role": "Maps JSONL replay logs, SessionFs, workspace sidecars, SQLite/FTS, reindex, fork, rewind, checkpoints, and cloud sync.",
-      "docs": "docs/04-sessions-persistence-remote/persistence-pipeline.md",
+      "docs": "docs/04-sessions-persistence-remote/session-persistence-replay-and-indexing.md",
       "resolved": [
         {
           "anchor": "events.jsonl",
@@ -282,14 +282,14 @@
       "firstLine": 4361
     },
     {
-      "semanticAlias": "Built-in tool execution pipeline",
+      "semanticAlias": "Built-in tools, execution events, and results",
       "anchors": [
         "tool.execution_start",
         "tool.execution_partial_result",
         "tool.execution_complete"
       ],
       "role": "Runs model tool calls through permission/hook/execution/event/telemetry boundaries.",
-      "docs": "docs/03-tools-integrations-security/built-in-tool-execution-pipeline.md",
+      "docs": "docs/03-tools-integrations-security/built-in-tools-execution-events.md",
       "resolved": [
         {
           "anchor": "tool.execution_start",
@@ -315,7 +315,7 @@
         "deny-tool"
       ],
       "role": "Applies tool/path/URL/MCP/hook approval policy before potentially dangerous actions.",
-      "docs": "docs/03-tools-integrations-security/permission-system-design.md",
+      "docs": "docs/03-tools-integrations-security/tool-path-url-permissions.md",
       "resolved": [
         {
           "anchor": "PermissionService",
@@ -345,7 +345,7 @@
         "taskSupport"
       ],
       "role": "Connects MCP servers, exposes tools/resources/prompts, and maps long-running MCP task streams into task records.",
-      "docs": "docs/03-tools-integrations-security/mcp-support-implementation.md",
+      "docs": "docs/03-tools-integrations-security/mcp-host-transport-and-tools.md",
       "resolved": [
         {
           "anchor": "McpHost",
@@ -375,7 +375,7 @@
         "EXTENSIONS"
       ],
       "role": "Loads plugin-contributed skills/agents/hooks/MCP/LSP and SDK extension tools/hooks/commands.",
-      "docs": "docs/03-tools-integrations-security/plugin-extension-architecture.md",
+      "docs": "docs/03-tools-integrations-security/plugins-extensions-and-capabilities.md",
       "resolved": [
         {
           "anchor": "pluginCommand",
@@ -523,7 +523,7 @@
       "firstLine": 239
     },
     {
-      "semanticAlias": "Observability and shutdown",
+      "semanticAlias": "Telemetry and shutdown",
       "anchors": [
         "ShutdownService",
         "OpenTelemetry",
@@ -531,7 +531,7 @@
         "debug"
       ],
       "role": "Handles logging, telemetry, diagnostics, update/version flows, signal handling, and cleanup.",
-      "docs": "docs/05-hosted-agent-ops/observability-update-shutdown.md",
+      "docs": "docs/05-hosted-agent-ops/telemetry-update-and-shutdown.md",
       "resolved": [
         {
           "anchor": "OpenTelemetry",
@@ -664,7 +664,7 @@
         "session.idle"
       ],
       "output": "Durable event log, UI projection, state files, background work, and completion/idle signals.",
-      "docs": "docs/04-sessions-persistence-remote/session-lifecycle-end-to-end.md",
+      "docs": "docs/04-sessions-persistence-remote/conversation-session-end-to-end.md",
       "resolvedSeeds": [
         {
           "anchor": "session.start",
@@ -695,7 +695,7 @@
         "session.snapshot_rewind"
       ],
       "output": "Replayable JSONL history, sidecar artifacts, derived SQLite/FTS indexes, forked branches, and rewind boundaries.",
-      "docs": "docs/04-sessions-persistence-remote/persistence-pipeline.md",
+      "docs": "docs/04-sessions-persistence-remote/session-persistence-replay-and-indexing.md",
       "resolvedSeeds": [
         {
           "anchor": "events.jsonl",
@@ -826,7 +826,7 @@
         "tool.execution_complete"
       ],
       "output": "Permissioned execution, partial/progress/result events, telemetry, and session history records.",
-      "docs": "docs/03-tools-integrations-security/built-in-tool-execution-pipeline.md",
+      "docs": "docs/03-tools-integrations-security/built-in-tools-execution-events.md",
       "resolvedSeeds": [
         {
           "anchor": "tool.execution_start",
@@ -897,7 +897,7 @@
         "callIdeTool"
       ],
       "output": "External tools, hooks, prompts, resources, agents, skills, LSP/IDE surfaces, and SDK commands.",
-      "docs": "docs/03-tools-integrations-security/plugin-extension-architecture.md",
+      "docs": "docs/03-tools-integrations-security/plugins-extensions-and-capabilities.md",
       "resolvedSeeds": [
         {
           "anchor": "McpHost",
@@ -932,7 +932,7 @@
         "sandbox"
       ],
       "output": "Allow/deny/redaction/sandbox decisions before dangerous or policy-sensitive work.",
-      "docs": "docs/03-tools-integrations-security/permission-system-design.md",
+      "docs": "docs/03-tools-integrations-security/tool-path-url-permissions.md",
       "resolvedSeeds": [
         {
           "anchor": "PermissionService",
@@ -967,7 +967,7 @@
         "update"
       ],
       "output": "Debug bundles, telemetry/logs/traces, update/version behavior, and cleanup.",
-      "docs": "docs/05-hosted-agent-ops/observability-update-shutdown.md",
+      "docs": "docs/05-hosted-agent-ops/telemetry-update-and-shutdown.md",
       "resolvedSeeds": [
         {
           "anchor": "/diagnose",

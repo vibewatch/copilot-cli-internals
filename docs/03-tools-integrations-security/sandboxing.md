@@ -1,8 +1,14 @@
-# Sandbox Implementation
+# Sandbox implementation
 
 ## MVP placement
 
 > **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
+
+## Reader contract
+
+Use this page to answer **how is local shell-command sandboxing enforced after a shell tool is approved?** It owns the runtime path from `sandbox.enabled` and `/sandbox` to shell config, MXC adapter loading, platform checks, and process spawn constraints.
+
+Read [Shell command execution events](shell-command-execution-events.md) for sync/async/detached shell task behavior, [Tool, path, and URL permissions](tool-path-url-permissions.md) for approval before execution, and [MXC sandbox binary notes](../99-research-atlas/mxc-sandbox-binary-notes.md) for binary-level evidence about packaged helpers.
 
 This document answers a narrow reverse-engineering question: **does the extracted Copilot CLI implement sandboxing, and if so, how is it wired?**
 
@@ -15,6 +21,13 @@ However, the implementation is easy to misread because the word “sandbox” ap
 3. **Prompt-level sandbox wording**: some system prompts say the agent is or is not in a sandboxed environment. These strings describe context for the model; they are not the enforcement layer.
 
 The rest of this document focuses on local command sandboxing and calls out where it differs from cloud sessions, permissions, and prompt text.
+
+| Boundary | This page says |
+|---|---|
+| Local command sandbox | Settings and shell config can route shell spawn through MXC. |
+| Cloud sandbox | Separate remote/cloud session provisioning path; not the same enforcement layer. |
+| Prompt wording | Context text only; not enforcement. |
+| Permission service | Approval happens before spawn; sandbox constrains the approved process afterward. |
 
 ## Source anchors
 
@@ -144,7 +157,7 @@ Two details matter here:
 1. `ShellConfigFactory` defaults to **PowerShell on Windows** and **Bash on non-Windows** platforms.
 2. The shell tools factory only takes the alternate non-PTY spawn backend when sandboxing is not enabled. With sandboxing enabled, it stays on the interactive shell session creation path that can invoke the sandbox adapter.
 
-For the full command lifecycle around this branch -- including PTY vs non-TTY backend selection, sync/async/detached execution, background promotion, and output buffering -- see [Shell command execution lifecycle](shell-command-execution-lifecycle.md).
+For the full command lifecycle around this branch -- including PTY vs non-TTY backend selection, sync/async/detached execution, background promotion, and output buffering -- see [Shell command execution events](shell-command-execution-events.md).
 
 ## Shell execution flow
 
@@ -193,7 +206,7 @@ The policy-to-config converter can create different containment configs, includi
 
 For the normal local shell path on Windows, the default shell is PowerShell, so the PowerShell-only guard can pass and the default process containment path maps to Windows AppContainer behavior.
 
-For binary-level evidence about the packaged MXC helpers, compiler fingerprints, Linux `lxc-exec` behavior, Windows helper roles, and WSLC/Windows Sandbox strings, see [MXC binary reverse-engineering notes](mxc-bin-reverse-engineering.md).
+For binary-level evidence about the packaged MXC helpers, compiler fingerprints, Linux `lxc-exec` behavior, Windows helper roles, and WSLC/Windows Sandbox strings, see [MXC sandbox binary notes](../99-research-atlas/mxc-sandbox-binary-notes.md).
 
 ## Policy construction
 
@@ -306,4 +319,4 @@ In this bundle, local command sandboxing is best understood as:
 4. **PowerShell-gated shell spawning** through the interactive shell session creator;
 5. **MXC-backed enforcement** through generated or explicit sandbox policies.
 
-For nearby systems, see [`permission-system-design.md`](permission-system-design.md) for approval semantics, [`sessions-remote-cloud.md`](../04-sessions-persistence-remote/sessions-remote-cloud.md) for cloud sandbox sessions, [`feature-gates.md`](../05-hosted-agent-ops/feature-gates.md) for gate resolution, [`tui-and-slash-commands.md`](../01-runtime-lifecycle/tui-and-slash-commands.md) for slash-command hosting, [`prompt-sources.md`](../02-context-model-loop/prompt-sources.md) for prompt wording, and [Main feature map](../00-start-here/main-feature-map.md) for the broader feature map.
+For nearby systems, see [`tool-path-url-permissions.md`](tool-path-url-permissions.md) for approval semantics, [`sessions-remote-cloud.md`](../04-sessions-persistence-remote/sessions-remote-cloud.md) for cloud sandbox sessions, [`feature-gates.md`](../05-hosted-agent-ops/feature-gates.md) for gate resolution, [`tui-and-slash-commands.md`](../01-runtime-lifecycle/tui-and-slash-commands.md) for slash-command hosting, [`prompt-sources.md`](../02-context-model-loop/prompt-sources.md) for prompt wording, and [Main feature map](../00-start-here/main-feature-map.md) for the broader feature map.

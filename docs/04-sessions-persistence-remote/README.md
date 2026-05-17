@@ -29,11 +29,11 @@ flowchart TD
     Runtime --> Remote[Remote/cloud control]
     Git[Git/repo/ref context] --> Lifecycle
 
-    click Lifecycle "./session-lifecycle-end-to-end/" "Open end-to-end lifecycle"
-    click Replay "./session-support-implementation/" "Open session support"
+    click Lifecycle "./conversation-session-end-to-end/" "Open end-to-end lifecycle"
+    click Replay "./session-manager-and-event-replay/" "Open session manager"
     click SessionFs "./session-fs-provider-and-state-files/" "Open SessionFs"
     click SQLite "./session-store-sqlite-indexing/" "Open SQLite indexing"
-    click Remote "./remote-control-implementation/" "Open remote control"
+    click Remote "./remote-control-protocol-and-steering/" "Open remote control"
     click Git "./git-repository-context/" "Open git context"
 ```
 
@@ -41,12 +41,12 @@ flowchart TD
 
 | Order | Page | Session question answered |
 |---:|---|---|
-| 1 | [End-to-end session lifecycle](session-lifecycle-end-to-end.md) | How do create/resume/continue, replay, workspace state, tool refresh, UI projection, indexing, remote export, and shutdown connect? |
-| 2 | [Session support implementation](session-support-implementation.md) | How does event-sourced local persistence, workspace artifact management, startup resolution, APIs, and handoff behavior work? |
-| 3 | [Persistence pipeline for sessions](persistence-pipeline.md) | How do JSONL events, SessionFs, workspace sidecars, SQLite/FTS, search/reindex, fork, rewind, checkpoints, and cloud sync fit together? |
+| 1 | [Conversation session end-to-end](conversation-session-end-to-end.md) | How do create/resume/continue, replay, workspace state, tool refresh, UI projection, indexing, remote export, and shutdown connect? |
+| 2 | [Session manager and event replay](session-manager-and-event-replay.md) | How does event-sourced local persistence, workspace artifact management, startup resolution, APIs, and handoff behavior work? |
+| 3 | [Session persistence, replay, and indexing](session-persistence-replay-and-indexing.md) | How do JSONL events, SessionFs, workspace sidecars, SQLite/FTS, search/reindex, fork, rewind, checkpoints, and cloud sync fit together? |
 | 4 | [SessionFs provider and state-file lifecycle](session-fs-provider-and-state-files.md) | How do local and SDK/RPC-backed filesystems handle state files, reverse calls, large output temp files, and fork-time copying? |
 | 5 | [Session, remote, cloud, and history workflows](sessions-remote-cloud.md) | How do resume/continue/name handling, background sessions, cloud sessions, remote steering, and history interact? |
-| 6 | [Remote control implementation](remote-control-implementation.md) | How do Mission Control export, command polling, `/remote`, permission bridging, and remote task attach work? |
+| 6 | [Remote control protocol and steering](remote-control-protocol-and-steering.md) | How do Mission Control export, command polling, `/remote`, permission bridging, and remote task attach work? |
 
 ## Supporting session topics
 

@@ -205,8 +205,8 @@ sequenceDiagram
 
 ## Relationship to other docs
 
-- `persistence-pipeline.md` explains where `session-store.db` sits relative to raw JSONL events, workspace sidecars, SessionFs, reindex, fork, rewind, and cloud sync.
-- `session-support-implementation.md` explains raw session event persistence and resume/handoff behavior.
+- `session-persistence-replay-and-indexing.md` explains where `session-store.db` sits relative to raw JSONL events, workspace sidecars, SessionFs, reindex, fork, rewind, and cloud sync.
+- `session-manager-and-event-replay.md` explains raw session event persistence and resume/handoff behavior.
 - `sessions-remote-cloud.md` explains cloud sessions, remote steering, and session indexing at a higher level.
 - `git-repository-context.md` explains repository/branch/ref extraction that feeds `session_refs`.
 - `memory-and-context-board.md` explains dynamic context board entries stored by repository/branch.

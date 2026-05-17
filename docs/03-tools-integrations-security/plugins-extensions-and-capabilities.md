@@ -1,10 +1,14 @@
-# Plugin and extension architecture
+# Plugins, extensions, and capabilities
 
 ## MVP placement
 
 > **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
 
-This document explains how the extracted Copilot CLI bundle supports plugins and SDK-style extensions.
+## Reader contract
+
+Use this page to answer **which external packages or extension processes can add capabilities to a session?** It owns contribution discovery and capability registration, not the final permission decision for each call.
+
+Read [Runtime tool assembly and filtering](runtime-tool-assembly-and-filtering.md) for how contributed tools join the final model-visible set, [Copilot SDK extension bridge](copilot-sdk-extension-bridge.md) for programmatic extension child processes, and [Hooks, events, and automation](hooks-events-and-automation.md) for hook-specific behavior.
 
 In `app.js`, plugins and extensions are related but not identical:
 
@@ -12,6 +16,12 @@ In `app.js`, plugins and extensions are related but not identical:
 - **Extensions** are programmatic `@github/copilot-sdk` integrations loaded into a session when the `EXTENSIONS` feature gate and config discovery allow it.
 
 Both eventually add capabilities to a session, but they enter the runtime through different loaders and persistence paths.
+
+| Contribution path | Owned by this page | Handoff |
+|---|---|---|
+| Installed/local plugins | Install/cache/config, manifest parsing, contributed skills/agents/hooks/MCP/LSP. | Runtime tool assembly, MCP host, custom agents, hooks. |
+| SDK extensions | Discovery relationship and session capability registration. | Dedicated SDK bridge page for process/RPC lifecycle. |
+| Plugin state | Installed/enabled records and plugin data directories. | Settings/config persistence for store mechanics. |
 
 ## Source anchors
 
@@ -167,7 +177,7 @@ The `EXTENSIONS` feature flag is described in the bundle as enabling:
 
 > extensions — programmatic tools and hooks via `@github/copilot-sdk`, scaffolded and managed by the agent itself
 
-For the standalone SDK-focused map, see [Copilot SDK extension support](copilot-sdk-extension-support.md).
+For the standalone SDK-focused map, see [Copilot SDK extension bridge](copilot-sdk-extension-bridge.md).
 
 When config discovery and `EXTENSIONS` are enabled, session creation/resume calls `setupExtensionsForSession(...)`.
 
@@ -228,8 +238,8 @@ Plugins and extensions add capabilities; they do not remove the central permissi
 
 ## Relationship to other docs
 
-- `integrations-permissions-config.md` gives the broader integration overview.
-- `copilot-sdk-extension-support.md` expands the programmatic `@github/copilot-sdk` extension lifecycle, APIs, events, and trust boundaries.
-- `mcp-support-implementation.md` explains how plugin-provided MCP servers become tools.
-- `hooks-lifecycle-automation.md` explains plugin hooks in the broader hook system.
+- `integration-config-entrypoints.md` gives the broader integration overview.
+- `copilot-sdk-extension-bridge.md` expands the programmatic `@github/copilot-sdk` extension lifecycle, APIs, events, and trust boundaries.
+- `mcp-host-transport-and-tools.md` explains how plugin-provided MCP servers become tools.
+- `hooks-events-and-automation.md` explains plugin hooks in the broader hook system.
 - `ide-lsp-editor-integration.md` explains LSP and extension state from the IDE/editor perspective.

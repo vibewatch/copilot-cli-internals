@@ -280,7 +280,7 @@ Plugin agent parsing can produce agents with:
 - `source:{ type:"plugin", pluginName, marketplaceName, filePath }`;
 - `skills`.
 
-This is why `plugin-extension-architecture.md` and this document overlap: plugins are a packaging vehicle, while custom agents/skills are runtime capabilities contributed by that vehicle.
+This is why `plugins-extensions-and-capabilities.md` and this document overlap: plugins are a packaging vehicle, while custom agents/skills are runtime capabilities contributed by that vehicle.
 
 ## Agent execution integration
 
@@ -352,7 +352,7 @@ sequenceDiagram
 
 - `prompt-sources.md` explains how instruction files and invoked skills become model-visible context.
 - `conversation-compaction.md` explains why the most recent invoked skill is preserved when old conversation turns are summarized.
-- `plugin-extension-architecture.md` explains plugin install/cache/config and plugin-contributed capabilities.
+- `plugins-extensions-and-capabilities.md` explains plugin install/cache/config and plugin-contributed capabilities.
 - `agent-task-orchestration.md` explains how custom agents participate in subagent execution.
-- `built-in-tool-execution-pipeline.md` explains how allowed tools and tool filters affect execution.
+- `built-in-tools-execution-events.md` explains how allowed tools and tool filters affect execution.
 - `settings-config-persistence.md` explains `skillDirectories`, `disabledSkills`, and custom-agent settings persistence.

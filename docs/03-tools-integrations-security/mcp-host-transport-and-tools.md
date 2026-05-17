@@ -1,12 +1,23 @@
-# MCP support implementation in the Copilot CLI
+# MCP host, transports, and tools
 
 ## MVP placement
 
 > **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
 
-This document explains how Model Context Protocol (MCP) support is wired into the extracted Copilot CLI bundle. In the analyzed `app.js`, MCP is implemented as a runtime extension layer: configuration files and CLI/session options define MCP servers, an MCP host starts those servers over local or remote transports, discovered MCP tools are converted into normal Copilot tool definitions, and tool calls flow through the same permission, telemetry, task, and session-event systems as built-in tools.
+## Reader contract
 
-The implementation is broad rather than isolated. MCP touches configuration discovery, plugin loading, session creation, custom agents, the interactive TUI, JSON-RPC session APIs, OAuth, permission rules, dynamic prompt context, task streaming, and the built-in GitHub MCP server.
+Use this page to answer **how does an MCP server become safe, model-callable runtime capability?** It owns the MCP protocol boundary from config discovery through transport startup, tool discovery, OAuth, instruction loading, progress/task handling, and permission integration.
+
+Read [Runtime tool assembly and filtering](runtime-tool-assembly-and-filtering.md) when comparing MCP tools to built-in or external tools. Read [Tool, path, and URL permissions](tool-path-url-permissions.md) when the question is approval. Read [Hosted agent environment](../05-hosted-agent-ops/hosted-agent-environment.md) for hosted GitHub MCP/OIDC defaults.
+
+In the analyzed `app.js`, MCP is implemented as a runtime extension layer: configuration files and CLI/session options define MCP servers, an MCP host starts those servers over local or remote transports, discovered MCP tools are converted into normal Copilot tool definitions, and tool calls flow through the same permission, telemetry, task, and session-event systems as built-in tools.
+
+| MCP concern | Runtime owner | Downstream effect |
+|---|---|---|
+| Config merge | User/workspace/plugin/session/default sources | Determines which servers exist and which tools are allowed. |
+| Transport startup | Local stdio, HTTP, SSE, in-memory server processor | Produces connected/failed/needs-auth server status. |
+| Tool discovery | MCP tool provider | Converts server tools into Copilot tool metadata/callbacks. |
+| Runtime bridge | Session MCP bridge | Injects tools/instructions, maps progress/tasks, and emits session events. |
 
 ## Source anchors
 
@@ -336,7 +347,7 @@ When event listeners are present, `buildMcpOAuthHandler()` emits `mcp.oauth_requ
 
 MCP elicitation and sampling are similarly bridged:
 
-- elicitation requests go through `elicitation.requested` / `elicitation.completed` when the session supports elicitation;
+- elicitation requests go through `elicitation.requested` / `elicitation.completed` when the session managers elicitation;
 - sampling requests go through `sampling.requested` / `sampling.completed`, protected by `mcp-sampling` permission checks.
 
 ## Built-in GitHub MCP server

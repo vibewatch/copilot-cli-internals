@@ -4,7 +4,13 @@
 
 > **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
 
-This document explains how content exclusion, output filtering, and redaction-related controls appear in the extracted Copilot CLI `app.js` bundle. The relevant surfaces include the `CONTENT_EXCLUSION` feature gate, the `ContentExclusionService`, additional policy injection, search/output filtering, model-visible policy reminders, secret environment variable redaction, and secret-scanning remediation.
+## Reader contract
+
+Use this page to answer **which data is blocked, filtered, or redacted before it reaches the model, UI, telemetry, or support artifacts?** It owns content-exclusion checks, output filtering, model policy reminders, secret env-var stripping, and redaction-related controls.
+
+Read [Tool, path, and URL permissions](tool-path-url-permissions.md) for approval decisions, [Built-in tools, execution events, and results](built-in-tools-execution-events.md) for where tool outputs are produced, and [Debug bundle and redaction boundaries](../05-hosted-agent-ops/debug-bundle-redaction-boundaries.md) for support-bundle packaging.
+
+The relevant surfaces include the `CONTENT_EXCLUSION` feature gate, the `ContentExclusionService`, additional policy injection, search/output filtering, model-visible policy reminders, secret environment variable redaction, and secret-scanning remediation.
 
 The important implementation point is that sensitive-content handling is layered:
 
@@ -214,8 +220,8 @@ sequenceDiagram
 
 ## Relationship to other docs
 
-- `permission-system-design.md` explains path/URL permission decisions that can combine with content policies.
-- `built-in-tool-execution-pipeline.md` explains where tool outputs and telemetry are produced.
+- `tool-path-url-permissions.md` explains path/URL permission decisions that can combine with content policies.
+- `built-in-tools-execution-events.md` explains where tool outputs and telemetry are produced.
 - `web-search-url-fetching.md` explains URL allow/deny permissions, a separate network policy layer.
 - `debug-bundle-redaction-boundaries.md` explains how these redaction layers relate to support/debug archives and secret gist uploads.
 - `diagnostics-feedback-debug-bundles.md` explains debug bundle collection where sensitive logs may be packaged.

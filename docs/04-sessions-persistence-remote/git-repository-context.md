@@ -245,8 +245,8 @@ Together with `baseCommit`, changed-file hashing, and GitHub MCP PR tools, this 
 
 ## Relationship to other documents
 
-- `session-support-implementation.md` explains workspace artifacts and session persistence.
+- `session-manager-and-event-replay.md` explains workspace artifacts and session persistence.
 - `sessions-remote-cloud.md` explains local/remote/cloud session metadata.
-- `remote-control-implementation.md` explains repository metadata in Mission Control export.
-- `mcp-support-implementation.md` explains GitHub MCP tool setup.
+- `remote-control-protocol-and-steering.md` explains repository metadata in Mission Control export.
+- `mcp-host-transport-and-tools.md` explains GitHub MCP tool setup.
 - `agent-task-orchestration.md` explains code review, research, and subagent workflows that consume repo context.

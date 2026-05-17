@@ -4,7 +4,13 @@
 
 > **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
 
-This document explains how web search, URL fetching, and URL permissions are wired in the extracted Copilot CLI bundle. In the analyzed `app.js`, web access is split across a built-in `web_fetch` tool, a GitHub MCP web-search compatibility shim, URL allow/deny settings, permission requests, CLI flags, and feature gates.
+## Reader contract
+
+Use this page to answer **how can the runtime access web content, and which URL policy gates that access?** It owns the `web_fetch` tool, the GitHub MCP `web_search` shim, URL permission requests, URL allow/deny settings, CLI URL flags, and web feature gates.
+
+Read [MCP host, transports, and tools](mcp-host-transport-and-tools.md) when the search surface comes from GitHub MCP, and [Tool, path, and URL permissions](tool-path-url-permissions.md) when the question is whether a URL can be accessed without prompting.
+
+In the analyzed `app.js`, web access is split across a built-in `web_fetch` tool, a GitHub MCP web-search compatibility shim, URL allow/deny settings, permission requests, CLI flags, and feature gates.
 
 The important implementation point is that “web” capability is not one tool:
 
@@ -210,8 +216,8 @@ sequenceDiagram
 
 ## Relationship to other docs
 
-- `permission-system-design.md` explains URL allow/deny precedence and permission prompts.
-- `mcp-support-implementation.md` explains the built-in GitHub MCP server and tool exposure.
-- `built-in-tool-execution-pipeline.md` explains how `web_fetch` and `web_search` become normal tool calls.
+- `tool-path-url-permissions.md` explains URL allow/deny precedence and permission prompts.
+- `mcp-host-transport-and-tools.md` explains the built-in GitHub MCP server and tool exposure.
+- `built-in-tools-execution-events.md` explains how `web_fetch` and `web_search` become normal tool calls.
 - `settings-config-persistence.md` explains persisted `allowedUrls` and `deniedUrls` settings.
 - `agent-task-orchestration.md` explains research workflows that may delegate web access to subagents.

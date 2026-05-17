@@ -1,10 +1,21 @@
-# Permission system design in Copilot CLI
+# Tool, path, and URL permissions
 
 ## MVP placement
 
 > **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
 
-This document explains the permission subsystem in the extracted `@github/copilot` CLI bundle. The key idea is that permissions are not a single yes/no switch. The runtime combines static allow/deny rules, path and URL guards, content-exclusion checks, hook decisions, interactive prompts, remote/RPC responses, and persistence scopes before a tool call is allowed to run.
+## Reader contract
+
+Use this page to answer **why was a visible tool call allowed, denied, or escalated to a human/remote client?** It owns approval policy, not tool visibility. Tool visibility is covered by [Runtime tool assembly and filtering](runtime-tool-assembly-and-filtering.md); execution events are covered by [Built-in tools, execution events, and results](built-in-tools-execution-events.md).
+
+The key idea is that permissions are not a single yes/no switch. The runtime combines static allow/deny rules, path and URL guards, content-exclusion checks, hook decisions, interactive prompts, remote/RPC responses, and persistence scopes before a tool call is allowed to run.
+
+| Boundary | Question answered | Main state |
+|---|---|---|
+| Tool rule | Is this class of action allowed? | `--allow-tool`, `--deny-tool`, allowed-tools frontmatter, session approvals. |
+| Path rule | Is this filesystem location allowed? | cwd/temp defaults, `/add-dir`, realpath checks, location approvals. |
+| URL rule | Is this network target allowed? | allowed/denied URL settings, normalized origins, protocol/host/path checks. |
+| Prompt bridge | Who can decide now? | TUI dialogs, ACP callbacks, remote command responses, or user-unavailable fallback. |
 
 `app.js` is bundled and minified, so this document uses semantic aliases as stable names. Generated symbols are retained only in the source-anchor table for searching the analyzed `@github/copilot` artifact and may shift across releases.
 
@@ -543,4 +554,4 @@ This is why the CLI exposes explicit allow/deny flags: they let automation choos
 - Permission prompts share a pending-request broker with user-input, elicitation, sampling, external-tool, plan-exit, and auto-mode-switch prompts.
 - Memory, MCP, extensions, and custom tools are first-class permission domains rather than ad-hoc prompts.
 
-Related docs: [`integrations-permissions-config.md`](integrations-permissions-config.md), [`tui-and-slash-commands.md`](../01-runtime-lifecycle/tui-and-slash-commands.md), [`sessions-remote-cloud.md`](../04-sessions-persistence-remote/sessions-remote-cloud.md), [`sandboxing.md`](sandboxing.md), [`feature-gates.md`](../05-hosted-agent-ops/feature-gates.md), [`memory-and-context-board.md`](../02-context-model-loop/memory-and-context-board.md), and [`agent-task-orchestration.md`](../06-agents-automation/agent-task-orchestration.md).
+Related docs: [`integration-config-entrypoints.md`](integration-config-entrypoints.md), [`tui-and-slash-commands.md`](../01-runtime-lifecycle/tui-and-slash-commands.md), [`sessions-remote-cloud.md`](../04-sessions-persistence-remote/sessions-remote-cloud.md), [`sandboxing.md`](sandboxing.md), [`feature-gates.md`](../05-hosted-agent-ops/feature-gates.md), [`memory-and-context-board.md`](../02-context-model-loop/memory-and-context-board.md), and [`agent-task-orchestration.md`](../06-agents-automation/agent-task-orchestration.md).

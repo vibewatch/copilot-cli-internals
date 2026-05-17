@@ -37,7 +37,8 @@ flowchart TD
 | 1 | [`app.js` source atlas and generated indexes](app-js-source-atlas.md) | How are raw symbol/string inventories generated, and which semantic anchors seed source reading? |
 | 2 | [Hosted agent environment](../05-hosted-agent-ops/hosted-agent-environment.md) | What does a promoted constants-first finding look like once source-confirmed? |
 | 3 | [Further documentation opportunities](documentation-opportunities.md) | Which historical scan results are closed, narrowed, or still useful as future watchpoints? |
-| 4 | `source-atlas/README.md` | Generated atlas output checked into the repository root. |
+| 4 | [MXC sandbox binary notes](mxc-sandbox-binary-notes.md) | What binary-level evidence supports the sandbox helper analysis, and which findings remain research notes? |
+| 5 | `source-atlas/README.md` | Generated atlas output checked into the repository root. |
 
 ## When to use this appendix
 

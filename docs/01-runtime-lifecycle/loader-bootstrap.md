@@ -12,7 +12,7 @@ The SEA-internal artifacts referenced by the diagrams below (`sea-loader.js` and
 
 ## MVP placement
 
-This page opens the [Runtime lifecycle](README.md) chapter. It explains how execution reaches `app.js` before command parsing, sessions, context assembly, or tools exist. Continue to [CLI runtime workflows](cli-runtime-workflows.md) for root command dispatch, then to [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) once a runtime mode owns a session.
+This page opens the [Runtime lifecycle](README.md) chapter. It explains how execution reaches `app.js` before command parsing, sessions, context assembly, or tools exist. Continue to [Mode dispatch and runtime startup](mode-dispatch-and-runtime-startup.md) for root command dispatch, then to [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) once a runtime mode owns a session.
 
 ## Source anchors
 

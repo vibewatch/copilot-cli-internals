@@ -270,8 +270,8 @@ This means system notifications can be represented in telemetry even when they a
 
 ## Relationship to other docs
 
-- `session-support-implementation.md` explains event-sourced session persistence and replay.
-- `built-in-tool-execution-pipeline.md` explains tool lifecycle events.
-- `hooks-lifecycle-automation.md` explains hook events and notification hooks.
-- `remote-control-implementation.md` explains which events are exported to remote clients.
-- `observability-update-shutdown.md` explains telemetry/logging projections.
+- `session-manager-and-event-replay.md` explains event-sourced session persistence and replay.
+- `built-in-tools-execution-events.md` explains tool lifecycle events.
+- `hooks-events-and-automation.md` explains hook events and notification hooks.
+- `remote-control-protocol-and-steering.md` explains which events are exported to remote clients.
+- `telemetry-update-and-shutdown.md` explains telemetry/logging projections.

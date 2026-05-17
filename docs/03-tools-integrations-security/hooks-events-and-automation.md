@@ -1,12 +1,23 @@
-# Hooks and lifecycle automation
+# Hooks, events, and automation
 
 ## MVP placement
 
 > **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
 
-This document explains how hooks work in the extracted Copilot CLI bundle. Hooks are one of the broadest extension points in `app.js`: they can run at session lifecycle boundaries, prompt submission, tool execution, permission requests, compaction, notifications, and agent/subagent stop events.
+## Reader contract
+
+Use this page to answer **where can user/plugin automation intercept the runtime, and what can it change?** It owns hook configuration, validation, execution events, security restrictions, and the adapters that let hooks modify prompts, permissions, and tool results.
+
+Read [Tool, path, and URL permissions](tool-path-url-permissions.md) for the central approval engine, [Built-in tools, execution events, and results](built-in-tools-execution-events.md) for tool callback timing, and [Plugins, extensions, and capabilities](plugins-extensions-and-capabilities.md) for plugin-provided hooks.
 
 The implementation is not just “run a script.” `app.js` defines a hook schema, compatibility aliases, discovery/merge logic, security restrictions for HTTP hooks, hook start/end events, and output adapters that can change prompts, approvals, and tool results.
+
+| Hook effect | Runtime consequence |
+|---|---|
+| Add context | Changes model-visible prompt/tool-result context. |
+| Approve or deny | Can resolve permission/tool decisions before normal prompting. |
+| Modify args/results | Can alter tool inputs or add post-failure guidance. |
+| Emit events | Produces `hook.start` / `hook.end` session events for UI/replay/diagnostics. |
 
 Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted bundle and will shift across releases.
 
@@ -257,8 +268,8 @@ They are therefore part of the CLI’s control plane, not just a logging mechani
 
 ## Relationship to other documents
 
-- `permission-system-design.md` covers the permission side of `preToolUse` and `permissionRequest`.
+- `tool-path-url-permissions.md` covers the permission side of `preToolUse` and `permissionRequest`.
 - `prompt-sources.md` covers hooks as prompt/context sources.
 - `conversation-compaction.md` covers compaction and pre-compaction interaction.
-- `plugin-extension-architecture.md` explains plugin/extension sources for hooks.
-- `built-in-tool-execution-pipeline.md` explains where tool hooks sit in the execution lifecycle.
+- `plugins-extensions-and-capabilities.md` explains plugin/extension sources for hooks.
+- `built-in-tools-execution-events.md` explains where tool hooks sit in the execution lifecycle.

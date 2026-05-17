@@ -31,10 +31,10 @@ flowchart TD
     Sessions --> Shutdown[Shutdown/update/logging cleanup]
 
     click Loader "./loader-bootstrap/" "Open loader and bootstrap"
-    click Root "./cli-runtime-workflows/" "Open CLI runtime workflows"
+    click Root "./mode-dispatch-and-runtime-startup/" "Open Mode dispatch and runtime startup"
     click TUI "./tui-and-slash-commands/" "Open TUI and slash commands"
     click Server "./embedded-server-acp-protocol/" "Open embedded server and ACP"
-    click Shutdown "../05-hosted-agent-ops/observability-update-shutdown/" "Open observability and shutdown"
+    click Shutdown "../05-hosted-agent-ops/telemetry-update-and-shutdown/" "Open observability and shutdown"
 ```
 
 ## Primary reading order
@@ -42,10 +42,10 @@ flowchart TD
 | Order | Page | Runtime question answered |
 |---:|---|---|
 | 1 | [Loader and bootstrap workflows](loader-bootstrap.md) | How does the SEA/npm package select and load the actual runtime bundle? |
-| 2 | [CLI runtime workflows](cli-runtime-workflows.md) | How do argv, stdin, TTY, settings, auth, and sessions choose the execution mode? |
+| 2 | [Mode dispatch and runtime startup](mode-dispatch-and-runtime-startup.md) | How do argv, stdin, TTY, settings, auth, and sessions choose the execution mode? |
 | 3 | [Interactive TUI and slash-command workflows](tui-and-slash-commands.md) | How does the terminal UI handle input, rendering, slash commands, dialogs, and permissions? |
 | 4 | [Embedded server, ACP, and JSON-RPC protocol](embedded-server-acp-protocol.md) | How does the CLI expose runtime/session capabilities to external hosts? |
-| 5 | [Observability, update, and shutdown workflows](../05-hosted-agent-ops/observability-update-shutdown.md) | How are logs, telemetry, update/version behavior, signals, disposables, and graceful exit coordinated? |
+| 5 | [Telemetry, update, and shutdown](../05-hosted-agent-ops/telemetry-update-and-shutdown.md) | How are logs, telemetry, update/version behavior, signals, disposables, and graceful exit coordinated? |
 
 ## Runtime support topics
 

@@ -8,7 +8,7 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 
 ## MVP placement
 
-This is a runtime-support page under [Runtime lifecycle](README.md). It explains terminal setup and shell-environment state that affects the interactive harness but is separate from model tool execution. For actual shell tool behavior, continue to [Shell command execution lifecycle](../03-tools-integrations-security/shell-command-execution-lifecycle.md); for session-state persistence, continue to [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md).
+This is a runtime-support page under [Runtime lifecycle](README.md). It explains terminal setup and shell-environment state that affects the interactive harness but is separate from model tool execution. For actual shell tool behavior, continue to [Shell command execution events](../03-tools-integrations-security/shell-command-execution-events.md); for session-state persistence, continue to [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md).
 
 ## Source anchors
 
@@ -180,7 +180,7 @@ sequenceDiagram
 
 - `tui-and-slash-commands.md` explains how the setup prompt and slash command are rendered.
 - `settings-config-persistence.md` explains how `askedSetupTerminals` is stored.
-- `shell-command-execution-lifecycle.md` explains the actual `bash`/`powershell` execution manager, PTY/process backends, and shell task tracking.
-- `built-in-tool-execution-pipeline.md` explains generic tool events around shell callbacks.
+- `shell-command-execution-events.md` explains the actual `bash`/`powershell` execution manager, PTY/process backends, and shell task tracking.
+- `built-in-tools-execution-events.md` explains generic tool events around shell callbacks.
 - `sandboxing.md` explains shell execution under sandbox policies.
 - `agent-task-orchestration.md` explains how shell context can be inherited by subagents.

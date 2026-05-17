@@ -213,6 +213,6 @@ By scheduling only plain prompts, the feature acts like a timed user reminder/re
 ## Relationship to other docs
 
 - `tui-and-slash-commands.md` explains general slash-command registration and TUI dialogs.
-- `session-support-implementation.md` explains event replay and session persistence.
-- `built-in-tool-execution-pipeline.md` explains tool events that scheduled prompts may later trigger.
+- `session-manager-and-event-replay.md` explains event replay and session persistence.
+- `built-in-tools-execution-events.md` explains tool events that scheduled prompts may later trigger.
 - `autopilot-and-no-ask-user.md` explains autonomous continuation modes that scheduled prompts can interact with.

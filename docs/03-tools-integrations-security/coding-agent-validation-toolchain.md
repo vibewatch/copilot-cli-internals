@@ -4,7 +4,13 @@
 
 > **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
 
-This page documents the completion-time validation layer in the extracted Copilot CLI bundle. It fills a gap left by the generic [built-in tool execution pipeline](built-in-tool-execution-pipeline.md): coding-agent sessions can expose validation tools that are specifically meant to run before the agent declares work complete.
+## Reader contract
+
+Use this page to answer **which validation tools can a coding-agent session expose before it declares work complete?** It owns the Code Review, CodeQL, secret-scanning, advisory, and `parallel_validation` toolchain, including feature gates, repo/base-commit inputs, budgets, trivial-change declarations, and telemetry.
+
+Read [Built-in tools, execution events, and results](built-in-tools-execution-events.md) for the generic tool callback/event wrapper. Read [Hosted agent environment](../05-hosted-agent-ops/hosted-agent-environment.md) for hosted validation env toggles such as `COPILOT_AGENT_USE_CODEQL` and related switches.
+
+This page documents the completion-time validation layer in the extracted Copilot CLI bundle. Coding-agent sessions can expose validation tools that are specifically meant to run before the agent declares work complete.
 
 The important implementation detail is that these validators are not only ordinary tool callbacks. `app.js` assembles them from feature flags, repo/base-commit state, settings, and per-tool timeout budgets. Depending on flags, the model may see standalone `code_review` and `codeql_checker` tools, or a higher-level `parallel_validation` tool that runs both checks concurrently against a shared change set.
 
@@ -238,7 +244,7 @@ Secret scanning overlaps with [content exclusion and redaction](content-exclusio
 
 ## Relationship to the shared tool pipeline
 
-After construction, these validators still use the normal tool machinery described in [Built-in tool execution pipeline](built-in-tool-execution-pipeline.md): schemas are converted into model-visible tool definitions, calls emit `tool.execution_start`/`tool.execution_complete`, hooks and permissions can apply, and telemetry is recorded. The special behavior documented here is the validation-specific layer that decides **which** validators exist, **when** they may be skipped, and **how** multiple validators share repo state and timeout budgets.
+After construction, these validators still use the normal tool machinery described in [Built-in tools, execution events, and results](built-in-tools-execution-events.md): schemas are converted into model-visible tool definitions, calls emit `tool.execution_start`/`tool.execution_complete`, hooks and permissions can apply, and telemetry is recorded. The special behavior documented here is the validation-specific layer that decides **which** validators exist, **when** they may be skipped, and **how** multiple validators share repo state and timeout budgets.
 
 ## Key takeaways
 

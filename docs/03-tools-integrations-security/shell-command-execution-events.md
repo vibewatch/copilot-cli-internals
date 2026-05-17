@@ -1,12 +1,23 @@
-# Shell command execution lifecycle
+# Shell command execution events
 
 ## MVP placement
 
 > **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
 
-This document traces the command-execution path in the extracted Copilot CLI `app.js` bundle. It fills the gap between the generic tool lifecycle and the sandbox/terminal-setup pages: shell commands are ordinary tools at the model boundary, but internally they become managed shell sessions, background tasks, output buffers, completion notifications, and optional detached processes.
+## Reader contract
+
+Use this page to answer **what happens inside the shell tool after the generic tool pipeline selects `bash` or `powershell`?** It owns process/session behavior: PTY vs process backend, sync/async/detach modes, background task tracking, large output buffering, input forwarding, completion notifications, and shutdown.
+
+Read [Built-in tools, execution events, and results](built-in-tools-execution-events.md) for the generic tool lifecycle before the shell callback. Read [Sandbox implementation](sandboxing.md) for MXC policy enforcement. Read [Terminal setup and shell environment](../01-runtime-lifecycle/terminal-setup-and-shell-environment.md) for keyboard/multiline setup, which is intentionally separate from command execution.
 
 The important implementation point is that **terminal setup, shell tool registration, and shell process execution are three different layers**. `/terminal-setup` only configures multiline keyboard input in the user's terminal. The command tools are created later from session tool configuration and run through a `ShellToolManager`-style object that owns shell sessions and task state.
+
+| Shell layer | Owned here? | Notes |
+|---|---:|---|
+| Terminal keybinding setup | no | Runtime lifecycle concern; affects human input only. |
+| Shell tool registration | partly | Tool names are assembled in runtime tool assembly; shell manager provides the suite. |
+| Process execution | yes | PTY/process backend, queues, task state, output buffering, and cancellation. |
+| Sandbox policy | adjacent | Shell execution calls into sandbox adapters when enabled; detailed policy lives in `sandboxing.md`. |
 
 Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in this extracted build and will shift across releases.
 
@@ -247,7 +258,7 @@ The classification result becomes both a model-visible error message and telemet
 
 ## Relationship to other docs
 
-- [`built-in-tool-execution-pipeline.md`](built-in-tool-execution-pipeline.md) explains the generic tool lifecycle surrounding shell callbacks.
+- [`built-in-tools-execution-events.md`](built-in-tools-execution-events.md) explains the generic tool lifecycle surrounding shell callbacks.
 - [`terminal-setup-and-shell-environment.md`](../01-runtime-lifecycle/terminal-setup-and-shell-environment.md) explains terminal keybinding setup and why it is separate from command execution.
 - [`sandboxing.md`](sandboxing.md) explains how the PTY shell creation path can enter MXC sandbox spawning.
 - [`system-events-and-ui-projection.md`](../04-sessions-persistence-remote/system-events-and-ui-projection.md) explains shell completion system events.
