@@ -1,8 +1,8 @@
-# Further documentation opportunities for Copilot CLI
+# Copilot CLI documentation opportunity audit
 
-This report summarizes a second-pass, script-assisted scan of the extracted Copilot CLI `app.js` bundle to identify areas that are still worth turning into focused implementation documents. For the current reusable scan workflow and generated source indexes, see [Source atlas](source-atlas.md).
+This report preserves a second-pass, script-assisted scan of the extracted Copilot CLI `app.js` bundle and tracks how those documentation opportunities were adopted. For the current reusable scan workflow and generated source indexes, see [Source atlas](source-atlas.md).
 
-The current documentation set already covers the major runtime shape, prompts, memory/context board, compaction, loader/bootstrap, CLI routing, TUI, Tree-sitter, sessions, remote control, MCP, permissions, sandboxing, models/providers/auth, model API routing, resilience, task orchestration, autopilot, fleet mode, feature gates, and observability. The candidates below are therefore biased toward **implementation surfaces that are present in `app.js` but only partially covered or scattered across existing docs**.
+The current documentation set now covers the major runtime shape, prompts, memory/context board, compaction, loader/bootstrap, CLI routing, TUI, Tree-sitter, sessions, remote control, MCP, permissions, sandboxing, models/providers/auth, model API routing, resilience, task orchestration, autopilot, fleet mode, feature gates, and observability. The main scan candidates below have been drafted and indexed; remaining opportunities are narrow follow-ups to pursue only when a future question needs that depth.
 
 ## Source anchors
 
@@ -41,7 +41,9 @@ Temporary scan artifacts were generated outside the repository:
 - `/tmp/appjs_documentation_scan.json`
 - `/tmp/appjs_surface_summary.md`
 
-Status update: the highest-priority, medium-priority, and later remaining gap-review topics identified from `app.js` have now been drafted and indexed.
+## Adoption status
+
+The highest-priority, medium-priority, and later remaining gap-review topics identified from `app.js` have now been drafted and indexed. The outline notes below are kept as historical acceptance criteria for the implemented pages, not as open tasks.
 
 Highest-priority set:
 
@@ -77,7 +79,7 @@ Additional iterative gap pass:
 2. [`runtime-tool-assembly-and-filtering.md`](../03-tools-integrations-security/runtime-tool-assembly-and-filtering.md) now covers the final model-visible toolset path across built-ins, MCP, extensions, custom agents, feature gates, allow/exclude filters, deferred `tool_search`, request-time refresh, and `session.tools_updated` invalidation.
 3. [`session-fs-provider-and-state-files.md`](../04-sessions-persistence-remote/session-fs-provider-and-state-files.md) now covers the SessionFs provider and session-state file lifecycle: local vs RPC-backed filesystems, SDK reverse calls, provider guards, event/workspace files, large-output temp files, and fork/checkpoint state copying.
 4. [`voice-runtime-workers-and-transcription.md`](../01-runtime-lifecycle/voice-runtime-workers-and-transcription.md) now covers the voice backend that was only summarized by the voice-mode page: microphone, installer, and Foundry worker state machines; PCM flow; streaming/batch transcription; and cleanup.
-5. A likely next high-value gap is the **request processor and compaction/retry interaction path**: pre-request processors, token-budget checks, automatic compaction, rate-limit/request-size retries, and how those processors mutate chat context before the provider call.
+5. The former **request processor and compaction/retry interaction path** gap is now covered thematically by [`conversation-compaction.md`](../02-context-model-loop/conversation-compaction.md), [`resilience-rate-limits-concurrency.md`](../02-context-model-loop/resilience-rate-limits-concurrency.md), and [`attachments-and-file-ingestion.md`](../02-context-model-loop/attachments-and-file-ingestion.md). Together they explain pre-request processors, token-budget checks, automatic compaction, context-limit retry, rate-limit recovery, request-size recovery, and request-message mutation before the provider call. A processor-only page would only be useful if a future reader needs that exact cross-cutting call-path view.
 6. [`conversation-session-end-to-end.md`](../04-sessions-persistence-remote/conversation-session-end-to-end.md), [`session-persistence-replay-and-indexing.md`](../04-sessions-persistence-remote/session-persistence-replay-and-indexing.md), and [`debug-bundle-redaction-boundaries.md`](../05-hosted-agent-ops/debug-bundle-redaction-boundaries.md) now cover the previously scattered reader-path gaps for session lifecycle, persistence layering, and support-bundle redaction boundaries.
 7. [Hosted agent environment](../05-hosted-agent-ops/hosted-agent-environment.md) now covers the constant-first hosted-agent env envelope, MCP/OIDC bootstrap, OTel switches, firewall/trajectory output, and bundled managed-agent SDK surface that were visible in `source-atlas/surface-index.json` but not explained by existing topic pages.
 
@@ -110,9 +112,19 @@ The script found these runtime slash commands:
 | `/subconscious` | Manage Copilot Subconscious memory consolidation. |
 | `/usage` | Display session usage metrics and statistics. |
 
-The most interesting commands that do not yet have their own deep implementation documents are `/plugin`, `/env`, `/every`, `/after`, `/research`, `/review`, `/skills`, `/subconscious`, `/add-dir`, `/list-dirs`, and `/reset-allowed-tools`.
+These commands are now documented mostly through topic pages rather than one page per slash command. That keeps the docs organized around runtime behavior instead of command names: plugin and environment commands live with capability loading, scheduling commands live with the command queue, agent commands live with task orchestration and memory, skill commands live with custom-agent packaging, and permission commands live with path/tool approval state. A command-by-command reference would be useful only if the site later needs a user-facing command catalog.
 
-## Highest-value new documents
+| Command area | Current coverage |
+|---|---|
+| `/plugin`, `/env` | [`plugins-extensions-and-capabilities.md`](../03-tools-integrations-security/plugins-extensions-and-capabilities.md), plus `/env` visibility in [`custom-agents-and-skills-packaging.md`](../06-agents-automation/custom-agents-and-skills-packaging.md) |
+| `/every`, `/after` | [`scheduled-prompts-and-command-queue.md`](../06-agents-automation/scheduled-prompts-and-command-queue.md) |
+| `/research`, `/review` | [`agent-task-orchestration.md`](../06-agents-automation/agent-task-orchestration.md), [`built-in-agents.md`](../06-agents-automation/built-in-agents.md), and prompt details in [`prompt-sources.md`](../02-context-model-loop/prompt-sources.md) |
+| `/skills` | [`custom-agents-and-skills-packaging.md`](../06-agents-automation/custom-agents-and-skills-packaging.md) |
+| `/subconscious` | [`memory-and-context-board.md`](../02-context-model-loop/memory-and-context-board.md), [`agent-task-orchestration.md`](../06-agents-automation/agent-task-orchestration.md), and [`built-in-agents.md`](../06-agents-automation/built-in-agents.md) |
+| `/add-dir`, `/list-dirs` | [`tool-path-url-permissions.md`](../03-tools-integrations-security/tool-path-url-permissions.md) |
+| `/reset-allowed-tools` | [`settings-config-persistence.md`](../03-tools-integrations-security/settings-config-persistence.md) and [`tool-path-url-permissions.md`](../03-tools-integrations-security/tool-path-url-permissions.md) |
+
+## Highest-value scan candidates now implemented
 
 ### 1. Attachment and file-ingestion pipeline
 
@@ -294,7 +306,7 @@ Recommended outline:
 5. PR/issue/commit ref extraction into `session_refs`.
 6. GitHub MCP overlap and fallback behavior.
 
-## Medium-priority candidates
+## Medium-priority scan candidates now implemented
 
 ### 7. Scheduled prompts and queued commands
 
@@ -393,7 +405,7 @@ After the high- and medium-priority batches, a final gap scan found several impo
 | Session persistence/handoff | Covered by `session-manager-and-event-replay.md` and `session-store-sqlite-indexing.md`. |
 | Remote Mission Control export/control | Covered by `remote-control-protocol-and-steering.md` and `sessions-remote-cloud.md`. |
 
-## Recommended next writing order
+## Remaining optional follow-ups
 
 The current important `app.js` documentation backlog is now covered by focused docs and indexed in the wiki `README.md`, including the later conversation-session, session-persistence/replay, debug-bundle redaction boundary, and hosted-agent environment pages. Future writing should be driven by new questions rather than by the existing gap list. Possible niche follow-ups, only if needed, are:
 
