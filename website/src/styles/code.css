@@ -224,10 +224,10 @@
  * dark code surface flashing in for diagrams. The `:has()` guard keeps the
  * placeholder visible when JS is disabled (no `.mermaid-rendered` sibling will
  * ever appear, and modern browsers without `:has()` simply ignore the rule). */
-.sl-markdown-content .expressive-code:has(pre[data-language='mermaid']),
-.sl-markdown-content pre[data-language='mermaid'],
-.sl-markdown-content pre.language-mermaid,
-.sl-markdown-content pre.language-mermaid > code {
+html.mermaid-js .sl-markdown-content .expressive-code:has(pre[data-language='mermaid']),
+html.mermaid-js .sl-markdown-content pre[data-language='mermaid'],
+html.mermaid-js .sl-markdown-content pre.language-mermaid,
+html.mermaid-js .sl-markdown-content pre.language-mermaid > code {
   /* Reserve a placeholder card so layout doesn't jump when the SVG mounts. */
   background: var(--tk-color-surface-card);
   color: transparent;
@@ -236,7 +236,7 @@
   min-height: 4rem;
 }
 
-.sl-markdown-content .expressive-code:has(pre[data-language='mermaid']) * {
+html.mermaid-js .sl-markdown-content .expressive-code:has(pre[data-language='mermaid']) * {
   visibility: hidden;
 }
 
@@ -249,22 +249,39 @@
   padding: var(--tk-space-xl);
   margin: var(--tk-space-lg) 0;
   display: block;
-  overflow-x: auto;
+  box-sizing: border-box;
+  overflow: visible;
   text-align: center;
 }
 
 .mermaid-rendered svg {
   display: inline-block;
+  width: auto;
   max-width: 100%;
-  height: auto;
+  height: auto !important;
   background: transparent !important;
   font-family: var(--tk-font-sans);
+  overflow: visible;
 }
 
 .mermaid-rendered .nodeLabel,
 .mermaid-rendered .edgeLabel,
 .mermaid-rendered .cluster-label {
   line-height: 1.35;
+}
+
+.mermaid-rendered foreignObject,
+.mermaid-rendered .label,
+.mermaid-rendered .nodeLabel,
+.mermaid-rendered .edgeLabel {
+  overflow: visible;
+}
+
+.mermaid-rendered .nodeLabel,
+.mermaid-rendered .edgeLabel,
+.mermaid-rendered .cluster-label,
+.mermaid-rendered text {
+  font-family: var(--tk-font-sans) !important;
 }
 
 .mermaid-rendered svg a {

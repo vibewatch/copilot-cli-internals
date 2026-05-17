@@ -11,50 +11,98 @@
 ---
 
 <script>
-  // Run only if the page actually contains a mermaid code block.
-  // Expressive Code marks the language on the <pre> via `data-language`;
-  // some pipelines instead place `language-mermaid` on the inner <code>.
-  const blocks = Array.from(
-    document.querySelectorAll<HTMLElement>(
-      'pre[data-language="mermaid"], pre code.language-mermaid, code.language-mermaid'
-    )
-  );
+  const MERMAID_BLOCK_SELECTOR =
+    'pre[data-language="mermaid"], pre code.language-mermaid, code.language-mermaid';
 
-  if (blocks.length > 0) {
-    import('mermaid').then(async ({ default: mermaid }) => {
-      mermaid.initialize({
-        startOnLoad: false,
-        // The docs use Mermaid `click` directives for same-site navigation
-        // from high-level maps to deep-dive pages. Mermaid only emits those
-        // links outside strict mode; the source diagrams are repository-owned
-        // Markdown, so `loose` is acceptable here.
-        securityLevel: 'loose',
-        theme: 'base',
-        themeVariables: {
-          // Keep diagrams neutral: no yellow/orange fills inside Mermaid SVGs.
-          background: '#ffffff',
-          primaryColor: '#ffffff',
-          primaryBorderColor: '#bfc1b7',
-          primaryTextColor: '#23251d',
-          secondaryColor: '#f6f7f2',
-          secondaryBorderColor: '#bfc1b7',
-          secondaryTextColor: '#33342d',
-          tertiaryColor: '#eef0ea',
-          tertiaryBorderColor: '#bfc1b7',
-          tertiaryTextColor: '#23251d',
-          clusterBkg: '#f6f7f2',
-          clusterBorder: '#bfc1b7',
-          lineColor: '#6c6e63',
-          textColor: '#4d4f46',
-          mainBkg: '#ffffff',
-          nodeBorder: '#bfc1b7',
-          edgeLabelBackground: '#eeefe9',
-          fontFamily:
-            "'Mona Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif",
-          fontSize: '14px',
-        },
-        flowchart: { htmlLabels: true, curve: 'basis' },
-      });
+  let mermaidInitialized = false;
+
+  const waitForFonts = async () => {
+    if (!('fonts' in document)) return;
+    try {
+      await Promise.race([
+        Promise.all([
+          document.fonts.load("400 14px 'Mona Sans'"),
+          document.fonts.load("500 14px 'Mona Sans'"),
+          document.fonts.load("600 14px 'Mona Sans'"),
+          document.fonts.load("700 14px 'Mona Sans'"),
+        ]).then(() => document.fonts.ready),
+        new Promise((resolve) => window.setTimeout(resolve, 1500)),
+      ]);
+    } catch {
+      /* If font loading is blocked, Mermaid can still render with fallback metrics. */
+    }
+  };
+
+  const findMermaidBlocks = () => {
+    const seen = new Set<HTMLElement>();
+    const blocks: HTMLElement[] = [];
+    for (const node of document.querySelectorAll<HTMLElement>(MERMAID_BLOCK_SELECTOR)) {
+      const block = node.matches('pre') ? node : (node.closest('pre') ?? node);
+      if (seen.has(block) || block.dataset.mermaidProcessing === 'true') continue;
+      seen.add(block);
+      blocks.push(block);
+    }
+    return blocks;
+  };
+
+  const renderMermaidDiagrams = async () => {
+    // Run only if the current page actually contains Mermaid code blocks.
+    // Expressive Code marks the language on the <pre> via `data-language`;
+    // some pipelines instead place `language-mermaid` on the inner <code>.
+    const blocks = findMermaidBlocks();
+    if (blocks.length === 0) return;
+
+    for (const block of blocks) block.dataset.mermaidProcessing = 'true';
+    document.documentElement.classList.add('mermaid-js');
+
+    try {
+      await waitForFonts();
+      const { default: mermaid } = await import('mermaid');
+
+      if (!mermaidInitialized) {
+        mermaid.initialize({
+          startOnLoad: false,
+          // The docs use Mermaid `click` directives for same-site navigation
+          // from high-level maps to deep-dive pages. Mermaid only emits those
+          // links outside strict mode; the source diagrams are repository-owned
+          // Markdown, so `loose` is acceptable here.
+          securityLevel: 'loose',
+          theme: 'base',
+          themeVariables: {
+            // Keep diagrams neutral: no yellow/orange fills inside Mermaid SVGs.
+            background: '#ffffff',
+            primaryColor: '#ffffff',
+            primaryBorderColor: '#bfc1b7',
+            primaryTextColor: '#23251d',
+            secondaryColor: '#f6f7f2',
+            secondaryBorderColor: '#bfc1b7',
+            secondaryTextColor: '#33342d',
+            tertiaryColor: '#eef0ea',
+            tertiaryBorderColor: '#bfc1b7',
+            tertiaryTextColor: '#23251d',
+            clusterBkg: '#f6f7f2',
+            clusterBorder: '#bfc1b7',
+            lineColor: '#6c6e63',
+            textColor: '#4d4f46',
+            mainBkg: '#ffffff',
+            nodeBorder: '#bfc1b7',
+            edgeLabelBackground: '#eeefe9',
+            fontFamily:
+              "'Mona Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif",
+            fontSize: '14px',
+          },
+          flowchart: {
+            htmlLabels: true,
+            curve: 'basis',
+            useMaxWidth: true,
+            nodeSpacing: 44,
+            rankSpacing: 56,
+          },
+          sequence: { useMaxWidth: true, wrap: true },
+          gantt: { useMaxWidth: true },
+        });
+        mermaidInitialized = true;
+      }
 
       // ----- Lightbox: one shared <dialog> for all diagrams on the page ----
       // Click the rendered SVG to open it fullscreen with viewBox-based
@@ -314,6 +362,17 @@
           <line x1="3" y1="21" x2="10" y2="14"></line>
         </svg>`;
 
+      const normalizeRenderedSvg = (wrapper: HTMLElement) => {
+        const svg = wrapper.querySelector(':scope > svg') as SVGSVGElement | null;
+        if (!svg) return;
+        svg.style.maxWidth = '100%';
+        svg.style.overflow = 'visible';
+        svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+        for (const el of svg.querySelectorAll<SVGElement>('foreignObject, .label, .nodeLabel, .edgeLabel')) {
+          el.style.overflow = 'visible';
+        }
+      };
+
       const wireZoom = (wrapper: HTMLElement, source: string) => {
         wrapper.classList.add('mermaid-rendered--zoomable');
 
@@ -406,6 +465,7 @@
         try {
           const { svg } = await mermaid.render(id, source);
           wrapper.innerHTML = svg;
+          normalizeRenderedSvg(wrapper);
           wireZoom(wrapper, source);
         } catch (err) {
           console.error('[mermaid] render failed:', err);
@@ -423,6 +483,20 @@
           block;
         target.replaceWith(wrapper);
       }
-    });
+    } catch (err) {
+      console.error('[mermaid] renderer failed:', err);
+      document.documentElement.classList.remove('mermaid-js');
+      for (const block of blocks) block.removeAttribute('data-mermaid-processing');
+    }
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderMermaidDiagrams, { once: true });
+  } else {
+    renderMermaidDiagrams();
   }
+
+  // Astro's client router swaps page content without re-executing this module
+  // script, so rerun the idempotent renderer after every client-side page load.
+  document.addEventListener('astro:page-load', renderMermaidDiagrams);
 </script>

@@ -92,6 +92,26 @@ body {
   color: var(--tk-color-body);
 }
 
+/* Use Astro's client router for same-origin docs links, but make page swaps
+ * visually instantaneous. The default View Transition cross-fade reads as a
+ * full-page flash on a stable cream canvas. */
+html,
+body {
+  view-transition-name: none !important;
+}
+
+::view-transition-group(*),
+::view-transition-old(*),
+::view-transition-new(*) {
+  animation: none !important;
+  mix-blend-mode: normal !important;
+}
+
+[data-astro-transition-scope],
+[data-astro-transition-fallback] [data-astro-transition-scope] {
+  animation: none !important;
+}
+
 /* Hide Starlight's theme-toggle button — the site is light-only. */
 starlight-theme-select {
   display: none !important;

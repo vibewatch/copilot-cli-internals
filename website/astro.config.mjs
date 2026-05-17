@@ -58,6 +58,8 @@ export default defineConfig({
       ],
       components: {
         Head: './src/components/Head.astro',
+        ThemeProvider: './src/components/LightThemeProvider.astro',
+        ThemeSelect: './src/components/ThemeSelect.astro',
         SiteTitle: './src/components/SiteTitle.astro',
         Footer: './src/components/Footer.astro',
       },

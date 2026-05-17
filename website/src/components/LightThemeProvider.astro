@@ -1,0 +1,39 @@
+---
+/**
+ * LightThemeProvider — Starlight is theme-capable by default, but this site is
+ * intentionally light-only. Keeping this tiny provider avoids the default
+ * auto/dark preference script from briefly switching the document theme during
+ * navigation or first paint.
+ */
+---
+
+<script is:inline>
+	const applyLightTheme = (doc = document) => {
+		const root = doc.documentElement;
+		root.dataset.theme = 'light';
+		root.style.colorScheme = 'light';
+	};
+
+	window.StarlightThemeProvider = {
+		updatePickers() {
+			/* Theme controls are disabled for this light-only documentation site. */
+		},
+	};
+	applyLightTheme();
+	try {
+		localStorage.setItem('starlight-theme', 'light');
+	} catch {
+		/* localStorage can be unavailable in private/locked-down contexts. */
+	}
+
+	// Astro's client router swaps in a freshly parsed document whose root
+	// element comes from Starlight's default `<html data-theme="dark">` shell.
+	// Normalize the incoming document before the swap so users never see a
+	// dark-to-light flash between pages.
+	document.addEventListener('astro:before-swap', (event) => {
+		applyLightTheme(event.newDocument);
+	});
+	document.addEventListener('astro:page-load', () => {
+		applyLightTheme();
+	});
+</script>

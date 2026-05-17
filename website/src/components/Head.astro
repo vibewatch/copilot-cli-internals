@@ -4,11 +4,25 @@
  * client-side renderer. Per Starlight's component override docs we render
  * the built-in <Default /> component first so all standard <head> tags remain.
  */
+import { ClientRouter } from 'astro:transitions';
 import Default from '@astrojs/starlight/components/Head.astro';
 import GoogleAnalytics from './GoogleAnalytics.astro';
 import MermaidRenderer from './MermaidRenderer.astro';
 ---
 
 <Default {...Astro.props}><slot /></Default>
+<script is:inline>
+	// The site is intentionally light-only. Set the theme before Starlight's
+	// provider runs so the first paint and client-side navigations do not flash
+	// between the default dark shell and the cream canvas.
+	document.documentElement.dataset.theme = 'light';
+	document.documentElement.style.colorScheme = 'light';
+	try {
+		localStorage.setItem('starlight-theme', 'light');
+	} catch {
+		/* localStorage can be unavailable in private/locked-down contexts. */
+	}
+</script>
+<ClientRouter fallback="none" />
 <GoogleAnalytics />
 <MermaidRenderer />
