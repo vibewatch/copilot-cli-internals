@@ -63,6 +63,9 @@ After adding or moving a page, update all relevant indexes:
 - `docs/SUMMARY.md`.
 - `docs/README.md` page list and page count if it tracks one.
 - Root `README.md` if it tracks docs counts.
+- `website/astro.config.mjs` sidebar when the page should be reachable from the website navigation.
+- `scripts/index-app-js.mjs` known anchors or documentation references when atlas output should point at renamed or newly canonical pages.
+- Regenerated `source-atlas/` output when atlas references or known doc links change.
 - `docs/99-research-atlas/documentation-opportunities.md` when the work closes or narrows a known gap.
 
 Also add cross-links from adjacent pages so readers can discover the path from related concepts.
@@ -74,3 +77,6 @@ Also add cross-links from adjacent pages so readers can discover the path from r
 - Preserve exact minified aliases and string literals.
 - Distinguish generated schemas from runtime implementation.
 - Avoid overclaiming intent when only behavior is visible.
+- Avoid project-process language in published internals docs. Prefer reader-facing terms such as “runtime boundary,” “source anchors,” “call path,” “confirmed behavior,” “candidate gap,” and “research note.”
+- Pair physical reorganization with content work: after renames or moves, revise scope statements, handoff links, and reader contracts instead of only changing paths.
+- Keep raw atlas findings, weak constants-only leads, and binary-only notes in `docs/99-research-atlas/` until source-confirmed.

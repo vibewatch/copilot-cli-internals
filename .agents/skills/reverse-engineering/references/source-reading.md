@@ -2,6 +2,23 @@
 
 Use this reference for precise searches, source anchors, semantic aliasing, and minified-code interpretation.
 
+## Source Material Trust Model
+
+Use source layers according to their evidentiary role:
+
+| Source | Role | Trust model |
+|---|---|---|
+| `copilot-cli-pkg/app.js` | Main runtime bundle. | Highest value for runtime behavior, but minified and hard to read directly. |
+| `copilot-cli-pkg/package.json` | Package identity and version context. | Useful for anchoring the analyzed artifact and package-version deltas. |
+| `copilot-cli-pkg/definitions/*.agent.yaml` | Built-in agent definitions. | Confirms packaged agent prompts and metadata loaded by the runtime. |
+| `copilot-cli-pkg/builtin-skills/**/SKILL.md` | Built-in skill instructions. | Packaged prompt material, not inline JavaScript behavior by itself. |
+| `copilot-cli-pkg/copilot-sdk/**` and `copilot-cli-pkg/schemas/**` | SDK and session/event contracts. | Confirms external API and event schema surfaces. |
+| `help/*.txt` | Captured CLI help text. | Confirms user-facing commands, flags, and help wording. |
+| `source-atlas/` | Generated symbol/string/event index. | Triage layer only; atlas hits are leads, not proof. |
+| `docs/` | Current internals wiki. | Starting point for gap analysis, duplication checks, and reader-boundary decisions. |
+
+Runtime source beats schema-only conclusions. Adjacent files confirm contracts and user-facing surfaces, but they do not prove lifecycle, enforcement, or cleanup without a source path through `app.js` or a delegated runtime module.
+
 ## Build a Narrow Anchor Plan
 
 Prefer specific terms that should co-occur in the target path:
@@ -13,6 +30,13 @@ Prefer specific terms that should co-occur in the target path:
 - Adjacent concepts that should appear in the same call path.
 
 In incremental mode, seed the plan from `source-atlas/` diffs first: changed events, env vars, command candidates, JSON-RPC-ish methods, feature gates, tool hits, packaged definitions, and moved semantic anchors.
+
+Effective discovery patterns include:
+
+- Constants-first discovery for hosted-agent env vars, feature gates, event names, and operation toggles.
+- Event-driven tracing for sessions, tools, permissions, MCP, and task completion.
+- Command and flag tracing for TUI, prompt mode, MCP management, sandboxing, scheduled prompts, and permissions.
+- Adjacent-file confirmation for agent YAML, built-in skills, SDK extension contracts, schemas, and help output.
 
 ## Search Practices
 

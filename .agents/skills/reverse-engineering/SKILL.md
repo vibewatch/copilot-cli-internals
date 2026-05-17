@@ -11,6 +11,8 @@ user-invocable: true
 
 Use this skill to reverse-engineer the extracted Copilot CLI runtime and turn confirmed behavior into source-anchored documentation. The workflow supports both broad reconstruction and package-update diff analysis.
 
+This skill is the operational source of truth for generating repository documentation. `WORKFLOW.md` can remain as a human-readable overview, but an agent should not need to read it before producing or updating docs; load the references below as needed instead.
+
 ## What This Skill Produces
 
 - A gap assessment that explains which major runtime paths are already documented and which are missing.
@@ -57,12 +59,13 @@ Load only the reference files needed for the selected task:
 
 1. Identify the requested subsystem or package delta and choose full or incremental mode.
 2. Review existing docs and indexes before reading the bundled source.
-3. Prepare or inspect `source-atlas/` when it helps discovery or diff triage.
-4. Build a narrow source-anchor plan using semantic names, minified aliases, events, API names, and atlas surfaces.
-5. Read focused source ranges in `app.js` and adjacent SDK/schema/help files until the behavior is confirmed.
-6. Reconstruct either the runtime call path or the incremental change map.
-7. Patch existing docs or create focused new pages, then update navigation and backlog files as needed.
-8. Validate the changed artifacts and report the selected mode, source anchors, files changed, and remaining gaps.
+3. Inspect the relevant source-material trust model before deciding what counts as proof.
+4. Prepare or inspect `source-atlas/` when it helps discovery or diff triage.
+5. Build a narrow source-anchor plan using semantic names, minified aliases, events, API names, and atlas surfaces.
+6. Read focused source ranges in `app.js` and adjacent SDK/schema/help files until the behavior is confirmed.
+7. Reconstruct either the runtime call path or the incremental change map.
+8. Patch existing docs or create focused new pages, then update navigation, website sidebar, atlas references, and backlog files as needed.
+9. Validate the changed artifacts and report the selected mode, source anchors, files changed, and remaining gaps.
 
 ## Operating Principles
 
@@ -74,6 +77,8 @@ Load only the reference files needed for the selected task:
 - Prefer extending or cross-linking existing docs over creating duplicates.
 - In incremental mode, prioritize changed strings, events, API surfaces, commands, and feature gates before raw declaration-count changes.
 - Use careful language for minified code and avoid overclaiming intent.
+- Keep public internals docs focused on runtime behavior; do not expose planning-stage or project-management terminology.
+- Do not edit extracted package artifacts unless the user explicitly asks for package-file changes.
 
 ## Completion Gate
 

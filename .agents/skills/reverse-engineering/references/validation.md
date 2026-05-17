@@ -32,6 +32,14 @@ Then verify:
 - Git status contains only intended docs, atlas, or skill changes.
 - New files are accounted for, including untracked files that `git diff --stat` omits.
 
+For documentation-navigation work, add targeted repository checks as relevant:
+
+- Markdown relative-link checks for `docs/**/*.md`.
+- Stale old-filename scans after renames.
+- Duplicate H1/title scans when page titles or Starlight loader behavior changed.
+- Website route coverage checks comparing Markdown pages, `docs/SUMMARY.md`, and `website/astro.config.mjs` sidebar links.
+- Generated HTML checks for page-level heading/title issues after website rendering changes.
+
 ## Report Completion
 
 Summarize:
@@ -71,3 +79,5 @@ Keep the summary concise and avoid pasting large docs content unless requested.
 - Declaration diff noise: prioritize surface strings and semantic anchors before raw declaration-count changes.
 - Untracked file blindness: `git diff --stat` omits new untracked pages; check status explicitly.
 - Terminal directory drift: previous commands may leave the shell inside `website/`; use absolute paths when validating.
+- Accidental package-artifact edits: bulk replacements should target docs, scripts, skill resources, or website files unless package artifact changes are explicitly requested.
+- Website title duplication: if title/H1 handling changes, inspect generated pages for duplicate rendered titles and exactly one page-level H1.
