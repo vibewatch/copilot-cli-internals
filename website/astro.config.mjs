@@ -24,6 +24,38 @@ const isGitHubPages = process.env.DEPLOY_TARGET === 'github-pages';
 const siteUrl = process.env.SITE_URL ?? 'https://copilot-cli.genisisiq.com';
 const basePath = process.env.SITE_BASE ?? '';
 
+const codeTheme = {
+  name: 'copilot-cli-code',
+  type: 'dark',
+  semanticHighlighting: false,
+  colors: {
+    foreground: '#ffffff',
+    'editor.foreground': '#ffffff',
+    'editor.background': '#23251d',
+    'editor.selectionBackground': '#ffffff24',
+    'editor.lineHighlightBackground': '#ffffff0f',
+    'editorWhitespace.foreground': '#ffffff66',
+    'editorIndentGuide.background': '#ffffff33',
+    'editorGroupHeader.tabsBackground': '#23251d',
+    'editorGroupHeader.tabsBorder': '#23251d',
+    'tab.activeBackground': '#23251d',
+    'tab.activeForeground': '#ffffff',
+    'tab.activeBorder': '#f7a501',
+    'titleBar.activeBackground': '#23251d',
+    'titleBar.activeForeground': '#ffffff',
+    'terminal.background': '#23251d',
+    'terminal.foreground': '#ffffff',
+  },
+  tokenColors: [
+    {
+      name: 'White code text',
+      settings: {
+        foreground: '#ffffff',
+      },
+    },
+  ],
+};
+
 function forceStarlightLightTheme() {
   const starlightPagePath = '/node_modules/@astrojs/starlight/components/Page.astro';
   const darkThemeShell = "const htmlDataAttributes: DOMStringMap = { 'data-theme': 'dark' };";
@@ -71,7 +103,7 @@ export default defineConfig({
       lastUpdated: true,
       pagination: true,
       expressiveCode: {
-        themes: ['github-light'],
+        themes: [codeTheme],
         useStarlightDarkModeSwitch: false,
       },
       customCss: [

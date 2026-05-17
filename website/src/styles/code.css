@@ -55,11 +55,6 @@
   padding: 0;
 }
 
-.sl-markdown-content .expressive-code pre:not([data-language='mermaid']) .ec-line .code,
-.sl-markdown-content .expressive-code pre:not([data-language='mermaid']) .ec-line .code span {
-  color: var(--tk-color-on-dark);
-}
-
 /* Prompt/text fences are prose-like source material, not horizontally scanned
  * source code. Wrap these blocks so long prompt sentences remain readable on
  * the docs site while preserving normal no-wrap behavior for real code.
