@@ -75,7 +75,3 @@ This file is a table-of-contents document, not a direct `app.js` implementation 
   - [Autopilot and no-ask-user flags](06-agents-automation/autopilot-and-no-ask-user.md)
   - [Fleet mode implementation in Copilot CLI](06-agents-automation/fleet-mode.md)
   - [Scheduled prompts and command queue](06-agents-automation/scheduled-prompts-and-command-queue.md)
-- [Research atlas](99-research-atlas/README.md)
-  - [Source atlas and generated indexes](99-research-atlas/source-atlas.md)
-  - [MXC sandbox binary notes](99-research-atlas/mxc-sandbox-binary-notes.md)
-  - [Further documentation opportunities for Copilot CLI](99-research-atlas/documentation-opportunities.md)

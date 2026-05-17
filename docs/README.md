@@ -37,7 +37,6 @@ flowchart TD
     Runtime --> Sessions
     Sessions --> Hosted
     Loop --> Agents
-    Hosted --> Research
 
     click Home "./" "Open wiki home"
     click Start "./00-start-here/" "Open Start here"
@@ -47,7 +46,6 @@ flowchart TD
     click Sessions "./04-sessions-persistence-remote/" "Open Sessions, persistence, and remote"
     click Hosted "./05-hosted-agent-ops/" "Open Hosted agent ops"
     click Agents "./06-agents-automation/" "Open Agents and automation"
-    click Research "./99-research-atlas/" "Open Research atlas"
 ```
 
 ## Canonical sections
@@ -61,7 +59,6 @@ flowchart TD
 | [Sessions, persistence, and remote](04-sessions-persistence-remote/README.md) | Event-sourced sessions, replay, SessionFs, SQLite/FTS, fork/rewind, UI projection, repository context, and remote control. |
 | [Hosted agent ops](05-hosted-agent-ops/README.md) | Hosted job environment, `COPILOT_AGENT_*` settings, hosted MCP/OIDC bootstrap, firewall/trajectory outputs, debug bundles, OTel, and feature gates. |
 | [Agents and automation](06-agents-automation/README.md) | Built-in/custom agents, task/subagent orchestration, autopilot/no-ask-user, fleet mode, and scheduled prompts. |
-| [Research atlas](99-research-atlas/README.md) | Generated source indexes, constants-first discovery, methodology notes, and future watchpoints. |
 
 ## Recommended reading paths
 
@@ -73,7 +70,7 @@ flowchart TD
 | Understand hosted/cloud coding-agent behavior | [Hosted agent ops](05-hosted-agent-ops/README.md) → [Hosted agent environment](05-hosted-agent-ops/hosted-agent-environment.md) → [Remote control protocol and steering](04-sessions-persistence-remote/remote-control-protocol-and-steering.md) |
 | Review trust boundaries | [Tools, integrations, and security](03-tools-integrations-security/README.md) → [Tool, path, and URL permissions](03-tools-integrations-security/tool-path-url-permissions.md) → [Content exclusion and redaction](03-tools-integrations-security/content-exclusion-and-redaction.md) → [Debug bundle redaction boundaries](05-hosted-agent-ops/debug-bundle-redaction-boundaries.md) |
 | Study automation and subagents | [Agents and automation](06-agents-automation/README.md) → [Agent and task orchestration](06-agents-automation/agent-task-orchestration.md) → [Built-in agents](06-agents-automation/built-in-agents.md) |
-| Triage a raw constant or minified symbol | [Research atlas](99-research-atlas/README.md) → [Source atlas](99-research-atlas/source-atlas.md) → generated `source-atlas/` outputs in the repository root. |
+| Triage a raw constant or minified symbol | Start with generated `source-atlas/` outputs in the repository root, then promote confirmed findings into the closest canonical section. |
 
 ## Cross-cutting implementation matrix
 
@@ -86,7 +83,7 @@ flowchart TD
 | Hosted coding-agent operation | [Hosted agent ops](05-hosted-agent-ops/README.md) | [Sessions, persistence, and remote](04-sessions-persistence-remote/README.md), [Tools, integrations, and security](03-tools-integrations-security/README.md) |
 | Permissions and redaction | [Tools, integrations, and security](03-tools-integrations-security/README.md) | [Hosted agent ops](05-hosted-agent-ops/README.md), [Context and model loop](02-context-model-loop/README.md) |
 | Subagents and automation | [Agents and automation](06-agents-automation/README.md) | [Context and model loop](02-context-model-loop/README.md), [Sessions, persistence, and remote](04-sessions-persistence-remote/README.md) |
-| Source discovery and diff triage | [Research atlas](99-research-atlas/README.md) | All canonical sections after findings are confirmed. |
+| Source discovery and diff triage | Repository `source-atlas/` outputs | All canonical sections after findings are confirmed. |
 
 ## Implementation page inventory
 
@@ -96,10 +93,10 @@ For a compact full table of contents, see [SUMMARY.md](SUMMARY.md). The detailed
 
 | Area | Convention |
 |---|---|
-| Canonical reader path | Use the canonical section directories (`00-start-here` through `99-research-atlas`). |
+| Canonical reader path | Use the canonical section directories (`00-start-here` through `06-agents-automation`). |
 | Deep implementation pages | Keep focused pages source-anchored; move or merge them only when the page scope changes, not merely to chase numbering. |
 | Topic titles | Prefer reader-facing titles over historical source filenames. Keep `app.js` in the title only when the page is specifically about bundle-level behavior. |
-| Adding pages | Add the page under the closest internals section when it is part of the main reader path; use Research atlas for raw discovery notes and watchpoints. |
+| Adding pages | Add the page under the closest internals section when it is part of the main reader path; keep raw discovery notes and watchpoints outside the final wiki. |
 | Link text | Use human-readable page titles in prose; reserve raw filenames for maintenance tables. |
 
 ## Important caveat

@@ -37,7 +37,6 @@ This page is an orientation document, not a direct implementation trace. Concret
 | Where do session events, state files, indexes, and remote control live? | [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) |
 | Which env vars and operational contracts define hosted jobs? | [Hosted agent ops](../05-hosted-agent-ops/README.md) |
 | How are subagents, custom agents, fleet, and scheduled prompts run? | [Agents and automation](../06-agents-automation/README.md) |
-| How do I triage a raw constant, event, or minified symbol? | [Research atlas](../99-research-atlas/README.md) |
 
 ## Internals map
 
@@ -49,8 +48,6 @@ flowchart TD
     Runtime --> Sessions[Sessions, persistence, and remote]
     Sessions --> Hosted[Hosted agent ops]
     Loop --> Agents[Agents and automation]
-    Hosted --> Research[Research atlas]
-    Tools --> Research
 
     click Start "./" "Open Start here"
     click Runtime "../01-runtime-lifecycle/" "Open Runtime lifecycle"
@@ -59,7 +56,6 @@ flowchart TD
     click Sessions "../04-sessions-persistence-remote/" "Open Sessions, persistence, and remote"
     click Hosted "../05-hosted-agent-ops/" "Open Hosted agent ops"
     click Agents "../06-agents-automation/" "Open Agents and automation"
-    click Research "../99-research-atlas/" "Open Research atlas"
 ```
 
 ## Reading strategy

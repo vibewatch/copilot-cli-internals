@@ -2,7 +2,7 @@
 
 Local command sandboxing is an execution constraint applied after a shell command has been approved. The runtime path starts at `sandbox.enabled` and the feature-gated `/sandbox` command, then flows through shell configuration, MXC adapter loading, platform checks, and sandboxed process spawn.
 
-Read [Shell command execution events](shell-command-execution-events.md) for sync/async/detached shell task behavior, [Tool, path, and URL permissions](tool-path-url-permissions.md) for approval before execution, and [MXC sandbox binary notes](../99-research-atlas/mxc-sandbox-binary-notes.md) for binary-level evidence about packaged helpers.
+Read [Shell command execution events](shell-command-execution-events.md) for sync/async/detached shell task behavior and [Tool, path, and URL permissions](tool-path-url-permissions.md) for approval before execution.
 
 This document answers a narrow reverse-engineering question: **does the extracted Copilot CLI implement sandboxing, and if so, how is it wired?**
 
@@ -200,7 +200,7 @@ The policy-to-config converter can create different containment configs, includi
 
 For the normal local shell path on Windows, the default shell is PowerShell, so the PowerShell-only guard can pass and the default process containment path maps to Windows AppContainer behavior.
 
-For binary-level evidence about the packaged MXC helpers, compiler fingerprints, Linux `lxc-exec` behavior, Windows helper roles, and WSLC/Windows Sandbox strings, see [MXC sandbox binary notes](../99-research-atlas/mxc-sandbox-binary-notes.md).
+Binary-level evidence about packaged MXC helper fingerprints is kept with repository research notes outside the final wiki.
 
 ## Policy construction
 

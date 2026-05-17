@@ -62,8 +62,8 @@ and output directory `dist`.
 | `astro.config.mjs` | Site config, sidebar, Starlight integration |
 | `src/content.config.ts` | Content collection — reads `../docs/**/*.md` |
 | `src/styles/` | CSS tokens + theme overrides (split by concern) |
-| `src/components/` | Hedgehog mascot + Starlight slot overrides |
-| `src/assets/` | Self-hosted fonts, hedgehog SVGs |
+| `src/components/` | Starlight slot overrides |
+| `src/assets/` | Self-hosted fonts |
 | `public/` | Favicon and other static files served at root |
 
 ## Notes on the design system

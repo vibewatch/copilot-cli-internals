@@ -24,12 +24,19 @@ const DOCS_ROOT = path.resolve(here, '..', '..', 'docs');
 const SITE_ROOT = path.resolve(here, '..');
 
 /**
- * Files we never want to surface as routes. Currently empty —
- * `SUMMARY.md` is rendered as `/summary/` (see `deriveId`) so that the
- * "Full table of contents" links from each section README resolve to a
- * real page instead of bouncing back to the directory index.
+ * Files we never want to surface as routes. `SUMMARY.md` is rendered as
+ * `/summary/` (see `deriveId`) so that the "Full table of contents" links
+ * from each section README resolve to a real page instead of bouncing back to
+ * the directory index.
  */
 const EXCLUDE_BASENAMES = new Set<string>();
+
+/** Research notes stay in the repository but are excluded from the final wiki. */
+const EXCLUDE_PATH_PREFIXES = ['99-research-atlas/'];
+
+function isExcludedPath(relPath: string): boolean {
+  return EXCLUDE_PATH_PREFIXES.some((prefix) => relPath.startsWith(prefix));
+}
 
 /**
  * Map an on-disk relative path to a Starlight slug.
@@ -97,7 +104,8 @@ async function collect(dir: string, prefix = ''): Promise<string[]> {
       out.push(...(await collect(full, rel)));
     } else if (
       /\.(md|mdx)$/i.test(entry.name) &&
-      !EXCLUDE_BASENAMES.has(entry.name)
+      !EXCLUDE_BASENAMES.has(entry.name) &&
+      !isExcludedPath(rel)
     ) {
       out.push(rel);
     }

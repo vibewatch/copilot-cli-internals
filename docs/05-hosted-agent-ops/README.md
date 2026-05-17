@@ -60,7 +60,6 @@ flowchart TD
 
 - Generic tool/MCP implementation is covered by [Tools, integrations, and security](../03-tools-integrations-security/README.md).
 - Remote/cloud session behavior outside the hosted environment envelope is covered by [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md).
-- Raw constants and future-diff watchpoints are covered by [Research atlas](../99-research-atlas/README.md).
 
 ## Navigation
 

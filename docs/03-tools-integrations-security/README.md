@@ -93,7 +93,6 @@ flowchart TD
 - [Integration config entrypoints](integration-config-entrypoints.md) maps root startup/config/auth entry points to the narrower implementation pages below.
 - [Hooks, events, and automation](hooks-events-and-automation.md) explains command/HTTP hooks, VS Code aliases, security restrictions, and lifecycle events.
 - [Settings and configuration persistence](settings-config-persistence.md) explains config roots, typed stores, settings overlays, URL/MCP/plugin/sandbox state, and migration behavior.
-- [MXC sandbox binary notes](../99-research-atlas/mxc-sandbox-binary-notes.md) documents bundled sandbox helper binaries and platform implications.
 
 ## Handoffs
 

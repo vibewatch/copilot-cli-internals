@@ -199,15 +199,6 @@ export default defineConfig({
             { label: 'Scheduled prompts', link: '/06-agents-automation/scheduled-prompts-and-command-queue/' },
           ],
         },
-        {
-          label: 'Research atlas',
-          items: [
-            { label: 'Overview', link: '/99-research-atlas/' },
-            { label: 'Source atlas', link: '/99-research-atlas/source-atlas/' },
-            { label: 'MXC sandbox binary notes', link: '/99-research-atlas/mxc-sandbox-binary-notes/' },
-            { label: 'Documentation opportunities', link: '/99-research-atlas/documentation-opportunities/' },
-          ],
-        },
       ],
     }),
   ],
