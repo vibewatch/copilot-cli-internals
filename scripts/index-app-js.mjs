@@ -91,103 +91,127 @@ const KNOWN_ANCHORS = [
     semanticAlias: "RootProgram",
     anchors: ["mke", "RootProgram"],
     role: "Builds the root copilot command, global options, help topics, and subcommands.",
-    docs: "docs/00-overview/main-feature-map.md",
+    docs: "docs/00-start-here/main-feature-map.md",
   },
   {
     semanticAlias: "mainCliAction(...) / runtime dispatcher",
     anchors: ["j$o", "u1t", "--server", "--headless"],
     role: "Turns argv/env/settings/session state into TUI, prompt, server/headless, or ACP mode.",
-    docs: "docs/01-runtime-and-ui/cli-runtime-workflows.md",
+    docs: "docs/01-runtime-lifecycle/cli-runtime-workflows.md",
   },
   {
     semanticAlias: "InteractiveTuiFlow",
     anchors: ["j$o", "jQa"],
     role: "Runs the terminal UI, slash commands, dialogs, permissions, and background session UI.",
-    docs: "docs/01-runtime-and-ui/tui-and-slash-commands.md",
+    docs: "docs/01-runtime-lifecycle/tui-and-slash-commands.md",
   },
   {
     semanticAlias: "runPromptMode(...)",
     anchors: ["u1t", "session.task_complete"],
     role: "Handles -p/stdin/non-TTY execution, streaming, JSONL, autopilot continuation, and pending background work.",
-    docs: "docs/01-runtime-and-ui/cli-runtime-workflows.md",
+    docs: "docs/01-runtime-lifecycle/cli-runtime-workflows.md",
   },
   {
     semanticAlias: "buildSystemPrompt(...) / createGeneralPurposeSystemPrompt(...)",
     anchors: ["X3e", "Wmt", "currentSystemMessage"],
     role: "Assembles identity, tools, instructions, skills, memory, runtime state, and provider-visible system context.",
-    docs: "docs/02-context-and-input/prompt-sources.md",
+    docs: "docs/02-context-model-loop/prompt-sources.md",
   },
   {
     semanticAlias: "Session runtime / runAgenticLoop",
     anchors: ["runAgenticLoop", "getCompletionWithTools", "tool.execution_complete"],
     role: "Queues prompts, builds requests, streams model output, dispatches tools, emits durable events, and handles retries.",
-    docs: "docs/03-sessions-and-remote/session-support-implementation.md",
+    docs: "docs/04-sessions-persistence-remote/session-support-implementation.md",
+  },
+  {
+    semanticAlias: "End-to-end session lifecycle",
+    anchors: ["--resume", "--continue", "session.start", "session.resume", "session.tools_updated"],
+    role: "Connects startup selection, event replay, workspace state, tool refresh, UI projection, indexing, remote export, and shutdown.",
+    docs: "docs/04-sessions-persistence-remote/session-lifecycle-end-to-end.md",
+  },
+  {
+    semanticAlias: "Session persistence pipeline",
+    anchors: ["events.jsonl", "workspace.yaml", "session-store.db", "session.snapshot_rewind", "session_store_sql"],
+    role: "Maps JSONL replay logs, SessionFs, workspace sidecars, SQLite/FTS, reindex, fork, rewind, checkpoints, and cloud sync.",
+    docs: "docs/04-sessions-persistence-remote/persistence-pipeline.md",
   },
   {
     semanticAlias: "assembleRuntimeTools(...)",
     anchors: ["HCr", "assembleRuntimeTools", "session.tools_updated"],
     role: "Builds the final model-visible toolset from built-ins, MCP, SDK extensions, plugins, custom agents, filters, and gates.",
-    docs: "docs/04-tools-and-integrations/runtime-tool-assembly-and-filtering.md",
+    docs: "docs/03-tools-integrations-security/runtime-tool-assembly-and-filtering.md",
   },
   {
     semanticAlias: "Built-in tool execution pipeline",
     anchors: ["tool.execution_start", "tool.execution_partial_result", "tool.execution_complete"],
     role: "Runs model tool calls through permission/hook/execution/event/telemetry boundaries.",
-    docs: "docs/04-tools-and-integrations/built-in-tool-execution-pipeline.md",
+    docs: "docs/03-tools-integrations-security/built-in-tool-execution-pipeline.md",
   },
   {
     semanticAlias: "PermissionService",
     anchors: ["PermissionService", "permissionRequest", "allow-tool", "deny-tool"],
     role: "Applies tool/path/URL/MCP/hook approval policy before potentially dangerous actions.",
-    docs: "docs/05-security-and-policy/permission-system-design.md",
+    docs: "docs/03-tools-integrations-security/permission-system-design.md",
   },
   {
     semanticAlias: "McpHost and MCP task bridge",
     anchors: ["McpHost", "p8e", "callToolStream", "taskSupport"],
     role: "Connects MCP servers, exposes tools/resources/prompts, and maps long-running MCP task streams into task records.",
-    docs: "docs/04-tools-and-integrations/mcp-support-implementation.md",
+    docs: "docs/03-tools-integrations-security/mcp-support-implementation.md",
   },
   {
     semanticAlias: "Plugin and SDK extension loading",
     anchors: ["pluginCommand", "setupExtensionsForSession", "session.extensions_loaded", "EXTENSIONS"],
     role: "Loads plugin-contributed skills/agents/hooks/MCP/LSP and SDK extension tools/hooks/commands.",
-    docs: "docs/04-tools-and-integrations/plugin-extension-architecture.md",
+    docs: "docs/03-tools-integrations-security/plugin-extension-architecture.md",
   },
   {
     semanticAlias: "TaskRegistry",
     anchors: ["B3", "TaskRegistry", "agent_completed", "agent_idle"],
     role: "Tracks background, multi-turn, and MCP task state, results, cancellation, and notifications.",
-    docs: "docs/07-agents-and-automation/agent-task-orchestration.md",
+    docs: "docs/06-agents-automation/agent-task-orchestration.md",
   },
   {
     semanticAlias: "createTaskTool(...)",
     anchors: ["I6n", "H3=\"task\"", "agent_type"],
     role: "Exposes subagent dispatch to the main model via the task tool schema and callback.",
-    docs: "docs/07-agents-and-automation/agent-task-orchestration.md",
+    docs: "docs/06-agents-automation/agent-task-orchestration.md",
   },
   {
     semanticAlias: "BUILT_IN_AGENTS",
     anchors: ["nHn", "general-purpose", "rem-agent"],
     role: "Catalogs built-in agent types and their runtime availability filters.",
-    docs: "docs/07-agents-and-automation/built-in-agents.md",
+    docs: "docs/06-agents-automation/built-in-agents.md",
   },
   {
     semanticAlias: "SessionAgentExecutor",
     anchors: ["dZ", "SessionAgentExecutor.execute"],
     role: "Runs built-in/custom session-based subagents, hook loops, multi-turn waits, and teardown.",
-    docs: "docs/07-agents-and-automation/agent-task-orchestration.md",
+    docs: "docs/06-agents-automation/agent-task-orchestration.md",
   },
   {
     semanticAlias: "Feature gates",
     anchors: ["gLt", "v1e", "LiveFeatureFlagService", "COPILOT_EXP_"],
     role: "Resolves static gates, environment/settings overrides, and experiment treatments.",
-    docs: "docs/08-operations-and-research/feature-gates.md",
+    docs: "docs/05-hosted-agent-ops/feature-gates.md",
   },
   {
     semanticAlias: "Observability and shutdown",
     anchors: ["ShutdownService", "OpenTelemetry", "COLLECT_DEBUG_LOGS", "debug"],
     role: "Handles logging, telemetry, diagnostics, update/version flows, signal handling, and cleanup.",
-    docs: "docs/08-operations-and-research/observability-update-shutdown.md",
+    docs: "docs/05-hosted-agent-ops/observability-update-shutdown.md",
+  },
+  {
+    semanticAlias: "Debug bundle redaction boundary",
+    anchors: ["/collect-debug-logs", "feedback-manifest.json", "additional-logs", "--secret-env-vars", "public:false"],
+    role: "Explains what enters diagnostic bundles, which redaction layers apply, and where local archive or secret gist sharing remains sensitive.",
+    docs: "docs/05-hosted-agent-ops/debug-bundle-redaction-boundaries.md",
+  },
+  {
+    semanticAlias: "HostedAgentEnvironmentEnvelope",
+    anchors: ["TWe", "COPILOT_AGENT_ACTION", "GITHUB_COPILOT_MCP_JSON", "GITHUB_COPILOT_OIDC_MCP_TOKEN", "COPILOT_OTEL_ENABLED"],
+    role: "Maps hosted coding-agent environment variables, MCP/OIDC bootstrap, OTel switches, firewall/trajectory output, and bundled managed-agent SDK watchpoints.",
+    docs: "docs/05-hosted-agent-ops/hosted-agent-environment.md",
   },
 ];
 
@@ -197,70 +221,91 @@ const MAIN_PATHS = [
     trigger: "`copilot` argv, stdin, TTY, and global options",
     anchorSeeds: ["RootProgram", "mainCliAction", "j$o", "u1t", "--server", "--headless", "--acp"],
     output: "Interactive TUI, prompt mode, server/headless JSON-RPC, or ACP mode.",
-    docs: "docs/00-overview/main-feature-map.md",
+    docs: "docs/00-start-here/main-feature-map.md",
   },
   {
     path: "Session and event lifecycle",
     trigger: "new/resume/continue/name/fork/session APIs",
     anchorSeeds: ["session.start", "Session.send", "tool.execution_complete", "session.task_complete", "session.idle"],
     output: "Durable event log, UI projection, state files, background work, and completion/idle signals.",
-    docs: "docs/03-sessions-and-remote/session-support-implementation.md",
+    docs: "docs/04-sessions-persistence-remote/session-lifecycle-end-to-end.md",
+  },
+  {
+    path: "Session persistence, search, and branching",
+    trigger: "event writes, workspace sidecars, compaction checkpoints, /reindex, /fork, /undo, or /rewind",
+    anchorSeeds: ["events.jsonl", "workspace.yaml", "session-store.db", "search_index", "session.snapshot_rewind"],
+    output: "Replayable JSONL history, sidecar artifacts, derived SQLite/FTS indexes, forked branches, and rewind boundaries.",
+    docs: "docs/04-sessions-persistence-remote/persistence-pipeline.md",
   },
   {
     path: "Prompt and context assembly",
     trigger: "session initialization, subagent creation, slash command prompt macro, provider request",
     anchorSeeds: ["buildSystemPrompt", "X3e", "Wmt", "loadCustomInstructions", "loadSkills", "currentSystemMessage"],
     output: "System/developer/user/tool messages shaped for a provider request.",
-    docs: "docs/02-context-and-input/prompt-sources.md",
+    docs: "docs/02-context-model-loop/prompt-sources.md",
   },
   {
     path: "Model request, streaming, retry, and compaction",
     trigger: "agent turn needs a completion with tools",
     anchorSeeds: ["getCompletionWithTools", "preRequest", "BasicTruncator", "CompactionProcessor", "rate limit"],
     output: "Provider request/response stream, retry/fallback behavior, request-size handling, and token-budget mutation.",
-    docs: "docs/06-models-and-reliability/resilience-rate-limits-concurrency.md",
+    docs: "docs/02-context-model-loop/resilience-rate-limits-concurrency.md",
   },
   {
     path: "Runtime tool assembly",
     trigger: "session/subagent tool initialization or tool surface invalidation",
     anchorSeeds: ["HCr", "assembleRuntimeTools", "initializeAndValidateTools", "session.tools_updated"],
     output: "Final model-visible tool definitions, filters, permissions, and dynamic tool invalidation.",
-    docs: "docs/04-tools-and-integrations/runtime-tool-assembly-and-filtering.md",
+    docs: "docs/03-tools-integrations-security/runtime-tool-assembly-and-filtering.md",
   },
   {
     path: "Tool execution lifecycle",
     trigger: "model emits a tool call",
     anchorSeeds: ["tool.execution_start", "preToolUse", "permissionRequest", "tool.execution_complete"],
     output: "Permissioned execution, partial/progress/result events, telemetry, and session history records.",
-    docs: "docs/04-tools-and-integrations/built-in-tool-execution-pipeline.md",
+    docs: "docs/03-tools-integrations-security/built-in-tool-execution-pipeline.md",
   },
   {
     path: "Subagent and task orchestration",
     trigger: "main model calls `task` or slash macro steers toward an agent",
     anchorSeeds: ["I6n", "TaskRegistry", "B3", "SessionAgentExecutor", "dZ", "agent_completed"],
     output: "Sync/background/multi-turn agent state, result handoff, and subagent lifecycle events.",
-    docs: "docs/07-agents-and-automation/agent-task-orchestration.md",
+    docs: "docs/06-agents-automation/agent-task-orchestration.md",
   },
   {
     path: "Integrations and extension loading",
     trigger: "MCP config, plugin dirs, installed plugins, SDK extension feature gate, IDE bridge",
     anchorSeeds: ["McpHost", "plugin", "setupExtensionsForSession", "session.extensions_loaded", "callIdeTool"],
     output: "External tools, hooks, prompts, resources, agents, skills, LSP/IDE surfaces, and SDK commands.",
-    docs: "docs/04-tools-and-integrations/plugin-extension-architecture.md",
+    docs: "docs/03-tools-integrations-security/plugin-extension-architecture.md",
   },
   {
     path: "Permissions, policy, and sandbox boundaries",
     trigger: "tool/path/URL/MCP/hook/shell action needs approval or policy check",
     anchorSeeds: ["PermissionService", "allow-tool", "deny-tool", "content exclusion", "sandbox"],
     output: "Allow/deny/redaction/sandbox decisions before dangerous or policy-sensitive work.",
-    docs: "docs/05-security-and-policy/permission-system-design.md",
+    docs: "docs/03-tools-integrations-security/permission-system-design.md",
   },
   {
     path: "Operations, diagnostics, and shutdown",
     trigger: "diagnostic command, telemetry/logging event, update check, signal/shutdown",
     anchorSeeds: ["/diagnose", "/collect-debug-logs", "ShutdownService", "OpenTelemetry", "update"],
     output: "Debug bundles, telemetry/logs/traces, update/version behavior, and cleanup.",
-    docs: "docs/08-operations-and-research/observability-update-shutdown.md",
+    docs: "docs/05-hosted-agent-ops/observability-update-shutdown.md",
+  },
+  {
+    path: "Hosted agent environment and ops",
+    trigger: "hosted coding-agent job environment, MCP/OIDC bootstrap, OTel env, firewall log, or trajectory output",
+    anchorSeeds: ["COPILOT_AGENT_PROMPT", "COPILOT_AGENT_ACTION", "GITHUB_COPILOT_MCP_JSON", "GITHUB_COPILOT_OIDC_MCP_TOKEN", "COPILOT_AGENT_FIREWALL_LOG_FILE", "CPD_SAVE_TRAJECTORY_OUTPUT"],
+    output: "Hosted settings envelope, default GitHub MCP policy, OIDC token injection, OTel exporter config, firewall summaries, and trajectory files.",
+    docs: "docs/05-hosted-agent-ops/hosted-agent-environment.md",
+  },
+  {
+    path: "Debug bundle and redaction boundary",
+    trigger: "/feedback, /bug, /collect-debug-logs, root debug collection flags, or support archive upload",
+    anchorSeeds: ["/collect-debug-logs", "debugLogPaths", "feedback-manifest.json", "additional-logs", "--secret-env-vars"],
+    output: "Support artifact contents, redaction layers, local archive versus secret gist implications, and safety caveats.",
+    docs: "docs/05-hosted-agent-ops/debug-bundle-redaction-boundaries.md",
   },
 ];
 
@@ -465,6 +510,25 @@ function resolveMainPaths(text, lineStarts) {
   }));
 }
 
+function collectReferencedDocs() {
+  return [...new Set([
+    ...KNOWN_ANCHORS.map((entry) => entry.docs),
+    ...MAIN_PATHS.map((entry) => entry.docs),
+  ].filter(Boolean))].sort();
+}
+
+async function findMissingDocReferences(docRefs) {
+  const missing = [];
+  for (const docRef of docRefs) {
+    try {
+      await readFile(join(REPO_ROOT, docRef), "utf8");
+    } catch {
+      missing.push(docRef);
+    }
+  }
+  return missing;
+}
+
 async function listPackagedDefinitions() {
   const definitionsDir = join(REPO_ROOT, "copilot-cli-pkg", "definitions");
   try {
@@ -514,8 +578,10 @@ function renderReadme(summary, resolvedMainPaths, resolvedKnownAnchors, markdown
 
 Generated: ${summary.generatedAt}
 
-Source: \`${summary.source.relativePath}\`  
-Output directory: \`${summary.output.relativePath}\`  
+Source: \`${summary.source.relativePath}\`
+
+Output directory: \`${summary.output.relativePath}\`
+
 SHA-256: \`${summary.source.sha256}\`
 
 This directory is generated by \`scripts/index-app-js.mjs\`. It is a lightweight source atlas for the minified \`copilot-cli-pkg/app.js\` bundle: raw symbol/constant inventories plus a small hand-maintained semantic anchor seed list.
@@ -543,6 +609,13 @@ ${markdownTable(["Path", "Trigger", "Output", "Resolved seeds", "Primary doc"], 
 ## Semantic anchor seeds
 
 ${markdownTable(["Semantic alias", "First line", "Resolved anchors", "Role", "Primary doc"], anchorRows)}
+
+## Documentation reference check
+
+Referenced docs: ${summary.documentation.referencedDocs.length}
+Missing referenced docs: ${summary.documentation.missingDocReferences.length}
+
+${summary.documentation.missingDocReferences.length === 0 ? "All hand-maintained atlas doc references exist in the current `docs/` tree." : markdownTable(["Missing doc reference"], summary.documentation.missingDocReferences.map((docRef) => [`\`${docRef}\``]))}
 
 ## Regeneration
 
@@ -706,6 +779,8 @@ async function main() {
   const packagedDefinitions = await listPackagedDefinitions();
   const resolvedKnownAnchors = resolveKnownAnchors(text, lineStarts);
   const resolvedMainPaths = resolveMainPaths(text, lineStarts);
+  const referencedDocs = collectReferencedDocs();
+  const missingDocReferences = await findMissingDocReferences(referencedDocs);
 
   const summary = {
     generatedAt,
@@ -735,6 +810,12 @@ async function main() {
       packagedAgentDefinitions: packagedDefinitions.length,
       knownSemanticAnchors: resolvedKnownAnchors.length,
       mainPathSeeds: resolvedMainPaths.length,
+      referencedDocs: referencedDocs.length,
+      missingDocReferences: missingDocReferences.length,
+    },
+    documentation: {
+      referencedDocs,
+      missingDocReferences,
     },
     knownAnchors: resolvedKnownAnchors,
     mainPaths: resolvedMainPaths,

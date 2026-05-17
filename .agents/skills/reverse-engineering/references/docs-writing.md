@@ -9,7 +9,7 @@ Read the relevant indexes and candidate pages before creating new docs:
 - `docs/README.md`
 - `docs/SUMMARY.md`
 - Section `README.md` files under `docs/*/`
-- `docs/08-operations-and-research/documentation-opportunities.md`
+- `docs/99-research-atlas/documentation-opportunities.md`
 - Existing pages matching subsystem keywords
 
 Classify the target before editing.
@@ -25,12 +25,14 @@ In incremental mode, classify each changed atlas surface as already documented, 
 
 ## Choose the Docs Section
 
-- Tools, MCP, shell, validation: `docs/04-tools-and-integrations/`
-- Sessions, remote, SDK, JSON-RPC, SessionFs: `docs/03-sessions-and-remote/`
-- Permissions, security, policy: `docs/05-security-and-policy/`
-- Models, reliability, providers: `docs/06-models-and-reliability/`
-- Agents, tasks, subagents, autopilot: `docs/07-agents-and-automation/`
-- Observability, updates, source atlas, research backlog: `docs/08-operations-and-research/`
+- Start/orientation and feature map: `docs/00-start-here/`
+- Runtime startup, UI modes, protocols, voice, rendering, and shutdown entry points: `docs/01-runtime-lifecycle/`
+- Prompt/context assembly, attachments, memory, compaction, model providers, retries, quota, and usage: `docs/02-context-model-loop/`
+- Tools, MCP, plugins, SDK/IDE/web integrations, permissions, redaction, hooks, sandboxing, and config policy: `docs/03-tools-integrations-security/`
+- Sessions, remote, SDK/JSON-RPC, SessionFs, event schemas, indexing, git/repo context, and remote control: `docs/04-sessions-persistence-remote/`
+- Hosted-agent environment, feature gates, diagnostics, debug bundles, OTel, trajectory/firewall output, and operational support: `docs/05-hosted-agent-ops/`
+- Agents, tasks, custom agents/skills, subagents, autopilot, fleet, and scheduled prompts: `docs/06-agents-automation/`
+- Generated source atlas, documentation opportunities, methodology, and future watchpoints: `docs/99-research-atlas/`
 
 ## Decide the Documentation Change
 
@@ -61,7 +63,7 @@ After adding or moving a page, update all relevant indexes:
 - `docs/SUMMARY.md`.
 - `docs/README.md` page list and page count if it tracks one.
 - Root `README.md` if it tracks docs counts.
-- `docs/08-operations-and-research/documentation-opportunities.md` when the work closes or narrows a known gap.
+- `docs/99-research-atlas/documentation-opportunities.md` when the work closes or narrows a known gap.
 
 Also add cross-links from adjacent pages so readers can discover the path from related concepts.
 

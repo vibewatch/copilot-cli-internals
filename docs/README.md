@@ -1,10 +1,12 @@
 # Copilot CLI `app.js` reverse-engineering wiki
 
-This wiki organizes the implementation notes for the extracted `@github/copilot` CLI bundle around reader journeys instead of a flat list of files. The analyzed artifact is:
+This wiki documents the extracted `@github/copilot` CLI bundle with source-anchored implementation notes. The analyzed artifact is:
 
 `copilot-cli-pkg/app.js`
 
-The docs are based on static inspection of the extracted package, command/help output, string/anchor extraction, and script-assisted scans. Because `app.js` is bundled/minified, symbol names are unstable; source anchors are intended for searching the analyzed bundle, not as public API names.
+The MVP information architecture is organized around the shortest useful reader journey for understanding a coding-agent runtime. The MVP sections below are both the physical layout and the canonical reader path.
+
+Because `app.js` is bundled/minified, symbol names are unstable. Source anchors are intended for searching the analyzed bundle, not as public API names.
 
 ## Semantic alias and minified anchor mapping
 
@@ -12,162 +14,93 @@ This home page is a navigation index, not a direct `app.js` implementation analy
 
 | Semantic alias | Minified anchor | Scope |
 |---|---|---|
-| Wiki home | N/A — navigation page | Orients readers to sections and reading paths. |
-| Section indexes | N/A — see linked section README pages | Each section index points to topic pages with concrete mappings. |
-| Topic implementation pages | See page-level `Minified anchor` tables | Bundle-specific anchors live in the focused implementation documents. |
+| Wiki home | N/A — navigation page | Orients readers to the MVP sections and reading paths. |
+| MVP section indexes | N/A — see linked section README pages | Curated reader routes through source-anchored implementation pages. |
+| Topic implementation pages | See page-level source anchor tables | Bundle-specific anchors live in focused implementation documents. |
 
-## Wiki map
-
-Click a node in the map to jump to that section.
+## MVP wiki map
 
 ```mermaid
 flowchart TD
-    Home[Wiki home] --> O[00 Overview]
-    Home --> R[01 Runtime and UI]
-    Home --> C[02 Context and input]
-    Home --> S[03 Sessions and remote]
-    Home --> T[04 Tools and integrations]
-    Home --> P[05 Security and policy]
-    Home --> M[06 Models and reliability]
-    Home --> A[07 Agents and automation]
-    Home --> Ops[08 Operations and research]
+    Home[Wiki home] --> Start[00 Start here]
+    Home --> Runtime[01 Runtime lifecycle]
+    Home --> Loop[02 Context and model loop]
+    Home --> Tools[03 Tools, integrations, and security]
+    Home --> Sessions[04 Sessions, persistence, and remote]
+    Home --> Hosted[05 Hosted agent ops]
+    Home --> Agents[06 Agents and automation]
+    Home --> Research[99 Research atlas]
 
-    O --> R
-    R --> C
-    C --> S
-    S --> T
-    T --> P
-    P --> M
-    M --> A
-    A --> Ops
+    Start --> Runtime
+    Runtime --> Loop
+    Loop --> Tools
+    Runtime --> Sessions
+    Sessions --> Hosted
+    Loop --> Agents
+    Hosted --> Research
 
     click Home "./" "Open wiki home"
-    click O "./00-overview/" "Open Overview"
-    click R "./01-runtime-and-ui/" "Open Runtime and UI"
-    click C "./02-context-and-input/" "Open Context and input"
-    click S "./03-sessions-and-remote/" "Open Sessions and remote"
-    click T "./04-tools-and-integrations/" "Open Tools and integrations"
-    click P "./05-security-and-policy/" "Open Security and policy"
-    click M "./06-models-and-reliability/" "Open Models and reliability"
-    click A "./07-agents-and-automation/" "Open Agents and automation"
-    click Ops "./08-operations-and-research/" "Open Operations and research"
+    click Start "./00-start-here/" "Open Start here"
+    click Runtime "./01-runtime-lifecycle/" "Open Runtime lifecycle"
+    click Loop "./02-context-model-loop/" "Open Context and model loop"
+    click Tools "./03-tools-integrations-security/" "Open Tools, integrations, and security"
+    click Sessions "./04-sessions-persistence-remote/" "Open Sessions, persistence, and remote"
+    click Hosted "./05-hosted-agent-ops/" "Open Hosted agent ops"
+    click Agents "./06-agents-automation/" "Open Agents and automation"
+    click Research "./99-research-atlas/" "Open Research atlas"
 ```
 
-## Sections
+## MVP sections
 
-| Section | Purpose | Pages |
-|---|---|---:|
-| [Overview](./00-overview/README.md) | Start here: what the extracted bundle is, how to read the docs, the high-level feature map, and the context/harness engineering split. | 2 |
-| [Runtime and UI](./01-runtime-and-ui/README.md) | Bootstrap, root command routing, interactive TUI, terminal ergonomics, voice mode, protocol server modes, and rendering support. | 8 |
-| [Context and input](./02-context-and-input/README.md) | Everything that becomes model-visible context: prompts, custom instructions, attachments, memory, compaction, and rewind boundaries. | 7 |
-| [Sessions and remote](./03-sessions-and-remote/README.md) | Local event-sourced sessions, cloud/remote control, SQLite indexing, UI projection, repository metadata, and Mission Control steering. | 10 |
-| [Tools and integrations](./04-tools-and-integrations/README.md) | Built-in tools, validation/review tools, MCP, plugins, SDK extensions, IDE/LSP/editor bridges, web access, and integration overview surfaces. | 10 |
-| [Security and policy](./05-security-and-policy/README.md) | Permissions, content exclusion, hooks, sandboxing, and persistent policy/configuration state. | 6 |
-| [Models and reliability](./06-models-and-reliability/README.md) | Authentication, provider selection, wire APIs, resilience, rate limits, usage metrics, quota, and billing. | 4 |
-| [Agents and automation](./07-agents-and-automation/README.md) | Task orchestration, built-in agents, subagents, autopilot, fleet mode, and scheduled prompt/command automation. | 5 |
-| [Operations and research](./08-operations-and-research/README.md) | Feature gates, generated source indexes, diagnostics, debug bundles, observability/update/shutdown, and the original documentation backlog. | 6 |
-
-## Naming and maintenance conventions
-
-| Area | Convention |
+| Section | Purpose |
 |---|---|
-| Section directories | Numbered prefixes preserve a stable reading order while keeping related pages together. |
-| Topic filenames | Use short lower-kebab-case wiki slugs. Rename only when a page's scope changes, not just because a title is reworded. |
-| Topic titles | Prefer reader-facing titles over historical source filenames. Keep `app.js` in the title only when the page is specifically about bundle-level behavior. |
-| Merging pages | Merge only when two pages describe the same lifecycle or runtime boundary. Otherwise keep focused implementation pages and connect them through section indexes. |
-| Adding pages | Add the page under the closest section, then update that section `README.md`, the root page index, and `SUMMARY.md`. |
-| Link text | Use human-readable page titles in prose; reserve raw filenames for tables or maintenance notes. |
+| [Start here](00-start-here/README.md) | Minimal orientation: what the bundle is, how to read minified anchors, and the first path through the runtime. |
+| [Runtime lifecycle](01-runtime-lifecycle/README.md) | Loader/bootstrap, root command routing, TUI/headless/server/ACP modes, terminal/runtime support, and shutdown. |
+| [Context and model loop](02-context-model-loop/README.md) | Prompt/context assembly, attachments, memory, compaction, provider routing, retries, quota, and usage accounting. |
+| [Tools, integrations, and security](03-tools-integrations-security/README.md) | Runtime tool assembly/execution, MCP/plugins/SDK/IDE/web bridges, permissions, redaction, hooks, sandboxing, and persistent policy. |
+| [Sessions, persistence, and remote](04-sessions-persistence-remote/README.md) | Event-sourced sessions, replay, SessionFs, SQLite/FTS, fork/rewind, UI projection, repository context, and remote control. |
+| [Hosted agent ops](05-hosted-agent-ops/README.md) | Hosted job environment, `COPILOT_AGENT_*` settings, hosted MCP/OIDC bootstrap, firewall/trajectory outputs, debug bundles, OTel, and feature gates. |
+| [Agents and automation](06-agents-automation/README.md) | Built-in/custom agents, task/subagent orchestration, autopilot/no-ask-user, fleet mode, and scheduled prompts. |
+| [Research atlas](99-research-atlas/README.md) | Generated source indexes, constants-first discovery, methodology notes, and future watchpoints. |
 
 ## Recommended reading paths
 
 | Goal | Read this path |
 |---|---|
-| Get oriented quickly | [Overview](./00-overview/README.md) → [Runtime and UI](./01-runtime-and-ui/README.md) → [Context and input](./02-context-and-input/README.md) |
-| Separate context engineering from harness engineering | [Main feature map](./00-overview/main-feature-map.md) → [Context and input](./02-context-and-input/README.md) → [Tools and integrations](./04-tools-and-integrations/README.md) → [Security and policy](./05-security-and-policy/README.md) |
-| Understand local/remote session behavior | [Sessions and remote](./03-sessions-and-remote/README.md) → [End-to-end session lifecycle](./03-sessions-and-remote/session-lifecycle-end-to-end.md) → [Persistence pipeline](./03-sessions-and-remote/persistence-pipeline.md) → [Operations and research](./08-operations-and-research/README.md) |
-| Trace a model request end to end | [Context and input](./02-context-and-input/README.md) → [Tools and integrations](./04-tools-and-integrations/README.md) → [Models and reliability](./06-models-and-reliability/README.md) |
-| Review safety and trust boundaries | [Security and policy](./05-security-and-policy/README.md) → [Tools and integrations](./04-tools-and-integrations/README.md) → [Operations and research](./08-operations-and-research/README.md) |
-| Study automation and subagents | [Context and input](./02-context-and-input/README.md) → [Agents and automation](./07-agents-and-automation/README.md) → [Sessions and remote](./03-sessions-and-remote/README.md) |
+| Get oriented quickly | [Start here](00-start-here/README.md) → [Runtime lifecycle](01-runtime-lifecycle/README.md) → [Context and model loop](02-context-model-loop/README.md) |
+| Understand one complete agent turn | [Runtime lifecycle](01-runtime-lifecycle/README.md) → [Context and model loop](02-context-model-loop/README.md) → [Tools, integrations, and security](03-tools-integrations-security/README.md) |
+| Understand durable sessions | [Sessions, persistence, and remote](04-sessions-persistence-remote/README.md) → [End-to-end session lifecycle](04-sessions-persistence-remote/session-lifecycle-end-to-end.md) → [Persistence pipeline](04-sessions-persistence-remote/persistence-pipeline.md) |
+| Understand hosted/cloud coding-agent behavior | [Hosted agent ops](05-hosted-agent-ops/README.md) → [Hosted agent environment](05-hosted-agent-ops/hosted-agent-environment.md) → [Remote control implementation](04-sessions-persistence-remote/remote-control-implementation.md) |
+| Review trust boundaries | [Tools, integrations, and security](03-tools-integrations-security/README.md) → [Permission system design](03-tools-integrations-security/permission-system-design.md) → [Content exclusion and redaction](03-tools-integrations-security/content-exclusion-and-redaction.md) → [Debug bundle redaction boundaries](05-hosted-agent-ops/debug-bundle-redaction-boundaries.md) |
+| Study automation and subagents | [Agents and automation](06-agents-automation/README.md) → [Agent and task orchestration](06-agents-automation/agent-task-orchestration.md) → [Built-in agents](06-agents-automation/built-in-agents.md) |
+| Triage a raw constant or minified symbol | [Research atlas](99-research-atlas/README.md) → [`app.js` source atlas](99-research-atlas/app-js-source-atlas.md) → generated `source-atlas/` outputs in the repository root. |
 
 ## Cross-cutting implementation matrix
 
-| Concern | Primary section | Key supporting sections |
+| Concern | Primary MVP section | Supporting sections |
 |---|---|---|
-| Context engineering | [Context and input](./02-context-and-input/README.md) | [Overview](./00-overview/main-feature-map.md), [Models and reliability](./06-models-and-reliability/README.md), [Agents and automation](./07-agents-and-automation/README.md) |
-| Harness engineering | [Runtime and UI](./01-runtime-and-ui/README.md) | [Tools and integrations](./04-tools-and-integrations/README.md), [Security and policy](./05-security-and-policy/README.md), [Agents and automation](./07-agents-and-automation/README.md) |
-| Prompt/context assembly | [Context and input](./02-context-and-input/README.md) | [Tools and integrations](./04-tools-and-integrations/README.md), [Models and reliability](./06-models-and-reliability/README.md) |
-| Session/event lifecycle | [Sessions and remote](./03-sessions-and-remote/README.md) | [Runtime and UI](./01-runtime-and-ui/README.md), [Operations and research](./08-operations-and-research/README.md) |
-| Tool execution | [Tools and integrations](./04-tools-and-integrations/README.md) | [Security and policy](./05-security-and-policy/README.md), [Agents and automation](./07-agents-and-automation/README.md) |
-| Permissions and redaction | [Security and policy](./05-security-and-policy/README.md) | [Context and input](./02-context-and-input/README.md), [Tools and integrations](./04-tools-and-integrations/README.md) |
-| Model routing and quota | [Models and reliability](./06-models-and-reliability/README.md) | [Operations and research](./08-operations-and-research/README.md) |
-| Remote/cloud operation | [Sessions and remote](./03-sessions-and-remote/README.md) | [Runtime and UI](./01-runtime-and-ui/README.md), [Security and policy](./05-security-and-policy/README.md) |
+| Runtime mode selection | [Runtime lifecycle](01-runtime-lifecycle/README.md) | [Start here](00-start-here/README.md), [Sessions, persistence, and remote](04-sessions-persistence-remote/README.md) |
+| Context engineering | [Context and model loop](02-context-model-loop/README.md) | [Agents and automation](06-agents-automation/README.md), [Tools, integrations, and security](03-tools-integrations-security/README.md) |
+| Tool execution | [Tools, integrations, and security](03-tools-integrations-security/README.md) | [Hosted agent ops](05-hosted-agent-ops/README.md), [Agents and automation](06-agents-automation/README.md) |
+| Session/event lifecycle | [Sessions, persistence, and remote](04-sessions-persistence-remote/README.md) | [Runtime lifecycle](01-runtime-lifecycle/README.md), [Hosted agent ops](05-hosted-agent-ops/README.md) |
+| Hosted coding-agent operation | [Hosted agent ops](05-hosted-agent-ops/README.md) | [Sessions, persistence, and remote](04-sessions-persistence-remote/README.md), [Tools, integrations, and security](03-tools-integrations-security/README.md) |
+| Permissions and redaction | [Tools, integrations, and security](03-tools-integrations-security/README.md) | [Hosted agent ops](05-hosted-agent-ops/README.md), [Context and model loop](02-context-model-loop/README.md) |
+| Subagents and automation | [Agents and automation](06-agents-automation/README.md) | [Context and model loop](02-context-model-loop/README.md), [Sessions, persistence, and remote](04-sessions-persistence-remote/README.md) |
+| Source discovery and diff triage | [Research atlas](99-research-atlas/README.md) | All MVP sections after findings are confirmed. |
 
-## Complete page index
+## Implementation page inventory
 
-| Section | Page | Covers |
-|---|---|---|
-| Overview | [`app.js` overview](./00-overview/what-is-app-js.md) | Bundle identity, responsibilities, and caveats. |
-| Overview | [Main feature map for Copilot CLI](./00-overview/main-feature-map.md) | High-level map of feature areas, runtime ownership, context engineering, and harness engineering. |
-| Runtime and UI | [Loader and bootstrap workflows](./01-runtime-and-ui/loader-bootstrap.md) | SEA/npm loader chain, restart wrapper, secure module loading, and bootstrap safeguards. |
-| Runtime and UI | [CLI runtime workflows](./01-runtime-and-ui/cli-runtime-workflows.md) | Root CLI routing, pre-action setup, prompt/headless/server dispatch, and session resolution. |
-| Runtime and UI | [Interactive TUI and slash-command workflows](./01-runtime-and-ui/tui-and-slash-commands.md) | Interactive TUI event loop, dialogs, slash command macros, and permission surfaces. |
-| Runtime and UI | [Terminal setup and shell environment](./01-runtime-and-ui/terminal-setup-and-shell-environment.md) | Terminal detection, Shift+Enter setup, shell context, and command-history state. |
-| Runtime and UI | [Voice mode and Foundry Local](./01-runtime-and-ui/voice-mode-foundry-local.md) | Foundry Local dictation runtime, voice settings, native audio modules, and model cache checks. |
-| Runtime and UI | [Voice runtime workers and transcription pipeline](./01-runtime-and-ui/voice-runtime-workers-and-transcription.md) | Microphone, installer, and Foundry worker state machines; PCM flow; streaming/batch transcription; and cleanup. |
-| Runtime and UI | [Embedded server, ACP, and JSON-RPC protocol](./01-runtime-and-ui/embedded-server-acp-protocol.md) | JSON-RPC/ACP server modes, external tool calls, elicitation, sampling, and commands. |
-| Runtime and UI | [Tree-sitter WASM usage in the Copilot CLI](./01-runtime-and-ui/tree-sitter-wasm-usage.md) | Packaged Tree-sitter grammars, highlight queries, rich diff rendering, and fallback behavior. |
-| Context and input | [Prompt sources in Copilot CLI](./02-context-and-input/prompt-sources.md) | Static/runtime prompt sources, YAML package prompts, instructions, MCP prompts, hooks, and provider mapping. |
-| Context and input | [`app.js` prompt catalog](./02-context-and-input/app-js-prompt-catalog.md) | Curated extracted prompts from `app.js`, normalized placeholders, prompt families, and system prompt composition workflows. |
-| Context and input | [Custom agents and skills packaging](./02-context-and-input/custom-agents-and-skills-packaging.md) | AGENTS.md, SKILL.md, built-in skills, plugin/remote/provided agents, skill directories, skill invocation, allowed-tools, and enable/disable events. |
-| Context and input | [Attachment and file-ingestion pipeline](./02-context-and-input/attachments-and-file-ingestion.md) | Native image/document attachments, tagged-file fallback, MIME detection, payload mapping, and limits. |
-| Context and input | [Memory and dynamic context board in Copilot CLI](./02-context-and-input/memory-and-context-board.md) | Agentic memory API, local memory, dynamic context board, rem-agent, sidekicks, and shutdown consolidation. |
-| Context and input | [Conversation compaction and memory compression in Copilot CLI](./02-context-and-input/conversation-compaction.md) | /compact, automatic compaction, request-time prompt trimming, summary replacement, checkpoints, hooks, telemetry, and UI status. |
-| Context and input | [Checkpoints, undo, rewind, and fork](./02-context-and-input/checkpoints-undo-rewind.md) | /undo, /rewind, /fork, event-log truncation/replay, snapshot_rewind, and workspace events. |
-| Sessions and remote | [End-to-end session lifecycle](./03-sessions-and-remote/session-lifecycle-end-to-end.md) | Creation/resume/continue, event replay, workspace state, tool refresh, UI projection, indexing, remote export, and shutdown. |
-| Sessions and remote | [Session support implementation in the Copilot CLI](./03-sessions-and-remote/session-support-implementation.md) | Event-sourced local persistence, workspace artifacts, startup resolution, APIs, and handoff behavior. |
-| Sessions and remote | [Persistence pipeline for sessions](./03-sessions-and-remote/persistence-pipeline.md) | JSONL events, SessionFs, workspace sidecars, SQLite/FTS, search/reindex, fork, rewind, checkpoints, and cloud sync. |
-| Sessions and remote | [SessionFs provider and state-file lifecycle](./03-sessions-and-remote/session-fs-provider-and-state-files.md) | Local and SDK/RPC-backed session filesystems, reverse calls, state-file layout, large output temp files, and fork-time copying. |
-| Sessions and remote | [API and session event schema contracts](./03-sessions-and-remote/api-and-session-event-schemas.md) | JSON-RPC and session event schemas, SDK generation surfaces, event envelopes, and `app.js` forwarding/replay cross-checks. |
-| Sessions and remote | [Session, remote, cloud, and history workflows](./03-sessions-and-remote/sessions-remote-cloud.md) | Resume/continue/name handling, background sessions, cloud sessions, remote steering, and history. |
-| Sessions and remote | [Session-store SQLite indexing](./03-sessions-and-remote/session-store-sqlite-indexing.md) | session-store.db schema, FTS/search, /reindex, Chronicle, refs, cloud sync, and backfill. |
-| Sessions and remote | [System events and UI projection](./03-sessions-and-remote/system-events-and-ui-projection.md) | System messages, notifications, info/warning/error events, timeline entries, and ephemeral UI projection. |
-| Sessions and remote | [Git, repository, PR, and ref context](./03-sessions-and-remote/git-repository-context.md) | Git root/branch/head/base detection, session refs, PR context, and GitHub MCP overlap. |
-| Sessions and remote | [Remote control implementation in Copilot CLI](./03-sessions-and-remote/remote-control-implementation.md) | Mission Control exporter, command polling, /remote, permission bridging, and remote task attach. |
-| Tools and integrations | [Built-in tool execution pipeline](./04-tools-and-integrations/built-in-tool-execution-pipeline.md) | Tool registration, model-visible schemas, permission/hook flow, execution events, streaming, and telemetry. |
-| Tools and integrations | [Runtime tool assembly and filtering](./04-tools-and-integrations/runtime-tool-assembly-and-filtering.md) | Session options, model config, MCP, external tools, custom agents, allow/exclude filters, deferred tool search, and final model-visible toolsets. |
-| Tools and integrations | [Shell command execution lifecycle](./04-tools-and-integrations/shell-command-execution-lifecycle.md) | Bash/PowerShell tool assembly, PTY vs process backends, sync/async/detached commands, shell task tracking, background promotion, and large-output handling. |
-| Tools and integrations | [Coding-agent validation and review toolchain](./04-tools-and-integrations/coding-agent-validation-toolchain.md) | `parallel_validation`, `code_review`, CodeQL, secret scanning, advisory checks, trivial-change declarations, budgets, and validation telemetry. |
-| Tools and integrations | [MCP support implementation in the Copilot CLI](./04-tools-and-integrations/mcp-support-implementation.md) | MCP config discovery, transports, host lifecycle, tool exposure, OAuth, permissions, and tasks. |
-| Tools and integrations | [Plugin and extension architecture](./04-tools-and-integrations/plugin-extension-architecture.md) | Plugin install/cache/config lifecycle, marketplaces, local plugin dirs, contributions, and SDK loading. |
-| Tools and integrations | [Copilot SDK extension support](./04-tools-and-integrations/copilot-sdk-extension-support.md) | Programmatic `@github/copilot-sdk` extensions, `joinSession()`, discovery, management APIs, events, and trust boundaries. |
-| Tools and integrations | [IDE, LSP, and editor integration](./04-tools-and-integrations/ide-lsp-editor-integration.md) | IDE tools, selections, diagnostics, diffs, session title sync, LSP config, and extension state. |
-| Tools and integrations | [Web search, URL fetching, and URL permissions](./04-tools-and-integrations/web-search-url-fetching.md) | Built-in web_fetch, GitHub MCP web_search, URL allow/deny persistence, and web-tool gates. |
-| Tools and integrations | [Integrations, permissions, auth, and config workflows](./04-tools-and-integrations/integrations-permissions-config.md) | Cross-cutting overview of MCP, plugins, permissions, auth/provider selection, login, and updates. |
-| Security and policy | [Permission system design in Copilot CLI](./05-security-and-policy/permission-system-design.md) | Central PermissionService pipeline, rule precedence, path/URL managers, prompts, scopes, and allow-all behavior. |
-| Security and policy | [Content exclusion and redaction](./05-security-and-policy/content-exclusion-and-redaction.md) | Content-exclusion service, policy fetch/merge, filtered outputs, bypass limits, secret env vars, and redaction. |
-| Security and policy | [Hooks and lifecycle automation](./05-security-and-policy/hooks-lifecycle-automation.md) | Hook schema, command/HTTP hooks, VS Code aliases, security restrictions, events, and lifecycle automation. |
-| Security and policy | [Sandbox Implementation](./05-security-and-policy/sandboxing.md) | Local command sandboxing, /sandbox, SANDBOX gate, shell wiring, MXC policy, and platform caveats. |
-| Security and policy | [MXC binary reverse-engineering notes](./05-security-and-policy/mxc-bin-reverse-engineering.md) | Static analysis of bundled MXC helpers, compiler fingerprints, Linux LXC execution, Windows helper roles, and sandbox implications. |
-| Security and policy | [Settings and configuration persistence](./05-security-and-policy/settings-config-persistence.md) | Config roots, typed stores, writeKey/load paths, settings overlays, URL/MCP/plugin/sandbox state, and migration. |
-| Models and reliability | [Models, providers, and authentication workflows](./06-models-and-reliability/models-providers-auth.md) | Auth manager, login, GitHub tokens, BYOK/custom providers, offline mode, model selection, and effort. |
-| Models and reliability | [Model API routing and provider wire formats](./06-models-and-reliability/model-api-routing.md) | Routing to Chat Completions, Responses, WebSocket Responses, and Anthropic Messages APIs. |
-| Models and reliability | [Rate limits, concurrency, retries, and error recovery](./06-models-and-reliability/resilience-rate-limits-concurrency.md) | Retry policy, rate-limit recovery, auto-mode switching, queue pauses, concurrency limits, fallback, and cancellation. |
-| Models and reliability | [Usage, quota, and billing metrics](./06-models-and-reliability/usage-quota-billing-metrics.md) | /usage, assistant.usage, session.usage_info, premium/AI-unit metrics, token details, and billing/quota errors. |
-| Agents and automation | [Agent and task orchestration in Copilot CLI](./07-agents-and-automation/agent-task-orchestration.md) | Task tool dispatch, TaskRegistry, main/subagent/custom-agent collaboration, hooks, MCP tasks, research, and fleet. |
-| Agents and automation | [Built-in agents in Copilot CLI](./07-agents-and-automation/built-in-agents.md) | Catalog of built-in agent types, YAML-backed versus runtime-defined prompt sources, selection, execution, and slash-command entry points. |
-| Agents and automation | [Autopilot and no-ask-user flags](./07-agents-and-automation/autopilot-and-no-ask-user.md) | Implementation comparison of --autopilot, --no-ask-user, continuation, task_complete, ask_user, and permission boundaries. |
-| Agents and automation | [Fleet mode implementation in Copilot CLI](./07-agents-and-automation/fleet-mode.md) | /fleet, session.fleet.start, autopilot_fleet, SQL todo coordination, dependencies, and parallel subagents. |
-| Agents and automation | [Scheduled prompts and command queue](./07-agents-and-automation/scheduled-prompts-and-command-queue.md) | /every and /after parsing, ScheduleRegistry replay, queue integration, and ephemeral command dispatch. |
-| Operations and research | [Feature gates and rollout logic in Copilot CLI](./08-operations-and-research/feature-gates.md) | Gate tiers, rollout inputs, env/settings overrides, remote experiments, repo/team allowlists, and MCP permission gates. |
-| Operations and research | [`app.js` source atlas and generated indexes](./08-operations-and-research/app-js-source-atlas.md) | Generated `app.js` symbol/string inventories, main runtime path seeds, semantic anchor seeds, and regeneration workflow. |
-| Operations and research | [Diagnostics, feedback, and debug bundles](./08-operations-and-research/diagnostics-feedback-debug-bundles.md) | /diagnose, /feedback, /bug, /collect-debug-logs, .tgz bundles, secret gist uploads, and debug-log paths. |
-| Operations and research | [Debug bundle and redaction boundaries](./08-operations-and-research/debug-bundle-redaction-boundaries.md) | Diagnostic bundle inputs, redaction layers, local archive versus secret gist risks, and support-sharing caveats. |
-| Operations and research | [Observability, update, and shutdown workflows](./08-operations-and-research/observability-update-shutdown.md) | Logging, telemetry, OpenTelemetry, debug artifacts, update/version paths, and graceful shutdown. |
-| Operations and research | [Further documentation opportunities for Copilot CLI](./08-operations-and-research/documentation-opportunities.md) | Historical scan report, implemented backlog, command surfaces, and future niche follow-ups. |
+For a compact full table of contents, see [SUMMARY.md](SUMMARY.md). The detailed source-anchored pages remain intentionally focused inside the MVP section directories; section indexes explain how to read them in order.
 
-## Full table of contents
+## Naming and maintenance conventions
 
-For a compact sidebar-style table of contents, see [SUMMARY.md](./SUMMARY.md).
+| Area | Convention |
+|---|---|
+| Canonical reader path | Use the MVP section directories (`00-start-here` through `99-research-atlas`). |
+| Deep implementation pages | Keep focused pages source-anchored; move or merge them only when the page scope changes, not merely to chase numbering. |
+| Topic titles | Prefer reader-facing titles over historical source filenames. Keep `app.js` in the title only when the page is specifically about bundle-level behavior. |
+| Adding pages | Add the page under the closest MVP section when it is part of the main reader path; use Research atlas for raw discovery notes and watchpoints. |
+| Link text | Use human-readable page titles in prose; reserve raw filenames for maintenance tables. |
 
 ## Important caveat
 
