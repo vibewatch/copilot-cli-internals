@@ -1,12 +1,12 @@
 # Integration config entrypoints
 
-## MVP placement
+## Internals scope
 
 > **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
 
 ## Reader contract
 
-Use this page as a cross-reference for **which startup/config/auth entry point feeds which focused implementation page**. It is intentionally an index-like bridge: detailed MCP, plugin, permission, settings, auth/provider, and update behavior now lives in narrower pages.
+Use this page as a cross-reference for **which startup/config/auth entry point feeds which focused implementation page**. It is intentionally an entrypoint map: it keeps root-level flow diagrams and source anchors here, while detailed MCP, plugin, permission, settings, auth/provider, and update behavior lives in narrower pages.
 
 If you need depth, jump from this page to [MCP host, transports, and tools](mcp-host-transport-and-tools.md), [Plugins, extensions, and capabilities](plugins-extensions-and-capabilities.md), [Tool, path, and URL permissions](tool-path-url-permissions.md), [Settings and configuration persistence](settings-config-persistence.md), [Models, providers, and authentication workflows](../02-context-model-loop/models-providers-auth.md), or [Telemetry, update, and shutdown](../05-hosted-agent-ops/telemetry-update-and-shutdown.md).
 

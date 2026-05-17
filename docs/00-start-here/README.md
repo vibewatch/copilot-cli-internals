@@ -14,7 +14,7 @@ This page is an orientation document, not a direct implementation trace. Concret
 
 | Semantic alias | Minified anchor | Scope |
 |---|---|---|
-| MVP start page | N/A — navigation page | Establishes the first reading path and the wiki's conceptual map. |
+| Start page | N/A — navigation page | Establishes the first reading path and the wiki's conceptual map. |
 | Bundle identity | See [`what-is-app-js.md`](what-is-app-js.md) | Explains artifact boundaries, package layout, and caveats. |
 | Runtime capability map | See [`main-feature-map.md`](main-feature-map.md) | Maps the major systems implemented by the bundle. |
 
@@ -39,7 +39,7 @@ This page is an orientation document, not a direct implementation trace. Concret
 | How are subagents, custom agents, fleet, and scheduled prompts run? | [Agents and automation](../06-agents-automation/README.md) |
 | How do I triage a raw constant, event, or minified symbol? | [Research atlas](../99-research-atlas/README.md) |
 
-## MVP map
+## Internals map
 
 ```mermaid
 flowchart TD

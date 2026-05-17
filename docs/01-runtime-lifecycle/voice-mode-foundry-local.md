@@ -14,7 +14,7 @@ The important implementation point is that voice mode is not just a UI toggle. I
 - model selection and cache checks;
 - TUI keybindings for recording and dictation.
 
-## MVP placement
+## Internals scope
 
 This is the voice feature overview for [Runtime lifecycle](README.md). It explains the interactive command and settings surface; [Voice runtime workers and transcription pipeline](voice-runtime-workers-and-transcription.md) explains the lower-level microphone, installer, and Foundry worker state machines. Voice output feeds back into the same prompt/session path covered by [Context and model loop](../02-context-model-loop/README.md) and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md).
 

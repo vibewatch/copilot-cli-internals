@@ -4,7 +4,7 @@ This wiki documents the extracted `@github/copilot` CLI bundle with source-ancho
 
 `copilot-cli-pkg/app.js`
 
-The MVP information architecture is organized around the shortest useful reader journey for understanding a coding-agent runtime. The MVP sections below are both the physical layout and the canonical reader path.
+The wiki is organized around source-anchored internals questions: how the bundled CLI starts, shapes model context, exposes tools, persists sessions, runs hosted jobs, delegates work, and supports future source-atlas research. The canonical sections below are both the physical layout and the reader path.
 
 Because `app.js` is bundled/minified, symbol names are unstable. Source anchors are intended for searching the analyzed bundle, not as public API names.
 
@@ -14,11 +14,11 @@ This home page is a navigation index, not a direct `app.js` implementation analy
 
 | Semantic alias | Minified anchor | Scope |
 |---|---|---|
-| Wiki home | N/A — navigation page | Orients readers to the MVP sections and reading paths. |
-| MVP section indexes | N/A — see linked section README pages | Curated reader routes through source-anchored implementation pages. |
+| Wiki home | N/A — navigation page | Orients readers to the canonical sections and reading paths. |
+| Section indexes | N/A — see linked section README pages | Curated reader routes through source-anchored implementation pages. |
 | Topic implementation pages | See page-level source anchor tables | Bundle-specific anchors live in focused implementation documents. |
 
-## MVP wiki map
+## Internals wiki map
 
 ```mermaid
 flowchart TD
@@ -50,7 +50,7 @@ flowchart TD
     click Research "./99-research-atlas/" "Open Research atlas"
 ```
 
-## MVP sections
+## Canonical sections
 
 | Section | Purpose |
 |---|---|
@@ -77,7 +77,7 @@ flowchart TD
 
 ## Cross-cutting implementation matrix
 
-| Concern | Primary MVP section | Supporting sections |
+| Concern | Primary internals section | Supporting sections |
 |---|---|---|
 | Runtime mode selection | [Runtime lifecycle](01-runtime-lifecycle/README.md) | [Start here](00-start-here/README.md), [Sessions, persistence, and remote](04-sessions-persistence-remote/README.md) |
 | Context engineering | [Context and model loop](02-context-model-loop/README.md) | [Agents and automation](06-agents-automation/README.md), [Tools, integrations, and security](03-tools-integrations-security/README.md) |
@@ -86,20 +86,20 @@ flowchart TD
 | Hosted coding-agent operation | [Hosted agent ops](05-hosted-agent-ops/README.md) | [Sessions, persistence, and remote](04-sessions-persistence-remote/README.md), [Tools, integrations, and security](03-tools-integrations-security/README.md) |
 | Permissions and redaction | [Tools, integrations, and security](03-tools-integrations-security/README.md) | [Hosted agent ops](05-hosted-agent-ops/README.md), [Context and model loop](02-context-model-loop/README.md) |
 | Subagents and automation | [Agents and automation](06-agents-automation/README.md) | [Context and model loop](02-context-model-loop/README.md), [Sessions, persistence, and remote](04-sessions-persistence-remote/README.md) |
-| Source discovery and diff triage | [Research atlas](99-research-atlas/README.md) | All MVP sections after findings are confirmed. |
+| Source discovery and diff triage | [Research atlas](99-research-atlas/README.md) | All canonical sections after findings are confirmed. |
 
 ## Implementation page inventory
 
-For a compact full table of contents, see [SUMMARY.md](SUMMARY.md). The detailed source-anchored pages remain intentionally focused inside the MVP section directories; section indexes explain how to read them in order.
+For a compact full table of contents, see [SUMMARY.md](SUMMARY.md). The detailed source-anchored pages remain intentionally focused inside the canonical section directories; section indexes explain how to read them in order.
 
 ## Naming and maintenance conventions
 
 | Area | Convention |
 |---|---|
-| Canonical reader path | Use the MVP section directories (`00-start-here` through `99-research-atlas`). |
+| Canonical reader path | Use the canonical section directories (`00-start-here` through `99-research-atlas`). |
 | Deep implementation pages | Keep focused pages source-anchored; move or merge them only when the page scope changes, not merely to chase numbering. |
 | Topic titles | Prefer reader-facing titles over historical source filenames. Keep `app.js` in the title only when the page is specifically about bundle-level behavior. |
-| Adding pages | Add the page under the closest MVP section when it is part of the main reader path; use Research atlas for raw discovery notes and watchpoints. |
+| Adding pages | Add the page under the closest internals section when it is part of the main reader path; use Research atlas for raw discovery notes and watchpoints. |
 | Link text | Use human-readable page titles in prose; reserve raw filenames for maintenance tables. |
 
 ## Important caveat

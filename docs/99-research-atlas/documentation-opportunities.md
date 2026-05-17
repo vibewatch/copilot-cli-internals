@@ -1,8 +1,8 @@
 # Further documentation opportunities for Copilot CLI
 
-## MVP placement
+## Internals scope
 
-> **Why this page is here:** This page belongs to [Research atlas](README.md). It is a discovery and verification aid rather than a product-runtime chapter: use it to trace generated source anchors, constants-first leads, methodology, and documentation gaps before promoting findings into the canonical MVP sections.
+> **Why this page is here:** This page belongs to [Research atlas](README.md). It is a discovery and verification aid rather than a product-runtime chapter: use it to trace generated source anchors, constants-first leads, methodology, and documentation gaps before promoting findings into the canonical internals sections.
 
 This report summarizes a second-pass, script-assisted scan of the extracted Copilot CLI `app.js` bundle to identify areas that are still worth turning into focused implementation documents. For the current reusable scan workflow and generated source indexes, see [`app-js-source-atlas.md`](app-js-source-atlas.md).
 
@@ -399,7 +399,7 @@ After the high- and medium-priority batches, a final gap scan found several impo
 
 ## Recommended next writing order
 
-The current important `app.js` documentation backlog is now covered by focused docs and indexed in the MVP `README.md`, including the later conversation-session, session-persistence/replay, debug-bundle redaction boundary, and hosted-agent environment pages. Future writing should be driven by new questions rather than by the existing gap list. Possible niche follow-ups, only if needed, are:
+The current important `app.js` documentation backlog is now covered by focused docs and indexed in the wiki `README.md`, including the later conversation-session, session-persistence/replay, debug-bundle redaction boundary, and hosted-agent environment pages. Future writing should be driven by new questions rather than by the existing gap list. Possible niche follow-ups, only if needed, are:
 
 1. A very focused cloud-sandbox/detached-child/rem-agent execution deep dive.
 2. A TUI rendering/theme/Tuikit internals document if terminal rendering itself becomes the research target.

@@ -4,9 +4,9 @@ This document continues the static analysis of the extracted `@github/copilot` C
 
 `app.js` is a bundled and minified production artifact. The document therefore uses semantic aliases such as `RootProgram`, `InteractiveTuiFlow`, `runPromptMode(...)`, `TaskRegistry`, and `LiveFeatureFlagService`. Minified names are kept only as search anchors for the analyzed `@github/copilot` bundle and may shift across releases.
 
-## MVP placement
+## Internals scope
 
-This is the system map for [Start here](README.md). Use it after [`app.js` overview](what-is-app-js.md) and before diving into a specific chapter. It explains how the MVP sections connect: [Runtime lifecycle](../01-runtime-lifecycle/README.md) owns mode dispatch, [Context and model loop](../02-context-model-loop/README.md) owns request shaping, [Tools, integrations, and security](../03-tools-integrations-security/README.md) owns action boundaries, [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) owns durable state, [Hosted agent ops](../05-hosted-agent-ops/README.md) owns hosted-job contracts, and [Agents and automation](../06-agents-automation/README.md) owns delegation.
+This is the system map for [Start here](README.md). Use it after [`app.js` overview](what-is-app-js.md) and before diving into a specific chapter. It explains how the canonical sections connect: [Runtime lifecycle](../01-runtime-lifecycle/README.md) owns mode dispatch, [Context and model loop](../02-context-model-loop/README.md) owns request shaping, [Tools, integrations, and security](../03-tools-integrations-security/README.md) owns action boundaries, [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) owns durable state, [Hosted agent ops](../05-hosted-agent-ops/README.md) owns hosted-job contracts, and [Agents and automation](../06-agents-automation/README.md) owns delegation.
 
 ## Executive summary
 

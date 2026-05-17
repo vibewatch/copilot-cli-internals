@@ -9,7 +9,7 @@ The root program is built through a Commander-like API and ends with:
 - installing a top-level async action;
 - calling `parseAsync(...)`.
 
-## MVP placement
+## Internals scope
 
 This is the central dispatch page for [Runtime lifecycle](README.md). It connects loader/bootstrap output to TUI, prompt, server/headless, ACP, and subcommand paths. After this page, follow [Interactive TUI and slash-command workflows](tui-and-slash-commands.md) for human terminal operation, [Embedded server, ACP, and JSON-RPC protocol](embedded-server-acp-protocol.md) for protocol hosts, or [Conversation session end-to-end](../04-sessions-persistence-remote/conversation-session-end-to-end.md) for durable session behavior.
 

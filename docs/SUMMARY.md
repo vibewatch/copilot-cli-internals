@@ -1,6 +1,6 @@
 # Wiki table of contents
 
-This table of contents follows the MVP reader path and the physical docs layout. All source-anchored implementation pages live under the sections below.
+This table of contents follows the canonical reader path and the physical docs layout. All source-anchored implementation pages live under the sections below.
 
 ## Semantic alias and minified anchor mapping
 
@@ -8,7 +8,7 @@ This file is a table-of-contents document, not a direct `app.js` implementation 
 
 | Semantic alias | Minified anchor | Scope |
 |---|---|---|
-| Wiki table of contents | N/A — navigation page | Lists MVP sections and source-anchored topic pages. |
+| Wiki table of contents | N/A — navigation page | Lists canonical sections and source-anchored topic pages. |
 | Linked implementation pages | See linked page-level mappings | Concrete `app.js` anchors are documented in destination pages. |
 
 - [Wiki home](README.md)
@@ -24,11 +24,9 @@ This file is a table-of-contents document, not a direct `app.js` implementation 
   - [Voice runtime workers and transcription pipeline](01-runtime-lifecycle/voice-runtime-workers-and-transcription.md)
   - [Embedded server, ACP, and JSON-RPC protocol](01-runtime-lifecycle/embedded-server-acp-protocol.md)
   - [Tree-sitter WASM usage in the Copilot CLI](01-runtime-lifecycle/tree-sitter-wasm-usage.md)
-  - [Telemetry, update, and shutdown](05-hosted-agent-ops/telemetry-update-and-shutdown.md)
 - [Context and model loop](02-context-model-loop/README.md)
   - [Prompt sources in Copilot CLI](02-context-model-loop/prompt-sources.md)
   - [`app.js` prompt catalog](02-context-model-loop/app-js-prompt-catalog.md)
-  - [Custom agents and skills packaging](06-agents-automation/custom-agents-and-skills-packaging.md)
   - [Attachment and file-ingestion pipeline](02-context-model-loop/attachments-and-file-ingestion.md)
   - [Memory and dynamic context board](02-context-model-loop/memory-and-context-board.md)
   - [Conversation compaction and memory compression](02-context-model-loop/conversation-compaction.md)
@@ -51,7 +49,7 @@ This file is a table-of-contents document, not a direct `app.js` implementation 
   - [Tool, path, and URL permissions](03-tools-integrations-security/tool-path-url-permissions.md)
   - [Content exclusion and redaction](03-tools-integrations-security/content-exclusion-and-redaction.md)
   - [Hooks, events, and automation](03-tools-integrations-security/hooks-events-and-automation.md)
-  - [Sandbox Implementation](03-tools-integrations-security/sandboxing.md)
+  - [Sandbox implementation](03-tools-integrations-security/sandboxing.md)
   - [Settings and configuration persistence](03-tools-integrations-security/settings-config-persistence.md)
 - [Sessions, persistence, and remote](04-sessions-persistence-remote/README.md)
   - [Conversation session end-to-end](04-sessions-persistence-remote/conversation-session-end-to-end.md)
@@ -73,6 +71,7 @@ This file is a table-of-contents document, not a direct `app.js` implementation 
 - [Agents and automation](06-agents-automation/README.md)
   - [Agent and task orchestration in Copilot CLI](06-agents-automation/agent-task-orchestration.md)
   - [Built-in agents in Copilot CLI](06-agents-automation/built-in-agents.md)
+  - [Custom agents and skills packaging](06-agents-automation/custom-agents-and-skills-packaging.md)
   - [Autopilot and no-ask-user flags](06-agents-automation/autopilot-and-no-ask-user.md)
   - [Fleet mode implementation in Copilot CLI](06-agents-automation/fleet-mode.md)
   - [Scheduled prompts and command queue](06-agents-automation/scheduled-prompts-and-command-queue.md)

@@ -2,7 +2,7 @@
 
 This appendix keeps discovery machinery separate from the main runtime narrative. Use it when you are starting from a raw constant, event name, minified symbol, slash command, feature key, source-atlas diff, or documentation backlog item.
 
-The atlas is a triage layer, not proof. Promote a finding into the main MVP sections only after a focused source read confirms behavior.
+The atlas is a triage layer, not proof. Promote a finding into the main internals sections only after a focused source read confirms behavior.
 
 ## Source-anchor policy
 
@@ -21,7 +21,7 @@ flowchart TD
     Atlas --> Surface[Constants/events/symbols]
     Surface --> Source[Focused app.js source read]
     Source --> Classify{Behavior confirmed?}
-    Classify -->|yes| MainDoc[Patch or create MVP section doc]
+    Classify -->|yes| MainDoc[Patch or create internals section doc]
     Classify -->|partial| Backlog[Record opportunity/watchpoint]
     Classify -->|no| Noise[Mark as scan noise]
     MainDoc --> Validate[Links / atlas refs / website build]
@@ -45,9 +45,9 @@ flowchart TD
 | Starting point | Use this path |
 |---|---|
 | Raw env var or event string | `source-atlas/constants.md` → [app.js source atlas](app-js-source-atlas.md) → focused source read. |
-| New package/bundle diff | Regenerate or compare `source-atlas/` → inspect changed strings/events/API surfaces → patch affected MVP docs. |
+| New package/bundle diff | Regenerate or compare `source-atlas/` → inspect changed strings/events/API surfaces → patch affected internals docs. |
 | Minified symbol with unclear role | `source-atlas/symbols.md` / `declarations.json` → nearby source anchors → existing semantic page. |
-| Documentation gap | [Further documentation opportunities](documentation-opportunities.md) → relevant MVP section → source-confirmed update. |
+| Documentation gap | [Further documentation opportunities](documentation-opportunities.md) → relevant internals section → source-confirmed update. |
 
 ## Promotion rules
 

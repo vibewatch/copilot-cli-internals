@@ -1,6 +1,6 @@
 # MXC sandbox binary notes
 
-## MVP placement
+## Internals scope
 
 > **Why this page is here:** This page belongs to [Research atlas](README.md). It is a binary-level evidence note, not the canonical runtime sandbox page. Use it when validating claims about packaged MXC helper binaries, then promote only confirmed runtime behavior back to [Sandbox implementation](../03-tools-integrations-security/sandboxing.md).
 
