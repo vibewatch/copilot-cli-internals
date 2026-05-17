@@ -1,10 +1,6 @@
 # Settings and configuration persistence
 
-## Internals scope
-
-> **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
-
-## Reader contract
+## What this page covers
 
 Use this page to answer **where does a policy or integration setting persist, and how does runtime state override it?** It owns config roots, JSON stores, settings migration, incremental writes, and persistent state for permissions, URLs, MCP, plugins, sandboxing, trusted folders, terminal prompts, and related policy knobs.
 

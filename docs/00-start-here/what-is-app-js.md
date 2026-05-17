@@ -20,8 +20,6 @@ Observed bundle shape (approximate, will drift release-to-release):
 - esbuild-style CommonJS module wrappers: roughly 1.1 K
 - Lazy init wrappers: roughly 500
 
-## Internals scope
-
 This is the artifact-identity page for [Start here](README.md). Read it before the [main feature map](main-feature-map.md) when you need package boundaries, high-level responsibilities, and caveats about bundled/minified source. It intentionally stays broad; detailed runtime flow begins in [Runtime lifecycle](../01-runtime-lifecycle/README.md), and subsystem-specific source anchors live in the later internals chapters.
 
 ## What `app.js` does

@@ -1,9 +1,5 @@
 # Conversation compaction and memory compression in Copilot CLI
 
-## Internals scope
-
-> **Why this page is here:** This page belongs to [Context and model loop](README.md). It explains one part of the request/turn pipeline: how model-visible inputs are selected, compressed, routed, retried, or accounted for. Read it with [Runtime lifecycle](../01-runtime-lifecycle/README.md) for the host branch that invokes the loop, and [Tools, integrations, and security](../03-tools-integrations-security/README.md) when the context includes executable capabilities.
-
 This document explains the implementation behind the Copilot CLI behavior that is easy to describe as "memory compression" or "prompt trimming". In the analyzed bundle, there are two local context-window mechanisms:
 
 - **conversation compaction**: old chat history is summarized by a model call, then the session replaces many prior messages with a compact summary; and

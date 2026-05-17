@@ -1,10 +1,6 @@
 # Content exclusion and redaction
 
-## Internals scope
-
-> **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
-
-## Reader contract
+## What this page covers
 
 Use this page to answer **which data is blocked, filtered, or redacted before it reaches the model, UI, telemetry, or support artifacts?** It owns content-exclusion checks, output filtering, model policy reminders, secret env-var stripping, and redaction-related controls.
 

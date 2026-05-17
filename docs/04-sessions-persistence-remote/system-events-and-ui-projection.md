@@ -1,9 +1,5 @@
 # System events and UI projection
 
-## Internals scope
-
-> **Why this page is here:** This page belongs to [Sessions, persistence, and remote](README.md). It explains a durable-state or protocol facet: event replay, SessionFs, SQLite/FTS indexing, repository context, remote/cloud steering, or UI projection. Pair it with [Runtime lifecycle](../01-runtime-lifecycle/README.md) for the mode that creates the session and [Context and model loop](../02-context-model-loop/README.md) for how session history becomes model context.
-
 This document explains how system-level session events become model context, timeline entries, telemetry, and UI updates in the extracted Copilot CLI bundle. In the analyzed `app.js`, events such as `system.message`, `system.notification`, `session.info`, `session.warning`, `session.error`, `pending_messages.modified`, and `session.custom_notification` are not equivalent. Some are model-visible, some are timeline-only, some are ephemeral UI state, and some are telemetry-only.
 
 Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted bundle and will shift across releases.

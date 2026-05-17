@@ -1,9 +1,5 @@
 # Git, repository, PR, and ref context
 
-## Internals scope
-
-> **Why this page is here:** This page belongs to [Sessions, persistence, and remote](README.md). It explains a durable-state or protocol facet: event replay, SessionFs, SQLite/FTS indexing, repository context, remote/cloud steering, or UI projection. Pair it with [Runtime lifecycle](../01-runtime-lifecycle/README.md) for the mode that creates the session and [Context and model loop](../02-context-model-loop/README.md) for how session history becomes model context.
-
 This document explains how the extracted Copilot CLI bundle derives and reuses Git/repository context. In the analyzed `app.js`, Git context is not just a prompt nicety. It feeds session metadata, workspace persistence, telemetry, file identity, code review, remote/cloud task metadata, session indexing, dynamic context boards, and GitHub MCP instructions.
 
 Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted bundle and will shift across releases.

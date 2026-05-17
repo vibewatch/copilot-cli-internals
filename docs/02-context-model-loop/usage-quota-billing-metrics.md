@@ -1,9 +1,5 @@
 # Usage, quota, and billing metrics
 
-## Internals scope
-
-> **Why this page is here:** This page belongs to [Context and model loop](README.md). It explains one part of the request/turn pipeline: how model-visible inputs are selected, compressed, routed, retried, or accounted for. Read it with [Runtime lifecycle](../01-runtime-lifecycle/README.md) for the host branch that invokes the loop, and [Tools, integrations, and security](../03-tools-integrations-security/README.md) when the context includes executable capabilities.
-
 This document explains how usage reporting, token accounting, quota/billing errors, and session-level metrics are implemented in the extracted Copilot CLI `app.js` bundle. The user-visible command is `/usage`, but the runtime also emits `assistant.usage`, `session.usage_info`, model metrics, quota errors, and shutdown summaries.
 
 The important implementation point is that the CLI tracks two related but different things:

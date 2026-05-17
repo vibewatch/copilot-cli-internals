@@ -10,8 +10,6 @@ The analyzed implementation is split across `app.js` and three bundled worker fi
 
 Because these files are bundled/minified, line numbers are approximate. The worker bundles are mostly one-line payloads, so the exact string anchors and offsets are more useful than line numbers.
 
-## Internals scope
-
 This is the voice backend deep dive for [Runtime lifecycle](README.md). Read [Voice mode and Foundry Local](voice-mode-foundry-local.md) first for the user-facing command/settings path, then use this page to trace worker-thread RPC, microphone PCM capture, runtime installation, model loading, streaming previews, final transcription, and cleanup. The resulting text re-enters the normal prompt/session flow rather than creating a separate model pipeline.
 
 ## Source anchors

@@ -1,10 +1,6 @@
 # Sandbox implementation
 
-## Internals scope
-
-> **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
-
-## Reader contract
+## What this page covers
 
 Use this page to answer **how is local shell-command sandboxing enforced after a shell tool is approved?** It owns the runtime path from `sandbox.enabled` and `/sandbox` to shell config, MXC adapter loading, platform checks, and process spawn constraints.
 

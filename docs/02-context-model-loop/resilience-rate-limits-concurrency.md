@@ -1,9 +1,5 @@
 # Rate limits, concurrency, retries, and error recovery
 
-## Internals scope
-
-> **Why this page is here:** This page belongs to [Context and model loop](README.md). It explains one part of the request/turn pipeline: how model-visible inputs are selected, compressed, routed, retried, or accounted for. Read it with [Runtime lifecycle](../01-runtime-lifecycle/README.md) for the host branch that invokes the loop, and [Tools, integrations, and security](../03-tools-integrations-security/README.md) when the context includes executable capabilities.
-
 This document explains how the extracted `@github/copilot` CLI bundle handles model rate limits, concurrent model work, retries, cancellation, and related error paths. It complements [`model-api-routing.md`](model-api-routing.md), which explains which network API shape is selected for each provider/model.
 
 ## Executive summary

@@ -1,9 +1,5 @@
 # Session, remote, cloud, and history workflows
 
-## Internals scope
-
-> **Why this page is here:** This page belongs to [Sessions, persistence, and remote](README.md). It explains a durable-state or protocol facet: event replay, SessionFs, SQLite/FTS indexing, repository context, remote/cloud steering, or UI projection. Pair it with [Runtime lifecycle](../01-runtime-lifecycle/README.md) for the mode that creates the session and [Context and model loop](../02-context-model-loop/README.md) for how session history becomes model context.
-
 This document expands the session coverage that was previously spread across the runtime overview and main feature map. It focuses on how `app.js` resolves local sessions, attaches remote/cloud behavior, manages background sessions, and wires session history/indexing into the runtime.
 
 ## Source anchors

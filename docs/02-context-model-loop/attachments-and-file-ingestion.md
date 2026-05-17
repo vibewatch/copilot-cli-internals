@@ -1,9 +1,5 @@
 # Attachment and file-ingestion pipeline
 
-## Internals scope
-
-> **Why this page is here:** This page belongs to [Context and model loop](README.md). It explains one part of the request/turn pipeline: how model-visible inputs are selected, compressed, routed, retried, or accounted for. Read it with [Runtime lifecycle](../01-runtime-lifecycle/README.md) for the host branch that invokes the loop, and [Tools, integrations, and security](../03-tools-integrations-security/README.md) when the context includes executable capabilities.
-
 This document explains how the extracted Copilot CLI bundle ingests files, images, native documents, editor selections, and GitHub references before they become model input.
 
 The implementation in `app.js` is not a single attachment subsystem. It is a cross-cutting path through prompt parsing, permission checks, MIME detection, request-size budgeting, provider-specific payload conversion, retry logic, and session events.

@@ -1,9 +1,5 @@
 # Session manager and event replay
 
-## Internals scope
-
-> **Why this page is here:** This page belongs to [Sessions, persistence, and remote](README.md). It explains a durable-state or protocol facet: event replay, SessionFs, SQLite/FTS indexing, repository context, remote/cloud steering, or UI projection. Pair it with [Runtime lifecycle](../01-runtime-lifecycle/README.md) for the mode that creates the session and [Context and model loop](../02-context-model-loop/README.md) for how session history becomes model context.
-
 This document describes how session manager is implemented in the extracted Copilot CLI `app.js`. The implementation is not a single subsystem; it is an event-sourced runtime that combines local JSONL persistence, workspace metadata, checkpoint files, session indexing, remote/cloud adapters, TUI slash commands, JSON-RPC APIs, and ACP protocol handlers.
 
 At a high level, every CLI conversation is a **session**. The runtime records significant session events, reconstructs a session by replaying those events, keeps per-session workspace artifacts beside the event log, and exposes session lifecycle operations through several entry points: root CLI flags, `/session`, `/fork`, server/headless JSON-RPC, ACP, remote Mission Control attach, and local/cloud session-store search.

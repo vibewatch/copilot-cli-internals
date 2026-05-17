@@ -1,9 +1,5 @@
 # `app.js` source atlas and generated indexes
 
-## Internals scope
-
-> **Why this page is here:** This page belongs to [Research atlas](README.md). It is a discovery and verification aid rather than a product-runtime chapter: use it to trace generated source anchors, constants-first leads, methodology, and documentation gaps before promoting findings into the canonical internals sections.
-
 This page explains how to keep a navigable map of the huge, bundled `copilot-cli-pkg/app.js` file without hand-reading all 8k+ minified lines. It pairs a generated inventory under `source-atlas/` with curated semantic anchors in the wiki.
 
 The short version: use `scripts/index-app-js.mjs` to generate raw symbol and constant/string inventories, then use the curated path seeds below to trace the major runtime routes. The generated index is a discovery aid; the focused docs remain the source of confirmed behavior.

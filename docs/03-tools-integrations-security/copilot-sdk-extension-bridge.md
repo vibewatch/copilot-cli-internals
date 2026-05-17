@@ -1,10 +1,6 @@
 # Copilot SDK extension bridge
 
-## Internals scope
-
-> **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
-
-## Reader contract
+## What this page covers
 
 Use this page to answer **how does `@github/copilot-sdk` code join a running CLI session without being imported into the main process?** It owns extension child-process lifecycle, stdio JSON-RPC, `joinSession()`, capability registration, extension management tools, and `session.extensions_loaded` status.
 

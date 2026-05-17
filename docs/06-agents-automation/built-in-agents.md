@@ -1,9 +1,5 @@
 # Built-in agents in Copilot CLI
 
-## Internals scope
-
-> **Why this page is here:** This page belongs to [Agents and automation](README.md). It explains the delegation layer: built-in/custom agents, task orchestration, autopilot/no-ask-user behavior, fleet coordination, or scheduled command queues. Pair it with [Context and model loop](../02-context-model-loop/README.md) for prompt inputs and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for background or multi-turn state.
-
 This page is the centralized catalog for Copilot CLI's packaged built-in agents. It complements the broader orchestration map in [`agent-task-orchestration.md`](agent-task-orchestration.md) and the prompt-source inventory in [`prompt-sources.md`](../02-context-model-loop/prompt-sources.md).
 
 The short version: the model-visible `task` tool can dispatch to a small built-in catalog. Six entries are backed by `copilot-cli-pkg/definitions/*.agent.yaml`; `general-purpose` is a runtime-defined built-in with a dedicated execution path rather than a YAML file.

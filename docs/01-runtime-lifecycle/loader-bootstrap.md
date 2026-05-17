@@ -10,8 +10,6 @@ Relevant files:
 
 The SEA-internal artifacts referenced by the diagrams below (`sea-loader.js` and the embedded `copilot.tgz`) live inside the native `copilot` binary and are not committed to this repository; only the expanded package contents under `copilot-cli-pkg/` are tracked.
 
-## Internals scope
-
 This page opens the [Runtime lifecycle](README.md) chapter. It explains how execution reaches `app.js` before command parsing, sessions, context assembly, or tools exist. Continue to [Mode dispatch and runtime startup](mode-dispatch-and-runtime-startup.md) for root command dispatch, then to [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) once a runtime mode owns a session.
 
 ## Source anchors

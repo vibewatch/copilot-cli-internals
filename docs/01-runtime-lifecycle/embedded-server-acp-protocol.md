@@ -6,8 +6,6 @@ The important implementation point is that the CLI session model is exposed over
 
 Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted bundle and will shift across releases.
 
-## Internals scope
-
 This page covers the protocol-host branch of [Runtime lifecycle](README.md). It complements [Interactive TUI and slash-command workflows](tui-and-slash-commands.md): both host sessions, but this path exposes session events, external tools, elicitation, sampling, commands, and permissions through JSON-RPC/ACP clients. Pair it with [API and session event schema contracts](../04-sessions-persistence-remote/api-and-session-event-schemas.md) when building or interpreting clients.
 
 ## Source anchors

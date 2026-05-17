@@ -1,10 +1,6 @@
 # Coding-agent validation and review toolchain
 
-## Internals scope
-
-> **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
-
-## Reader contract
+## What this page covers
 
 Use this page to answer **which validation tools can a coding-agent session expose before it declares work complete?** It owns the Code Review, CodeQL, secret-scanning, advisory, and `parallel_validation` toolchain, including feature gates, repo/base-commit inputs, budgets, trivial-change declarations, and telemetry.
 

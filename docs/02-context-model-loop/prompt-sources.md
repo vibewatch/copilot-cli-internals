@@ -1,9 +1,5 @@
 # Prompt sources in Copilot CLI
 
-## Internals scope
-
-> **Why this page is here:** This page belongs to [Context and model loop](README.md). It explains one part of the request/turn pipeline: how model-visible inputs are selected, compressed, routed, retried, or accounted for. Read it with [Runtime lifecycle](../01-runtime-lifecycle/README.md) for the host branch that invokes the loop, and [Tools, integrations, and security](../03-tools-integrations-security/README.md) when the context includes executable capabilities.
-
 This document answers two questions from the static analysis of the extracted `@github/copilot` CLI bundle:
 
 1. Can every prompt be extracted from `app.js`?

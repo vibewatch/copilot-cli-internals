@@ -1,9 +1,5 @@
 # Models, providers, and authentication workflows
 
-## Internals scope
-
-> **Why this page is here:** This page belongs to [Context and model loop](README.md). It explains one part of the request/turn pipeline: how model-visible inputs are selected, compressed, routed, retried, or accounted for. Read it with [Runtime lifecycle](../01-runtime-lifecycle/README.md) for the host branch that invokes the loop, and [Tools, integrations, and security](../03-tools-integrations-security/README.md) when the context includes executable capabilities.
-
 This document deepens the model/auth/provider coverage that was previously summarized in the main feature map and integration document. It explains how `app.js` chooses between GitHub Copilot authentication, environment tokens, GitHub CLI credentials, BYOK/custom providers, offline mode, model selection, and subagent model overrides. For the network request shape used after a model/provider is selected, see [`model-api-routing.md`](model-api-routing.md).
 
 ## Source anchors

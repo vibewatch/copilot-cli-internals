@@ -4,8 +4,6 @@ This document fills the standalone coverage gap for the interactive terminal UI 
 
 `app.js` is bundled and minified, so semantic aliases are used as stable documentation names. Minified symbols are retained only as search anchors for the analyzed `@github/copilot` artifact and may shift across releases.
 
-## Internals scope
-
 This page explains the human-facing branch of [Runtime lifecycle](README.md). It sits between [Mode dispatch and runtime startup](mode-dispatch-and-runtime-startup.md) and the subsystems the TUI hosts: [Context and model loop](../02-context-model-loop/README.md), [Tools, integrations, and security](../03-tools-integrations-security/README.md), [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md), and [Agents and automation](../06-agents-automation/README.md). Read it when a slash command or dialog appears to be “UI-only” but actually routes into deeper runtime behavior.
 
 ## Source anchors

@@ -1,9 +1,5 @@
 # Session persistence, replay, and indexing
 
-## Internals scope
-
-> **Why this page is here:** This page belongs to [Sessions, persistence, and remote](README.md). It explains a durable-state or protocol facet: event replay, SessionFs, SQLite/FTS indexing, repository context, remote/cloud steering, or UI projection. Pair it with [Runtime lifecycle](../01-runtime-lifecycle/README.md) for the mode that creates the session and [Context and model loop](../02-context-model-loop/README.md) for how session history becomes model context.
-
 This page maps the Copilot CLI session persistence stack end to end: raw JSONL events, `SessionFs`, workspace sidecar files, SQLite indexing, dynamic context storage, search/reindex, fork, checkpoint, rewind, and cloud sync. It fills the gap between the broad [session lifecycle](conversation-session-end-to-end.md), the [SessionFs provider](session-fs-provider-and-state-files.md), and [session-store SQLite indexing](session-store-sqlite-indexing.md).
 
 The key idea is that the CLI has several persistence layers with different authority levels. `events.jsonl` is the local replay source of truth; workspace files store human-readable sidecar state; `session-store.db` is a derived searchable index; remote/cloud state is an optional synchronization/export layer.

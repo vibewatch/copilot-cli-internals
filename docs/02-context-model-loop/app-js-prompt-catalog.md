@@ -1,9 +1,5 @@
 # `app.js` prompt catalog
 
-## Internals scope
-
-> **Why this page is here:** This page belongs to [Context and model loop](README.md). It explains one part of the request/turn pipeline: how model-visible inputs are selected, compressed, routed, retried, or accounted for. Read it with [Runtime lifecycle](../01-runtime-lifecycle/README.md) for the host branch that invokes the loop, and [Tools, integrations, and security](../03-tools-integrations-security/README.md) when the context includes executable capabilities.
-
 This file extracts prompt-related strings from `copilot-cli-pkg/app.js` and normalizes runtime substitutions to either `{{placeholder}}` form for logical catalog slots or `${sourceStyleExpression}` form when showing the JavaScript-derived rendering rule. It focuses on model-facing prompts and prompt templates; routine UI labels, telemetry messages, and third-party dependency strings are intentionally omitted.
 
 ## Catalog structure

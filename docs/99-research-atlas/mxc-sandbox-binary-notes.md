@@ -1,9 +1,5 @@
 # MXC sandbox binary notes
 
-## Internals scope
-
-> **Why this page is here:** This page belongs to [Research atlas](README.md). It is a binary-level evidence note, not the canonical runtime sandbox page. Use it when validating claims about packaged MXC helper binaries, then promote only confirmed runtime behavior back to [Sandbox implementation](../03-tools-integrations-security/sandboxing.md).
-
 This page records a static reverse-engineering pass over the bundled MXC sandbox runtime under `copilot-cli-pkg/mxc-bin`. It complements [Sandbox implementation](../03-tools-integrations-security/sandboxing.md), which explains how Copilot CLI routes shell sessions into the MXC adapter.
 
 The goal here is narrower: identify what the packaged binaries are, how they were built, what helper roles they appear to implement, and what sandbox behavior can be inferred from metadata, symbols, imports, SPDX manifests, and strings.

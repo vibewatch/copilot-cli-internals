@@ -1,10 +1,6 @@
 # Tool, path, and URL permissions
 
-## Internals scope
-
-> **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
-
-## Reader contract
+## What this page covers
 
 Use this page to answer **why was a visible tool call allowed, denied, or escalated to a human/remote client?** It owns approval policy, not tool visibility. Tool visibility is covered by [Runtime tool assembly and filtering](runtime-tool-assembly-and-filtering.md); execution events are covered by [Built-in tools, execution events, and results](built-in-tools-execution-events.md).
 

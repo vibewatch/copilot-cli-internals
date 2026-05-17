@@ -1,9 +1,5 @@
 # Diagnostics, feedback, and debug bundles
 
-## Internals scope
-
-> **Why this page is here:** This page belongs to [Hosted agent ops](README.md). It documents hosted-job operational contracts such as environment envelopes, feature gates, validation, debug bundles, redaction, telemetry, update, or shutdown. Pair it with [Tools, integrations, and security](../03-tools-integrations-security/README.md) for trust boundaries and [Agents and automation](../06-agents-automation/README.md) when hosted runs execute delegated agent workflows.
-
 This document explains how diagnostics, feedback, and debug-log collection are implemented in the extracted Copilot CLI `app.js` bundle. The main user-facing surfaces are `/diagnose`, `/feedback` (alias `/bug`), and `/collect-debug-logs`, plus hidden root CLI flags for collecting debug bundles by session ID.
 
 The important implementation point is that diagnostics and feedback are split into three paths:

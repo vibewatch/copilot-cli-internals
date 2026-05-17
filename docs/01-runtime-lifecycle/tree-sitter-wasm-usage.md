@@ -2,8 +2,6 @@
 
 This document explains how the packaged `tree-sitter-*.wasm` files are used by the extracted Copilot CLI bundle. The short version: in the analyzed `app.js`, Tree-sitter is used as a local syntax-highlighting engine for rich terminal diff rendering. It is not the primary code-understanding engine for model context, not an LSP server, and not a code execution mechanism.
 
-## Internals scope
-
 This is a rendering-support page under [Runtime lifecycle](README.md). It belongs near the TUI and terminal renderer because Tree-sitter here colors rich diffs for humans; it does not feed the model loop directly. For model-visible file ingestion, see [Attachment and file-ingestion pipeline](../02-context-model-loop/attachments-and-file-ingestion.md); for IDE/LSP context, see [IDE, LSP, and editor integration](../03-tools-integrations-security/ide-lsp-editor-integration.md).
 
 ## Source anchors

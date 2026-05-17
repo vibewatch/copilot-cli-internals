@@ -6,8 +6,6 @@ The important implementation point is that terminal setup is narrowly scoped: it
 
 Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted bundle and will shift across releases.
 
-## Internals scope
-
 This is a runtime-support page under [Runtime lifecycle](README.md). It explains terminal setup and shell-environment state that affects the interactive harness but is separate from model tool execution. For actual shell tool behavior, continue to [Shell command execution events](../03-tools-integrations-security/shell-command-execution-events.md); for session-state persistence, continue to [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md).
 
 ## Source anchors

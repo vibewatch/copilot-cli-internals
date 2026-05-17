@@ -18,7 +18,8 @@ This repository README is a project entry point, not a direct `app.js` implement
 
 | Path | Contents |
 |---|---|
-| [`docs/`](docs/) | Source markdown (66 pages across 8 sections). Start at [`docs/README.md`](docs/README.md). |
+| [`REVERSE_ENGINEERING_WORKFLOW.md`](REVERSE_ENGINEERING_WORKFLOW.md) | Practical workflow used to turn the minified bundle into source-anchored internals docs. |
+| [`docs/`](docs/) | Source markdown (69 pages across 8 sections). Start at [`docs/README.md`](docs/README.md). |
 | [`copilot-cli-pkg/`](copilot-cli-pkg/) | The extracted `@github/copilot` package being analysed. |
 | [`website/`](website/) | Astro + Starlight site that renders `docs/` as a browsable wiki. |
 | [`help/`](help/) | Captured `--help` text from the CLI, used as a primary source. |
