@@ -112,7 +112,6 @@ export default defineConfig({
         './src/styles/tokens.css',
         './src/styles/theme.css',
         './src/styles/typography.css',
-        './src/styles/callouts.css',
         './src/styles/code.css',
         './src/styles/components.css',
       ],

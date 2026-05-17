@@ -75,6 +75,5 @@ The rest of the CSS layer mirrors those tokens file-by-file:
 |---|---|
 | Colors / Surface | `src/styles/tokens.css` + `src/styles/theme.css` |
 | Typography | `src/styles/typography.css` |
-| Callout banners | `src/styles/callouts.css` |
 | Code blocks | `src/styles/code.css` |
-| Cards / Tiles / Pills | `src/styles/components.css` |
+| Site chrome / Panels / Search | `src/styles/components.css` |

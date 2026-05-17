@@ -1,6 +1,5 @@
 /* ============================================================================
- * components.css — DESIGN.md component vocabulary: cards, tiles, pill chips,
- * primary CTA, primary nav, sidebar items, footer.
+ * components.css — site chrome, document panel, pagination, footer, and search.
  * ========================================================================= */
 
 /* ----- Primary nav -------------------------------------------------------- */
@@ -21,11 +20,6 @@
 }
 
 /* Sticky yellow "Get started" pill — DESIGN.md primary CTA ----------------- */
-.header .sl-flex > a[href*='github.com']::after,
-.header .actions a.sl-button {
-  /* leaves Starlight's social/icon links alone; explicit CTA below */
-}
-
 /* ----- Sidebar (doc-sidebar) ---------------------------------------------- */
 .sidebar {
   background: var(--tk-color-canvas);
@@ -133,45 +127,4 @@ button[data-open-modal] {
   border-radius: var(--tk-radius-md);
   color: var(--tk-color-mute);
   font-family: var(--tk-font-sans);
-}
-
-/* ----- Reusable button utility classes (used by MDX components later) ---- */
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--tk-space-sm);
-  background: var(--tk-color-primary);
-  color: var(--tk-color-on-primary);
-  font-family: var(--tk-font-sans);
-  font-size: var(--tk-fs-body-xs);
-  font-weight: var(--tk-fw-bold);
-  line-height: 1.5;
-  padding: var(--tk-space-sm) var(--tk-space-lg);
-  height: var(--tk-button-height);
-  border-radius: var(--tk-radius-md);
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
-}
-
-.btn-primary:hover,
-.btn-primary:focus-visible {
-  background: var(--tk-color-primary-pressed);
-}
-
-.btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--tk-space-sm);
-  background: var(--tk-color-surface-soft);
-  color: var(--tk-color-ink);
-  font-family: var(--tk-font-sans);
-  font-size: var(--tk-fs-body-xs);
-  font-weight: var(--tk-fw-bold);
-  padding: var(--tk-space-sm) var(--tk-space-lg);
-  height: var(--tk-button-height);
-  border-radius: var(--tk-radius-md);
-  text-decoration: none;
-  border: none;
 }
