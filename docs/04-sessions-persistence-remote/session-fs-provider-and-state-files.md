@@ -1,5 +1,9 @@
 # SessionFs provider and state-file lifecycle
 
+## MVP placement
+
+> **Why this page is here:** This page belongs to [Sessions, persistence, and remote](README.md). It explains a durable-state or protocol facet: event replay, SessionFs, SQLite/FTS indexing, repository context, remote/cloud steering, or UI projection. Pair it with [Runtime lifecycle](../01-runtime-lifecycle/README.md) for the mode that creates the session and [Context and model loop](../02-context-model-loop/README.md) for how session history becomes model context.
+
 This page documents the `SessionFs` abstraction in the extracted Copilot CLI bundle: local session-state storage, SDK/RPC-backed filesystem providers, reverse calls, workspace artifacts, large-output files, and fork-time state copying.
 
 It fills a gap left by [Session support implementation](session-support-implementation.md), which explains event-sourced sessions at a high level, and [API and session event schema contracts](api-and-session-event-schemas.md), which lists the JSON-RPC method surface.

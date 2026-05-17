@@ -10,6 +10,10 @@ Relevant files:
 
 The SEA-internal artifacts referenced by the diagrams below (`sea-loader.js` and the embedded `copilot.tgz`) live inside the native `copilot` binary and are not committed to this repository; only the expanded package contents under `copilot-cli-pkg/` are tracked.
 
+## MVP placement
+
+This page opens the [Runtime lifecycle](README.md) chapter. It explains how execution reaches `app.js` before command parsing, sessions, context assembly, or tools exist. Continue to [CLI runtime workflows](cli-runtime-workflows.md) for root command dispatch, then to [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) once a runtime mode owns a session.
+
 ## Source anchors
 
 `app.js` is bundled and minified, so the semantic aliases below are documentation names. Loader filenames are stable package anchors, while minified anchors are version-specific lookup aids.

@@ -1,5 +1,9 @@
 # Hosted agent environment
 
+## MVP placement
+
+> **Why this page is here:** This page belongs to [Hosted agent ops](README.md). It documents hosted-job operational contracts such as environment envelopes, feature gates, validation, debug bundles, redaction, telemetry, update, or shutdown. Pair it with [Tools, integrations, and security](../03-tools-integrations-security/README.md) for trust boundaries and [Agents and automation](../06-agents-automation/README.md) when hosted runs execute delegated agent workflows.
+
 This page records the confirmed hosted coding-agent runtime contract discovered through a constant-first reverse-engineering pass over `source-atlas/surface-index.json` and the corresponding `copilot-cli-pkg/app.js` anchors. It is the MVP-facing page for hosted-runtime environment surfaces and the operational contracts they feed.
 
 The scope is narrower than generic feature gates or observability: it explains which high-signal environment variables and provider/client constants form real hosted runtime contracts, and which ones are only allowlist, redaction, forwarding, or bundled-SDK surfaces.

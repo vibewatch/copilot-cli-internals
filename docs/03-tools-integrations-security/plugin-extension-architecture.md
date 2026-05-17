@@ -1,5 +1,9 @@
 # Plugin and extension architecture
 
+## MVP placement
+
+> **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
+
 This document explains how the extracted Copilot CLI bundle supports plugins and SDK-style extensions.
 
 In `app.js`, plugins and extensions are related but not identical:

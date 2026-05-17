@@ -1,5 +1,9 @@
 # Web search, URL fetching, and URL permissions
 
+## MVP placement
+
+> **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
+
 This document explains how web search, URL fetching, and URL permissions are wired in the extracted Copilot CLI bundle. In the analyzed `app.js`, web access is split across a built-in `web_fetch` tool, a GitHub MCP web-search compatibility shim, URL allow/deny settings, permission requests, CLI flags, and feature gates.
 
 The important implementation point is that “web” capability is not one tool:

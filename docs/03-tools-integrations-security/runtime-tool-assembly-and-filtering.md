@@ -1,5 +1,9 @@
 # Runtime tool assembly and filtering
 
+## MVP placement
+
+> **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
+
 This page traces the path from session options in `app.js` to the final tool list visible to the model. It fills the gap between the broad [built-in tool execution pipeline](built-in-tool-execution-pipeline.md), MCP-specific filtering in [MCP support implementation](mcp-support-implementation.md), and the shell-specific lifecycle in [Shell command execution lifecycle](shell-command-execution-lifecycle.md).
 
 The short version: tool assembly is a two-stage pipeline. First, model/provider configuration selects a `toolInit` function that gathers built-in tools. Then the session runtime merges those built-ins with MCP and external tools, validates allow/exclude filters, applies selected-agent constraints, adds deferred `tool_search` when needed, and publishes `session.tools_updated`.

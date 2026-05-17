@@ -1,5 +1,9 @@
 # Checkpoints, undo, rewind, and fork
 
+## MVP placement
+
+> **Why this page is here:** This page belongs to [Context and model loop](README.md). It explains one part of the request/turn pipeline: how model-visible inputs are selected, compressed, routed, retried, or accounted for. Read it with [Runtime lifecycle](../01-runtime-lifecycle/README.md) for the host branch that invokes the loop, and [Tools, integrations, and security](../03-tools-integrations-security/README.md) when the context includes executable capabilities.
+
 This document explains the checkpoint/rewind mechanics visible in the extracted Copilot CLI `app.js` bundle. The user-visible surface includes `/undo`, `/rewind`, and `/fork`, while the core implementation is event-sourced session truncation and replay.
 
 The important implementation point is that rewind is not implemented as an ad-hoc UI-only mutation. The session event log is truncated to a chosen event boundary, in-memory state is rebuilt by replaying remaining events, and a `session.snapshot_rewind` event is emitted so clients can update their UI.

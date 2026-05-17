@@ -1,5 +1,9 @@
 # MXC binary reverse-engineering notes
 
+## MVP placement
+
+> **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
+
 This page records a static reverse-engineering pass over the bundled MXC sandbox runtime under `copilot-cli-pkg/mxc-bin`. It complements [Sandbox Implementation](sandboxing.md), which explains how Copilot CLI routes shell sessions into the MXC adapter.
 
 The goal here is narrower: identify what the packaged binaries are, how they were built, what helper roles they appear to implement, and what sandbox behavior can be inferred from metadata, symbols, imports, SPDX manifests, and strings.

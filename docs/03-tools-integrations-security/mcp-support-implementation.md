@@ -1,5 +1,9 @@
 # MCP support implementation in the Copilot CLI
 
+## MVP placement
+
+> **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
+
 This document explains how Model Context Protocol (MCP) support is wired into the extracted Copilot CLI bundle. In the analyzed `app.js`, MCP is implemented as a runtime extension layer: configuration files and CLI/session options define MCP servers, an MCP host starts those servers over local or remote transports, discovered MCP tools are converted into normal Copilot tool definitions, and tool calls flow through the same permission, telemetry, task, and session-event systems as built-in tools.
 
 The implementation is broad rather than isolated. MCP touches configuration discovery, plugin loading, session creation, custom agents, the interactive TUI, JSON-RPC session APIs, OAuth, permission rules, dynamic prompt context, task streaming, and the built-in GitHub MCP server.

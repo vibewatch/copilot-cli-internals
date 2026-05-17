@@ -1,5 +1,9 @@
 # Scheduled prompts and command queue
 
+## MVP placement
+
+> **Why this page is here:** This page belongs to [Agents and automation](README.md). It explains the delegation layer: built-in/custom agents, task orchestration, autopilot/no-ask-user behavior, fleet coordination, or scheduled command queues. Pair it with [Context and model loop](../02-context-model-loop/README.md) for prompt inputs and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for background or multi-turn state.
+
 This document explains how the extracted Copilot CLI bundle implements scheduled prompts and queued command dispatch. In the analyzed `app.js`, `/every` and `/after` are user-visible slash commands backed by an in-session `ScheduleRegistry`, while `command.queued`, `command.execute`, and `command.completed` are ephemeral client-dispatch events used to route slash commands to the correct interactive/protocol owner.
 
 The key distinction is:

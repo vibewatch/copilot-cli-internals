@@ -1,5 +1,9 @@
 # Observability, update, and shutdown workflows
 
+## MVP placement
+
+> **Why this page is here:** This page belongs to [Hosted agent ops](README.md). It documents hosted-job operational contracts such as environment envelopes, feature gates, validation, debug bundles, redaction, telemetry, update, or shutdown. Pair it with [Tools, integrations, and security](../03-tools-integrations-security/README.md) for trust boundaries and [Agents and automation](../06-agents-automation/README.md) when hosted runs execute delegated agent workflows.
+
 This document expands the operational coverage for `app.js`: logging, telemetry, OpenTelemetry integration, update behavior, debug-log collection, and graceful shutdown. These systems are cross-cutting rather than agent-specific, but they are initialized by the same root runtime that prepares sessions and tools.
 
 ## Source anchors

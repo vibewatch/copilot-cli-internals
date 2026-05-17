@@ -1,5 +1,9 @@
 # Agent and task orchestration in Copilot CLI
 
+## MVP placement
+
+> **Why this page is here:** This page belongs to [Agents and automation](README.md). It explains the delegation layer: built-in/custom agents, task orchestration, autopilot/no-ask-user behavior, fleet coordination, or scheduled command queues. Pair it with [Context and model loop](../02-context-model-loop/README.md) for prompt inputs and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for background or multi-turn state.
+
 This addendum focuses on the deeper agent/task layer in the extracted `@github/copilot` CLI bundle. It answers the follow-up question: how does `app.js` orchestrate agents, subagents, background tasks, multi-turn agents, MCP tasks, and slash-command workflows?
 
 The short version: the model-visible `task` tool is the main subagent router, while an internal `TaskRegistry` tracks background and multi-turn agent state. Slash commands such as `/research`, `/review`, `/subconscious run`, and `/fleet` mostly inject prompts that cause the main agent to call `task` with a specific `agent_type` or start a fleet/autopilot workflow. The dedicated built-in agent catalog is in [`built-in-agents.md`](built-in-agents.md). Memory-specific `rem-agent`, `context_board`, and sidekick behavior is covered in [`memory-and-context-board.md`](../02-context-model-loop/memory-and-context-board.md). Rate-limit recovery and model-call concurrency behavior are covered in [`resilience-rate-limits-concurrency.md`](../02-context-model-loop/resilience-rate-limits-concurrency.md).

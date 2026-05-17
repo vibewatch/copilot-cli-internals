@@ -1,5 +1,9 @@
 # IDE, LSP, and editor integration
 
+## MVP placement
+
+> **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
+
 This document explains how the extracted Copilot CLI bundle integrates with IDE/editor state and language-server configuration. In the analyzed `app.js`, IDE support is built around a session-connected IDE client, a small set of IDE tools, TUI settings for auto-connect and diff display, and an LSP registry that can load user/project/plugin language-server configs.
 
 The implementation is intentionally optional. The CLI can run headless without an IDE, but when an IDE connection is available it can pull selection/diagnostic context, open editor diffs for file edits, synchronize the session title, and register IDE-related capabilities on the MCP/tool host.

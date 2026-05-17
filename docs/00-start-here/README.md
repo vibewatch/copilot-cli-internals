@@ -1,24 +1,43 @@
 # Start here
 
-This is the MVP entry point for the `copilot-cli-pkg/app.js` reverse-engineering wiki. It keeps the first reading path short: identify the artifact, learn how to read minified anchors, then follow the runtime loops that matter for a coding agent.
+Start here when you need the fastest coherent mental model of `copilot-cli-pkg/app.js`. This chapter answers three questions before sending readers into deep source-anchored pages:
 
-## Semantic alias and minified anchor mapping
+1. What is the extracted bundle?
+2. What major runtime capabilities does it contain?
+3. Which path should I follow for a specific investigation?
 
-This is a navigation page, not a direct `app.js` implementation analysis. Follow the linked implementation pages for concrete bundle anchors.
+`app.js` is a bundled and minified production artifact, so this wiki uses stable semantic aliases in prose and keeps minified names only as searchable anchors.
+
+## Source-anchor policy
+
+This page is an orientation document, not a direct implementation trace. Concrete anchors live in the linked pages.
 
 | Semantic alias | Minified anchor | Scope |
 |---|---|---|
-| MVP start page | N/A — navigation page | Orients readers to the shortest useful path through the wiki. |
-| Bundle overview | See linked topic pages | Explains what `app.js` contains and how to interpret minified symbols. |
+| MVP start page | N/A — navigation page | Establishes the first reading path and the wiki's conceptual map. |
+| Bundle identity | See [`what-is-app-js.md`](what-is-app-js.md) | Explains artifact boundaries, package layout, and caveats. |
+| Runtime capability map | See [`main-feature-map.md`](main-feature-map.md) | Maps the major systems implemented by the bundle. |
 
-## Read first
+## First reading path
 
-| Step | Page | Why it matters |
+| Step | Read | Why |
 |---:|---|---|
-| 1 | [`app.js` overview](what-is-app-js.md) | Defines the extracted artifact, package boundaries, and caveats. |
-| 2 | [Main feature map](main-feature-map.md) | Gives the system map before diving into individual subsystems. |
-| 3 | [CLI runtime workflows](../01-runtime-lifecycle/cli-runtime-workflows.md) | Shows how argv, stdin, TTY, server/headless, and session state route into runtime modes. |
-| 4 | [End-to-end session lifecycle](../04-sessions-persistence-remote/session-lifecycle-end-to-end.md) | Connects startup, replay, tool refresh, UI projection, persistence, remote export, and shutdown. |
+| 1 | [`app.js` overview](what-is-app-js.md) | Defines what the artifact is and what it is not. |
+| 2 | [Main feature map](main-feature-map.md) | Shows how CLI modes, sessions, tools, models, agents, policy, and ops connect. |
+| 3 | [CLI runtime workflows](../01-runtime-lifecycle/cli-runtime-workflows.md) | Explains how argv/stdin/TTY/options route into TUI, prompt, server/headless, or ACP mode. |
+| 4 | [End-to-end session lifecycle](../04-sessions-persistence-remote/session-lifecycle-end-to-end.md) | Shows the durable path through replay, tools, UI projection, persistence, remote export, and shutdown. |
+
+## Choose your route
+
+| Question | Go to |
+|---|---|
+| How does the binary/package start and select a mode? | [Runtime lifecycle](../01-runtime-lifecycle/README.md) |
+| What does the model see, and how is the request shaped? | [Context and model loop](../02-context-model-loop/README.md) |
+| Which tools are exposed, executed, filtered, or permissioned? | [Tools, integrations, and security](../03-tools-integrations-security/README.md) |
+| Where do session events, state files, indexes, and remote control live? | [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) |
+| Which env vars and operational contracts define hosted jobs? | [Hosted agent ops](../05-hosted-agent-ops/README.md) |
+| How are subagents, custom agents, fleet, and scheduled prompts run? | [Agents and automation](../06-agents-automation/README.md) |
+| How do I triage a raw constant, event, or minified symbol? | [Research atlas](../99-research-atlas/README.md) |
 
 ## MVP map
 
@@ -31,6 +50,7 @@ flowchart TD
     Sessions --> Hosted[Hosted agent ops]
     Loop --> Agents[Agents and automation]
     Hosted --> Research[Research atlas]
+    Tools --> Research
 
     click Start "./" "Open Start here"
     click Runtime "../01-runtime-lifecycle/" "Open Runtime lifecycle"
@@ -42,11 +62,13 @@ flowchart TD
     click Research "../99-research-atlas/" "Open Research atlas"
 ```
 
-## When to use implementation pages
+## Reading strategy
 
-The MVP sections are curated routes. Detailed implementation pages remain source-anchored inside those routes; use them when you need exact minified aliases, event names, environment variables, or call-path details.
+- Use section README pages as narrative guides.
+- Use implementation pages when you need source anchors, event names, env vars, call paths, or edge cases.
+- Use the generated atlas only as a discovery layer; every behavioral claim should point back to a focused page or source anchor.
 
-## Back to wiki home
+## Navigation
 
 - [Wiki home](../README.md)
 - [Full table of contents](../SUMMARY.md)

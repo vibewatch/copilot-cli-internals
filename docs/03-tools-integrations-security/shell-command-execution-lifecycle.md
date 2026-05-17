@@ -1,5 +1,9 @@
 # Shell command execution lifecycle
 
+## MVP placement
+
+> **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
+
 This document traces the command-execution path in the extracted Copilot CLI `app.js` bundle. It fills the gap between the generic tool lifecycle and the sandbox/terminal-setup pages: shell commands are ordinary tools at the model boundary, but internally they become managed shell sessions, background tasks, output buffers, completion notifications, and optional detached processes.
 
 The important implementation point is that **terminal setup, shell tool registration, and shell process execution are three different layers**. `/terminal-setup` only configures multiline keyboard input in the user's terminal. The command tools are created later from session tool configuration and run through a `ShellToolManager`-style object that owns shell sessions and task state.

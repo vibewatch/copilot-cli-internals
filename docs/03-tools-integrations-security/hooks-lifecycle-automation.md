@@ -1,5 +1,9 @@
 # Hooks and lifecycle automation
 
+## MVP placement
+
+> **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
+
 This document explains how hooks work in the extracted Copilot CLI bundle. Hooks are one of the broadest extension points in `app.js`: they can run at session lifecycle boundaries, prompt submission, tool execution, permission requests, compaction, notifications, and agent/subagent stop events.
 
 The implementation is not just “run a script.” `app.js` defines a hook schema, compatibility aliases, discovery/merge logic, security restrictions for HTTP hooks, hook start/end events, and output adapters that can change prompts, approvals, and tool results.

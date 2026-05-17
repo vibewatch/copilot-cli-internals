@@ -1,5 +1,9 @@
 # Content exclusion and redaction
 
+## MVP placement
+
+> **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
+
 This document explains how content exclusion, output filtering, and redaction-related controls appear in the extracted Copilot CLI `app.js` bundle. The relevant surfaces include the `CONTENT_EXCLUSION` feature gate, the `ContentExclusionService`, additional policy injection, search/output filtering, model-visible policy reminders, secret environment variable redaction, and secret-scanning remediation.
 
 The important implementation point is that sensitive-content handling is layered:

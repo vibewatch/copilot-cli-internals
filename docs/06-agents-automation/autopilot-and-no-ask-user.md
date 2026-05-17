@@ -1,5 +1,9 @@
 # Autopilot and no-ask-user flags
 
+## MVP placement
+
+> **Why this page is here:** This page belongs to [Agents and automation](README.md). It explains the delegation layer: built-in/custom agents, task orchestration, autopilot/no-ask-user behavior, fleet coordination, or scheduled command queues. Pair it with [Context and model loop](../02-context-model-loop/README.md) for prompt inputs and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for background or multi-turn state.
+
 This document explains how the extracted `@github/copilot` CLI bundle implements the two autonomy-related flags:
 
 - `--autopilot`

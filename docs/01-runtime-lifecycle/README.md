@@ -1,33 +1,69 @@
 # Runtime lifecycle
 
-This MVP section explains how the extracted CLI starts, chooses a mode, renders UI/protocol surfaces, and shuts down. It combines runtime, user-interface, protocol, and operational lifecycle topics into a single first-principles path.
+This chapter follows the bundle from process start to cleanup. It is the right entry point for questions about package loading, root command routing, TUI/prompt/server modes, terminal integration, voice/runtime workers, protocol servers, rendering support, update behavior, and shutdown.
 
-## Semantic alias and minified anchor mapping
+The runtime lifecycle is the outer harness around the model loop: it decides **which mode runs**, prepares shared services, connects to sessions/tools, and guarantees cleanup when execution ends.
 
-This is a navigation page. Linked implementation pages carry concrete `app.js` anchors.
+## Source-anchor policy
+
+This page is a chapter guide. The linked implementation pages carry concrete `app.js` anchors.
 
 | Semantic alias | Minified anchor | Scope |
 |---|---|---|
-| Runtime lifecycle section | N/A — navigation page | Groups loader, command routing, interactive/headless/server modes, terminal ergonomics, protocol servers, rendering, and shutdown. |
-| Runtime implementation pages | See linked topic pages | Concrete bundle anchors live in the destination pages. |
+| Runtime lifecycle chapter | N/A — navigation page | Groups startup, command routing, mode dispatch, terminal/protocol support, voice workers, rendering, and cleanup. |
+| Runtime implementation pages | See linked source-anchor tables | Concrete bundle anchors live in the destination pages. |
 
-## Primary path
+## Runtime flow
 
-| Order | Page | Covers |
+```mermaid
+flowchart TD
+    Loader[Loader/bootstrap] --> Root[Root command and pre-action setup]
+    Root --> Dispatch{Runtime mode}
+    Dispatch --> TUI[Interactive TUI]
+    Dispatch --> Prompt[Prompt/stdin/non-TTY]
+    Dispatch --> Server[JSON-RPC/headless server]
+    Dispatch --> ACP[ACP server]
+    Dispatch --> Commands[Subcommands]
+    TUI --> Sessions[Session runtime]
+    Prompt --> Sessions
+    Server --> Sessions
+    ACP --> Sessions
+    Sessions --> Shutdown[Shutdown/update/logging cleanup]
+
+    click Loader "./loader-bootstrap/" "Open loader and bootstrap"
+    click Root "./cli-runtime-workflows/" "Open CLI runtime workflows"
+    click TUI "./tui-and-slash-commands/" "Open TUI and slash commands"
+    click Server "./embedded-server-acp-protocol/" "Open embedded server and ACP"
+    click Shutdown "../05-hosted-agent-ops/observability-update-shutdown/" "Open observability and shutdown"
+```
+
+## Primary reading order
+
+| Order | Page | Runtime question answered |
 |---:|---|---|
-| 1 | [Loader and bootstrap workflows](loader-bootstrap.md) | SEA/npm loader chain, restart wrapper, secure module loading, and bootstrap safeguards. |
-| 2 | [CLI runtime workflows](cli-runtime-workflows.md) | Root command routing, pre-action setup, prompt/headless/server dispatch, and session resolution. |
-| 3 | [Interactive TUI and slash-command workflows](tui-and-slash-commands.md) | TUI event loop, dialogs, slash commands, and permission-facing UX. |
-| 4 | [Embedded server, ACP, and JSON-RPC protocol](embedded-server-acp-protocol.md) | JSON-RPC/ACP server modes, external calls, elicitation, sampling, and commands. |
-| 5 | [Observability, update, and shutdown workflows](../05-hosted-agent-ops/observability-update-shutdown.md) | Logging, telemetry, update/version paths, shutdown, and cleanup. |
+| 1 | [Loader and bootstrap workflows](loader-bootstrap.md) | How does the SEA/npm package select and load the actual runtime bundle? |
+| 2 | [CLI runtime workflows](cli-runtime-workflows.md) | How do argv, stdin, TTY, settings, auth, and sessions choose the execution mode? |
+| 3 | [Interactive TUI and slash-command workflows](tui-and-slash-commands.md) | How does the terminal UI handle input, rendering, slash commands, dialogs, and permissions? |
+| 4 | [Embedded server, ACP, and JSON-RPC protocol](embedded-server-acp-protocol.md) | How does the CLI expose runtime/session capabilities to external hosts? |
+| 5 | [Observability, update, and shutdown workflows](../05-hosted-agent-ops/observability-update-shutdown.md) | How are logs, telemetry, update/version behavior, signals, disposables, and graceful exit coordinated? |
 
-## Supporting runtime topics
+## Runtime support topics
 
-- [Terminal setup and shell environment](terminal-setup-and-shell-environment.md)
-- [Tree-sitter WASM usage](tree-sitter-wasm-usage.md)
-- [Voice mode and Foundry Local](voice-mode-foundry-local.md)
-- [Voice runtime workers and transcription pipeline](voice-runtime-workers-and-transcription.md)
+| Topic | Page | Why it belongs here |
+|---|---|---|
+| Terminal ergonomics | [Terminal setup and shell environment](terminal-setup-and-shell-environment.md) | Defines shell detection, Shift+Enter setup, history state, and command-environment context. |
+| Syntax and diff rendering | [Tree-sitter WASM usage](tree-sitter-wasm-usage.md) | Explains packaged grammars, highlight queries, and rendering fallbacks. |
+| Voice entry point | [Voice mode and Foundry Local](voice-mode-foundry-local.md) | Covers voice mode activation, Foundry Local checks, settings, and native modules. |
+| Voice backend | [Voice runtime workers and transcription pipeline](voice-runtime-workers-and-transcription.md) | Traces microphone, installer, worker state machines, PCM flow, transcription, and cleanup. |
 
-## Back to MVP start
+## Handoffs
+
+- After mode dispatch, continue to [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for durable event/state behavior.
+- For provider requests, continue to [Context and model loop](../02-context-model-loop/README.md).
+- For tool exposure and permission boundaries, continue to [Tools, integrations, and security](../03-tools-integrations-security/README.md).
+- For hosted-job environment contracts, continue to [Hosted agent ops](../05-hosted-agent-ops/README.md).
+
+## Navigation
 
 - [Start here](../00-start-here/README.md)
+- [Full table of contents](../SUMMARY.md)

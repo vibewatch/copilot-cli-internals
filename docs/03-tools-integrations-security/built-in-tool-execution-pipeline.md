@@ -1,5 +1,9 @@
 # Built-in tool execution pipeline
 
+## MVP placement
+
+> **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
+
 This document explains how tool calls move through the extracted Copilot CLI runtime, with emphasis on built-in tools. The same session event and permission infrastructure is also shared by MCP tools, SDK extension tools, custom tools, and task/subagent tools. [Runtime tool assembly and filtering](runtime-tool-assembly-and-filtering.md) covers the preceding step: how candidate tools become the final model-visible toolset before execution starts.
 
 The key implementation point in `app.js` is that a tool call is not just a function invocation. It is modeled as an evented lifecycle with schema generation, permission requests, hook intervention, streaming/progress events, completion records, telemetry, and replay behavior.

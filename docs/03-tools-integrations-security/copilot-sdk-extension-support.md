@@ -1,5 +1,9 @@
 # Copilot SDK extension support
 
+## MVP placement
+
+> **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
+
 This page is a standalone map for Copilot CLI's programmatic extension support. It complements [Plugin and extension architecture](plugin-extension-architecture.md): plugins are mostly manifest/package contributions, while SDK extensions are Node.js child processes that join the active session through `@github/copilot-sdk` and register programmatic tools, hooks, commands, and callbacks.
 
 The short version: when the `EXTENSIONS` feature gate is active and extension loading is enabled for a session, the runtime discovers `extension.mjs` files, launches them as child processes, lets them call `joinSession()`, wires their registered capabilities into the session, and reports status through `session.extensions_loaded`.

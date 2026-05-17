@@ -1,5 +1,9 @@
 # Session-store SQLite indexing
 
+## MVP placement
+
+> **Why this page is here:** This page belongs to [Sessions, persistence, and remote](README.md). It explains a durable-state or protocol facet: event replay, SessionFs, SQLite/FTS indexing, repository context, remote/cloud steering, or UI projection. Pair it with [Runtime lifecycle](../01-runtime-lifecycle/README.md) for the mode that creates the session and [Context and model loop](../02-context-model-loop/README.md) for how session history becomes model context.
+
 This document explains the local session-store and indexing implementation visible in the extracted Copilot CLI `app.js` bundle. The relevant surfaces include `session-store.db`, the `/reindex` slash command, Chronicle prompts, `SESSION_STORE` and `SESSION_INDEXING` feature gates, local SQLite schema/tables, search indexing, and optional cloud-session-store synchronization.
 
 The important implementation point is that the CLI maintains two related session histories:

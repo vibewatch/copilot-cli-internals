@@ -1,5 +1,9 @@
 # Model API routing and provider wire formats
 
+## MVP placement
+
+> **Why this page is here:** This page belongs to [Context and model loop](README.md). It explains one part of the request/turn pipeline: how model-visible inputs are selected, compressed, routed, retried, or accounted for. Read it with [Runtime lifecycle](../01-runtime-lifecycle/README.md) for the host branch that invokes the loop, and [Tools, integrations, and security](../03-tools-integrations-security/README.md) when the context includes executable capabilities.
+
 This document explains how the extracted `@github/copilot` CLI bundle decides which model API shape to call after a model is selected. It complements [`models-providers-auth.md`](models-providers-auth.md), which focuses on authentication, provider configuration, model selection, and offline mode, and [`resilience-rate-limits-concurrency.md`](resilience-rate-limits-concurrency.md), which covers retries, rate limits, fallback, and concurrency.
 
 The short version: the CLI normalizes every agent turn into internal messages and tools, then dispatches through a small set of provider adapters. The selected adapter is determined by either GitHub Copilot model metadata or BYOK/custom-provider configuration.

@@ -1,5 +1,9 @@
 # Coding-agent validation and review toolchain
 
+## MVP placement
+
+> **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
+
 This page documents the completion-time validation layer in the extracted Copilot CLI bundle. It fills a gap left by the generic [built-in tool execution pipeline](built-in-tool-execution-pipeline.md): coding-agent sessions can expose validation tools that are specifically meant to run before the agent declares work complete.
 
 The important implementation detail is that these validators are not only ordinary tool callbacks. `app.js` assembles them from feature flags, repo/base-commit state, settings, and per-tool timeout budgets. Depending on flags, the model may see standalone `code_review` and `codeql_checker` tools, or a higher-level `parallel_validation` tool that runs both checks concurrently against a shared change set.

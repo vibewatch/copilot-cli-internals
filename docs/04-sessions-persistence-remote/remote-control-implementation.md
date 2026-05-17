@@ -1,5 +1,9 @@
 # Remote control implementation in Copilot CLI
 
+## MVP placement
+
+> **Why this page is here:** This page belongs to [Sessions, persistence, and remote](README.md). It explains a durable-state or protocol facet: event replay, SessionFs, SQLite/FTS indexing, repository context, remote/cloud steering, or UI projection. Pair it with [Runtime lifecycle](../01-runtime-lifecycle/README.md) for the mode that creates the session and [Context and model loop](../02-context-model-loop/README.md) for how session history becomes model context.
+
 This document describes what can be inferred from the bundled `app.js` about the Copilot CLI remote feature. In short, the CLI implements remote control as an outbound HTTPS integration with GitHub's **Mission Control** service: an internal GitHub-hosted control plane for Copilot tasks/sessions that stores remote session state, receives CLI event uploads, and exposes commands for the local CLI to poll. The CLI exports local session events to a GitHub-hosted task/session, then optionally polls that task/session for remote commands from GitHub web or mobile.
 
 The implementation is not an SSH-style remote shell and does not require an inbound connection to the local terminal. The local CLI remains the executor; GitHub web/mobile acts as a remote steering client.

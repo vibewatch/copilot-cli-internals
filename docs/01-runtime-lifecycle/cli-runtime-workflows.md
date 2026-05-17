@@ -9,6 +9,10 @@ The root program is built through a Commander-like API and ends with:
 - installing a top-level async action;
 - calling `parseAsync(...)`.
 
+## MVP placement
+
+This is the central dispatch page for [Runtime lifecycle](README.md). It connects loader/bootstrap output to TUI, prompt, server/headless, ACP, and subcommand paths. After this page, follow [Interactive TUI and slash-command workflows](tui-and-slash-commands.md) for human terminal operation, [Embedded server, ACP, and JSON-RPC protocol](embedded-server-acp-protocol.md) for protocol hosts, or [End-to-end session lifecycle](../04-sessions-persistence-remote/session-lifecycle-end-to-end.md) for durable session behavior.
+
 ## Source anchors
 
 `app.js` is bundled and minified, so the semantic aliases below are documentation names. The minified anchors are lookup aids for this analyzed bundle only.

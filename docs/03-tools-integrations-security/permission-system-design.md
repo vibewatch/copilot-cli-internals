@@ -1,5 +1,9 @@
 # Permission system design in Copilot CLI
 
+## MVP placement
+
+> **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
+
 This document explains the permission subsystem in the extracted `@github/copilot` CLI bundle. The key idea is that permissions are not a single yes/no switch. The runtime combines static allow/deny rules, path and URL guards, content-exclusion checks, hook decisions, interactive prompts, remote/RPC responses, and persistence scopes before a tool call is allowed to run.
 
 `app.js` is bundled and minified, so this document uses semantic aliases as stable names. Generated symbols are retained only in the source-anchor table for searching the analyzed `@github/copilot` artifact and may shift across releases.

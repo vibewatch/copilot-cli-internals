@@ -1,5 +1,9 @@
 # API and session event schema contracts
 
+## MVP placement
+
+> **Why this page is here:** This page belongs to [Sessions, persistence, and remote](README.md). It explains a durable-state or protocol facet: event replay, SessionFs, SQLite/FTS indexing, repository context, remote/cloud steering, or UI projection. Pair it with [Runtime lifecycle](../01-runtime-lifecycle/README.md) for the mode that creates the session and [Context and model loop](../02-context-model-loop/README.md) for how session history becomes model context.
+
 The `copilot-cli-pkg/schemas/` directory is worth documenting as its own contract surface. It is not just descriptive metadata: the package ships these schema files, the SDK generated types point back to them, and `app.js` implements the runtime behavior that those contracts describe.
 
 This page cross-checks the two schema files against the bundled runtime and the generated SDK artifacts.

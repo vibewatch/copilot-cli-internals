@@ -1,5 +1,9 @@
 # Fleet mode implementation in Copilot CLI
 
+## MVP placement
+
+> **Why this page is here:** This page belongs to [Agents and automation](README.md). It explains the delegation layer: built-in/custom agents, task orchestration, autopilot/no-ask-user behavior, fleet coordination, or scheduled command queues. Pair it with [Context and model loop](../02-context-model-loop/README.md) for prompt inputs and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for background or multi-turn state.
+
 This document explains how the `/fleet` feature is implemented in the extracted `@github/copilot` CLI bundle. Fleet mode is best understood as a prompt-driven orchestration mode: it asks the main agent to act like a project manager, split work into SQL-backed todos, dispatch independent subtasks through the `task` tool, and validate the combined result.
 
 `app.js` is bundled and minified, so this document uses semantic aliases as the stable names. Minified symbols are retained only as search anchors for the analyzed `@github/copilot` artifact and may shift across releases.

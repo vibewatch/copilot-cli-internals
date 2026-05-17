@@ -1,5 +1,9 @@
 # Settings and configuration persistence
 
+## MVP placement
+
+> **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
+
 This document explains how the extracted Copilot CLI bundle loads, merges, migrates, and writes settings/configuration. In the analyzed `app.js`, configuration is not one file or one object. It is a family of stores and runtime overlays covering user settings, location permissions, MCP/LSP config, plugin state, sandbox policy, URL permissions, trusted folders, feature flags, auth metadata, terminal setup prompts, and session runtime options.
 
 Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted bundle and will shift across releases.

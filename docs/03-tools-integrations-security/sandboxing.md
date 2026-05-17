@@ -1,5 +1,9 @@
 # Sandbox Implementation
 
+## MVP placement
+
+> **Why this page is here:** This page belongs to [Tools, integrations, and security](README.md). It documents an action boundary: how tools, MCP/plugins/SDK/IDE/web bridges, policies, approvals, redaction, hooks, or sandboxing become safe runtime behavior. Pair it with [Context and model loop](../02-context-model-loop/README.md) for what the model sees and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for how events/results persist.
+
 This document answers a narrow reverse-engineering question: **does the extracted Copilot CLI implement sandboxing, and if so, how is it wired?**
 
 The answer is **yes**. The bundle contains a real sandbox implementation, not just leftover prompt strings. It has settings schema support, a feature-gated `/sandbox` slash command, session and shell configuration plumbing, and a process-spawn path backed by the bundled MXC sandbox adapter and `mxc-bin` executables.

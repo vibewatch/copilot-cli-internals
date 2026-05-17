@@ -1,5 +1,9 @@
 # End-to-end session lifecycle
 
+## MVP placement
+
+> **Why this page is here:** This page belongs to [Sessions, persistence, and remote](README.md). It explains a durable-state or protocol facet: event replay, SessionFs, SQLite/FTS indexing, repository context, remote/cloud steering, or UI projection. Pair it with [Runtime lifecycle](../01-runtime-lifecycle/README.md) for the mode that creates the session and [Context and model loop](../02-context-model-loop/README.md) for how session history becomes model context.
+
 This page stitches together the full session path in the extracted Copilot CLI bundle: session creation, resume/continue selection, event-log replay, workspace state, tool configuration refresh, UI projection, indexing, remote export, and shutdown cleanup.
 
 It intentionally does not replace the focused pages on [session support](session-support-implementation.md), [SessionFs](session-fs-provider-and-state-files.md), [session-store indexing](session-store-sqlite-indexing.md), [UI projection](system-events-and-ui-projection.md), or [runtime tool assembly](../03-tools-integrations-security/runtime-tool-assembly-and-filtering.md). Instead, it is the missing reader path for following one conversation from startup to durable state and visible UI.

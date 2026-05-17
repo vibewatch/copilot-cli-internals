@@ -1,5 +1,9 @@
 # Feature gates and rollout logic in Copilot CLI
 
+## MVP placement
+
+> **Why this page is here:** This page belongs to [Hosted agent ops](README.md). It documents hosted-job operational contracts such as environment envelopes, feature gates, validation, debug bundles, redaction, telemetry, update, or shutdown. Pair it with [Tools, integrations, and security](../03-tools-integrations-security/README.md) for trust boundaries and [Agents and automation](../06-agents-automation/README.md) when hosted runs execute delegated agent workflows.
+
 This document explains how “gates” work in the extracted `@github/copilot` CLI bundle. In this bundle, “gate” mostly means **feature availability control**: a feature starts from a built-in availability tier, then can be changed by environment variables, settings, programmatic overrides, and sometimes remote experiment assignment.
 
 There is also one literal MCP permission-gate flag path. That path is covered separately below.

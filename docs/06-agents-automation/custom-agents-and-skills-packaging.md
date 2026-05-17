@@ -1,5 +1,9 @@
 # Custom agents and skills packaging
 
+## MVP placement
+
+> **Why this page is here:** This page belongs to [Agents and automation](README.md). It explains the delegation layer: built-in/custom agents, task orchestration, autopilot/no-ask-user behavior, fleet coordination, or scheduled command queues. Pair it with [Context and model loop](../02-context-model-loop/README.md) for prompt inputs and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) for background or multi-turn state.
+
 This document explains how custom agents and skills are packaged, discovered, loaded, enabled/disabled, invoked, and surfaced in the extracted Copilot CLI `app.js` bundle. Existing docs cover prompts and task orchestration broadly; this document focuses on the customization surfaces: `AGENTS.md`, `SKILL.md`, built-in skills, skill directories, plugin contributions, remote/custom-agent sources, the model-visible `skill` tool, and session events such as `session.skills_loaded`, `skill.invoked`, and `session.custom_agents_updated`.
 
 The important implementation point is that “customization” is multi-layered:
