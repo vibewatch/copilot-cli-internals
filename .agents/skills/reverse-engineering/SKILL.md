@@ -23,6 +23,7 @@ This skill is the operational source of truth for generating repository document
 
 ## Repository Map
 
+- Package extractor: `scripts/extract-copilot-cli-pkg.mjs`
 - Runtime bundle: `copilot-cli-pkg/app.js`
 - Source atlas generator: `scripts/index-app-js.mjs`
 - Source atlas baseline: `source-atlas/`
@@ -36,12 +37,13 @@ This skill is the operational source of truth for generating repository document
 | Mode | Use when | Primary inputs | Primary output |
 |---|---|---|---|
 | Full analysis | The request asks for a new subsystem map, broad gap-finding, first-time documentation, or a topic with no obvious atlas delta. | `copilot-cli-pkg/app.js`, existing docs, SDK/schema/help files, targeted searches, optional `source-atlas/` anchors. | Reconstructed call path, confirmed source anchors, and new or updated docs. |
-| Incremental analysis | The request asks what changed after a package update, mentions diff/comparison/regression, or wants docs updated from a new `app.js`. | Committed `source-atlas/` baseline, regenerated atlas output, Git diffs, and focused source reads around changed surfaces. | Change triage, affected docs list, targeted source reads, and minimal docs/source-atlas updates. |
+| Incremental analysis | The request asks what changed after a package update, mentions diff/comparison/regression, or wants docs updated from a new `app.js`. | Freshly extracted `copilot-cli-pkg/` when needed, committed `source-atlas/` baseline, regenerated atlas output, Git diffs, and focused source reads around changed surfaces. | Change triage, affected docs list, targeted source reads, and minimal docs/source-atlas updates. |
 
 Selection rules:
 
 - If the user explicitly asks for full analysis, broad reconstruction, new subsystem mapping, or gap discovery, use full analysis.
 - If the user explicitly asks for incremental analysis, package-update comparison, regressions, diffs, or `source-atlas/` changes, use incremental analysis.
+- If the task asks for the latest or updated Copilot CLI, run or intentionally plan `node scripts/extract-copilot-cli-pkg.mjs` before source-atlas regeneration so analysis uses the current extracted package.
 - If the task follows a package extraction or bundle update and the user does not specify a mode, prefer incremental analysis.
 - If `source-atlas/` is missing or cannot serve as a previous baseline, explain the limitation and fall back to full analysis unless Git history provides a usable baseline.
 
@@ -58,14 +60,15 @@ Load only the reference files needed for the selected task:
 ## Quick Procedure
 
 1. Identify the requested subsystem or package delta and choose full or incremental mode.
-2. Review existing docs and indexes before reading the bundled source.
-3. Inspect the relevant source-material trust model before deciding what counts as proof.
-4. Prepare or inspect `source-atlas/` when it helps discovery or diff triage.
-5. Build a narrow source-anchor plan using semantic names, minified aliases, events, API names, and atlas surfaces.
-6. Read focused source ranges in `app.js` and adjacent SDK/schema/help files until the behavior is confirmed.
-7. Reconstruct either the runtime call path or the incremental change map.
-8. Patch existing docs or create focused new pages, then update navigation, website sidebar, atlas references, and backlog files as needed.
-9. Validate the changed artifacts and report the selected mode, source anchors, files changed, and remaining gaps.
+2. If the request depends on the latest package, refresh `copilot-cli-pkg/` with `node scripts/extract-copilot-cli-pkg.mjs` or use `--version <version>` / `--out <dir>` for pinned or non-destructive comparisons.
+3. Review existing docs and indexes before reading the bundled source.
+4. Inspect the relevant source-material trust model before deciding what counts as proof.
+5. Prepare or inspect `source-atlas/` when it helps discovery or diff triage.
+6. Build a narrow source-anchor plan using semantic names, minified aliases, events, API names, and atlas surfaces.
+7. Read focused source ranges in `app.js` and adjacent SDK/schema/help files until the behavior is confirmed.
+8. Reconstruct either the runtime call path or the incremental change map.
+9. Patch existing docs or create focused new pages, then update navigation, website sidebar, atlas references, and backlog files as needed.
+10. Validate the changed artifacts and report the selected mode, extraction/atlas handling, source anchors, files changed, and remaining gaps.
 
 ## Operating Principles
 
@@ -78,7 +81,7 @@ Load only the reference files needed for the selected task:
 - In incremental mode, prioritize changed strings, events, API surfaces, commands, and feature gates before raw declaration-count changes.
 - Use careful language for minified code and avoid overclaiming intent.
 - Keep public internals docs focused on runtime behavior; do not expose planning-stage or project-management terminology.
-- Do not edit extracted package artifacts unless the user explicitly asks for package-file changes.
+- Do not hand-edit extracted package artifacts. Updating `copilot-cli-pkg/` for analysis should go through `scripts/extract-copilot-cli-pkg.mjs`, unless the user explicitly asks for package-file edits.
 
 ## Completion Gate
 
@@ -87,6 +90,7 @@ Before finishing, confirm that:
 - The mode was selected and reported.
 - Existing docs were checked first.
 - Each major claim has a direct source anchor.
+- Package extraction was run or intentionally skipped, and the analyzed package version was reported.
 - `source-atlas/` was regenerated, compared, or intentionally left untouched, and that choice is reported.
 - New or moved docs are linked from the appropriate indexes and summary files.
 - Validation succeeded, or any failure is explained with next steps.

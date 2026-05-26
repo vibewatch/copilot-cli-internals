@@ -31,6 +31,7 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 | Provided agents | `providedCustomAgents`, `mergeProvidedCustomAgents` | 4471, 4475 | Agents passed by the host are merged with discovered agents and de-duplicated. |
 | Remote agents | `agents/swe/custom-agents`, `include_sources=org,enterprise` | 2789 | Remote custom agents can be loaded from GitHub service endpoints. |
 | Plugin agents | `source:{type:"plugin", pluginName, marketplaceName, filePath}` | 2789 | Plugins can package custom-agent definitions. |
+| Agent deferred tool loading | `deferred-tool-loading`, `deferredToolLoading`, `H8e(...)` | 3091, 3986, 4502 | Custom-agent frontmatter can opt into deferred tool loading so large explicit tool lists remain discoverable through tool search. |
 | Agent execution | `customAgents`, `disableModelInvocation`, `executeAgent`, `Unknown agent type` | 3735, 4043 | Agent names become callable subagent/custom-agent types when model invocation is enabled. |
 
 ## Packaging map
@@ -261,6 +262,8 @@ The merge logic de-duplicates agents by normalized `id` or `name`, preserving ho
 
 Custom agents can also declare a `skills` array. During agent prompt construction, `zae(...)` maps those names to the loaded skill set and injects each matching skill's `<skill-context>` directly into that agent's context. Missing skills are logged as diagnostics rather than becoming fatal load errors.
 
+Custom-agent frontmatter can declare `deferred-tool-loading: true`. The parser stores this as `deferredToolLoading`, the session-based agent executor passes it into the child session, and the final tool-filtering helper leaves matching deferred tools discoverable through the tool-search path instead of forcing every explicitly requested tool schema inline. This is useful for agents with large MCP, external, or namespaced tool lists.
+
 ## Plugin-packaged agents
 
 Plugin agent parsing can produce agents with:
@@ -273,6 +276,7 @@ Plugin agent parsing can produce agents with:
 - `model`;
 - `disableModelInvocation`;
 - `userInvocable`;
+- `deferredToolLoading`;
 - `source:{ type:"plugin", pluginName, marketplaceName, filePath }`;
 - `skills`.
 

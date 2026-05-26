@@ -5,9 +5,33 @@ Use incremental analysis after a package or bundle update. This mode treats the 
 ## Baseline Rules
 
 1. Check Git status before regenerating anything so you know whether `source-atlas/` is clean, modified, or untracked.
-2. If the bundle has been updated and `source-atlas/` is clean, run `node scripts/index-app-js.mjs` to regenerate the baseline in place, then inspect `git diff -- source-atlas`.
-3. If you need a non-destructive comparison, run `node scripts/index-app-js.mjs --out source-atlas-next`, compare `source-atlas/` with `source-atlas-next/`, and remove or explicitly report the temporary directory when done.
-4. If no previous atlas baseline exists, explain that incremental comparison is limited and fall back to full analysis for behavior reconstruction.
+2. If the task asks for the latest or updated Copilot CLI package, refresh the extracted package first with `node scripts/extract-copilot-cli-pkg.mjs`. Use `--version <version>` for a pinned package and `--out artifacts/copilot-cli-pkg-test` for a non-destructive comparison artifact.
+3. Record the analyzed package version from `copilot-cli-pkg/package.json` or the alternate extraction output before interpreting diffs.
+4. If the bundle has been updated and `source-atlas/` is clean, run `node scripts/index-app-js.mjs` to regenerate the baseline in place, then inspect `git diff -- source-atlas`.
+5. If you need a non-destructive comparison, run `node scripts/index-app-js.mjs --app artifacts/copilot-cli-pkg-test/app.js --out source-atlas-next`, compare `source-atlas/` with `source-atlas-next/`, and remove or explicitly report the temporary directory when done.
+6. If no previous atlas baseline exists, explain that incremental comparison is limited and fall back to full analysis for behavior reconstruction.
+
+## Package Extraction Step
+
+The repository analyzes whatever package currently lives in `copilot-cli-pkg/`. When a request says the CLI has updated, asks for the latest release, or expects package-version deltas, do not assume the checked-in package is current.
+
+Use the extractor from the repository root:
+
+```sh
+node scripts/extract-copilot-cli-pkg.mjs
+```
+
+Useful variants:
+
+```sh
+node scripts/extract-copilot-cli-pkg.mjs --version 1.0.48 --out copilot-cli-pkg
+```
+
+```sh
+node scripts/extract-copilot-cli-pkg.mjs --out artifacts/copilot-cli-pkg-test
+```
+
+After extraction, inspect `git diff -- copilot-cli-pkg` and then regenerate or compare `source-atlas/`. Treat package diffs, changelog entries, and atlas diffs as leads; still confirm runtime behavior in `app.js` or adjacent extracted package files before documenting it.
 
 ## Diff Reading Order
 

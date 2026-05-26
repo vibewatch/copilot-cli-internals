@@ -114,7 +114,9 @@ Examples from the embedded table:
 | `COPILOT_SUBCONSCIOUS` | `team` | Enables the dynamic context board, `rem-agent`, `/subconscious`, and shutdown consolidation paths. |
 | `BACKGROUND_SESSIONS` | `staff-or-experimental` | Enabled for staff or experimental mode. |
 | `REMOTE_KICKSTART` | `team` | Requires the hashed repo/team allowlist unless explicitly overridden. |
-| `STATUS_LINE` | `experimental` | Custom status line is experimental. |
+| `MCP_APPS` | `experimental` | Enables MCP Apps UI extension passthrough and related `mcp-apps` capability negotiation. |
+| `SECURITY_REVIEW` | `experimental` | Enables the `/security-review` slash command and `security-review` built-in agent. |
+| `TARGETED_VALIDATION_PROMPT` | `off` | Gates targeted validation prompt behavior. |
 | `SANDBOX` | `off` | Hides the local `/sandbox` command unless explicitly enabled by gate overrides. |
 | `CLOUD_SESSION_STORE` | `staff` | Staff-gated cloud session store. |
 | `TOOL_SEARCH` | `off` | Disabled by default. |

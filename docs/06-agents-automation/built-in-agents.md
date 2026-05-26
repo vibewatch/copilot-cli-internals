@@ -2,7 +2,7 @@
 
 This page is the centralized catalog for Copilot CLI's packaged built-in agents. It complements the broader orchestration map in [`agent-task-orchestration.md`](agent-task-orchestration.md) and the prompt-source inventory in [`prompt-sources.md`](../02-context-model-loop/prompt-sources.md).
 
-The short version: the model-visible `task` tool can dispatch to a small built-in catalog. Six entries are backed by `copilot-cli-pkg/definitions/*.agent.yaml`; `general-purpose` is a runtime-defined built-in with a dedicated execution path rather than a YAML file.
+The short version: the model-visible `task` tool can dispatch to a small built-in catalog. Seven entries are backed by `copilot-cli-pkg/definitions/*.agent.yaml`; `general-purpose` is a runtime-defined built-in with a dedicated execution path rather than a YAML file.
 
 ## Source anchors
 
@@ -11,16 +11,16 @@ The short version: the model-visible `task` tool can dispatch to a small built-i
 | Area | Semantic alias | Minified anchor | Approx. line | What it proves |
 |---|---|---:|---:|---|
 | Task tool | `createTaskTool(...)`, `TASK_TOOL_NAME`, `taskToolInputSchema` | `I6n(...)`, `H3="task"`, `v6n` | 3735-3815 | The main model-facing delegation surface accepts `agent_type`, `prompt`, `name`, optional `model`, and optional sync/background mode. |
-| Built-in catalog | `BUILT_IN_AGENTS` | `nHn` | 4037 | Static catalog entries for `explore`, `task`, `general-purpose`, `rubber-duck`, `code-review`, `research`, and `rem-agent`. |
+| Built-in catalog | `BUILT_IN_AGENTS` | `nHn`, `security-review` | 4496 | Static catalog entries for `explore`, `task`, `general-purpose`, `rubber-duck`, `code-review`, `security-review`, `research`, and `rem-agent`. |
 | Active catalog filter | `filterBuiltInAgents(...)` | `P0e(...)` | 4037 | Filters built-ins by feature flag and context, for example `rem-agent` being CLI/context-board gated. |
 | YAML loader | `loadBuiltInAgentDefinition(...)` | `D0e(...)` | 4037 | Loads `${name}.agent.yaml` from the packaged `definitions` directory and caches the parsed definition. |
-| YAML executable set | `isYamlBuiltInAgent(...)` | `N0e(...)`, `Yur`, `oHn`, `mxs` | 4037 | Separates YAML-backed executable agents from the runtime-only `general-purpose` entry. |
+| YAML executable set | `isYamlBuiltInAgent(...)` | `N0e(...)`, `Yur`, `oHn`, `mxs` | 4496 | Separates YAML-backed executable agents from the runtime-only `general-purpose` entry. |
 | General-purpose executor | `executeGeneralPurposeAgent(...)` | `Wur(...)`, `_U="general-purpose"` | 4033-4037 | Handles `general-purpose` with the standard CLI prompt/toolset and selected model defaults. |
 | Session-based agent executor | `SessionAgentExecutor` | `dZ` | 4037-4043 | Creates child sessions for built-in/custom agents, runs turns, emits boundaries, handles hooks, and tears down. |
 | Dispatcher | `createAgentExecutorRegistry(...)` | `Zur(...)`, `cHn(...)`, `Lur(...)`, `Uur(...)` | 4043 | Routes `general-purpose`, YAML built-ins, and custom agents to their appropriate executor. |
 | Session YAML selection | `tryLoadBuiltinYamlAgent(...)` | same semantic method | 4471 | Lets a named YAML built-in be selected as a session/custom-agent-like definition. |
 | Runtime tool assembly | `assembleRuntimeTools(...)` | `HCr(...)`, `$Cr(...)`, `$js(...)` | 5734 | Injects the `task` tool and may suppress `rubber-duck` when feature/model conditions are not met. |
-| Slash-command macros | `/review`, `/research`, `/subconscious run` | `reviewCommand`, `researchCommand`, `subconsciousRunCommand` | 1300-1545 | User-facing macros route into `code-review`, `research`, and `rem-agent`. |
+| Slash-command macros | `/review`, `/security-review`, `/research`, `/subconscious run` | `reviewCommand`, `Ndo`, `researchCommand`, `subconsciousRunCommand` | 5173 | User-facing macros route into `code-review`, `security-review`, `research`, and `rem-agent`. |
 | Detached memory agent | `spawnDetachedMemoryAgent(...)` | `T5a(...)` | 7441 | Shutdown can launch a detached `copilot --agent rem-agent` process when subconscious memory is enabled. |
 
 ## Runtime model
@@ -51,7 +51,7 @@ The key distinction is **cataloged** versus **active** versus **YAML-backed**:
 
 - `nHn` is the static built-in catalog observed in the bundle.
 - `P0e(...)` filters catalog entries by runtime feature flags and context.
-- `N0e(...)` recognizes the YAML-backed executable set: `explore`, `task`, `code-review`, `rubber-duck`, `research`, and `rem-agent`.
+- `N0e(...)` recognizes the YAML-backed executable set: `explore`, `task`, `code-review`, `security-review`, `rubber-duck`, `research`, and `rem-agent`.
 - `general-purpose` is still a built-in `agent_type`, but it is constructed in runtime code rather than loaded from `definitions/general-purpose.agent.yaml`.
 
 ## Catalog summary
@@ -62,11 +62,12 @@ The key distinction is **cataloged** versus **active** versus **YAML-backed**:
 | `explore` | `Explore Agent` | `copilot-cli-pkg/definitions/explore.agent.yaml` | `claude-haiku-4.5` | No | Parallel codebase exploration or focused research delegated by the main agent. |
 | `task` | `Task Agent` | `copilot-cli-pkg/definitions/task.agent.yaml` | `claude-haiku-4.5` | Yes | Build/test/lint/install/format commands where concise success output is desired. |
 | `code-review` | `Code Review Agent` | `copilot-cli-pkg/definitions/code-review.agent.yaml` | `claude-sonnet-4.5` | No | `/review` macro or explicit `task` delegation for high-signal review. |
+| `security-review` | `Security Review Agent` | `copilot-cli-pkg/definitions/security-review.agent.yaml` | Not fixed in YAML | No | `/security-review` macro or explicit `task` delegation for vulnerability-focused review. |
 | `research` | `Research Agent` | `copilot-cli-pkg/definitions/research.agent.yaml` | `claude-sonnet-4.6` | No | `/research` orchestrator dispatches many `research` subagents with citations. |
 | `rubber-duck` | `Rubber Duck Agent` | `copilot-cli-pkg/definitions/rubber-duck.agent.yaml` | Dynamic / runtime-selected | Yes in catalog, but intended as analysis-only | Prompt/tool guidance encourages use for non-trivial plan or implementation critique when enabled. |
 | `rem-agent` | `REM Agent` | `copilot-cli-pkg/definitions/rem-agent.agent.yaml` | Not fixed in YAML | Yes | `/subconscious run` background consolidation or detached shutdown memory consolidation. |
 
-`hasSideEffects` in the runtime catalog is conservative. For example, `rubber-duck` is described as a critic that should not make direct code changes, but the catalog marks it side-effectful because it has broad investigation tools and consumes subagent resources. Conversely, `code-review` and `research` are read-oriented in their packaged prompts.
+`hasSideEffects` in the runtime catalog is conservative. For example, `rubber-duck` is described as a critic that should not make direct code changes, but the catalog marks it side-effectful because it has broad investigation tools and consumes subagent resources. Conversely, `code-review`, `security-review`, and `research` are read-oriented in their packaged prompts.
 
 ## Per-agent notes
 
@@ -123,6 +124,20 @@ This keeps verbose successful command output out of the main conversation while 
 
 It intentionally does **not** comment on style, formatting, naming, grammar, minor refactors, or uncertain best-practice advice. The `/review` slash command injects a prompt that routes the main agent toward `task` with `agent_type: "code-review"`.
 
+### security-review
+
+`security-review` is a vulnerability-focused reviewer introduced in the refreshed `1.0.54` package. The runtime catalog gates it with the `SECURITY_REVIEW` feature flag, and the `/security-review` slash command is marked experimental. Its command macro builds an agent prompt that tells the main agent to call the `task` tool with `agent_type: "security-review"`.
+
+The packaged YAML prompt is narrower than general code review:
+
+- review staged/unstaged changes or the branch diff when the working tree is clean;
+- focus on high-confidence exploitable vulnerabilities across categories such as injection, cryptography, access control, authentication, SSRF, supply-chain, and XPIA;
+- avoid denial-of-service, style, low-impact, theoretical, and test-only noise;
+- report severity and confidence in a strict format;
+- never modify code.
+
+The agent requests `tools: ["*"]` so it can inspect the repository and run git/build/test commands for evidence, but the prompt constrains those tools to investigation only.
+
 ### research
 
 `research` is the deeper research worker used by the `/research` orchestration flow. Its packaged prompt requires autonomous searches with citations and emphasizes "search to discover, fetch to investigate": use a few searches to find repositories and paths, then fetch/read concrete files.
@@ -169,6 +184,7 @@ flowchart LR
     YamlSet --> Explore["explore.agent.yaml"]
     YamlSet --> Task["task.agent.yaml"]
     YamlSet --> Review["code-review.agent.yaml"]
+    YamlSet --> Security["security-review.agent.yaml"]
     YamlSet --> Research["research.agent.yaml"]
     YamlSet --> Duck["rubber-duck.agent.yaml"]
     YamlSet --> Rem["rem-agent.agent.yaml"]
@@ -177,6 +193,7 @@ flowchart LR
     Explore --> AgentPrompt["buildAgentDefinitionSystemPrompt / ule"]
     Task --> AgentPrompt
     Review --> AgentPrompt
+    Security --> AgentPrompt
     Research --> AgentPrompt
     Duck --> AgentPrompt
     Rem --> AgentPrompt
@@ -241,8 +258,8 @@ The selection flow has a few practical implications:
 
 ## Key takeaways
 
-- There are seven cataloged built-in agent types in this package: `general-purpose`, `explore`, `task`, `code-review`, `research`, `rubber-duck`, and `rem-agent`.
-- Six are YAML-backed under `copilot-cli-pkg/definitions/*.agent.yaml`; `general-purpose` is runtime-defined.
+- There are eight cataloged built-in agent types in this package: `general-purpose`, `explore`, `task`, `code-review`, `security-review`, `research`, `rubber-duck`, and `rem-agent`.
+- Seven are YAML-backed under `copilot-cli-pkg/definitions/*.agent.yaml`; `general-purpose` is runtime-defined.
 - The model-visible `task` tool is the normal dispatch surface for built-ins, custom agents, and background/multi-turn behavior.
 - Slash commands are mostly macros that steer the main agent toward the appropriate built-in agent.
 - Catalog membership is not the same as availability; feature flags, runtime context, model support, and tool assembly can filter the active surface.

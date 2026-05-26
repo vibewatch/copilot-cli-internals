@@ -33,6 +33,7 @@ Read [Runtime tool assembly and filtering](runtime-tool-assembly-and-filtering.m
 | Built-in GitHub MCP | `GitHubMcpConfigBuilder` | `$bt`, `hWn`, `mWn`, `uR="github-mcp-server"` | Adds the authenticated GitHub MCP server and handles user-configured GitHub endpoints. |
 | Permissions | `McpPermissionPath` | `onMCP`, `Wge`, `B9`, `mcp-sampling` | Maps MCP tools and sampling requests into the permission service. |
 | Events | MCP session events | `session.mcp_servers_loaded`, `session.mcp_server_status_changed` | Emits MCP status snapshots and per-server status changes. |
+| MCP Apps | `MCP_APPS`, `COPILOT_MCP_APPS`, `mcp_app.tool_call_complete`, `requestMcpApps` | Enables MCP Apps UI/resource passthrough, `mcp-apps` capability negotiation, and app-originated MCP tool-call completion events. |
 
 ## High-level architecture
 
@@ -353,6 +354,7 @@ The built-in GitHub MCP server is special-cased because it depends on GitHub/Cop
 | `hWn(...)` | Detects user-configured GitHub MCP endpoints and stashes those lacking an Authorization header until auth is available. |
 | `mWn(...)` | Checks whether the current auth type is eligible for GitHub MCP. |
 | `KTe(...)` | `GH_CLI_OVER_MCP` gate; checks whether `gh` is installed when that path is enabled. |
+| `TTt(...)` / `wTt(...)` | Detect Azure DevOps-only remotes and decide whether the built-in GitHub MCP server should be added to the disabled-server list. |
 
 `$bt(...)` chooses `/mcp/readonly` by default and `/mcp` when all GitHub tools are enabled. It derives the host from the Copilot API URL when possible, falling back to `https://api.githubcopilot.com`. It can add:
 
@@ -376,7 +378,7 @@ The startup and auth-change flow is:
 6. Otherwise build/restart the built-in GitHub MCP server.
 7. On logout/auth loss, `removeGitHubMcp()` stops the built-in server unless the user explicitly configured it.
 
-The TUI also auto-disables the GitHub MCP server in some non-GitHub repository situations, such as Azure DevOps remote detection, while allowing the user to re-enable it with `/mcp enable github-mcp-server`.
+The runtime also auto-disables the built-in GitHub MCP server in some non-GitHub repository situations. `TTt(...)` inspects the current Git remotes, and `wTt(...)` returns true when the repository has Azure DevOps remotes, has no GitHub remotes, the user did not configure `github-mcp-server`, and the server is not already disabled. Both the interactive MCP setup (`T6o(...)`, approximately `app.js` line 6689) and prompt-mode setup (`u1t(...)`, approximately line 7391) add `github-mcp-server` to the disabled-server list in that case. The TUI additionally displays the informational re-enable hint: `/mcp enable github-mcp-server`.
 
 ## Built-in and in-memory servers
 
@@ -420,6 +422,22 @@ Tool metadata can declare `execution.taskSupport` as `required`, `optional`, or 
 
 The session wires MCP task events into the generic background task registry and emits custom notifications for task progress. This is the bridge documented in [`agent-task-orchestration.md`](../06-agents-automation/agent-task-orchestration.md): required MCP tasks can become background `mcp-task` records instead of blocking the whole turn.
 
+## MCP Apps UI capability
+
+The refreshed bundle adds an MCP Apps path behind the `MCP_APPS` feature gate or `COPILOT_MCP_APPS=true` environment override. The feature description in the static gate table references SEP-1865-style UI extension passthrough: `io.modelcontextprotocol/ui` capability negotiation, `ui://` resource auto-fetch, and `/mcp-app/*` proxy endpoints.
+
+Runtime wiring visible in `app.js` includes:
+
+| Runtime anchor | Behavior |
+|---|---|
+| `bqe(...)` | Resolves whether MCP Apps is enabled from the feature flag or `COPILOT_MCP_APPS`. |
+| `requestMcpApps` | SDK/session create-or-resume option that opts a session into the `mcp-apps` capability when the gate is enabled. |
+| `supportsMcpApps()` | Session capability check used before app-originated MCP resource reads or tool calls. |
+| `mcp_app.tool_call_complete` | Ephemeral event emitted after an MCP App invokes a server tool, including success, duration, result/error, and relevant `_meta.ui` data. |
+| `mcp.apps.diagnose` API surface | Reports whether the capability is present, whether the gate is enabled, and how many server tools expose `_meta.ui`. |
+
+This does not make all MCP servers UI-capable. A session must advertise `mcp-apps`, a server must expose UI metadata/resources, and the normal MCP host, permissions, status, and policy paths still apply.
+
 ## Policy and allowlist behavior
 
 MCP startup is constrained by product and enterprise policy.
@@ -433,6 +451,7 @@ MCP startup is constrained by product and enterprise policy.
 | `enabledMcpServers` | Persists re-enabled builtin/default servers. |
 | `MCP_REGISTRY_INSTALL` | Enables `/mcp search` registry install UI. |
 | `MCP_TASKS` | Enables MCP task-aware tool loading and invocation. |
+| `MCP_APPS` | Enables MCP Apps capability negotiation and UI/resource passthrough. |
 | `GH_CLI_OVER_MCP` | Gates GitHub CLI-over-MCP behavior and checks `gh` availability. |
 
 When third-party MCP is disabled by organization policy, the TUI emits a policy warning and keeps only built-in servers.
@@ -454,6 +473,7 @@ Based on the inspected `app.js`, MCP support is not:
 - `X3` is the central MCP host; it starts servers, tracks status, filters policy-disabled servers, and exposes tools.
 - `Abt` starts local/stdio, HTTP, SSE, and memory servers and records `connected`, `failed`, or `needs-auth` status.
 - MCP tools are converted to normal Copilot tool definitions with sanitized names, namespaced metadata, schemas, read-only hints, filtering, telemetry safety, and optional task support.
+- MCP Apps adds a gated UI/resource passthrough layer, but app-originated MCP calls still run through the same host and event machinery.
 - Tool calls still pass through the Copilot permission service; MCP also has a separate `mcp-sampling` permission kind.
 - Remote MCP OAuth, elicitation, sampling, server status, and task progress are bridged through session events and pending requests.
 - The built-in GitHub MCP server is auth-aware, policy-aware, and intentionally skipped when the user explicitly configures `github-mcp-server` themselves.

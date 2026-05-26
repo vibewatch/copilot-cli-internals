@@ -17,17 +17,18 @@ Use full analysis for broad or first-time reconstruction of a runtime subsystem.
 
 1. Define the target subsystem and expected user-visible behavior.
 2. Audit existing docs before touching `app.js`; classify the topic as already covered, partially covered, schema-only, or missing.
-3. If `source-atlas/summary.json` is missing or obviously stale, regenerate the atlas with `node scripts/index-app-js.mjs` before deep source reads.
-4. Build a narrow anchor plan from semantic subsystem words, generated API names, known minified aliases, event strings, JSON-RPC methods, and adjacent co-occurring terms.
-5. Read focused `app.js` ranges around promising anchors and follow the path outward through constructors, factories, entry points, branches, event emission, persistence, cleanup, and SDK/schema boundaries.
-6. Triangulate with adjacent files when the minified bundle alone is ambiguous:
+3. If the request depends on the latest package rather than the currently checked-in bundle, refresh `copilot-cli-pkg/` with `node scripts/extract-copilot-cli-pkg.mjs` first and record the analyzed version.
+4. If `source-atlas/summary.json` is missing or obviously stale, regenerate the atlas with `node scripts/index-app-js.mjs` before deep source reads.
+5. Build a narrow anchor plan from semantic subsystem words, generated API names, known minified aliases, event strings, JSON-RPC methods, and adjacent co-occurring terms.
+6. Read focused `app.js` ranges around promising anchors and follow the path outward through constructors, factories, entry points, branches, event emission, persistence, cleanup, and SDK/schema boundaries.
+7. Triangulate with adjacent files when the minified bundle alone is ambiguous:
    - `copilot-cli-pkg/copilot-sdk/index.js`
    - `copilot-cli-pkg/copilot-sdk/*.d.ts`
    - `copilot-cli-pkg/schemas/`
    - `copilot-cli-pkg/definitions/`
    - `help/*.txt`
-7. Reconstruct a concise runtime map with entry point, main runtime object or function, branch conditions, downstream calls, events, errors, cleanup, and user-visible implications.
-8. Decide whether to patch an existing page, create a focused companion page, or only record a candidate gap.
+8. Reconstruct a concise runtime map with entry point, main runtime object or function, branch conditions, downstream calls, events, errors, cleanup, and user-visible implications.
+9. Decide whether to patch an existing page, create a focused companion page, or only record a candidate gap.
 
 ## Runtime Map Template
 

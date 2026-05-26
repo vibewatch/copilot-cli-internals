@@ -1,6 +1,6 @@
 import { createServerRpc } from "./generated/rpc.js";
 import { CopilotSession } from "./session.js";
-import type { ConnectionState, CopilotClientOptions, GetAuthStatusResponse, GetStatusResponse, ModelInfo, ResumeSessionConfig, SessionConfig, SessionLifecycleEventType, SessionLifecycleHandler, SessionListFilter, SessionMetadata, TypedSessionLifecycleHandler } from "./types.js";
+import type { CopilotClientOptions, GetAuthStatusResponse, GetStatusResponse, ModelInfo, ResumeSessionConfig, SessionConfig, SessionLifecycleEventType, SessionLifecycleHandler, SessionListFilter, SessionMetadata, TypedSessionLifecycleHandler } from "./types.js";
 /**
  * Main client for interacting with the Copilot CLI.
  *
@@ -16,7 +16,7 @@ import type { ConnectionState, CopilotClientOptions, GetAuthStatusResponse, GetS
  * const client = new CopilotClient();
  *
  * // Or connect to an existing server
- * const client = new CopilotClient({ cliUrl: "localhost:3000" });
+ * const client = new CopilotClient({ connection: RuntimeConnection.forUri("localhost:3000") });
  *
  * // Create a session
  * const session = await client.createSession({ onPermissionRequest: approveAll, model: "gpt-4" });
@@ -39,11 +39,17 @@ export declare class CopilotClient {
     private cliProcess;
     private connection;
     private socket;
-    private actualPort;
+    private runtimePort;
     private actualHost;
     private state;
     private sessions;
     private stderrBuffer;
+    /** Resolved connection mode chosen in the constructor. */
+    private connectionConfig;
+    /** Resolved path to the runtime executable (only used for child-process kinds). */
+    private resolvedCliPath;
+    /** Resolved environment passed to the spawned runtime. */
+    private resolvedEnv;
     private options;
     private isExternalServer;
     private forceStopping;
@@ -67,52 +73,55 @@ export declare class CopilotClient {
      */
     get rpc(): ReturnType<typeof createServerRpc>;
     /**
-     * Internal RPC surface (e.g. handshake helpers). Not part of the public API.
-     * @internal
-     */
-    private get internalRpc();
-    /**
      * Creates a new CopilotClient instance.
      *
      * @param options - Configuration options for the client
-     * @throws Error if mutually exclusive options are provided (e.g., cliUrl with useStdio or cliPath)
      *
      * @example
      * ```typescript
-     * // Default options - spawns CLI server using stdio
+     * // Default: spawns the bundled runtime over stdio
      * const client = new CopilotClient();
      *
-     * // Connect to an existing server
-     * const client = new CopilotClient({ cliUrl: "localhost:3000" });
-     *
-     * // Custom CLI path with specific log level
+     * // Connect to an existing runtime
      * const client = new CopilotClient({
-     *   cliPath: "/usr/local/bin/copilot",
-     *   logLevel: "debug"
+     *   connection: RuntimeConnection.forUri("localhost:3000"),
+     * });
+     *
+     * // Spawn the runtime over TCP on a chosen port
+     * const client = new CopilotClient({
+     *   connection: RuntimeConnection.forTcp({ port: 9001 }),
+     * });
+     *
+     * // Use a custom runtime binary
+     * const client = new CopilotClient({
+     *   connection: RuntimeConnection.forStdio({ path: "/usr/local/bin/copilot" }),
+     *   logLevel: "debug",
      * });
      * ```
      */
     constructor(options?: CopilotClientOptions);
+    private connectionExtraArgs;
     /**
      * Parse CLI URL into host and port
      * Supports formats: "host:port", "http://host:port", "https://host:port", or just "port"
      */
     private parseCliUrl;
     private validateSessionFsConfig;
+    private setupSessionFs;
     /**
      * Starts the CLI server and establishes a connection.
      *
      * If connecting to an external server (via cliUrl), only establishes the connection.
      * Otherwise, spawns the CLI server process and then connects.
      *
-     * This method is called automatically when creating a session if `autoStart` is true (default).
+     * This method is called automatically the first time you create or resume a session.
      *
      * @returns A promise that resolves when the connection is established
      * @throws Error if the server fails to start or the connection fails
      *
      * @example
      * ```typescript
-     * const client = new CopilotClient({ autoStart: false });
+     * const client = new CopilotClient();
      * await client.start();
      * // Now ready to create sessions
      * ```
@@ -143,6 +152,19 @@ export declare class CopilotClient {
      */
     stop(): Promise<Error[]>;
     /**
+     * Alias for {@link stop} that lets `CopilotClient` participate in `await using`
+     * blocks for automatic cleanup.
+     *
+     * @example
+     * ```typescript
+     * await using client = new CopilotClient();
+     * const session = await client.createSession({ onPermissionRequest: approveAll });
+     * await session.sendAndWait("Hello");
+     * // client.stop() is called automatically when the block exits.
+     * ```
+     */
+    [Symbol.asyncDispose](): Promise<void>;
+    /**
      * Forcefully stops the CLI server without graceful cleanup.
      *
      * Use this when {@link stop} fails or takes too long. This method:
@@ -172,12 +194,11 @@ export declare class CopilotClient {
      * Creates a new conversation session with the Copilot CLI.
      *
      * Sessions maintain conversation state, handle events, and manage tool execution.
-     * If the client is not connected and `autoStart` is enabled, this will automatically
-     * start the connection.
+     * If the client is not connected, this method automatically starts the connection.
      *
      * @param config - Optional configuration for the session
      * @returns A promise that resolves with the created session
-     * @throws Error if the client is not connected and autoStart is disabled
+     * @throws Error if the client fails to start
      *
      * @example
      * ```typescript
@@ -224,19 +245,6 @@ export declare class CopilotClient {
      */
     resumeSession(sessionId: string, config: ResumeSessionConfig): Promise<CopilotSession>;
     /**
-     * Gets the current connection state of the client.
-     *
-     * @returns The current connection state: "disconnected", "connecting", "connected", or "error"
-     *
-     * @example
-     * ```typescript
-     * if (client.getState() === "connected") {
-     *   const session = await client.createSession({ onPermissionRequest: approveAll });
-     * }
-     * ```
-     */
-    getState(): ConnectionState;
-    /**
      * Sends a ping request to the server to verify connectivity.
      *
      * @param message - Optional message to include in the ping
@@ -251,7 +259,7 @@ export declare class CopilotClient {
      */
     ping(message?: string): Promise<{
         message: string;
-        timestamp: number;
+        timestamp: string;
         protocolVersion?: number;
     }>;
     /**
@@ -398,7 +406,7 @@ export declare class CopilotClient {
      * @example
      * ```typescript
      * // Listen for when a session becomes foreground in TUI
-     * const unsubscribe = client.on("session.foreground", (event) => {
+     * const unsubscribe = client.onLifecycle("session.foreground", (event) => {
      *   console.log(`Session ${event.sessionId} is now displayed in TUI`);
      * });
      *
@@ -406,7 +414,7 @@ export declare class CopilotClient {
      * unsubscribe();
      * ```
      */
-    on<K extends SessionLifecycleEventType>(eventType: K, handler: TypedSessionLifecycleHandler<K>): () => void;
+    onLifecycle<K extends SessionLifecycleEventType>(eventType: K, handler: TypedSessionLifecycleHandler<K>): () => void;
     /**
      * Subscribes to all session lifecycle events.
      *
@@ -415,7 +423,7 @@ export declare class CopilotClient {
      *
      * @example
      * ```typescript
-     * const unsubscribe = client.on((event) => {
+     * const unsubscribe = client.onLifecycle((event) => {
      *   switch (event.type) {
      *     case "session.foreground":
      *       console.log(`Session ${event.sessionId} is now in foreground`);
@@ -430,7 +438,7 @@ export declare class CopilotClient {
      * unsubscribe();
      * ```
      */
-    on(handler: SessionLifecycleHandler): () => void;
+    onLifecycle(handler: SessionLifecycleHandler): () => void;
     /**
      * Start the CLI server process
      */
@@ -459,16 +467,6 @@ export declare class CopilotClient {
     private handleAutoModeSwitchRequest;
     private handleHooksInvoke;
     private handleSystemMessageTransform;
-    /**
-     * Handles a v2-style tool.call RPC request from the server.
-     * Looks up the session and tool handler, executes it, and returns the result
-     * in the v2 response format.
-     */
-    private handleToolCallRequestV2;
-    /**
-     * Handles a v2-style permission.request RPC request from the server.
-     */
-    private handlePermissionRequestV2;
-    private normalizeToolResultV2;
-    private isToolResultObject;
+    private handleCanvasProviderRequest;
+    private handleCanvasActionInvokeRequest;
 }

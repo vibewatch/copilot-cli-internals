@@ -1,10 +1,35 @@
-import type { SessionFsHandler, SessionFsStatResult, SessionFsReaddirWithTypesEntry } from "./generated/rpc.js";
+import type { SessionFsHandler, SessionFsStatResult, SessionFsReaddirWithTypesEntry, SessionFsSqliteQueryResult as GeneratedSqliteQueryResult, SessionFsSqliteQueryType } from "./generated/rpc.js";
+export type { SessionFsSqliteQueryType };
 /**
  * File metadata returned by {@link SessionFsProvider.stat}.
  * Same shape as the generated {@link SessionFsStatResult} but without the
  * `error` field, since providers signal errors by throwing.
  */
 export type SessionFsFileInfo = Omit<SessionFsStatResult, "error">;
+/**
+ * Result of a SQLite query execution via {@link SessionFsSqliteProvider.query}.
+ * Same shape as the generated {@link GeneratedSqliteQueryResult} but without the
+ * `error` field, since providers signal errors by throwing.
+ */
+export type SessionFsSqliteQueryResult = Omit<GeneratedSqliteQueryResult, "error">;
+/**
+ * SQLite operations for the per-session database.
+ * Implementers provide query execution and existence checking.
+ */
+export interface SessionFsSqliteProvider {
+    /**
+     * Execute a SQLite query against the per-session database.
+     *
+     * @param queryType - How to execute: `"exec"` for DDL/multi-statement, `"query"` for SELECT, `"run"` for INSERT/UPDATE/DELETE.
+     * @param query - SQL query to execute.
+     * @param params - Optional named bind parameters.
+     */
+    query(queryType: SessionFsSqliteQueryType, query: string, params?: Record<string, string | number | null>): Promise<SessionFsSqliteQueryResult | undefined>;
+    /**
+     * Check whether the per-session database already exists, without creating it.
+     */
+    exists(): Promise<boolean>;
+}
 /**
  * Interface for session filesystem providers. Implementers use idiomatic
  * TypeScript patterns: throw on error, return values directly. Use
@@ -35,6 +60,8 @@ export interface SessionFsProvider {
     rm(path: string, recursive: boolean, force: boolean): Promise<void>;
     /** Renames/moves a file or directory. */
     rename(src: string, dest: string): Promise<void>;
+    /** Per-session SQLite database operations. Optional — omit if the provider does not support SQLite. */
+    sqlite?: SessionFsSqliteProvider;
 }
 /**
  * Wraps a {@link SessionFsProvider} into the {@link SessionFsHandler}

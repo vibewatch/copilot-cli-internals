@@ -1,7 +1,7 @@
 {
   "name": "@github/copilot",
   "description": "GitHub Copilot CLI brings the power of Copilot coding agent directly to your terminal.",
-  "version": "1.0.48",
+  "version": "1.0.54",
   "license": "SEE LICENSE IN LICENSE.md",
   "type": "module",
   "repository": {
@@ -15,6 +15,9 @@
   "author": "GitHub",
   "bin": {
     "copilot": "npm-loader.js"
+  },
+  "dependencies": {
+    "detect-libc": "^2.1.2"
   },
   "exports": {
     "./sdk": {
@@ -30,7 +33,6 @@
     "README.md",
     "tree-sitter.wasm",
     "tree-sitter-bash.wasm",
-    "tree-sitter-powershell.wasm",
     "tree-sitter-typescript.wasm",
     "tree-sitter-tsx.wasm",
     "tree-sitter-javascript.wasm",
@@ -68,14 +70,16 @@
     "conpty_console_list_agent.js"
   ],
   "buildMetadata": {
-    "gitCommit": "eb38dfb"
+    "gitCommit": "d1896a6"
   },
   "optionalDependencies": {
-    "@github/copilot-linux-x64": "1.0.48",
-    "@github/copilot-linux-arm64": "1.0.48",
-    "@github/copilot-darwin-x64": "1.0.48",
-    "@github/copilot-darwin-arm64": "1.0.48",
-    "@github/copilot-win32-x64": "1.0.48",
-    "@github/copilot-win32-arm64": "1.0.48"
+    "@github/copilot-linux-x64": "1.0.54",
+    "@github/copilot-linux-arm64": "1.0.54",
+    "@github/copilot-linuxmusl-x64": "1.0.54",
+    "@github/copilot-linuxmusl-arm64": "1.0.54",
+    "@github/copilot-darwin-x64": "1.0.54",
+    "@github/copilot-darwin-arm64": "1.0.54",
+    "@github/copilot-win32-x64": "1.0.54",
+    "@github/copilot-win32-arm64": "1.0.54"
   }
 }

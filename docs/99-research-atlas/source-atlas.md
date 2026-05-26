@@ -20,22 +20,22 @@ The latest generated scan of `copilot-cli-pkg/app.js` produced:
 
 | Surface | Count |
 |---|---:|
-| Bundle size | `11,865,779` bytes |
-| Bundle lines | `8,684` |
-| Function declarations | `8,597` |
-| Class declarations/assignments | `1,893` |
-| `var`/`let`/`const` declaration blocks | `32,661` |
-| Environment-variable-like strings | `182` |
-| Feature/config-like uppercase keys | `1,550` |
+| Bundle size | `12,548,132` bytes |
+| Bundle lines | `9,088` |
+| Function declarations | `9,115` |
+| Class declarations/assignments | `1,920` |
+| `var`/`let`/`const` declaration blocks | `33,774` |
+| Environment-variable-like strings | `190` |
+| Feature/config-like uppercase keys | `1,619` |
 | Experiment flag strings | `24` |
-| Event strings | `91` |
-| JSON-RPC/method-like strings | `58` |
+| Event strings | `94` |
+| JSON-RPC/method-like strings | `61` |
 | Confirmed slash commands | `22` |
-| Raw slash-like candidates | `125` |
+| Raw slash-like candidates | `128` |
 | Known tool-name hits | `25` |
-| Packaged YAML agent definitions | `6` |
-| Curated semantic anchor seeds | `17` |
-| Curated main path seeds | `10` |
+| Packaged YAML agent definitions | `7` |
+| Curated semantic anchor seeds | `21` |
+| Curated main path seeds | `13` |
 
 The generated files intentionally mix raw scan output with a small curated seed list. The repository ignores the large extracted package artifacts under `/artifacts/`, but keeps the root `source-atlas/` directory as a generated baseline so package updates can be compared by diffing the index output.
 

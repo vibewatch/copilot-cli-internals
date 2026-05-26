@@ -226,6 +226,7 @@ For the central catalog of all built-in agent types, including the runtime-defin
 | `copilot-cli-pkg/definitions/explore.agent.yaml` | `explore` | Fast codebase exploration with search/read tools and short cited answers. |
 | `copilot-cli-pkg/definitions/task.agent.yaml` | `task` | Command execution with concise success summaries and verbose failure output. |
 | `copilot-cli-pkg/definitions/code-review.agent.yaml` | `code-review` | High-signal review; must not modify code; reports only material issues. |
+| `copilot-cli-pkg/definitions/security-review.agent.yaml` | `security-review` | Security-focused review; must not modify code; reports high-confidence exploitable vulnerabilities. |
 | `copilot-cli-pkg/definitions/research.agent.yaml` | `research` | Research subagent with GitHub/web/local search, direct file reads, and citation requirements. |
 | `copilot-cli-pkg/definitions/rubber-duck.agent.yaml` | `rubber-duck` | Constructive critique of plans, implementations, and tests. |
 | `copilot-cli-pkg/definitions/rem-agent.agent.yaml` | `rem-agent` | Dynamic-context consolidation through the `context_board` tool. |

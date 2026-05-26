@@ -1,12 +1,6 @@
-/**
- * Copilot Session - represents a single conversation session with the Copilot CLI.
- * @module session
- */
-import type { MessageConnection } from "vscode-jsonrpc/node.js";
 import { createSessionRpc } from "./generated/rpc.js";
-import type { ClientSessionApiHandlers } from "./generated/rpc.js";
-import type { CommandHandler, AutoModeSwitchHandler, AutoModeSwitchRequest, AutoModeSwitchResponse, ElicitationHandler, ElicitationContext, ExitPlanModeHandler, ExitPlanModeRequest, ExitPlanModeResult, MessageOptions, PermissionHandler, PermissionRequestResult, ReasoningEffort, ModelCapabilitiesOverride, SectionTransformFn, SessionCapabilities, SessionEvent, SessionEventHandler, SessionEventType, SessionHooks, SessionUiApi, Tool, ToolHandler, TraceContextProvider, TypedSessionEventHandler, UserInputHandler, UserInputResponse } from "./types.js";
-export declare const NO_RESULT_PERMISSION_V2_ERROR = "Permission handlers cannot return 'no-result' when connected to a protocol v2 server.";
+import type { OpenCanvasInstance } from "./generated/rpc.js";
+import type { MessageOptions, ReasoningEffort, ModelCapabilitiesOverride, SessionCapabilities, SessionEvent, SessionEventHandler, SessionEventType, SessionUiApi, TypedSessionEventHandler } from "./types.js";
 /** Assistant message event - the final response from the assistant. */
 export type AssistantMessageEvent = Extract<SessionEvent, {
     type: "assistant.message";
@@ -43,6 +37,7 @@ export declare class CopilotSession {
     private eventHandlers;
     private typedEventHandlers;
     private toolHandlers;
+    private canvases;
     private commandHandlers;
     private permissionHandler?;
     private userInputHandler?;
@@ -54,18 +49,7 @@ export declare class CopilotSession {
     private _rpc;
     private traceContextProvider?;
     private _capabilities;
-    /** @internal Client session API handlers, populated by CopilotClient during create/resume. */
-    clientSessionApis: ClientSessionApiHandlers;
-    /**
-     * Creates a new CopilotSession instance.
-     *
-     * @param sessionId - The unique identifier for this session
-     * @param connection - The JSON-RPC message connection to the Copilot CLI
-     * @param workspacePath - Path to the session workspace directory (when infinite sessions enabled)
-     * @param traceContextProvider - Optional callback to get W3C Trace Context for outbound RPCs
-     * @internal This constructor is internal. Use {@link CopilotClient.createSession} to create sessions.
-     */
-    constructor(sessionId: string, connection: MessageConnection, _workspacePath?: string | undefined, traceContextProvider?: TraceContextProvider);
+    private openCanvasInstances;
     /**
      * Typed session-scoped RPC methods.
      */
@@ -112,6 +96,7 @@ export declare class CopilotSession {
      * });
      * ```
      */
+    send(prompt: string): Promise<string>;
     send(options: MessageOptions): Promise<string>;
     /**
      * Sends a message to this session and waits until the session becomes idle.
@@ -136,6 +121,7 @@ export declare class CopilotSession {
      * console.log(response?.data.content); // "4"
      * ```
      */
+    sendAndWait(prompt: string, timeout?: number): Promise<AssistantMessageEvent | undefined>;
     sendAndWait(options: MessageOptions, timeout?: number): Promise<AssistantMessageEvent | undefined>;
     /**
      * Subscribes to events from this session.
@@ -184,190 +170,17 @@ export declare class CopilotSession {
      */
     on(handler: SessionEventHandler): () => void;
     /**
-     * Dispatches an event to all registered handlers.
-     * Also handles broadcast request events internally (external tool calls, permissions).
-     *
-     * @param event - The session event to dispatch
-     * @internal This method is for internal use by the SDK.
+     * Snapshot of canvas instances that were already open when the session was
+     * resumed. Populated from the `session.resume` response; empty for freshly
+     * created sessions. Returns a defensive copy — mutating the returned array
+     * has no effect on the session.
      */
-    _dispatchEvent(event: SessionEvent): void;
-    /**
-     * Handles broadcast request events by executing local handlers and responding via RPC.
-     * Handlers are dispatched as fire-and-forget — rejections propagate as unhandled promise
-     * rejections, consistent with standard EventEmitter / event handler semantics.
-     * @internal
-     */
-    private _handleBroadcastEvent;
-    /**
-     * Executes a tool handler and sends the result back via RPC.
-     * @internal
-     */
-    private _executeToolAndRespond;
-    /**
-     * Executes a permission handler and sends the result back via RPC.
-     * @internal
-     */
-    private _executePermissionAndRespond;
-    /**
-     * Executes a command handler and sends the result back via RPC.
-     * @internal
-     */
-    private _executeCommandAndRespond;
-    /**
-     * Registers custom tool handlers for this session.
-     *
-     * Tools allow the assistant to execute custom functions. When the assistant
-     * invokes a tool, the corresponding handler is called with the tool arguments.
-     *
-     * @param tools - An array of tool definitions with their handlers, or undefined to clear all tools
-     * @internal This method is typically called internally when creating a session with tools.
-     */
-    registerTools(tools?: Tool[]): void;
-    /**
-     * Retrieves a registered tool handler by name.
-     *
-     * @param name - The name of the tool to retrieve
-     * @returns The tool handler if found, or undefined
-     * @internal This method is for internal use by the SDK.
-     */
-    getToolHandler(name: string): ToolHandler | undefined;
-    /**
-     * Registers command handlers for this session.
-     *
-     * @param commands - An array of command definitions with handlers, or undefined to clear
-     * @internal This method is typically called internally when creating/resuming a session.
-     */
-    registerCommands(commands?: {
-        name: string;
-        handler: CommandHandler;
-    }[]): void;
-    /**
-     * Registers the elicitation handler for this session.
-     *
-     * @param handler - The handler to invoke when the server dispatches an elicitation request
-     * @internal This method is typically called internally when creating/resuming a session.
-     */
-    registerElicitationHandler(handler?: ElicitationHandler): void;
-    /**
-     * Registers the exit-plan-mode handler for this session.
-     *
-     * @param handler - The handler to invoke when the server dispatches an exit-plan-mode request
-     * @internal This method is typically called internally when creating/resuming a session.
-     */
-    registerExitPlanModeHandler(handler?: ExitPlanModeHandler): void;
-    /**
-     * Registers the auto-mode-switch handler for this session.
-     *
-     * @param handler - The handler to invoke when the server dispatches an auto-mode-switch request
-     * @internal This method is typically called internally when creating/resuming a session.
-     */
-    registerAutoModeSwitchHandler(handler?: AutoModeSwitchHandler): void;
-    /**
-     * Handles an elicitation.requested broadcast event.
-     * Invokes the registered handler and responds via handlePendingElicitation RPC.
-     * @internal
-     */
-    _handleElicitationRequest(context: ElicitationContext, requestId: string): Promise<void>;
-    /**
-     * Handles an exitPlanMode.request callback from the runtime.
-     * @internal
-     */
-    _handleExitPlanModeRequest(request: ExitPlanModeRequest): Promise<ExitPlanModeResult>;
-    /**
-     * Handles an autoModeSwitch.request callback from the runtime.
-     * @internal
-     */
-    _handleAutoModeSwitchRequest(request: AutoModeSwitchRequest): Promise<AutoModeSwitchResponse>;
-    /**
-     * Sets the host capabilities for this session.
-     *
-     * @param capabilities - The capabilities object from the create/resume response
-     * @internal This method is typically called internally when creating/resuming a session.
-     */
-    setCapabilities(capabilities?: SessionCapabilities): void;
+    get openCanvases(): OpenCanvasInstance[];
     private assertElicitation;
     private _elicitation;
     private _confirm;
     private _select;
     private _input;
-    /**
-     * Registers a handler for permission requests.
-     *
-     * When the assistant needs permission to perform certain actions (e.g., file operations),
-     * this handler is called to approve or deny the request.
-     *
-     * @param handler - The permission handler function, or undefined to remove the handler
-     * @internal This method is typically called internally when creating a session.
-     */
-    registerPermissionHandler(handler?: PermissionHandler): void;
-    /**
-     * Registers a user input handler for ask_user requests.
-     *
-     * When the agent needs input from the user (via ask_user tool),
-     * this handler is called to provide the response.
-     *
-     * @param handler - The user input handler function, or undefined to remove the handler
-     * @internal This method is typically called internally when creating a session.
-     */
-    registerUserInputHandler(handler?: UserInputHandler): void;
-    /**
-     * Registers hook handlers for session lifecycle events.
-     *
-     * Hooks allow custom logic to be executed at various points during
-     * the session lifecycle (before/after tool use, session start/end, etc.).
-     *
-     * @param hooks - The hook handlers object, or undefined to remove all hooks
-     * @internal This method is typically called internally when creating a session.
-     */
-    registerHooks(hooks?: SessionHooks): void;
-    /**
-     * Registers transform callbacks for system message sections.
-     *
-     * @param callbacks - Map of section ID to transform callback, or undefined to clear
-     * @internal This method is typically called internally when creating a session.
-     */
-    registerTransformCallbacks(callbacks?: Map<string, SectionTransformFn>): void;
-    /**
-     * Handles a systemMessage.transform request from the runtime.
-     * Dispatches each section to its registered transform callback.
-     *
-     * @param sections - Map of section IDs to their current rendered content
-     * @returns A promise that resolves with the transformed sections
-     * @internal This method is for internal use by the SDK.
-     */
-    _handleSystemMessageTransform(sections: Record<string, {
-        content: string;
-    }>): Promise<{
-        sections: Record<string, {
-            content: string;
-        }>;
-    }>;
-    /**
-     * Handles a permission request in the v2 protocol format (synchronous RPC).
-     * Used as a back-compat adapter when connected to a v2 server.
-     *
-     * @param request - The permission request data from the CLI
-     * @returns A promise that resolves with the permission decision
-     * @internal This method is for internal use by the SDK.
-     */
-    _handlePermissionRequestV2(request: unknown): Promise<PermissionRequestResult>;
-    /**
-     * Handles a user input request from the Copilot CLI.
-     *
-     * @param request - The user input request data from the CLI
-     * @returns A promise that resolves with the user's response
-     * @internal This method is for internal use by the SDK.
-     */
-    _handleUserInputRequest(request: unknown): Promise<UserInputResponse>;
-    /**
-     * Handles a hooks invocation from the Copilot CLI.
-     *
-     * @param hookType - The type of hook being invoked
-     * @param input - The input data for the hook
-     * @returns A promise that resolves with the hook output, or undefined
-     * @internal This method is for internal use by the SDK.
-     */
-    _handleHooksInvoke(hookType: string, input: unknown): Promise<unknown>;
     /**
      * Retrieves all events and messages from this session's history.
      *
@@ -379,7 +192,7 @@ export declare class CopilotSession {
      *
      * @example
      * ```typescript
-     * const events = await session.getMessages();
+     * const events = await session.getEvents();
      * for (const event of events) {
      *   if (event.type === "assistant.message") {
      *     console.log("Assistant:", event.data.content);
@@ -387,7 +200,7 @@ export declare class CopilotSession {
      * }
      * ```
      */
-    getMessages(): Promise<SessionEvent[]>;
+    getEvents(): Promise<SessionEvent[]>;
     /**
      * Disconnects this session and releases all in-memory resources (event handlers,
      * tool handlers, permission handlers).
@@ -410,16 +223,6 @@ export declare class CopilotSession {
      * ```
      */
     disconnect(): Promise<void>;
-    /**
-     * @deprecated Use {@link disconnect} instead. This method will be removed in a future release.
-     *
-     * Disconnects this session and releases all in-memory resources.
-     * Session data on disk is preserved for later resumption.
-     *
-     * @returns A promise that resolves when the session is disconnected
-     * @throws Error if the connection fails
-     */
-    destroy(): Promise<void>;
     /** Enables `await using session = ...` syntax for automatic cleanup. */
     [Symbol.asyncDispose](): Promise<void>;
     /**

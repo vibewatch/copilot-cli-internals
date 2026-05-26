@@ -19,11 +19,12 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 
 | Semantic alias | Minified anchor | Approx. `app.js` line | Role |
 |---|---|---:|---|
-| Hook schema | `sessionStart`, `sessionEnd`, `userPromptSubmitted`, `preToolUse`, `postToolUse`, `postToolUseFailure`, `preCompact`, `permissionRequest`, `notification` | 238 | The main hook configuration object and supported hook arrays. |
+| Hook schema | `sessionStart`, `sessionEnd`, `userPromptSubmitted`, `preToolUse`, `preMcpToolCall`, `postToolUse`, `postToolUseFailure`, `preCompact`, `permissionRequest`, `notification` | 239 | The main hook configuration object and supported hook arrays. |
 | Command hooks | `bash`, `powershell`, `command`, `cwd`, `env`, `timeoutSec` | 238 | Command hook schema and command alias normalization. |
 | HTTP hooks | `type:"http"`, `url`, `headers`, `allowedEnvVars` | 238 | HTTP hook schema with credential/HTTPS validation. |
 | Prompt hook | `type:"prompt"`, `prompt` | 238 | Startup/prompt-style hooks that inject prompt content. |
 | VS Code compatibility | `_vsCodeCompat`, `SessionStart`, `UserPromptSubmit`, `PreToolUse`, `Stop` | 238, 2797 | Legacy/PascalCase hook names are mapped to canonical camelCase names. |
+| MCP tool-call hook | `preMcpToolCall`, `metaToUse`, `createMcpToolCallInterceptor` | 3102, 3336, 4597 | Hooks can inspect outgoing MCP tool calls and replace or clear `_meta` before the MCP provider calls `tools/call`. |
 | Security overrides | `COPILOT_HOOK_ALLOW_LOCALHOST`, `COPILOT_HOOK_ALLOW_HTTP_AUTH_HOOKS` | 238, 2792 | Local development and HTTP auth-hook override gates. |
 | Repo/user hook config | `.github/hooks/*.json`, `disableAllHooks`, `hooks` | 7923 | Settings/help text describes hook config shape and repo/user scopes. |
 | Hook execution events | `hook.start`, `hook.end`, `hookInvocationId` | 4361, 4471 | Sessions emit start/end events around hook invocation. |
@@ -61,6 +62,7 @@ The schema around line `238` supports these canonical hook names:
 | `sessionEnd` | When a session exits | Cleanup, reporting, persistence, or external notification. |
 | `userPromptSubmitted` | After user prompt submission and before final prompt processing | Modify prompt text or add context. |
 | `preToolUse` | Before a tool runs | Approve, deny, modify arguments, suppress output, or add context. |
+| `preMcpToolCall` | Before an MCP provider sends `tools/call` | Inspect `serverName/toolName`, arguments, and `_meta`; return `metaToUse` to replace or clear outgoing MCP request metadata. |
 | `postToolUse` | After successful tool execution | Observe/log results or add context. |
 | `postToolUseFailure` | After failed tool execution | Add guidance or remediation text. |
 | `errorOccurred` | When a runtime error occurs | Notify or collect debug context. |
@@ -163,7 +165,7 @@ If an HTTP hook uses `allowedEnvVars`, the URL must use HTTPS unless it targets 
 
 ### Authorization-affecting hooks
 
-For `preToolUse` and `permissionRequest`, HTTP hooks affect authorization. They must use HTTPS unless:
+For `preToolUse`, `preMcpToolCall`, and `permissionRequest`, HTTP hooks affect authorization or outbound tool-call metadata. They must use HTTPS unless:
 
 - `COPILOT_HOOK_ALLOW_HTTP_AUTH_HOOKS=1` is set; or
 - `COPILOT_HOOK_ALLOW_LOCALHOST=1` is set and the host is localhost, `127.x.x.x`, or `[::1]`.
@@ -207,6 +209,12 @@ This is one of the highest-impact hook points because it can change the prompt b
 | `handled` / `responseContent` / `handledBy` | Lets a hook handle a tool call and return response content. |
 
 `postToolUseFailure` can add text to a failed tool result. The bundle has explicit wording: `Additional guidance from postToolUseFailure hook`. That text is appended to the tool failure context passed back to the model.
+
+## MCP tool-call hooks
+
+`preMcpToolCall` is specific to MCP providers. The runtime builds an interceptor through `createMcpToolCallInterceptor()`, passes hook input with `sessionId`, `cwd`, `serverName`, `toolName`, arguments, and optional `_meta`, then calls it from the MCP provider before dispatching the actual `tools/call` request.
+
+The hook output is deliberately narrow: `metaToUse` can be an object to replace outgoing `_meta`, or `null` to clear it. Invalid `metaToUse` values are logged and ignored. Matchers apply to the string `${serverName}/${toolName}`, which makes this hook useful for provider-specific metadata policy without rewriting normal tool arguments.
 
 ## Permission hooks
 

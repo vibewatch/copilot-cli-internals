@@ -193,7 +193,6 @@ This explains why extension loading is tied closely to the interactive branch: t
 
 | Gate or setting | Effect in the interactive surface |
 |---|---|
-| `STATUS_LINE` | Enables custom status-line rendering behavior. |
 | `PROMPT_FRAME` | Enables a framed prompt input UI. |
 | `VOICE` | Enables voice runtime and recording/model-selection surfaces. |
 | `BACKGROUND_SESSIONS` | Enables concurrent background session management in the TUI. |

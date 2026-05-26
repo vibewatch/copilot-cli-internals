@@ -100,6 +100,7 @@ The script found these runtime slash commands:
 | `/init` | Initialize Copilot instructions for this repository. |
 | `/list-dirs` | Display all allowed directories for file access. |
 | `/mcp` | Manage MCP server configuration. |
+| `/memory` | Enable, disable, or show persistent memory status. |
 | `/plan` | Create an implementation plan before coding. |
 | `/plugin` | Manage plugins and plugin marketplaces. |
 | `/rename` | Rename the current session. |
@@ -107,7 +108,9 @@ The script found these runtime slash commands:
 | `/remote` | Show remote status or toggle remote control from GitHub web and mobile. |
 | `/reset-allowed-tools` | Reset the list of allowed tools. |
 | `/review` | Run code review agent to analyze changes. |
+| `/rubber-duck` | Invoke the Rubber Duck agent for independent critique. |
 | `/sandbox` | Configure sandbox modes. |
+| `/security-review` | Run security-focused review for high-confidence vulnerabilities. |
 | `/skills` | Manage skills for enhanced capabilities. |
 | `/subconscious` | Manage Copilot Subconscious memory consolidation. |
 | `/usage` | Display session usage metrics and statistics. |
@@ -119,6 +122,8 @@ These commands are now documented mostly through topic pages rather than one pag
 | `/plugin`, `/env` | [`plugins-extensions-and-capabilities.md`](../03-tools-integrations-security/plugins-extensions-and-capabilities.md), plus `/env` visibility in [`custom-agents-and-skills-packaging.md`](../06-agents-automation/custom-agents-and-skills-packaging.md) |
 | `/every`, `/after` | [`scheduled-prompts-and-command-queue.md`](../06-agents-automation/scheduled-prompts-and-command-queue.md) |
 | `/research`, `/review` | [`agent-task-orchestration.md`](../06-agents-automation/agent-task-orchestration.md), [`built-in-agents.md`](../06-agents-automation/built-in-agents.md), and prompt details in [`prompt-sources.md`](../02-context-model-loop/prompt-sources.md) |
+| `/security-review`, `/rubber-duck` | [`built-in-agents.md`](../06-agents-automation/built-in-agents.md), [`agent-task-orchestration.md`](../06-agents-automation/agent-task-orchestration.md), and prompt details in [`prompt-sources.md`](../02-context-model-loop/prompt-sources.md) |
+| `/memory` | [`memory-and-context-board.md`](../02-context-model-loop/memory-and-context-board.md), [`custom-agents-and-skills-packaging.md`](../06-agents-automation/custom-agents-and-skills-packaging.md), and [`built-in-agents.md`](../06-agents-automation/built-in-agents.md) |
 | `/skills` | [`custom-agents-and-skills-packaging.md`](../06-agents-automation/custom-agents-and-skills-packaging.md) |
 | `/subconscious` | [`memory-and-context-board.md`](../02-context-model-loop/memory-and-context-board.md), [`agent-task-orchestration.md`](../06-agents-automation/agent-task-orchestration.md), and [`built-in-agents.md`](../06-agents-automation/built-in-agents.md) |
 | `/add-dir`, `/list-dirs` | [`tool-path-url-permissions.md`](../03-tools-integrations-security/tool-path-url-permissions.md) |

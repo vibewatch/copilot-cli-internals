@@ -22,6 +22,8 @@ This page covers the protocol-host branch of [Runtime lifecycle](README.md). It 
 | Commands | `command.queued`, `command.execute`, `command.completed`, `respondToQueuedCommand` | 4210, 4361, 4471 | Server protocol can queue and execute slash/SDK commands through clients. |
 | Capability changes | `capabilities.changed`, `commands.changed`, `capabilityProviders` | 4361, 4471, 6103 | Connections can add/remove UI capabilities and SDK commands dynamically. |
 | Permission bridge | `requestPermission`, `requestPermissionCallback`, `permissionCallbackProviders` | 6103, 6106 | ACP clients can own permission prompts or callbacks. |
+| Canvas bridge | `requestCanvasRenderer`, `session.canvas.opened`, `session.canvas.registry_changed`, `open_canvas` | 372, 4821, 6375 | SDK/server clients can register renderable canvases, expose canvas tools, and receive canvas lifecycle events. |
+| MCP Apps bridge | `requestMcpApps`, `mcp_app.tool_call_complete`, `mcp-apps` capability | 4940, 6375 | SDK/server clients can opt into MCP Apps capability negotiation when the feature gate or env override allows it. |
 
 ## Protocol map
 
@@ -138,15 +140,25 @@ The embedded protocol supports both queued slash commands and direct command exe
 
 ## Capability providers
 
-The server tracks capability providers per session and connection. The clearest capability in the evidence is UI elicitation:
+The server tracks capability providers per session and connection. The clearest original capability in the evidence is UI elicitation, and the refreshed package adds MCP Apps and canvas-renderer capability paths:
 
 | Mechanism | Behavior |
 |---|---|
 | `addCapabilityProvider` | Adds a provider and emits `capabilities.changed` when the first provider appears. |
 | `removeCapabilityProvider` | Removes a provider and emits `capabilities.changed` when the last provider disappears. |
 | `capabilityChangedData("elicitation", true/false)` | Converts capability presence into `{ ui: { elicitation } }`. |
+| `capabilityChangedData("mcp-apps", true/false)` | Converts MCP Apps provider presence into `{ ui: { mcpApps } }`. |
+| `capabilityChangedData("canvas-renderer", true/false)` | Converts canvas renderer provider presence into `{ ui: { canvases } }`. |
 
 This allows clients to join/leave without restarting the session. The session can dynamically learn whether an external UI is capable of showing structured input forms.
+
+## Canvas and MCP Apps bridge
+
+The refreshed protocol surface can expose richer UI integrations beyond plain events and tools.
+
+Canvas support is opt-in. Session create/resume accepts `requestCanvasRenderer`; when enabled, session capabilities include `ui.canvases`. Connected clients can register canvas declarations, and the runtime exposes `list_canvas_capabilities`, `open_canvas`, and `invoke_canvas_action` tools to the model. Canvas provider registration emits `session.canvas.registry_changed`; opening, focusing, stale-provider rehydration, or provider reconnects emit `session.canvas.opened`. Resuming a canvas-capable session can also return `openCanvases` so the client can restore UI state.
+
+MCP Apps support is also opt-in. Session create/resume accepts `requestMcpApps`, but the server only honors it when `MCP_APPS` is enabled or `COPILOT_MCP_APPS=true` is set; otherwise it warns and does not advertise `ui.mcpApps`. App-originated MCP calls emit `mcp_app.tool_call_complete` with server/tool names, arguments, success/error, duration, result, and `_meta.ui` details.
 
 ## Permission bridge
 

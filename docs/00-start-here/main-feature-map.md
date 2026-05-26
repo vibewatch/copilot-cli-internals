@@ -314,7 +314,7 @@ flowchart LR
 Important orchestration behavior:
 
 - The `task` tool is the model-visible router for subagents.
-- Built-in agents include `explore`, `task`, `general-purpose`, `rubber-duck`, `code-review`, `research`, and `rem-agent`.
+- Built-in agents include `explore`, `task`, `general-purpose`, `rubber-duck`, `code-review`, `security-review`, `research`, and `rem-agent`.
 - Custom agents can come from user files, project files, plugins, or remote APIs, and can declare tools, skills, MCP servers, and model preferences.
 - Background mode uses `TaskRegistry` to track asynchronous results.
 - Multi-turn agents can enter an `idle` state and wait for follow-up messages.
@@ -423,7 +423,7 @@ Representative gates:
 | `SANDBOX` | Exposes the local `/sandbox` command that toggles shell-process sandboxing. |
 | `SESSION_INDEXING`, `CLOUD_SESSION_STORE` | Affect session history indexing, chronicle, and cloud/local session store behavior. |
 | `VOICE` | Enables voice runtime, recording UI, and voice model picker paths. |
-| `STATUS_LINE`, `PROMPT_FRAME`, `CELL_RENDERER`, `NATIVE_CURSOR` | Affect terminal UI rendering details. |
+| `PROMPT_FRAME`, `CELL_RENDERER`, `NATIVE_CURSOR` | Affect terminal UI rendering details. |
 
 ## Relationship to the other documents
 

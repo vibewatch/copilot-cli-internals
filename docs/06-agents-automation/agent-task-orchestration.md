@@ -2,7 +2,7 @@
 
 This addendum focuses on the deeper agent/task layer in the extracted `@github/copilot` CLI bundle. It answers the follow-up question: how does `app.js` orchestrate agents, subagents, background tasks, multi-turn agents, MCP tasks, and slash-command workflows?
 
-The short version: the model-visible `task` tool is the main subagent router, while an internal `TaskRegistry` tracks background and multi-turn agent state. Slash commands such as `/research`, `/review`, `/subconscious run`, and `/fleet` mostly inject prompts that cause the main agent to call `task` with a specific `agent_type` or start a fleet/autopilot workflow. The dedicated built-in agent catalog is in [`built-in-agents.md`](built-in-agents.md). Memory-specific `rem-agent`, `context_board`, and sidekick behavior is covered in [`memory-and-context-board.md`](../02-context-model-loop/memory-and-context-board.md). Rate-limit recovery and model-call concurrency behavior are covered in [`resilience-rate-limits-concurrency.md`](../02-context-model-loop/resilience-rate-limits-concurrency.md).
+The short version: the model-visible `task` tool is the main subagent router, while an internal `TaskRegistry` tracks background and multi-turn agent state. Slash commands such as `/research`, `/review`, `/security-review`, `/subconscious run`, and `/fleet` mostly inject prompts that cause the main agent to call `task` with a specific `agent_type` or start a fleet/autopilot workflow. The dedicated built-in agent catalog is in [`built-in-agents.md`](built-in-agents.md). Memory-specific `rem-agent`, `context_board`, and sidekick behavior is covered in [`memory-and-context-board.md`](../02-context-model-loop/memory-and-context-board.md). Rate-limit recovery and model-call concurrency behavior are covered in [`resilience-rate-limits-concurrency.md`](../02-context-model-loop/resilience-rate-limits-concurrency.md).
 
 ## Source anchors
 
@@ -20,7 +20,7 @@ The short version: the model-visible `task` tool is the main subagent router, wh
 | Background launch | `launchBackgroundAgent(...)` | `Bur(...)` | 3698 | Starts a background agent through the task registry. |
 | Task tool | `createTaskTool(...)`, `taskToolInputSchema`, `TASK_TOOL_NAME` | `I6n(...)`, `v6n`, `H3="task"` | 3735-3815 | Defines the `task` tool schema, instructions, dispatch callback, sync/background modes. |
 | Task completion tool | `createTaskCompleteTool(...)`, `TASK_COMPLETE_TOOL_NAME`, continuation prompt | `$Vn()`, `UM="task_complete"`, `UTe`, `Dgr` | 4140-4149 | Defines the explicit main-agent completion tool, summary schema, terminal-tool instructions, and hidden continuation reminder. |
-| Built-in agents | `BUILT_IN_AGENTS` | `nHn` | 4037 | Catalog of built-in agents: `explore`, `task`, `general-purpose`, `rubber-duck`, `code-review`, `research`, `rem-agent`. |
+| Built-in agents | `BUILT_IN_AGENTS` | `nHn`, `security-review` | 4496 | Catalog of built-in agents: `explore`, `task`, `general-purpose`, `rubber-duck`, `code-review`, `security-review`, `research`, `rem-agent`. |
 | Session subagent executor | `SessionAgentExecutor` | `dZ` | 4037-4039 | Runs built-in/session-based agents, emits subagent boundaries, applies hooks, supports multi-turn loops. |
 | MCP task bridge | `doInvokeToolWithTask`, `consumeTaskStreamNonBlocking` | same names | 4138 | Converts MCP `taskSupport: "required"` tools into background `mcp-task` agent records. |
 | Tool assembly | `assembleRuntimeTools(...)`, `assembleSubagentTools(...)` | `HCr(...)`, `Gjs(...)` | 5734 | Builds tool lists recursively and injects `task`, agent tools, MCP tools, skills, shell tools, etc. |
@@ -248,6 +248,7 @@ The built-in agent list is defined by the `BUILT_IN_AGENTS` catalog and includes
 | `general-purpose` | Broad autonomous CLI agent. |
 | `rubber-duck` | Independent critique of plans/implementations. |
 | `code-review` | High signal-to-noise review of changes. |
+| `security-review` | Security-focused review of changes for high-confidence vulnerabilities. |
 | `research` | Deep research with searches and citations. |
 | `rem-agent` | Memory/subconscious consolidation using the context board. |
 

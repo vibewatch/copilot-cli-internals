@@ -11,6 +11,13 @@ node --check scripts/index-app-js.mjs
 node scripts/index-app-js.mjs
 ```
 
+If the package extractor was touched or used, validate the script and record the extracted package version:
+
+```sh
+node --check scripts/extract-copilot-cli-pkg.mjs
+node -p "require('./copilot-cli-pkg/package.json').version"
+```
+
 For incremental mode, inspect `git diff -- source-atlas` before and after documentation edits so the final summary can distinguish generated baseline changes from hand-written docs changes.
 
 ## Validate Docs Work
@@ -46,6 +53,7 @@ Summarize:
 
 - Selected mode: full or incremental.
 - Target call path, docs gap, or package delta.
+- Whether `scripts/extract-copilot-cli-pkg.mjs` was run or intentionally skipped, and the analyzed package version.
 - Key `source-atlas/` deltas if incremental, and whether they are docs-relevant.
 - Files created or changed.
 - Key source anchors used.
@@ -58,6 +66,7 @@ Keep the summary concise and avoid pasting large docs content unless requested.
 
 - [ ] Mode was selected: full analysis or incremental `source-atlas/` analysis.
 - [ ] If incremental, `source-atlas/` baseline status and diff were checked before deep source reads.
+- [ ] Package extraction was run or intentionally skipped, and the analyzed package version is reported.
 - [ ] Existing docs were checked first.
 - [ ] At least one source anchor directly supports each major claim.
 - [ ] Minified aliases and semantic names are both recorded.
