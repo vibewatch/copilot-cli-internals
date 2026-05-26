@@ -2,7 +2,7 @@
 
 MCP support turns configured local, remote, and built-in servers into normal model-callable Copilot tools. Config sources define which servers exist, the MCP host starts the required transports, tool discovery converts server tools into Copilot tool definitions, and calls then flow through permission, telemetry, task, and session-event systems.
 
-Read [Runtime tool assembly and filtering](runtime-tool-assembly-and-filtering.md) when comparing MCP tools to built-in or external tools. Read [Tool, path, and URL permissions](tool-path-url-permissions.md) when the question is approval. Read [Hosted agent environment](../05-hosted-agent-ops/hosted-agent-environment.md) for hosted GitHub MCP/OIDC defaults.
+Read [Runtime tool assembly and filtering](runtime-tool-assembly-and-filtering.md) when comparing MCP tools to built-in or external tools. Read [MCP Apps and canvas bridge](mcp-apps-and-canvas-bridge.md) for gated MCP Apps UI/resource passthrough and canvas renderer behavior. Read [Tool, path, and URL permissions](tool-path-url-permissions.md) when the question is approval. Read [Hosted agent environment](../05-hosted-agent-ops/hosted-agent-environment.md) for hosted GitHub MCP/OIDC defaults.
 
 | MCP concern | Runtime owner | Downstream effect |
 |---|---|---|

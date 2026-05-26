@@ -179,6 +179,7 @@ export default defineConfig({
             { label: 'Shell command execution', link: '/03-tools-integrations-security/shell-command-execution-events/' },
             { label: 'Coding-agent validation', link: '/03-tools-integrations-security/coding-agent-validation-toolchain/' },
             { label: 'MCP host, transports, tools', link: '/03-tools-integrations-security/mcp-host-transport-and-tools/' },
+            { label: 'MCP Apps and canvas bridge', link: '/03-tools-integrations-security/mcp-apps-and-canvas-bridge/' },
             { label: 'Plugins, extensions, and capabilities', link: '/03-tools-integrations-security/plugins-extensions-and-capabilities/' },
             { label: 'Copilot SDK extension bridge', link: '/03-tools-integrations-security/copilot-sdk-extension-bridge/' },
             { label: 'IDE, LSP, editor integration', link: '/03-tools-integrations-security/ide-lsp-editor-integration/' },

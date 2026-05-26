@@ -62,9 +62,10 @@ flowchart TD
 | 2 | [Built-in tools, execution events, and results](built-in-tools-execution-events.md) | How do permission checks, hooks, execution events, streaming, telemetry, and history wrap a tool call? |
 | 3 | [Shell command execution events](shell-command-execution-events.md) | How do Bash/PowerShell tools choose PTY/process backends, async/detached behavior, task tracking, and large-output handling? |
 | 4 | [MCP host, transports, and tools](mcp-host-transport-and-tools.md) | How are MCP servers discovered, transported, authorized, filtered, and mapped into tools/resources/prompts/tasks? |
-| 5 | [Tool, path, and URL permissions](tool-path-url-permissions.md) | How do tool/path/URL/MCP/hook approval rules and precedence work? |
-| 6 | [Content exclusion and redaction](content-exclusion-and-redaction.md) | How do policy fetch/merge, filtered outputs, secret env vars, and redaction boundaries affect model-visible data? |
-| 7 | [Sandbox implementation](sandboxing.md) | How does local command sandboxing route shell sessions through MXC helpers and filesystem policies? |
+| 5 | [MCP Apps and canvas bridge](mcp-apps-and-canvas-bridge.md) | How do SDK/server clients and MCP servers expose renderable canvases, MCP Apps UI metadata, and app-originated MCP calls? |
+| 6 | [Tool, path, and URL permissions](tool-path-url-permissions.md) | How do tool/path/URL/MCP/hook approval rules and precedence work? |
+| 7 | [Content exclusion and redaction](content-exclusion-and-redaction.md) | How do policy fetch/merge, filtered outputs, secret env vars, and redaction boundaries affect model-visible data? |
+| 8 | [Sandbox implementation](sandboxing.md) | How does local command sandboxing route shell sessions through MXC helpers and filesystem policies? |
 
 ## Boundary-by-boundary map
 
@@ -74,6 +75,7 @@ flowchart TD
 | Tool call execution | [Built-in tools, execution events, and results](built-in-tools-execution-events.md) | Start/progress/partial/complete events, request processors, hooks, permissions, and replayable results. |
 | Shell process boundary | [Shell command execution events](shell-command-execution-events.md) | PTY/process backend choice, sync/async/detach semantics, output buffers, background tasks, and notifications. |
 | MCP protocol boundary | [MCP host, transports, and tools](mcp-host-transport-and-tools.md) | Config merge, local/HTTP/SSE transports, OAuth, instructions, tool flattening, and MCP task/progress events. |
+| MCP UI/app boundary | [MCP Apps and canvas bridge](mcp-apps-and-canvas-bridge.md) | Gated `mcp-apps` capability, canvas provider registration, canvas model tools, and app-originated MCP tool-call events. |
 | Approval boundary | [Tool, path, and URL permissions](tool-path-url-permissions.md) | Deny/allow precedence, path/URL managers, session/location approvals, remote/ACP prompts, and allow-all toggles. |
 | Data policy boundary | [Content exclusion and redaction](content-exclusion-and-redaction.md) | Excluded paths, filtered outputs, secret env vars, and redaction layers before data becomes model-visible or support-visible. |
 | Local sandbox boundary | [Sandbox implementation](sandboxing.md) | MXC adapter invocation, filesystem/network policy, platform constraints, and sandbox setting persistence. |
@@ -84,6 +86,7 @@ flowchart TD
 |---|---|---|
 | Plugins | [Plugins, extensions, and capabilities](plugins-extensions-and-capabilities.md) | Plugin caches, marketplaces, contributed skills/agents/hooks/MCP/LSP, and enablement state. |
 | Programmatic SDK extensions | [Copilot SDK extension bridge](copilot-sdk-extension-bridge.md) | `@github/copilot-sdk` extension discovery, `joinSession()`, management APIs, events, and trust boundaries. |
+| MCP Apps / canvas providers | [MCP Apps and canvas bridge](mcp-apps-and-canvas-bridge.md) | SDK/server canvas registration, `open_canvas` tools, MCP Apps `_meta.ui`, and `mcp_app.tool_call_complete`. |
 | IDE/LSP/editor bridges | [IDE, LSP, and editor integration](ide-lsp-editor-integration.md) | IDE tools, selections, diagnostics, diffs, title sync, LSP config, and extension state. |
 | Web/GitHub network access | [Web search, URL fetching, and URL permissions](web-search-url-fetching.md) | Built-in web fetch, GitHub MCP web search, URL allow/deny persistence, and web gates. |
 | Validation/review tools | [Coding-agent validation and review toolchain](coding-agent-validation-toolchain.md) | Code review, CodeQL, secret scanning, advisory checks, budgets, and validation telemetry. |

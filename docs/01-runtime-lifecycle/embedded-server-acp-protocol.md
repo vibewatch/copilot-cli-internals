@@ -6,7 +6,7 @@ The important implementation point is that the CLI session model is exposed over
 
 Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted bundle and will shift across releases.
 
-This page covers the protocol-host branch of [Runtime lifecycle](README.md). It complements [Interactive TUI and slash-command workflows](tui-and-slash-commands.md): both host sessions, but this path exposes session events, external tools, elicitation, sampling, commands, and permissions through JSON-RPC/ACP clients. Pair it with [API and session event schema contracts](../04-sessions-persistence-remote/api-and-session-event-schemas.md) when building or interpreting clients.
+This page covers the protocol-host branch of [Runtime lifecycle](README.md). It complements [Interactive TUI and slash-command workflows](tui-and-slash-commands.md): both host sessions, but this path exposes session events, external tools, elicitation, sampling, commands, and permissions through JSON-RPC/ACP clients. Pair it with [API and session event schema contracts](../04-sessions-persistence-remote/api-and-session-event-schemas.md) when building or interpreting clients, and read [MCP Apps and canvas bridge](../03-tools-integrations-security/mcp-apps-and-canvas-bridge.md) for the richer canvas/MCP Apps UI capability path.
 
 ## Source anchors
 
@@ -211,4 +211,5 @@ sequenceDiagram
 - `session-manager-and-event-replay.md` explains session events and server/ACP APIs from the session perspective.
 - `built-in-tools-execution-events.md` explains normal tool execution events that the server forwards.
 - `mcp-host-transport-and-tools.md` explains MCP elicitation, OAuth, sampling, and tools from the MCP host perspective.
+- `mcp-apps-and-canvas-bridge.md` explains canvas providers, `requestCanvasRenderer`, `requestMcpApps`, and app-originated MCP calls.
 - `plugins-extensions-and-capabilities.md` explains extension-provided tools and SDK command registration.

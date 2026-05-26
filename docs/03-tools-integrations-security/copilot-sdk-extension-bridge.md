@@ -2,7 +2,7 @@
 
 SDK extensions join a running CLI session as separate Node.js child processes rather than being imported into the main process. The runtime discovers `extension.mjs` files, launches them, lets `joinSession()` register capabilities over stdio JSON-RPC, and reports status through `session.extensions_loaded`.
 
-Read [Plugins, extensions, and capabilities](plugins-extensions-and-capabilities.md) for plugin packaging and manifest contributions. Read [Built-in tools, execution events, and results](built-in-tools-execution-events.md) for what happens when an extension-provided tool is invoked.
+Read [Plugins, extensions, and capabilities](plugins-extensions-and-capabilities.md) for plugin packaging and manifest contributions. Read [MCP Apps and canvas bridge](mcp-apps-and-canvas-bridge.md) for SDK/server canvas registration and UI capability negotiation. Read [Built-in tools, execution events, and results](built-in-tools-execution-events.md) for what happens when an extension-provided tool is invoked.
 
 The main boundaries are:
 
@@ -203,6 +203,7 @@ The runtime's built-in extension guide points to these package files, which are 
 ## Related docs
 
 - [Plugins, extensions, and capabilities](plugins-extensions-and-capabilities.md) explains plugins and contains the shorter SDK lifecycle overview.
+- [MCP Apps and canvas bridge](mcp-apps-and-canvas-bridge.md) explains canvas providers, MCP Apps capability negotiation, and app-originated MCP calls.
 - [Runtime tool assembly and filtering](runtime-tool-assembly-and-filtering.md) explains where extension tools enter the final model-visible toolset.
 - [Built-in tools, execution events, and results](built-in-tools-execution-events.md) explains the generic tool execution lifecycle that extension tools join.
 - [Hooks, events, and automation](hooks-events-and-automation.md) explains runtime hook semantics and permission-sensitive hook behavior.

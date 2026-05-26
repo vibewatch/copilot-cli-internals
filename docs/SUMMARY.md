@@ -41,6 +41,7 @@ This file is a table-of-contents document, not a direct `app.js` implementation 
   - [Shell command execution events](03-tools-integrations-security/shell-command-execution-events.md)
   - [Coding-agent validation and review toolchain](03-tools-integrations-security/coding-agent-validation-toolchain.md)
   - [MCP host, transports, and tools](03-tools-integrations-security/mcp-host-transport-and-tools.md)
+  - [MCP Apps and canvas bridge](03-tools-integrations-security/mcp-apps-and-canvas-bridge.md)
   - [Plugins, extensions, and capabilities](03-tools-integrations-security/plugins-extensions-and-capabilities.md)
   - [Copilot SDK extension bridge](03-tools-integrations-security/copilot-sdk-extension-bridge.md)
   - [IDE, LSP, and editor integration](03-tools-integrations-security/ide-lsp-editor-integration.md)
