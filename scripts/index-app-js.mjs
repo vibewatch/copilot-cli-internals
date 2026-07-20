@@ -100,6 +100,12 @@ const KNOWN_ANCHORS = [
     docs: "docs/01-runtime-lifecycle/mode-dispatch-and-runtime-startup.md",
   },
   {
+    semanticAlias: "Out-of-process native runtime bridge",
+    anchors: ["COPILOT_RUNTIME_OOP", "NAPI_OOP_SOCKET", "connectFromEnvSync", "createSyncBinding"],
+    role: "Selects a parent-provided native runtime, validates its manifest, and reconstructs functions/classes/constants over local IPC.",
+    docs: "docs/01-runtime-lifecycle/out-of-process-native-runtime.md",
+  },
+  {
     semanticAlias: "InteractiveTuiFlow",
     anchors: ["j$o", "jQa"],
     role: "Runs the terminal UI, slash commands, dialogs, permissions, and background session UI.",
@@ -146,6 +152,12 @@ const KNOWN_ANCHORS = [
     anchors: ["tool.execution_start", "tool.execution_partial_result", "tool.execution_complete"],
     role: "Runs model tool calls through permission/hook/execution/event/telemetry boundaries.",
     docs: "docs/03-tools-integrations-security/built-in-tools-execution-events.md",
+  },
+  {
+    semanticAlias: "Indexed repository search backend",
+    anchors: ["copilot_cli_tgrep", "USE_TGREP", "tgrep_startup", "tgrep serve"],
+    role: "Starts and monitors the repository tgrep index, then selects tgrep or ripgrep beneath the existing search tools.",
+    docs: "docs/03-tools-integrations-security/indexed-search-tgrep-and-ripgrep.md",
   },
   {
     semanticAlias: "PermissionService",
@@ -224,6 +236,13 @@ const MAIN_PATHS = [
     docs: "docs/00-start-here/main-feature-map.md",
   },
   {
+    path: "Native runtime bridge selection",
+    trigger: "first use of the native runtime surface",
+    anchorSeeds: ["COPILOT_RUNTIME_OOP", "NAPI_OOP_SOCKET", "connectFromEnvSync", "runtime.node"],
+    output: "In-process NAPI addon or manifest-driven out-of-process native-call proxy.",
+    docs: "docs/01-runtime-lifecycle/out-of-process-native-runtime.md",
+  },
+  {
     path: "Session and event lifecycle",
     trigger: "new/resume/continue/name/fork/session APIs",
     anchorSeeds: ["session.start", "Session.send", "tool.execution_complete", "session.task_complete", "session.idle"],
@@ -257,6 +276,13 @@ const MAIN_PATHS = [
     anchorSeeds: ["HCr", "assembleRuntimeTools", "initializeAndValidateTools", "session.tools_updated"],
     output: "Final model-visible tool definitions, filters, permissions, and dynamic tool invalidation.",
     docs: "docs/03-tools-integrations-security/runtime-tool-assembly-and-filtering.md",
+  },
+  {
+    path: "Indexed repository search",
+    trigger: "eligible large-repository grep/search initialization",
+    anchorSeeds: ["copilot_cli_tgrep", "USE_TGREP", "tgrep serve", "tgrep_startup", "--index-path"],
+    output: "Repository-keyed trigram index with readiness polling and transparent ripgrep fallback.",
+    docs: "docs/03-tools-integrations-security/indexed-search-tgrep-and-ripgrep.md",
   },
   {
     path: "Tool execution lifecycle",
@@ -597,6 +623,7 @@ ${markdownTable(["Metric", "Value"], Object.entries(summary.counts))}
 | \`summary.json\` | Machine-readable counts, source hash, output manifest, known semantic anchors, and main path seeds. |
 | \`surface-index.json\` | Raw env vars, event strings, slash command candidates, JSON-RPC-ish methods, tool-name hits, feature keys, and packaged definitions. |
 | \`declarations.json\` | Function/class/declaration-block inventory with approximate lines and snippets. |
+| \`subsystem-candidates.json\` | Weekly-updater manifest of new package roots, module entrypoints, and event/RPC namespaces. Preserved, but not emitted, by standalone atlas regeneration. |
 | \`constants.md\` | Human-readable constants/string-surface inventory. |
 | \`symbols.md\` | Human-readable symbol/declaration inventory, truncated to ${markdownLimit} rows per section. |
 

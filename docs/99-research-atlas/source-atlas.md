@@ -10,7 +10,7 @@ The short version: use `scripts/index-app-js.mjs` to generate raw symbol and con
 |---|---|---:|---|
 | Bundle under analysis | `copilot-cli-pkg/app.js` | `6,017` lines | Minified `1.0.71` production runtime that the index scans. |
 | Index generator | `scripts/index-app-js.mjs` | repository script | Generates raw symbol, declaration, event, env var, slash command, tool-name, JSON-RPC-ish method, and curated path seed indexes. |
-| Generated output | `source-atlas/` | generated repository-root directory | Stores `README.md`, `constants.md`, `symbols.md`, `summary.json`, `surface-index.json`, and `declarations.json`. |
+| Generated output | `source-atlas/` | generated repository-root directory | Stores atlas indexes plus the weekly updater's `subsystem-candidates.json` review manifest. |
 | High-level feature map | [`main-feature-map.md`](../00-start-here/main-feature-map.md) | docs page | Human-curated overview of major `app.js` capabilities and runtime ownership. |
 | Historical scan report | [`documentation-opportunities.md`](documentation-opportunities.md) | docs page | Earlier script-assisted scan methodology and backlog history. |
 
@@ -34,8 +34,8 @@ The latest generated scan of `copilot-cli-pkg/app.js` produced:
 | Raw slash-like candidates | `115` |
 | Known tool-name hits | `22` |
 | Packaged YAML agent definitions | `7` |
-| Curated semantic anchor seeds | `21` |
-| Curated main path seeds | `13` |
+| Curated semantic anchor seeds | `23` |
+| Curated main path seeds | `15` |
 
 The generated files intentionally mix raw scan output with a small curated seed list. The repository ignores the large extracted package artifacts under `/artifacts/`, but keeps the root `source-atlas/` directory as a generated baseline so package updates can be compared by diffing the index output.
 
@@ -47,6 +47,7 @@ The generated files intentionally mix raw scan output with a small curated seed 
 | `source-atlas/summary.json` | Machine-readable counts, source hash, main path seeds, and semantic anchor seeds. |
 | `source-atlas/surface-index.json` | Machine-readable constant/string surface inventory. |
 | `source-atlas/declarations.json` | Machine-readable function/class/declaration-block inventory. |
+| `source-atlas/subsystem-candidates.json` | Immutable candidate IDs/evidence used to ensure the editable subsystem review cannot omit or invent generated candidates. |
 
 ## Why this is not a full call graph
 

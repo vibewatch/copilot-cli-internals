@@ -43,6 +43,9 @@ For current-session context-window reduction, see [`conversation-compaction.md`]
 | REM agent definition | `rem-agent.agent.yaml` | n/a | `copilot-cli-pkg/definitions/rem-agent.agent.yaml` | Defines the memory-consolidation agent prompt parts and `context_board` tool access. |
 | Subconscious sidekick | `subconscious-agent.yaml` | n/a | `copilot-cli-pkg/definitions/sidekick/subconscious-agent.yaml` | Reads board entries and forwards relevant content to the inbox. |
 | GitHub context sidekick | `github-context.yaml` | n/a | `copilot-cli-pkg/definitions/sidekick/github-context.yaml` | Uses local/GitHub/prior-session tools and sends high-signal context to the inbox. |
+| Memory-only GitHub context sidekick | `github-context-memory.yaml` | n/a | `copilot-cli-pkg/definitions/sidekick/github-context-memory.yaml` | Reads service memories, verifies cited local paths, and reacts to context/memory changes. |
+| Local session-search sidekick | `session-search.yaml` | `SESSION_SEARCH_SIDEKICK_AGENT` | definition file; `app.js` ~124, 608, 2757 | Queries the local `session_store` through `sql` and publishes at most one inbox entry. |
+| Cloud session-search sidekick | `cloud-session-search.yaml` | `CLOUD_SESSION_SEARCH_SIDEKICK_AGENT` | definition file; `app.js` ~124, 608, 2757 | Prefers `session_store_sql`, with the `sql` session-store path as fallback. |
 
 ## Architecture at a glance
 
@@ -405,14 +408,17 @@ sequenceDiagram
     Main->>Inbox: optionally read full entry
 ```
 
-Two built-in sidekicks are relevant here:
+Five built-in sidekick definitions are relevant here:
 
 | Sidekick | Feature flag | Launch condition | Tools | Role |
 |---|---|---|---|---|
 | `subconscious-agent` | `COPILOT_SUBCONSCIOUS` | Dynamic context board has entries. | `context_board`, `send_inbox` | Read-only board retrieval. It gets the board, fetches relevant entries, and sends verbatim content to the inbox once per turn. |
-| `github-context` | `GITHUB_CONTEXT_SIDEKICK_AGENT` | Memory API cache has memory count or memory prompt context. | local search/read, GitHub MCP, session store SQL, `send_inbox` | Gathers optional GitHub or prior-session context only when it would materially help. |
+| `github-context` | `GITHUB_CONTEXT_SIDEKICK_AGENT_FULL` | Memory is enabled; user-message or working-directory context warrants retrieval. | `read_memories`, local search/read, selected GitHub MCP, `session_store_sql`, `send_inbox` | Gathers optional GitHub, memory, local, or prior-session context. |
+| `github-context-memory` | `GITHUB_CONTEXT_SIDEKICK_AGENT` | `memoryEnabled`; user message, context change, or memory change. | `read_memories`, local search/read, `send_inbox` | Retrieves relevant memories and verifies cited local files before publishing. |
+| `session-search` | `SESSION_SEARCH_SIDEKICK_AGENT` | Session-store capability and feature assignment. | `sql` with database `session_store`, `send_inbox` | Searches local prior-session history and labels findings as local-store context. |
+| `cloud-session-search` | `CLOUD_SESSION_SEARCH_SIDEKICK_AGENT` | Cloud session store and feature assignment. | `session_store_sql`, fallback `sql`, `send_inbox` | Searches prior-session history through the cloud-aware tool when available. |
 
-The sidekick manager cancels superseded runs on a newer user turn, limits sends per turn, persists inbox state when a workspace path is available, and sends a system notification with a short summary. The main agent is not forced to read the full inbox entry.
+The session-search variants deliberately do not perform general file exploration: their prompts limit them to prior-session retrieval and tell them to stop when no useful context exists. All five definitions share the sidekick manager's cancellation and inbox path. The manager cancels superseded runs on a newer user turn, enforces per-turn send limits, persists inbox state when a workspace path is available, and sends a system notification with a short summary. The main agent is not forced to read the full inbox entry.
 
 ## Prompt-source impact
 

@@ -271,6 +271,8 @@ Representative examples:
 - `SHELL_ERROR_CLASSIFICATION`: shell tools call `featureFlagService.getFlag("SHELL_ERROR_CLASSIFICATION")`; if there is no experiment mapping for that flag, it returns the local resolved value.
 - `REMOTE_KICKSTART`: background remote session start checks `featureFlagService.getFlag("REMOTE_KICKSTART")`; in the static table it is `team` gated.
 - `SANDBOX`: the slash-command builder receives `sandboxEnabled` and exposes `/sandbox` only when this local gate is true. The command then toggles `settings.sandbox.enabled`; see [`sandboxing.md`](../03-tools-integrations-security/sandboxing.md).
+- `TGREP`: `copilot_cli_tgrep` enables indexed repository search after repository size/filesystem eligibility checks; `USE_TGREP` can force or disable it. See [`indexed-search-tgrep-and-ripgrep.md`](../03-tools-integrations-security/indexed-search-tgrep-and-ripgrep.md).
+- `SESSION_SEARCH_SIDEKICK_AGENT` and `CLOUD_SESSION_SEARCH_SIDEKICK_AGENT`: experiment-aware checks select local or cloud prior-session retrieval sidekicks. See [`memory-and-context-board.md`](../02-context-model-loop/memory-and-context-board.md).
 - Agentic memory and subconscious behavior combine service flags, local settings, repository/user scope, and sidekick gates; see [`memory-and-context-board.md`](../02-context-model-loop/memory-and-context-board.md) for the dedicated memory flow.
 
 ## Assignment-context headers

@@ -165,9 +165,11 @@ The `runtime.node` expansion coincides with many `app.js` paths becoming adapter
 | Change area | Updated page |
 |---|---|
 | TUI commands and sidebar | [Interactive TUI and slash-command workflows](../01-runtime-lifecycle/tui-and-slash-commands.md) |
+| Out-of-process native calls | [Out-of-process native runtime bridge](../01-runtime-lifecycle/out-of-process-native-runtime.md) |
 | Voice server/device selection | [Voice mode and Foundry Local](../01-runtime-lifecycle/voice-mode-foundry-local.md), [Voice runtime server](../01-runtime-lifecycle/voice-runtime-workers-and-transcription.md) |
 | Models/provider transport | [Models, providers, and authentication](../02-context-model-loop/models-providers-auth.md) |
 | Shell migration | [Shell command execution events](../03-tools-integrations-security/shell-command-execution-events.md) |
+| Indexed repository search | [Indexed repository search with tgrep and ripgrep](../03-tools-integrations-security/indexed-search-tgrep-and-ripgrep.md) |
 | Sandbox expansion | [Sandbox implementation](../03-tools-integrations-security/sandboxing.md) |
 | Scoped settings | [Settings and configuration persistence](../03-tools-integrations-security/settings-config-persistence.md) |
 | MCP/resources | [MCP host, transports, and tools](../03-tools-integrations-security/mcp-host-transport-and-tools.md) |
@@ -181,7 +183,7 @@ The `runtime.node` expansion coincides with many `app.js` paths becoming adapter
 
 ## Residual gaps
 
-- Native `runtime.node` behavior is only documentable at its JavaScript call boundary without separate binary analysis.
+- Native `runtime.node` implementation details remain opaque without separate binary analysis; the in-process/OOP selection and Node transport boundary are now documented.
 - The package changelog is product-facing evidence, not proof of runtime lifecycle by itself; UI-only changes were not expanded into dedicated internals pages.
 - All `275` current schema RPC methods are marked experimental, so SDK clients should remain version-coupled.
 - Minified aliases and approximate lines will move again; the regenerated `source-atlas/` is the current discovery baseline.

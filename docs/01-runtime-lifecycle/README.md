@@ -17,7 +17,8 @@ This page is a chapter guide. The linked implementation pages carry concrete `ap
 
 ```mermaid
 flowchart TD
-    Loader[Loader/bootstrap] --> Root[Root command and pre-action setup]
+    Loader[Loader/bootstrap] --> Native[Native runtime bridge]
+    Native --> Root[Root command and pre-action setup]
     Root --> Dispatch{Runtime mode}
     Dispatch --> TUI[Interactive TUI]
     Dispatch --> Prompt[Prompt/stdin/non-TTY]
@@ -31,6 +32,7 @@ flowchart TD
     Sessions --> Shutdown[Shutdown/update/logging cleanup]
 
     click Loader "./loader-bootstrap/" "Open loader and bootstrap"
+    click Native "./out-of-process-native-runtime/" "Open native runtime bridge"
     click Root "./mode-dispatch-and-runtime-startup/" "Open Mode dispatch and runtime startup"
     click TUI "./tui-and-slash-commands/" "Open TUI and slash commands"
     click Server "./embedded-server-acp-protocol/" "Open embedded server and ACP"
@@ -42,10 +44,11 @@ flowchart TD
 | Order | Page | Runtime question answered |
 |---:|---|---|
 | 1 | [Loader and bootstrap workflows](loader-bootstrap.md) | How does the SEA/npm package select and load the actual runtime bundle? |
-| 2 | [Mode dispatch and runtime startup](mode-dispatch-and-runtime-startup.md) | How do argv, stdin, TTY, settings, auth, and sessions choose the execution mode? |
-| 3 | [Interactive TUI and slash-command workflows](tui-and-slash-commands.md) | How does the terminal UI handle input, rendering, slash commands, dialogs, and permissions? |
-| 4 | [Embedded server, ACP, and JSON-RPC protocol](embedded-server-acp-protocol.md) | How does the CLI expose runtime/session capabilities to external hosts? |
-| 5 | [Telemetry, update, and shutdown](../05-hosted-agent-ops/telemetry-update-and-shutdown.md) | How are logs, telemetry, update/version behavior, signals, disposables, and graceful exit coordinated? |
+| 2 | [Out-of-process native runtime bridge](out-of-process-native-runtime.md) | How can JavaScript use a Rust-parent native surface instead of loading `runtime.node` in-process? |
+| 3 | [Mode dispatch and runtime startup](mode-dispatch-and-runtime-startup.md) | How do argv, stdin, TTY, settings, auth, and sessions choose the execution mode? |
+| 4 | [Interactive TUI and slash-command workflows](tui-and-slash-commands.md) | How does the terminal UI handle input, rendering, slash commands, dialogs, and permissions? |
+| 5 | [Embedded server, ACP, and JSON-RPC protocol](embedded-server-acp-protocol.md) | How does the CLI expose runtime/session capabilities to external hosts? |
+| 6 | [Telemetry, update, and shutdown](../05-hosted-agent-ops/telemetry-update-and-shutdown.md) | How are logs, telemetry, update/version behavior, signals, disposables, and graceful exit coordinated? |
 
 ## Runtime support topics
 

@@ -106,6 +106,12 @@ jobs:
             exit 0
           fi
 
+          protected_before="$RUNNER_TEMP/protected-before.sha256"
+          protected_after="$RUNNER_TEMP/protected-after.sha256"
+          find copilot-cli-pkg source-atlas scripts .github -type f -print0 \
+            | sort -z \
+            | xargs -0 sha256sum > "$protected_before"
+
           copilot \
             --prompt "$(cat .github/prompts/weekly-copilot-cli-docs.md)" \
             --allow-all-tools \
@@ -116,19 +122,35 @@ jobs:
             --no-remote-export \
             --max-autopilot-continues 10 \
             --silent
+
+          find copilot-cli-pkg source-atlas scripts .github -type f -print0 \
+            | sort -z \
+            | xargs -0 sha256sum > "$protected_after"
+          if ! cmp --silent "$protected_before" "$protected_after"; then
+            echo "The documentation agent modified protected package, atlas, script, or workflow files." >&2
+            diff --unified "$protected_before" "$protected_after" || true
+            exit 1
+          fi
           echo "ran=true" >> "$GITHUB_OUTPUT"
 
       - name: Validate package, atlas, docs, and website
         if: steps.decision.outputs.should_update == 'true'
+        env:
+          DOC_AGENT_RAN: ${{ steps.doc_agent.outputs.ran }}
         run: |
           node --check scripts/extract-copilot-cli-pkg.mjs
           node --check scripts/index-app-js.mjs
           node --check scripts/update-copilot-cli-docs.mjs
           node --check scripts/check-docs.mjs
+          node --test scripts/update-copilot-cli-docs.test.mjs scripts/check-docs.test.mjs
           node --check copilot-cli-pkg/app.js
           test "$(node -p "require('./copilot-cli-pkg/package.json').version")" = "${{ steps.package.outputs.latest_version }}"
           npm run build --prefix website
-          node scripts/check-docs.mjs
+          check_args=()
+          if [[ "$DOC_AGENT_RAN" != "true" ]]; then
+            check_args+=(--allow-pending-subsystems)
+          fi
+          node scripts/check-docs.mjs "${check_args[@]}"
           git diff --check -- README.md docs help website source-atlas scripts .github
 
       - name: Ensure the update produced repository changes
@@ -161,6 +183,8 @@ jobs:
           LATEST_VERSION: ${{ steps.package.outputs.latest_version }}
           PREVIOUS_VERSION: ${{ steps.package.outputs.previous_version }}
           REPORT_PATH: ${{ steps.package.outputs.report_path }}
+          SUBSYSTEM_REVIEW_PATH: ${{ steps.package.outputs.subsystem_review_path }}
+          SUBSYSTEM_CANDIDATE_COUNT: ${{ steps.package.outputs.subsystem_candidate_count }}
           DOC_AGENT_RAN: ${{ steps.doc_agent.outputs.ran }}
         run: |
           branch="automation/copilot-cli-${LATEST_VERSION}-${GITHUB_RUN_ID}"
@@ -171,17 +195,24 @@ jobs:
           git commit -m "chore: update Copilot CLI to ${LATEST_VERSION}"
           git push origin "$branch"
 
-          body=$(printf '%s\n\n%s\n%s\n%s\n\n%s\n%s\n%s\n%s\n' \
+          body=$(printf '%s\n\n%s\n%s\n%s\n%s\n%s\n\n%s\n%s\n%s\n%s\n' \
             "Automated weekly Copilot CLI package and documentation refresh." \
             "- Package: \`${PREVIOUS_VERSION}\` -> \`${LATEST_VERSION}\`" \
             "- Rolling report: \`${REPORT_PATH}\`" \
+            "- Subsystem review: \`${SUBSYSTEM_REVIEW_PATH}\`" \
+            "- Subsystem/module candidates: \`${SUBSYSTEM_CANDIDATE_COUNT}\`" \
             "- Optional documentation agent ran: \`${DOC_AGENT_RAN:-false}\`" \
             "Validation completed before this PR was opened:" \
             "- native Copilot CLI install plus package/script syntax and version checks" \
             "- Astro build plus Markdown link, navigation, route, H1, and atlas-count checks" \
             "- extracted package artifacts are excluded from diff --check because upstream generated declarations may contain trailing spaces")
 
-          gh pr create \
+          pr_args=()
+          if [[ "$DOC_AGENT_RAN" != "true" ]]; then
+            pr_args+=(--draft)
+          fi
+
+          gh pr create "${pr_args[@]}" \
             --base main \
             --head "$branch" \
             --title "chore: update Copilot CLI to ${LATEST_VERSION}" \
@@ -192,3 +223,4 @@ jobs:
         run: |
           echo "Updated Copilot CLI ${{ steps.package.outputs.previous_version }} -> ${{ steps.package.outputs.latest_version }}." >> "$GITHUB_STEP_SUMMARY"
           echo "Report: ${{ steps.package.outputs.report_path }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Subsystem candidates: ${{ steps.package.outputs.subsystem_candidate_count }} (${{ steps.package.outputs.subsystem_review_path }})" >> "$GITHUB_STEP_SUMMARY"

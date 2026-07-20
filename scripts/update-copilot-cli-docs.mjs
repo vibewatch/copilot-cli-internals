@@ -1,15 +1,27 @@
 #!/usr/bin/env node
 
 import { execFileSync, spawnSync } from "node:child_process";
-import { appendFileSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import {
+  appendFileSync,
+  mkdirSync,
+  readFileSync,
+  readdirSync,
+  writeFileSync,
+} from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const SCRIPT_PATH = fileURLToPath(import.meta.url);
+const REPO_ROOT = resolve(dirname(SCRIPT_PATH), "..");
 const PACKAGE_DIR = join(REPO_ROOT, "copilot-cli-pkg");
 const PACKAGE_JSON = join(PACKAGE_DIR, "package.json");
 const ATLAS_SUMMARY = join(REPO_ROOT, "source-atlas", "summary.json");
 const ATLAS_SURFACE = join(REPO_ROOT, "source-atlas", "surface-index.json");
+const SUBSYSTEM_MANIFEST = join(
+  REPO_ROOT,
+  "source-atlas",
+  "subsystem-candidates.json",
+);
 const SOURCE_ATLAS_DOC = join(
   REPO_ROOT,
   "docs",
@@ -21,6 +33,12 @@ const DEFAULT_REPORT = join(
   "docs",
   "00-start-here",
   "latest-package-update.md",
+);
+const SUBSYSTEM_REVIEW = join(
+  REPO_ROOT,
+  "docs",
+  "00-start-here",
+  "latest-subsystem-review.md",
 );
 const VERSION_PATTERN = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/;
 const SURFACE_KEYS = [
@@ -291,6 +309,234 @@ function getPackageChanges() {
   return [...tracked, ...untracked].sort();
 }
 
+function packageEntryKind(entry) {
+  if (entry.isDirectory()) return "directory";
+  if (entry.isFile()) return "file";
+  if (entry.isSymbolicLink()) return "symlink";
+  return "entry";
+}
+
+function snapshotPackageLayout(directory = PACKAGE_DIR) {
+  const roots = new Map();
+  const files = new Set();
+  const directories = new Set();
+
+  function visit(currentDirectory, prefix = "") {
+    for (const entry of readdirSync(currentDirectory, { withFileTypes: true })) {
+      const relativePath = prefix ? `${prefix}/${entry.name}` : entry.name;
+      if (!prefix) roots.set(entry.name, packageEntryKind(entry));
+      if (entry.isDirectory()) {
+        directories.add(relativePath);
+        visit(join(currentDirectory, entry.name), relativePath);
+      } else {
+        files.add(relativePath);
+      }
+    }
+  }
+
+  visit(directory);
+  return { roots, files, directories };
+}
+
+function moduleGroupForFile(filePath, addedRoots, addedDirectories) {
+  const parts = filePath.split("/");
+  if (addedRoots.has(parts[0])) return undefined;
+  if (
+    addedDirectories.some(
+      (directory) => filePath.startsWith(`${directory}/`),
+    )
+  ) {
+    return undefined;
+  }
+  const basename = parts.at(-1);
+  const directModuleRoots = new Set([
+    "builtin",
+    "copilot-sdk",
+    "definitions",
+    "preloads",
+    "schemas",
+    "sdk",
+    "worker",
+  ]);
+
+  if (directModuleRoots.has(parts[0]) && parts.length <= 2) {
+    return filePath;
+  }
+
+  if (parts[0] === "definitions" && parts[1] === "sidekick") {
+    return "definitions/sidekick/";
+  }
+  if (parts[0] === "definitions" && basename?.endsWith(".agent.yaml")) {
+    return filePath;
+  }
+  if (parts[0] === "builtin-skills" && basename === "SKILL.md") {
+    return `${parts.slice(0, -1).join("/")}/`;
+  }
+  if (
+    /(?:worker|server|runtime|webview|toolset|tgrep)/i.test(filePath) &&
+    /\.(?:[cm]?js|d\.ts|json|node|wasm|yaml)$/.test(filePath)
+  ) {
+    return filePath;
+  }
+  return undefined;
+}
+
+function namespaceFamilies(items) {
+  const families = new Map();
+  for (const item of items ?? []) {
+    const name = itemName(item);
+    const parts = name.split(".");
+    if (parts.length < 2) continue;
+    const family = `${parts[0]}.${parts[1]}`;
+    const values = families.get(family) ?? [];
+    values.push(name);
+    families.set(family, values);
+  }
+  return families;
+}
+
+function buildSubsystemCandidates(
+  previousLayout,
+  currentLayout,
+  previousSurface,
+  currentSurface,
+) {
+  const candidates = [];
+  const addedRoots = new Set(
+    [...currentLayout.roots.keys()].filter(
+      (name) => !previousLayout.roots.has(name),
+    ),
+  );
+
+  for (const name of [...addedRoots].sort()) {
+    const kind = currentLayout.roots.get(name);
+    candidates.push({
+      id: `package-root:${name}`,
+      kind: "package-root",
+      evidence: [`New top-level ${kind}: \`copilot-cli-pkg/${name}${kind === "directory" ? "/" : ""}\`.`],
+    });
+  }
+
+  const addedDirectories = [...currentLayout.directories]
+    .filter((directory) => !previousLayout.directories.has(directory))
+    .filter((directory) => !addedRoots.has(directory.split("/", 1)[0]))
+    .sort((left, right) => {
+      const depthDifference = left.split("/").length - right.split("/").length;
+      return depthDifference || left.localeCompare(right);
+    });
+  const selectedDirectories = [];
+  for (const directory of addedDirectories) {
+    if (
+      selectedDirectories.some((parent) =>
+        directory.startsWith(`${parent}/`),
+      )
+    ) {
+      continue;
+    }
+    selectedDirectories.push(directory);
+    candidates.push({
+      id: `package-module:${directory}/`,
+      kind: "package-module",
+      evidence: [`New package directory: \`copilot-cli-pkg/${directory}/\`.`],
+    });
+  }
+
+  const addedFiles = [...currentLayout.files]
+    .filter((filePath) => !previousLayout.files.has(filePath))
+    .sort();
+  const moduleGroups = new Map();
+  for (const filePath of addedFiles) {
+    const group = moduleGroupForFile(
+      filePath,
+      addedRoots,
+      selectedDirectories,
+    );
+    if (!group) continue;
+    const files = moduleGroups.get(group) ?? [];
+    files.push(filePath);
+    moduleGroups.set(group, files);
+  }
+
+  for (const [group, files] of [...moduleGroups].sort(([left], [right]) =>
+    left.localeCompare(right),
+  )) {
+    const examples = files.slice(0, 8).map((filePath) => `\`${filePath}\``);
+    const suffix = files.length > examples.length ? `, plus ${files.length - examples.length} more` : "";
+    candidates.push({
+      id: `package-module:${group}`,
+      kind: "package-module",
+      evidence: [`New module/entrypoint files: ${examples.join(", ")}${suffix}.`],
+    });
+  }
+
+  for (const surfaceKey of ["eventStrings", "jsonRpcMethods"]) {
+    const previousFamilies = namespaceFamilies(previousSurface?.[surfaceKey]);
+    const currentFamilies = namespaceFamilies(currentSurface?.[surfaceKey]);
+    for (const [family, names] of currentFamilies) {
+      if (previousFamilies.has(family) || names.length < 2) continue;
+      const examples = [...new Set(names)].sort().slice(0, 8);
+      candidates.push({
+        id: `surface-namespace:${surfaceKey}:${family}`,
+        kind: "surface-namespace",
+        evidence: [
+          `New \`${surfaceKey}\` namespace \`${family}.*\` with ${names.length} members; examples: ${examples.map((name) => `\`${name}\``).join(", ")}.`,
+        ],
+      });
+    }
+  }
+
+  return candidates.sort((left, right) => left.id.localeCompare(right.id));
+}
+
+function renderSubsystemReview({
+  previousVersion,
+  currentVersion,
+  generatedAt,
+  candidates,
+}) {
+  const header = `# Latest subsystem and module review
+
+> Generated as a review scaffold by \`scripts/update-copilot-cli-docs.mjs\`. The documentation agent or a human reviewer must inspect each candidate against current source evidence and replace every \`pending\` field.
+
+Generated: \`${generatedAt}\`
+
+Package transition: \`${previousVersion}\` -> \`${currentVersion}\`
+
+## Decision contract
+
+Use exactly one decision for each candidate:
+
+- \`new-page\`: a distinct lifecycle, entrypoint, state model, protocol, or trust boundary requires focused documentation;
+- \`existing-page\`: the candidate materially extends an existing subsystem and is documented there;
+- \`not-a-subsystem\`: generated data, vendored assets, tests, packaging support, or scan noise does not warrant runtime documentation.
+
+For \`new-page\` and \`existing-page\`, replace Documentation with a Markdown link to the page. For every decision, replace Source confirmation with the current source anchor or reason it is scan/package noise.
+`;
+
+  if (candidates.length === 0) {
+    return `${header}
+
+## Result
+
+- Decision: \`no-candidates\`
+- Documentation: N/A
+- Source confirmation: No new package roots, module entrypoints, or multi-member event/RPC namespaces were detected.
+`;
+  }
+
+  const sections = candidates.map((candidate, index) => {
+    return `## Candidate ${index + 1}: \`${candidate.id}\`
+
+- Kind: \`${candidate.kind}\`
+- Evidence: ${candidate.evidence.join(" ")}
+- Decision: \`pending\`
+- Documentation: \`pending\`
+- Source confirmation: \`pending\`
+`;
+  });
+  return `${header}\n\n${sections.join("\n")}`;
+}
+
 function replaceRequired(text, pattern, replacement, label) {
   if (!pattern.test(text)) {
     throw new Error(`Could not update ${label}; expected text was not found`);
@@ -404,6 +650,7 @@ function renderReport({
   currentSurface,
   changelog,
   packageChanges,
+  subsystemCandidates,
 }) {
   const releases = releaseEntriesBetween(
     changelog,
@@ -489,6 +736,12 @@ Changed paths: ${packageChanges.length}.
 
 ${packageChangePreview.length ? packageChangePreview.join("\n") : "- None."}
 
+## New subsystem and module review
+
+Detected candidates: ${subsystemCandidates.length}.
+
+Review and resolve every candidate in [Latest subsystem and module review](latest-subsystem-review.md). A new independent lifecycle, entrypoint, state model, protocol, or trust boundary should receive a focused page rather than being folded into unrelated update prose.
+
 ## Documentation checklist
 
 - [ ] Confirm every documented behavior in current \`copilot-cli-pkg/app.js\`, SDK declarations, schemas, help, or packaged definitions.
@@ -559,6 +812,7 @@ async function main() {
 
   const previousAtlas = readJson(ATLAS_SUMMARY);
   const previousSurface = readJson(ATLAS_SURFACE);
+  const previousLayout = snapshotPackageLayout();
 
   run(process.execPath, [
     "scripts/extract-copilot-cli-pkg.mjs",
@@ -580,8 +834,15 @@ async function main() {
 
   const currentAtlas = readJson(ATLAS_SUMMARY);
   const currentSurface = readJson(ATLAS_SURFACE);
+  const currentLayout = snapshotPackageLayout();
   const changelog = readJson(join(PACKAGE_DIR, "changelog.json"));
   const packageChanges = getPackageChanges();
+  const subsystemCandidates = buildSubsystemCandidates(
+    previousLayout,
+    currentLayout,
+    previousSurface,
+    currentSurface,
+  );
   const report = renderReport({
     previousPackage,
     currentPackage,
@@ -591,16 +852,37 @@ async function main() {
     currentSurface,
     changelog,
     packageChanges,
+    subsystemCandidates,
   });
+  const subsystemReview = renderSubsystemReview({
+    previousVersion: currentVersion,
+    currentVersion: currentPackage.version,
+    generatedAt: currentAtlas.generatedAt ?? new Date().toISOString(),
+    candidates: subsystemCandidates,
+  });
+  const subsystemManifest = {
+    generatedAt: currentAtlas.generatedAt ?? new Date().toISOString(),
+    previousVersion: currentVersion,
+    currentVersion: currentPackage.version,
+    candidates: subsystemCandidates,
+  };
 
   mkdirSync(dirname(options.reportPath), { recursive: true });
   writeFileSync(options.reportPath, report, "utf8");
+  writeFileSync(SUBSYSTEM_REVIEW, subsystemReview, "utf8");
+  writeFileSync(
+    SUBSYSTEM_MANIFEST,
+    `${JSON.stringify(subsystemManifest, null, 2)}\n`,
+    "utf8",
+  );
   updateVersionMetadata(currentPackage.version);
   updateSourceAtlasDocumentation(currentPackage.version, currentAtlas);
 
   setOutput("previous_version", currentVersion);
   setOutput("updated", true);
   setOutput("report_path", relative(REPO_ROOT, options.reportPath));
+  setOutput("subsystem_review_path", relative(REPO_ROOT, SUBSYSTEM_REVIEW));
+  setOutput("subsystem_candidate_count", subsystemCandidates.length);
   console.log(
     `Updated Copilot CLI ${currentVersion} -> ${latestVersion}; report: ${relative(
       REPO_ROOT,
@@ -609,7 +891,11 @@ async function main() {
   );
 }
 
-main().catch((error) => {
-  console.error(`update-copilot-cli-docs: ${error.message}`);
-  process.exitCode = 1;
-});
+if (process.argv[1] && resolve(process.argv[1]) === SCRIPT_PATH) {
+  main().catch((error) => {
+    console.error(`update-copilot-cli-docs: ${error.message}`);
+    process.exitCode = 1;
+  });
+}
+
+export { buildSubsystemCandidates, renderSubsystemReview };

@@ -4,7 +4,7 @@ This report preserves a second-pass, script-assisted scan of the extracted Copil
 
 The current documentation set now covers the major runtime shape, prompts, memory/context board, compaction, loader/bootstrap, CLI routing, TUI, Tree-sitter, sessions, remote control, MCP, permissions, sandboxing, models/providers/auth, model API routing, resilience, task orchestration, autopilot, fleet mode, feature gates, and observability. The main scan candidates below have been drafted and indexed; remaining opportunities are narrow follow-ups to pursue only when a future question needs that depth.
 
-The `1.0.54 → 1.0.71` refresh is summarized in [Copilot CLI 1.0.71 package delta](../00-start-here/copilot-cli-1.0.71-delta.md). It closed new gaps for scoped settings, worktree/move behavior, durable canvases, MCP resources/live control, plugin marketplaces, built-in agent policy, voice-server architecture, native shell execution, and expanded sandbox enforcement.
+The `1.0.54 → 1.0.71` refresh is summarized in [Copilot CLI 1.0.71 package delta](../00-start-here/copilot-cli-1.0.71-delta.md). It closed new gaps for scoped settings, worktree/move behavior, durable canvases and their native webview renderer, MCP resources/live control, plugin marketplaces, built-in agent policy, voice-server architecture, native shell execution, the OOP native runtime bridge, indexed tgrep search, SDK ToolSet filters, and expanded sidekick variants.
 
 ## Source anchors
 
@@ -84,6 +84,8 @@ Additional iterative gap pass:
 5. The former **request processor and compaction/retry interaction path** gap is now covered thematically by [`conversation-compaction.md`](../02-context-model-loop/conversation-compaction.md), [`resilience-rate-limits-concurrency.md`](../02-context-model-loop/resilience-rate-limits-concurrency.md), and [`attachments-and-file-ingestion.md`](../02-context-model-loop/attachments-and-file-ingestion.md). Together they explain pre-request processors, token-budget checks, automatic compaction, context-limit retry, rate-limit recovery, request-size recovery, and request-message mutation before the provider call. A processor-only page would only be useful if a future reader needs that exact cross-cutting call-path view.
 6. [`conversation-session-end-to-end.md`](../04-sessions-persistence-remote/conversation-session-end-to-end.md), [`session-persistence-replay-and-indexing.md`](../04-sessions-persistence-remote/session-persistence-replay-and-indexing.md), and [`debug-bundle-redaction-boundaries.md`](../05-hosted-agent-ops/debug-bundle-redaction-boundaries.md) now cover the previously scattered reader-path gaps for session lifecycle, persistence layering, and support-bundle redaction boundaries.
 7. [Hosted agent environment](../05-hosted-agent-ops/hosted-agent-environment.md) now covers the constant-first hosted-agent env envelope, MCP/OIDC bootstrap, OTel switches, firewall/trajectory output, and bundled managed-agent SDK surface that were visible in `source-atlas/surface-index.json` but not explained by existing topic pages.
+8. [Out-of-process native runtime bridge](../01-runtime-lifecycle/out-of-process-native-runtime.md) now covers `COPILOT_RUNTIME_OOP`, parent-provided endpoints, protocol/manifest binding, sync-worker semantics, callbacks, handles, cleanup, and the explicit distinction from sandboxing.
+9. [Indexed repository search with tgrep and ripgrep](../03-tools-integrations-security/indexed-search-tgrep-and-ripgrep.md) now covers repository eligibility, index/cache lifecycle, server reuse/readiness, transparent grep-tool routing, telemetry, restart limits, and ripgrep fallback.
 
 ## Extracted command surface
 
@@ -419,4 +421,4 @@ The current important `app.js` documentation backlog is now covered by focused d
 1. A very focused cloud-sandbox/detached-child/rem-agent execution deep dive.
 2. A TUI rendering/theme/Tuikit internals document if terminal rendering itself becomes the research target.
 3. A package/native-dependency inventory document if binary packaging and vendored native modules need a broader audit beyond the loader and voice-mode docs.
-4. A focused `runtime.node` boundary analysis if native exports, handshake manifests, or binary internals become the research target.
+4. A focused native-binary analysis if `runtime.node` implementation internals beyond the documented JavaScript/OOP call boundary become the research target.

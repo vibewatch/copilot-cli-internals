@@ -20,6 +20,7 @@ Read this with [Embedded server, ACP, and JSON-RPC protocol](../01-runtime-lifec
 | Canvas events | Session canvas events | `session.canvas.opened`, `session.canvas.registry_changed` | 4821 | Canvas lifecycle updates are ephemeral session events. |
 | Durable canvas state | Canvas replay events | `session.canvas.recorded`, `session.canvas.removed`, `session.canvas.listOpen` | 167, 2651, 2742 | Open instance identity survives replay/restart separately from transient availability and URL state. |
 | Node SDK canvas API | Per-canvas factory | `createCanvas(...)`, `CanvasOptions`, `CanvasAction` | `copilot-sdk/canvas.d.ts` | Extensions bind open, close, and action handlers while sending only declaration metadata over the wire. |
+| Native canvas renderer | Local webview/window manager | `Ffi()`, `Ofi()`, `Dfi()`, `pendingOpens`, `windows` | 4402 | Loads `@webviewjs/webview`, owns native windows per session/instance, and falls back to a logged URL when unavailable. |
 | SDK/server capability ingress | Session capability options | `requestCanvasRenderer`, `requestMcpApps`, `buildSdkSessionCapabilities` | 6375 | SDK/server create/resume can opt sessions into canvas and MCP Apps capabilities. |
 | SDK connection registration | Canvas provider registration | `registerCanvasesForConnection(...)` | 6375 | Connected SDK/server clients can register canvas providers by connection. |
 | MCP Apps diagnostics | MCP Apps API surface | `mcp.apps.diagnose`, `_meta.ui`, `McpAppsDiagnoseResult` | 4856 | Runtime exposes a diagnostic API for capability and `_meta.ui` visibility. |
@@ -125,6 +126,62 @@ The Node SDK exports experimental `createCanvas(options)`. `CanvasOptions` combi
 | `actions[].handler(ctx)` | Required callback for each declared `canvas.action.invoke`. |
 
 Only IDs, descriptions, schemas, and action metadata cross the session create/resume wire. Handler closures remain in the SDK process and are dispatched by canvas ID.
+
+### Native webview renderer
+
+Interactive CLI sessions can project a canvas URL into a local native window through the packaged `@webviewjs/webview` binding. `webview/index.js` is an empty package-local resolver anchor; `Ffi()` uses it to resolve the adjacent native package without relaxing the application's module-containment check.
+
+The renderer is a presentation layer for the canvas lifecycle above, not another canvas provider or model tool.
+
+```mermaid
+sequenceDiagram
+    participant Session
+    participant Manager as Canvas window manager
+    participant Native as @webviewjs/webview
+    participant Provider as Canvas provider
+
+    Session-->>Manager: session.canvas.opened(url, instanceId)
+    Manager->>Native: create Application / BrowserWindow / Webview
+    Native-->>Manager: native window ready
+    Session-->>Manager: session.canvas.unavailable
+    Manager->>Native: title = reconnecting
+    Session-->>Manager: opened again with URL
+    Manager->>Native: reload, show, and focus window
+    Native-->>Manager: user closes window
+    Manager->>Provider: session.canvas.close(instanceId)
+    Session-->>Manager: session.canvas.closed
+    Manager->>Native: dispose webview and window
+```
+
+#### Platform and fallback behavior
+
+`Ofi()` allows native rendering on non-Linux platforms. On Linux it requires either `DISPLAY` or `WAYLAND_DISPLAY`; a headless Linux session logs a warning with the canvas URL instead of attempting a native window.
+
+Application or window initialization failures are also fail-soft. The manager logs `Could not open <canvas> in a native window`, keeps the URL available in the canvas timeline entry, and does not fail the underlying agent/session turn.
+
+#### Window identity and races
+
+Window keys combine `sessionId` and `instanceId`, so equal instance IDs in different sessions do not collide. The manager tracks:
+
+| State | Purpose |
+|---|---|
+| `activeSessions` | Rejects late opens after a session was detached. |
+| `pendingOpens` | Uses a unique token to discard superseded asynchronous application/icon/window setup. |
+| `windows` | Stores the native window, webview, current URL/icon/title, and close state. |
+
+Opening an existing key updates the title/icon, loads the new URL, restores a minimized window, shows it, and focuses both window and webview. `session.canvas.unavailable` leaves the window present but marks its title as reconnecting. A later open event refreshes the same surface.
+
+#### Web context and temporary data
+
+The first window creates a shared native `WebContext` backed by a fresh temporary data directory. `COPILOT_CANVAS_WEBVIEW_DATA_ROOT` can override the parent directory; otherwise the system temp directory is used with a `copilot-webview-` prefix.
+
+The context is shared among live canvas windows in the manager, then disposed when no windows or pending opens remain. Directory removal is recursive/forced with up to three retries and a 100 ms retry delay. A process-exit handler performs synchronous cleanup for any remaining temporary directories.
+
+The webview is created with developer tools enabled in this build. URL scheme validation still happens in the upstream canvas open-result normalization before the local renderer receives the URL.
+
+#### Close and shutdown
+
+Closing a native window disposes its webview/window and calls `session.canvas.close({ instanceId })` unless the manager initiated disposal. Session detach removes pending opens and windows for that session. Global manager disposal clears sessions, closes every native surface, exits the webview application, disposes the shared context, and removes temporary data.
 
 ## MCP Apps lifecycle
 

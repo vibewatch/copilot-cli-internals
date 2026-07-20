@@ -5,10 +5,11 @@ This file explains how execution reaches `app.js` and what `app.js` does before 
 Relevant files:
 
 - `copilot-cli-pkg/npm-loader.js`
+- `copilot-cli-pkg/sea-loader.js`
 - `copilot-cli-pkg/index.js`
 - `copilot-cli-pkg/app.js`
 
-The SEA-internal artifacts referenced by the diagrams below (`sea-loader.js` and the embedded `copilot.tgz`) live inside the native `copilot` binary and are not committed to this repository; only the expanded package contents under `copilot-cli-pkg/` are tracked.
+At runtime, `sea-loader.js` and the embedded `copilot.tgz` live inside the native `copilot` binary. The extractor now preserves the recovered `sea-loader.js` beside the expanded package for analysis; the archive itself is retained only when the extractor is run with `--keep-package-tgz`.
 
 This page opens the [Runtime lifecycle](README.md) chapter. It explains how execution reaches `app.js` before command parsing, sessions, context assembly, or tools exist. Continue to [Mode dispatch and runtime startup](mode-dispatch-and-runtime-startup.md) for root command dispatch, then to [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) once a runtime mode owns a session.
 
@@ -18,10 +19,12 @@ This page opens the [Runtime lifecycle](README.md) chapter. It explains how exec
 
 | Semantic alias | Minified anchor | Location | Role |
 |---|---|---|---|
-| npm launcher | `copilot-cli-pkg/npm-loader.js` | package bin | Selects the native platform package or falls back to the JavaScript loader. |
+| npm launcher | `copilot-cli-pkg/npm-loader.js` | package bin | Resolves and spawns the installed native platform package, or prints a reinstall error when none is available. |
+| SEA loader | `copilot-cli-pkg/sea-loader.js` | native SEA main | Selects/extracts a cached package version and imports its `index.js`. |
 | JavaScript restart wrapper | `copilot-cli-pkg/index.js`, `COPILOT_RUN_APP`, restart code `75` | package loader | Selects active package version, spawns child runtime, forwards signals, and restarts on update handoff. |
 | App bootstrap module | `copilot-cli-pkg/app.js` | bundle entry | Installs restricted module loading, Git safety config, and runtime services before CLI dispatch. |
 | Restricted require shim | `createRequire`, app-path containment check | early `app.js` bootstrap | Allows Node built-ins and approved vendored native modules while rejecting resolved paths outside the app directory. |
+| OOP native require root | `__napiOopEntrypoint`, `napi-oop-runtime` | `app.js` ~15-63 | Resolves the Node transport used when native runtime calls are remoted to a Rust parent. |
 | Git hardening | `LVe()`, `safe.bareRepository=explicit`, `GIT_CONFIG_COUNT` | early `app.js` bootstrap | Adds environment-backed Git safety configuration. |
 | Config migration | `COPILOT_HOME`, XDG `.copilot` migration helpers | early `app.js` bootstrap | Resolves state/config roots and compatibility migration behavior. |
 
@@ -46,7 +49,7 @@ flowchart TD
 
 ## npm/native launcher path
 
-When installed as an npm package, the `copilot` bin points at `npm-loader.js`. That loader prefers a platform-native package if available and falls back to the JavaScript loader.
+When installed as an npm package, the `copilot` bin points at `npm-loader.js`. In the current package, that loader resolves and spawns the matching platform-native package. If no platform package is installed, it prints a reinstall error; it does not run `app.js` directly.
 
 ```mermaid
 flowchart TD
@@ -57,10 +60,9 @@ flowchart TD
     NativePkg --> SpawnNative["spawn native binary with same args"]
     SpawnNative --> NativeRuntime["native SEA runtime"]
 
-    NativeCheck -- no --> NodeVersion{"Node.js >= 24 for JS fallback?"}
-    NodeVersion -- no --> Fail["print unsupported Node error"]
-    NodeVersion -- yes --> ImportIndex["import ./index.js"]
-    ImportIndex --> IndexRuntime["index.js loader wrapper"]
+    NativeCheck -- no --> Fail["print reinstall/platform-package error"]
+    NativeRuntime --> SeaLoader["embedded sea-loader.js"]
+    SeaLoader --> IndexRuntime["selected package index.js"]
     IndexRuntime --> App["app.js"]
 ```
 
@@ -117,7 +119,10 @@ Approved vendored-native module families observed in the bootstrap section inclu
 - `clipboard`
 - `foundry-local-sdk`
 - `@picovoice/pvrecorder-node`
+- `napi-oop-runtime`
 - scoped native dependencies such as `@img/*` and `@teddyzhu/*`
+
+`napi-oop-runtime` has its own package-local `createRequire` root. See [Out-of-process native runtime bridge](out-of-process-native-runtime.md) for the mode switch, connect-back protocol, manifest binding, callbacks, and handle lifetime.
 
 ## Git safety hardening
 

@@ -9,8 +9,10 @@ This page documents the scheduled workflow that checks npm for a newer Copilot C
 | `.github/workflows/update-copilot-cli-docs.yml` | Weekly/manual GitHub Actions entry point, native CLI installer, and pull-request publisher. |
 | `scripts/update-copilot-cli-docs.mjs` | Deterministic version check, package extraction, atlas regeneration, and report generation. |
 | `scripts/check-docs.mjs` | Markdown-link, navigation, generated-route, H1, and atlas-count validation. |
+| `source-atlas/subsystem-candidates.json` | Immutable generated candidate IDs/evidence checked against the editable review page. |
 | `.github/prompts/weekly-copilot-cli-docs.md` | Optional non-interactive Copilot prompt for source-confirmed prose updates. |
 | `latest-package-update.md` | Rolling machine-generated package and named-surface delta. |
+| `latest-subsystem-review.md` | Generated candidate inventory and reviewed create/update/no-doc dispositions. |
 
 ## Workflow
 
@@ -23,7 +25,8 @@ flowchart TD
     Install --> Extract[Extract same version as analysis evidence]
     Extract --> Atlas[Regenerate source-atlas]
     Atlas --> Report[Generate rolling delta report]
-    Report --> Secret{COPILOT_GITHUB_TOKEN configured?}
+    Report --> Candidates[Generate subsystem and module candidate review]
+    Candidates --> Secret{COPILOT_GITHUB_TOKEN configured?}
     Secret -->|yes| Agent[Run prompt with installed copilot command]
     Secret -->|no| Deterministic[Keep report-only docs update]
     Agent --> Validate[Build site and run docs checks]
@@ -43,7 +46,9 @@ The workflow first runs the updater in `--check-only` mode, installs and verifie
 4. runs `scripts/index-app-js.mjs`;
 5. computes added/removed named surfaces and package files;
 6. writes `latest-package-update.md`;
-7. refreshes current-version metadata and the source-atlas inventory table.
+7. detects new top-level package roots, module/entrypoint files, and multi-member event/RPC namespaces;
+8. writes `latest-subsystem-review.md` with pending evidence/decision blocks;
+9. refreshes current-version metadata and the source-atlas inventory table.
 
 This part requires no model token and is the authoritative automation path. If the optional agent is unavailable, the pull request still contains the package, atlas, and report needed for manual review.
 
@@ -55,7 +60,19 @@ Set a repository Actions secret named `COPILOT_GITHUB_TOKEN` to enable the hand-
 
 The workflow passes the token only to the installed native CLI invocation so it can make model requests. The npm installation step does not receive the token. The prompt forbids web/GitHub research, executing the extracted bundle, package edits, commits, and atlas regeneration; it asks the agent to confirm behavior in local extracted sources and update only maintained documentation/site files.
 
-Without this secret, the step records that the agent was skipped and continues with the deterministic report-only pull request.
+Before and after the agent invocation, the workflow hashes every file under `copilot-cli-pkg/`, `source-atlas/`, `scripts/`, and `.github/`. Any changed, deleted, or added protected file fails the run. This keeps the generated candidate manifest and the evidence it indexes independent from the agent that writes the review decisions.
+
+The agent must resolve every generated subsystem candidate:
+
+| Decision | Required action |
+|---|---|
+| `new-page` | Create and navigate a focused source-anchored page for the independent lifecycle, entrypoint, state model, protocol, or trust boundary. |
+| `existing-page` | Update and link the existing owning subsystem page. |
+| `not-a-subsystem` | Record why the evidence is generated data, vendored assets, tests, packaging support, or scan noise. |
+
+Every candidate also requires a documentation link or `N/A` and a current source-confirmation note. Agent-backed runs use strict validation and fail if any field remains `pending`.
+
+Without this secret, the step records that the agent was skipped, allows pending candidate fields, and opens a **draft** deterministic report-only pull request. A human must resolve the subsystem review and add any required pages before marking that PR ready.
 
 ## GitHub permissions
 
@@ -70,13 +87,14 @@ Pull requests created with the repository `GITHUB_TOKEN` may not trigger separat
 
 ## Pull-request behavior
 
-The workflow first checks for an existing open branch whose name starts with `automation/copilot-cli-`. If one exists, it does not create a duplicate weekly PR. Otherwise it creates a version/run-specific branch, stages package/atlas/docs/site/help changes, commits them, pushes the branch, and opens a PR.
+The workflow first checks for an existing open branch whose name starts with `automation/copilot-cli-`. If one exists, it does not create a duplicate weekly PR. Otherwise it creates a version/run-specific branch, stages package/atlas/docs/site/help changes, commits them, pushes the branch, and opens a PR. Runs without the documentation agent create a draft; strict agent-backed runs create a normal review-ready PR.
 
 The generated PR body records:
 
 - previous and current package versions;
 - whether the optional documentation agent ran;
 - the rolling report path;
+- the subsystem review path and candidate count;
 - validations performed;
 - the native/generated SDK trailing-whitespace caveat when applicable.
 
@@ -107,6 +125,7 @@ cd website
 npm ci
 npm run build
 cd ..
+node --test scripts/update-copilot-cli-docs.test.mjs scripts/check-docs.test.mjs
 node scripts/check-docs.mjs
 ```
 
@@ -129,6 +148,8 @@ gh workflow run update-copilot-cli-docs.yml -f force=true
 | npm is unavailable or returns an invalid version | Workflow fails before modifying the repository. |
 | Extracted package version differs from the resolved version | Workflow fails and opens no PR. |
 | Optional agent fails midway | Workflow fails; no partially validated PR is opened. |
+| Agent leaves a subsystem candidate pending | Strict docs validation fails; no review-ready PR is opened. |
+| No Copilot token is configured | Validation allows pending candidates and opens a draft PR for human subsystem review. |
 | Site build, link, route, H1, or atlas-count validation fails | Workflow fails and opens no PR. |
 | An automated update PR is already open | Workflow exits after validation without creating a duplicate. |
 | Pull-request creation is disabled in repository settings | The final publish step fails with setup guidance in this page. |

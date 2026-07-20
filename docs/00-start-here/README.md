@@ -18,6 +18,7 @@ This page is an orientation document, not a direct implementation trace. Concret
 | Bundle identity | See [`what-is-app-js.md`](what-is-app-js.md) | Explains artifact boundaries, package layout, and caveats. |
 | Current package delta | See [`copilot-cli-1.0.71-delta.md`](copilot-cli-1.0.71-delta.md) | Maps confirmed `1.0.54 → 1.0.71` features, API growth, and architecture migrations. |
 | Rolling update report | See [`latest-package-update.md`](latest-package-update.md) | Shows the newest scheduled package and named-surface delta. |
+| Subsystem/module review | See [`latest-subsystem-review.md`](latest-subsystem-review.md) | Records whether each new module needs a focused page, an owning-page update, or no runtime documentation. |
 | Weekly automation | See [`weekly-update-automation.md`](weekly-update-automation.md) | Explains schedule, optional agent setup, validation, permissions, and PR behavior. |
 | Runtime capability map | See [`main-feature-map.md`](main-feature-map.md) | Maps the major systems implemented by the bundle. |
 

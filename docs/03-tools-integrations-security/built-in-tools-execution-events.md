@@ -73,6 +73,8 @@ The lifecycle is intentionally event-first. This lets the TUI, JSON-RPC server, 
 
 The active toolset can include multiple sources.
 
+`grep_search` can be backed by either ripgrep or the optional repository `tgrep` index without changing its model-visible schema. See [Indexed repository search with tgrep and ripgrep](indexed-search-tgrep-and-ripgrep.md) for eligibility, process/index lifecycle, readiness, and fallback.
+
 | Source | Examples | Notes |
 |---|---|---|
 | Built-in tools | shell, file read/search, file edit, patch, memory, planning, task | Defined directly in the bundle. |

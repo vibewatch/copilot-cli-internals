@@ -138,6 +138,7 @@ export default defineConfig({
             { label: 'What is app.js', link: '/00-start-here/what-is-app-js/' },
             { label: 'What changed in 1.0.71', link: '/00-start-here/copilot-cli-1.0.71-delta/' },
             { label: 'Latest automated update', link: '/00-start-here/latest-package-update/' },
+            { label: 'Latest subsystem review', link: '/00-start-here/latest-subsystem-review/' },
             { label: 'Weekly update automation', link: '/00-start-here/weekly-update-automation/' },
             { label: 'Main feature map', link: '/00-start-here/main-feature-map/' },
             { label: 'Full table of contents', link: '/summary/' },
@@ -148,6 +149,7 @@ export default defineConfig({
           items: [
             { label: 'Overview', link: '/01-runtime-lifecycle/' },
             { label: 'Loader and bootstrap', link: '/01-runtime-lifecycle/loader-bootstrap/' },
+            { label: 'Out-of-process native runtime', link: '/01-runtime-lifecycle/out-of-process-native-runtime/' },
             { label: 'Mode dispatch and runtime startup', link: '/01-runtime-lifecycle/mode-dispatch-and-runtime-startup/' },
             { label: 'TUI and slash commands', link: '/01-runtime-lifecycle/tui-and-slash-commands/' },
             { label: 'Embedded server, ACP, JSON-RPC', link: '/01-runtime-lifecycle/embedded-server-acp-protocol/' },
@@ -179,6 +181,7 @@ export default defineConfig({
             { label: 'Overview', link: '/03-tools-integrations-security/' },
             { label: 'Runtime tool assembly', link: '/03-tools-integrations-security/runtime-tool-assembly-and-filtering/' },
             { label: 'Built-in tools and events', link: '/03-tools-integrations-security/built-in-tools-execution-events/' },
+            { label: 'Indexed search: tgrep and ripgrep', link: '/03-tools-integrations-security/indexed-search-tgrep-and-ripgrep/' },
             { label: 'Shell command execution', link: '/03-tools-integrations-security/shell-command-execution-events/' },
             { label: 'Coding-agent validation', link: '/03-tools-integrations-security/coding-agent-validation-toolchain/' },
             { label: 'MCP host, transports, tools', link: '/03-tools-integrations-security/mcp-host-transport-and-tools/' },

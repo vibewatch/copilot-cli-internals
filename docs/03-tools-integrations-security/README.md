@@ -60,12 +60,13 @@ flowchart TD
 |---:|---|---|
 | 1 | [Runtime tool assembly and filtering](runtime-tool-assembly-and-filtering.md) | How are built-ins, MCP, SDK extensions, plugins, custom agents, filters, deferred search, and gates assembled into the final toolset? |
 | 2 | [Built-in tools, execution events, and results](built-in-tools-execution-events.md) | How do permission checks, hooks, execution events, streaming, telemetry, and history wrap a tool call? |
-| 3 | [Shell command execution events](shell-command-execution-events.md) | How does the native-backed Bash/PowerShell manager handle sync/async/detached work, task tracking, and large output? |
-| 4 | [MCP host, transports, and tools](mcp-host-transport-and-tools.md) | How are MCP servers discovered, transported, authorized, filtered, and mapped into tools/resources/prompts/tasks? |
-| 5 | [MCP Apps and canvas bridge](mcp-apps-and-canvas-bridge.md) | How do SDK/server clients and MCP servers expose renderable canvases, MCP Apps UI metadata, and app-originated MCP calls? |
-| 6 | [Tool, path, and URL permissions](tool-path-url-permissions.md) | How do tool/path/URL/MCP/hook approval rules and precedence work? |
-| 7 | [Content exclusion and redaction](content-exclusion-and-redaction.md) | How do policy fetch/merge, filtered outputs, secret env vars, and redaction boundaries affect model-visible data? |
-| 8 | [Sandbox implementation](sandboxing.md) | How does native sandbox policy constrain shell, file/search, LSP, MCP, and web-fetch operations? |
+| 3 | [Indexed repository search with tgrep and ripgrep](indexed-search-tgrep-and-ripgrep.md) | When does the existing grep tool use an index server, and how does it fall back? |
+| 4 | [Shell command execution events](shell-command-execution-events.md) | How does the native-backed Bash/PowerShell manager handle sync/async/detached work, task tracking, and large output? |
+| 5 | [MCP host, transports, and tools](mcp-host-transport-and-tools.md) | How are MCP servers discovered, transported, authorized, filtered, and mapped into tools/resources/prompts/tasks? |
+| 6 | [MCP Apps and canvas bridge](mcp-apps-and-canvas-bridge.md) | How do SDK/server clients and MCP servers expose renderable canvases, MCP Apps UI metadata, and app-originated MCP calls? |
+| 7 | [Tool, path, and URL permissions](tool-path-url-permissions.md) | How do tool/path/URL/MCP/hook approval rules and precedence work? |
+| 8 | [Content exclusion and redaction](content-exclusion-and-redaction.md) | How do policy fetch/merge, filtered outputs, secret env vars, and redaction boundaries affect model-visible data? |
+| 9 | [Sandbox implementation](sandboxing.md) | How does native sandbox policy constrain shell, file/search, LSP, MCP, and web-fetch operations? |
 
 ## Boundary-by-boundary map
 
@@ -73,6 +74,7 @@ flowchart TD
 |---|---|---|
 | Model-visible tool list | [Runtime tool assembly and filtering](runtime-tool-assembly-and-filtering.md) | Tool candidates, filters, selected-agent rules, deferred loading, and `session.tools_updated`. |
 | Tool call execution | [Built-in tools, execution events, and results](built-in-tools-execution-events.md) | Start/progress/partial/complete events, request processors, hooks, permissions, and replayable results. |
+| Repository search backend | [Indexed repository search with tgrep and ripgrep](indexed-search-tgrep-and-ripgrep.md) | Eligibility, repository index cache, server readiness, query adaptation, telemetry, and fallback. |
 | Shell process boundary | [Shell command execution events](shell-command-execution-events.md) | Native manager calls, sync/async/detach semantics, output buffers, background tasks, and notifications. |
 | MCP protocol boundary | [MCP host, transports, and tools](mcp-host-transport-and-tools.md) | Config merge, local/HTTP/SSE transports, OAuth, instructions, tool flattening, and MCP task/progress events. |
 | MCP UI/app boundary | [MCP Apps and canvas bridge](mcp-apps-and-canvas-bridge.md) | Gated `mcp-apps` capability, canvas provider registration, canvas model tools, and app-originated MCP tool-call events. |

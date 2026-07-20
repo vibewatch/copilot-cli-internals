@@ -131,6 +131,37 @@ The SDK docs are clear that the `@github/copilot-sdk` import is resolved automat
 | Timeline logging | `session.log(message, options?)` | Emits user-visible timeline log messages without writing to stdout. |
 | Low-level RPC | `session.rpc` | Exposes typed access to session APIs for advanced integrations. |
 
+## Tool filtering from the SDK
+
+The public SDK exports `ToolSet` and `BuiltInTools` from `copilot-sdk/toolSet.d.ts`. They build source-qualified filters for `SessionConfigBase.availableTools` and `excludedTools`; they do not register or execute tools themselves.
+
+```ts
+import { BuiltInTools, ToolSet } from "@github/copilot-sdk";
+
+const availableTools = new ToolSet()
+    .addBuiltIn(BuiltInTools.Isolated)
+    .addMcp("github-list_issues")
+    .addCustom("summarize_release")
+    .toArray();
+
+const session = await client.createSession({
+    availableTools,
+});
+```
+
+| Builder method | Filter source |
+|---|---|
+| `addBuiltIn(name | names)` | Tools registered by the runtime as built-in; `"*"` selects that entire source. |
+| `addMcp(toolName)` | Canonical MCP wire names, or `"*"` for all MCP tools. |
+| `addCustom(name)` | SDK custom tools and custom-agent tools, or `"*"` for that source. |
+| `toArray()` | Defensive string-array copy accepted by session create/resume options. |
+
+Source classification is registration metadata, not name inference. A custom or MCP tool with the same visible name as a built-in does not become built-in for filter matching.
+
+`BuiltInTools.Isolated` is a curated contract for `CopilotClient` mode `"empty"`: entries must remain session-bounded and must not gain host filesystem, host environment, network, or cross-session behavior. If a tool later gains such behavior, keeping it in this set would violate the SDK contract.
+
+For request-time merge order, source-qualified matching, deny/allow precedence, and deferred loading after these filters reach the runtime, see [Runtime tool assembly and filtering](runtime-tool-assembly-and-filtering.md).
+
 Two gotchas from `copilot-sdk/docs/agent-author.md` are especially important when reverse-engineering behavior:
 
 - stdout is reserved for JSON-RPC, so extensions should use `session.log()` instead of `console.log()`;

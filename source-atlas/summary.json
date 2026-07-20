@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-20T00:24:02.078Z",
+  "generatedAt": "2026-07-20T01:29:40.359Z",
   "source": {
     "path": "/home/ythuang/workspace/copilot-cli-internals/copilot-cli-pkg/app.js",
     "relativePath": "copilot-cli-pkg/app.js",
@@ -24,19 +24,21 @@
     "slashCommandCandidates": 115,
     "knownToolNameHits": 22,
     "packagedAgentDefinitions": 7,
-    "knownSemanticAnchors": 21,
-    "mainPathSeeds": 13,
-    "referencedDocs": 19,
+    "knownSemanticAnchors": 23,
+    "mainPathSeeds": 15,
+    "referencedDocs": 21,
     "missingDocReferences": 0
   },
   "documentation": {
     "referencedDocs": [
       "docs/00-start-here/main-feature-map.md",
       "docs/01-runtime-lifecycle/mode-dispatch-and-runtime-startup.md",
+      "docs/01-runtime-lifecycle/out-of-process-native-runtime.md",
       "docs/01-runtime-lifecycle/tui-and-slash-commands.md",
       "docs/02-context-model-loop/prompt-sources.md",
       "docs/02-context-model-loop/resilience-rate-limits-concurrency.md",
       "docs/03-tools-integrations-security/built-in-tools-execution-events.md",
+      "docs/03-tools-integrations-security/indexed-search-tgrep-and-ripgrep.md",
       "docs/03-tools-integrations-security/mcp-host-transport-and-tools.md",
       "docs/03-tools-integrations-security/plugins-extensions-and-capabilities.md",
       "docs/03-tools-integrations-security/runtime-tool-assembly-and-filtering.md",
@@ -99,6 +101,32 @@
         }
       ],
       "firstLine": 637
+    },
+    {
+      "semanticAlias": "Out-of-process native runtime bridge",
+      "anchors": [
+        "COPILOT_RUNTIME_OOP",
+        "NAPI_OOP_SOCKET",
+        "connectFromEnvSync",
+        "createSyncBinding"
+      ],
+      "role": "Selects a parent-provided native runtime, validates its manifest, and reconstructs functions/classes/constants over local IPC.",
+      "docs": "docs/01-runtime-lifecycle/out-of-process-native-runtime.md",
+      "resolved": [
+        {
+          "anchor": "COPILOT_RUNTIME_OOP",
+          "line": 63
+        },
+        {
+          "anchor": "connectFromEnvSync",
+          "line": 63
+        },
+        {
+          "anchor": "createSyncBinding",
+          "line": 63
+        }
+      ],
+      "firstLine": 63
     },
     {
       "semanticAlias": "InteractiveTuiFlow",
@@ -301,6 +329,36 @@
         }
       ],
       "firstLine": 90
+    },
+    {
+      "semanticAlias": "Indexed repository search backend",
+      "anchors": [
+        "copilot_cli_tgrep",
+        "USE_TGREP",
+        "tgrep_startup",
+        "tgrep serve"
+      ],
+      "role": "Starts and monitors the repository tgrep index, then selects tgrep or ripgrep beneath the existing search tools.",
+      "docs": "docs/03-tools-integrations-security/indexed-search-tgrep-and-ripgrep.md",
+      "resolved": [
+        {
+          "anchor": "copilot_cli_tgrep",
+          "line": 124
+        },
+        {
+          "anchor": "USE_TGREP",
+          "line": 122
+        },
+        {
+          "anchor": "tgrep_startup",
+          "line": 5040
+        },
+        {
+          "anchor": "tgrep serve",
+          "line": 122
+        }
+      ],
+      "firstLine": 122
     },
     {
       "semanticAlias": "PermissionService",
@@ -634,6 +692,28 @@
       ]
     },
     {
+      "path": "Native runtime bridge selection",
+      "trigger": "first use of the native runtime surface",
+      "anchorSeeds": [
+        "COPILOT_RUNTIME_OOP",
+        "NAPI_OOP_SOCKET",
+        "connectFromEnvSync",
+        "runtime.node"
+      ],
+      "output": "In-process NAPI addon or manifest-driven out-of-process native-call proxy.",
+      "docs": "docs/01-runtime-lifecycle/out-of-process-native-runtime.md",
+      "resolvedSeeds": [
+        {
+          "anchor": "COPILOT_RUNTIME_OOP",
+          "line": 63
+        },
+        {
+          "anchor": "connectFromEnvSync",
+          "line": 63
+        }
+      ]
+    },
+    {
       "path": "Session and event lifecycle",
       "trigger": "new/resume/continue/name/fork/session APIs",
       "anchorSeeds": [
@@ -789,6 +869,41 @@
         {
           "anchor": "session.tools_updated",
           "line": 2039
+        }
+      ]
+    },
+    {
+      "path": "Indexed repository search",
+      "trigger": "eligible large-repository grep/search initialization",
+      "anchorSeeds": [
+        "copilot_cli_tgrep",
+        "USE_TGREP",
+        "tgrep serve",
+        "tgrep_startup",
+        "--index-path"
+      ],
+      "output": "Repository-keyed trigram index with readiness polling and transparent ripgrep fallback.",
+      "docs": "docs/03-tools-integrations-security/indexed-search-tgrep-and-ripgrep.md",
+      "resolvedSeeds": [
+        {
+          "anchor": "copilot_cli_tgrep",
+          "line": 124
+        },
+        {
+          "anchor": "USE_TGREP",
+          "line": 122
+        },
+        {
+          "anchor": "tgrep serve",
+          "line": 122
+        },
+        {
+          "anchor": "tgrep_startup",
+          "line": 5040
+        },
+        {
+          "anchor": "--index-path",
+          "line": 122
         }
       ]
     },
