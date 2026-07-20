@@ -564,8 +564,8 @@ function updateVersionMetadata(version) {
   let docsReadme = readFileSync(docsReadmePath, "utf8");
   docsReadme = replaceRequired(
     docsReadme,
-    /The current package is `@github\/copilot` `[^`]+`\./,
-    `The current package is \`@github/copilot\` \`${version}\`.`,
+    /The current package is `@github\/copilot` `[^`]+`/,
+    `The current package is \`@github/copilot\` \`${version}\``,
     "docs/README.md current package",
   );
   writeFileSync(docsReadmePath, docsReadme, "utf8");
@@ -573,8 +573,8 @@ function updateVersionMetadata(version) {
   let featureMap = readFileSync(featureMapPath, "utf8");
   featureMap = replaceRequired(
     featureMap,
-    /The current artifact is `[^`]+`\./,
-    `The current artifact is \`${version}\`.`,
+    /The current artifact is `[^`]+`/,
+    `The current artifact is \`${version}\``,
     "main feature map current artifact",
   );
   writeFileSync(featureMapPath, featureMap, "utf8");
