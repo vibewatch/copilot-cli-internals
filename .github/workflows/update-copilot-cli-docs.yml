@@ -96,7 +96,7 @@ jobs:
         id: doc_agent
         if: steps.decision.outputs.should_update == 'true'
         env:
-          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+          COPILOT_GITHUB_TOKEN: ${{ secrets[format('{0}_{1}_{2}', 'COPILOT', 'GITHUB', 'TOKEN')] }}
           COPILOT_AUTO_UPDATE: 'false'
           COPILOT_CACHE_HOME: ${{ runner.temp }}/copilot-cli-cache
         run: |
@@ -191,7 +191,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git switch -c "$branch"
-          git add -A -- copilot-cli-pkg source-atlas docs website README.md help
+          git add -A -- copilot-cli-pkg source-atlas docs maintenance website README.md help
           git commit -m "chore: update Copilot CLI to ${LATEST_VERSION}"
           git push origin "$branch"
 

@@ -175,7 +175,7 @@ After regeneration, inspect:
 - `source-atlas/declarations.json` for new or moved symbols;
 - the generated `README.md` for resolved main path and semantic anchor seed shifts.
 
-For the scheduled extraction, atlas diff, rolling report, optional documentation-agent pass, validation, and pull-request workflow, see [Weekly documentation update automation](../00-start-here/weekly-update-automation.md).
+For the scheduled extraction, atlas diff, rolling report, optional documentation-agent pass, validation, and pull-request workflow, see the repository-only [Weekly documentation update automation](../../maintenance/copilot-cli/weekly-update-automation.md).
 
 ## Caveats
 

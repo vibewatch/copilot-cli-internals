@@ -2,7 +2,7 @@
 
 This document continues the static analysis of the extracted `@github/copilot` CLI bundle. Its goal is to answer a product/runtime question: **what major capabilities are implemented by `app.js`, and how do those capabilities connect?**
 
-The current artifact is `1.0.71`. For the newest release-oriented evidence, read [Latest automated package update](latest-package-update.md); the versioned [Copilot CLI 1.0.71 package delta](copilot-cli-1.0.71-delta.md) records the analysis that established this baseline.
+The current artifact is `1.0.71`; source anchors and behavioral pages below describe that baseline directly.
 
 `app.js` is a bundled and minified production artifact. The document therefore uses semantic aliases such as `RootProgram`, `InteractiveTuiFlow`, `runPromptMode(...)`, `TaskRegistry`, and `LiveFeatureFlagService`. Minified names are kept only as search anchors for the analyzed `@github/copilot` bundle and may shift across releases.
 

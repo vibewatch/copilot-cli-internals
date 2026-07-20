@@ -164,22 +164,22 @@ The `runtime.node` expansion coincides with many `app.js` paths becoming adapter
 
 | Change area | Updated page |
 |---|---|
-| TUI commands and sidebar | [Interactive TUI and slash-command workflows](../01-runtime-lifecycle/tui-and-slash-commands.md) |
-| Out-of-process native calls | [Out-of-process native runtime bridge](../01-runtime-lifecycle/out-of-process-native-runtime.md) |
-| Voice server/device selection | [Voice mode and Foundry Local](../01-runtime-lifecycle/voice-mode-foundry-local.md), [Voice runtime server](../01-runtime-lifecycle/voice-runtime-workers-and-transcription.md) |
-| Models/provider transport | [Models, providers, and authentication](../02-context-model-loop/models-providers-auth.md) |
-| Shell migration | [Shell command execution events](../03-tools-integrations-security/shell-command-execution-events.md) |
-| Indexed repository search | [Indexed repository search with tgrep and ripgrep](../03-tools-integrations-security/indexed-search-tgrep-and-ripgrep.md) |
-| Sandbox expansion | [Sandbox implementation](../03-tools-integrations-security/sandboxing.md) |
-| Scoped settings | [Settings and configuration persistence](../03-tools-integrations-security/settings-config-persistence.md) |
-| MCP/resources | [MCP host, transports, and tools](../03-tools-integrations-security/mcp-host-transport-and-tools.md) |
-| Plugin marketplace/extensions | [Plugins, extensions, and capabilities](../03-tools-integrations-security/plugins-extensions-and-capabilities.md) |
-| Canvas durability/SDK | [MCP Apps and canvas bridge](../03-tools-integrations-security/mcp-apps-and-canvas-bridge.md) |
-| Worktrees | [Git, repository, PR, and ref context](../04-sessions-persistence-remote/git-repository-context.md) |
-| SDK/schema growth | [API and session event schema contracts](../04-sessions-persistence-remote/api-and-session-event-schemas.md) |
-| Agent policy | [Built-in agents](../06-agents-automation/built-in-agents.md) |
-| Autopilot/plan policy | [Autopilot and no-ask-user](../06-agents-automation/autopilot-and-no-ask-user.md) |
-| Scheduled commands | [Scheduled prompts and command queue](../06-agents-automation/scheduled-prompts-and-command-queue.md) |
+| TUI commands and sidebar | [Interactive TUI and slash-command workflows](../../docs/01-runtime-lifecycle/tui-and-slash-commands.md) |
+| Out-of-process native calls | [Out-of-process native runtime bridge](../../docs/01-runtime-lifecycle/out-of-process-native-runtime.md) |
+| Voice server/device selection | [Voice mode and Foundry Local](../../docs/01-runtime-lifecycle/voice-mode-foundry-local.md), [Voice runtime server](../../docs/01-runtime-lifecycle/voice-runtime-workers-and-transcription.md) |
+| Models/provider transport | [Models, providers, and authentication](../../docs/02-context-model-loop/models-providers-auth.md) |
+| Shell migration | [Shell command execution events](../../docs/03-tools-integrations-security/shell-command-execution-events.md) |
+| Indexed repository search | [Indexed repository search with tgrep and ripgrep](../../docs/03-tools-integrations-security/indexed-search-tgrep-and-ripgrep.md) |
+| Sandbox expansion | [Sandbox implementation](../../docs/03-tools-integrations-security/sandboxing.md) |
+| Scoped settings | [Settings and configuration persistence](../../docs/03-tools-integrations-security/settings-config-persistence.md) |
+| MCP/resources | [MCP host, transports, and tools](../../docs/03-tools-integrations-security/mcp-host-transport-and-tools.md) |
+| Plugin marketplace/extensions | [Plugins, extensions, and capabilities](../../docs/03-tools-integrations-security/plugins-extensions-and-capabilities.md) |
+| Canvas durability/SDK | [MCP Apps and canvas bridge](../../docs/03-tools-integrations-security/mcp-apps-and-canvas-bridge.md) |
+| Worktrees | [Git, repository, PR, and ref context](../../docs/04-sessions-persistence-remote/git-repository-context.md) |
+| SDK/schema growth | [API and session event schema contracts](../../docs/04-sessions-persistence-remote/api-and-session-event-schemas.md) |
+| Agent policy | [Built-in agents](../../docs/06-agents-automation/built-in-agents.md) |
+| Autopilot/plan policy | [Autopilot and no-ask-user](../../docs/06-agents-automation/autopilot-and-no-ask-user.md) |
+| Scheduled commands | [Scheduled prompts and command queue](../../docs/06-agents-automation/scheduled-prompts-and-command-queue.md) |
 
 ## Residual gaps
 

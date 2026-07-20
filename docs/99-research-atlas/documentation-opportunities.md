@@ -4,7 +4,7 @@ This report preserves a second-pass, script-assisted scan of the extracted Copil
 
 The current documentation set now covers the major runtime shape, prompts, memory/context board, compaction, loader/bootstrap, CLI routing, TUI, Tree-sitter, sessions, remote control, MCP, permissions, sandboxing, models/providers/auth, model API routing, resilience, task orchestration, autopilot, fleet mode, feature gates, and observability. The main scan candidates below have been drafted and indexed; remaining opportunities are narrow follow-ups to pursue only when a future question needs that depth.
 
-The `1.0.54 → 1.0.71` refresh is summarized in [Copilot CLI 1.0.71 package delta](../00-start-here/copilot-cli-1.0.71-delta.md). It closed new gaps for scoped settings, worktree/move behavior, durable canvases and their native webview renderer, MCP resources/live control, plugin marketplaces, built-in agent policy, voice-server architecture, native shell execution, the OOP native runtime bridge, indexed tgrep search, SDK ToolSet filters, and expanded sidekick variants.
+The `1.0.54 → 1.0.71` refresh is summarized in the repository-only [Copilot CLI 1.0.71 package delta](../../maintenance/copilot-cli/copilot-cli-1.0.71-delta.md). It closed new gaps for scoped settings, worktree/move behavior, durable canvases and their native webview renderer, MCP resources/live control, plugin marketplaces, built-in agent policy, voice-server architecture, native shell execution, the OOP native runtime bridge, indexed tgrep search, SDK ToolSet filters, and expanded sidekick variants.
 
 ## Source anchors
 

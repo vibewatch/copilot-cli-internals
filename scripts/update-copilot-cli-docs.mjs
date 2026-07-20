@@ -28,16 +28,13 @@ const SOURCE_ATLAS_DOC = join(
   "99-research-atlas",
   "source-atlas.md",
 );
+const MAINTENANCE_ROOT = join(REPO_ROOT, "maintenance", "copilot-cli");
 const DEFAULT_REPORT = join(
-  REPO_ROOT,
-  "docs",
-  "00-start-here",
+  MAINTENANCE_ROOT,
   "latest-package-update.md",
 );
 const SUBSYSTEM_REVIEW = join(
-  REPO_ROOT,
-  "docs",
-  "00-start-here",
+  MAINTENANCE_ROOT,
   "latest-subsystem-review.md",
 );
 const VERSION_PATTERN = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/;
@@ -65,7 +62,7 @@ Options:
   --force                     Refresh even when the version is unchanged
   --latest-version <version>  Override npm's latest version (useful for tests)
   --report <path>             Generated report path
-                              (default: docs/00-start-here/latest-package-update.md)
+                              (default: maintenance/copilot-cli/latest-package-update.md)
   -h, --help                  Show this help
 `;
 }
@@ -748,7 +745,7 @@ Review and resolve every candidate in [Latest subsystem and module review](lates
 - [ ] Update an existing owning page instead of duplicating a subsystem page.
 - [ ] Refresh version-specific architecture claims and mark removed paths as historical when useful.
 - [ ] Update \`docs/SUMMARY.md\`, section indexes, and \`website/astro.config.mjs\` when navigation changes.
-- [ ] Update [documentation opportunities](../99-research-atlas/documentation-opportunities.md) with closed or residual gaps.
+- [ ] Update [documentation opportunities](../../docs/99-research-atlas/documentation-opportunities.md) with closed or residual gaps.
 - [ ] Run \`node scripts/check-docs.mjs\` and \`npm run build\` from \`website/\`.
 
 ## Suggested triage order

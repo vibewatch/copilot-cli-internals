@@ -16,10 +16,6 @@ This page is an orientation document, not a direct implementation trace. Concret
 |---|---|---|
 | Start page | N/A — navigation page | Establishes the first reading path and the wiki's conceptual map. |
 | Bundle identity | See [`what-is-app-js.md`](what-is-app-js.md) | Explains artifact boundaries, package layout, and caveats. |
-| Current package delta | See [`copilot-cli-1.0.71-delta.md`](copilot-cli-1.0.71-delta.md) | Maps confirmed `1.0.54 → 1.0.71` features, API growth, and architecture migrations. |
-| Rolling update report | See [`latest-package-update.md`](latest-package-update.md) | Shows the newest scheduled package and named-surface delta. |
-| Subsystem/module review | See [`latest-subsystem-review.md`](latest-subsystem-review.md) | Records whether each new module needs a focused page, an owning-page update, or no runtime documentation. |
-| Weekly automation | See [`weekly-update-automation.md`](weekly-update-automation.md) | Explains schedule, optional agent setup, validation, permissions, and PR behavior. |
 | Runtime capability map | See [`main-feature-map.md`](main-feature-map.md) | Maps the major systems implemented by the bundle. |
 
 ## First reading path
@@ -27,10 +23,9 @@ This page is an orientation document, not a direct implementation trace. Concret
 | Step | Read | Why |
 |---:|---|---|
 | 1 | [`app.js` overview](what-is-app-js.md) | Defines what the artifact is and what it is not. |
-| 2 | [Copilot CLI 1.0.71 package delta](copilot-cli-1.0.71-delta.md) | Shows what changed since the previous extracted baseline and which old paths became historical. |
-| 3 | [Main feature map](main-feature-map.md) | Shows how CLI modes, sessions, tools, models, agents, policy, and ops connect. |
-| 4 | [Mode dispatch and runtime startup](../01-runtime-lifecycle/mode-dispatch-and-runtime-startup.md) | Explains how argv/stdin/TTY/options route into TUI, prompt, server/headless, or ACP mode. |
-| 5 | [Conversation session end-to-end](../04-sessions-persistence-remote/conversation-session-end-to-end.md) | Shows the durable path through replay, tools, UI projection, persistence, remote export, and shutdown. |
+| 2 | [Main feature map](main-feature-map.md) | Shows how CLI modes, sessions, tools, models, agents, policy, and ops connect. |
+| 3 | [Mode dispatch and runtime startup](../01-runtime-lifecycle/mode-dispatch-and-runtime-startup.md) | Explains how argv/stdin/TTY/options route into TUI, prompt, server/headless, or ACP mode. |
+| 4 | [Conversation session end-to-end](../04-sessions-persistence-remote/conversation-session-end-to-end.md) | Shows the durable path through replay, tools, UI projection, persistence, remote export, and shutdown. |
 
 ## Choose your route
 
@@ -42,7 +37,6 @@ This page is an orientation document, not a direct implementation trace. Concret
 | Where do session events, state files, indexes, and remote control live? | [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md) |
 | Which env vars and operational contracts define hosted jobs? | [Hosted agent ops](../05-hosted-agent-ops/README.md) |
 | How are subagents, custom agents, fleet, and scheduled prompts run? | [Agents and automation](../06-agents-automation/README.md) |
-| How is this wiki refreshed when npm publishes a new CLI? | [Weekly documentation update automation](weekly-update-automation.md) |
 
 ## Internals map
 

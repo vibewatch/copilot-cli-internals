@@ -4,7 +4,7 @@ This wiki documents the extracted `@github/copilot` CLI bundle with source-ancho
 
 `copilot-cli-pkg/app.js`
 
-The current package is `@github/copilot` `1.0.71`. Start with the [latest automated package report](00-start-here/latest-package-update.md), then use the versioned [`1.0.54 → 1.0.71` package delta](00-start-here/copilot-cli-1.0.71-delta.md) for the analysis that established this baseline.
+The current package is `@github/copilot` `1.0.71`; see `copilot-cli-pkg/package.json` for exact build metadata.
 
 The wiki is organized around source-anchored internals questions: how the bundled CLI starts, shapes model context, exposes tools, persists sessions, runs hosted jobs, delegates work, and supports future source-atlas research. The canonical sections below are both the physical layout and the reader path.
 
@@ -66,9 +66,6 @@ flowchart TD
 | Goal | Read this path |
 |---|---|
 | Get oriented quickly | [Start here](00-start-here/README.md) → [Runtime lifecycle](01-runtime-lifecycle/README.md) → [Context and model loop](02-context-model-loop/README.md) |
-| Review what changed in the current package | [Copilot CLI 1.0.71 package delta](00-start-here/copilot-cli-1.0.71-delta.md) → follow the domain links in its documentation map |
-| Review the newest scheduled package check | [Latest automated package update](00-start-here/latest-package-update.md) → [Weekly update automation](00-start-here/weekly-update-automation.md) |
-| Review newly detected subsystems/modules | [Latest subsystem and module review](00-start-here/latest-subsystem-review.md) → follow each decision's linked owning or newly created page |
 | Understand native and indexed-search boundaries | [Out-of-process native runtime bridge](01-runtime-lifecycle/out-of-process-native-runtime.md) → [Indexed repository search with tgrep and ripgrep](03-tools-integrations-security/indexed-search-tgrep-and-ripgrep.md) |
 | Understand one complete agent turn | [Runtime lifecycle](01-runtime-lifecycle/README.md) → [Context and model loop](02-context-model-loop/README.md) → [Tools, integrations, and security](03-tools-integrations-security/README.md) |
 | Understand durable sessions | [Sessions, persistence, and remote](04-sessions-persistence-remote/README.md) → [Conversation session end-to-end](04-sessions-persistence-remote/conversation-session-end-to-end.md) → [Session persistence, replay, and indexing](04-sessions-persistence-remote/session-persistence-replay-and-indexing.md) |

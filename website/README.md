@@ -64,7 +64,7 @@ request. With the optional
 `COPILOT_GITHUB_TOKEN` Actions secret, it also runs a source-confirmed
 Copilot CLI documentation pass that creates focused pages for genuinely new
 subsystems. See
-[`../docs/00-start-here/weekly-update-automation.md`](../docs/00-start-here/weekly-update-automation.md)
+[`../maintenance/copilot-cli/weekly-update-automation.md`](../maintenance/copilot-cli/weekly-update-automation.md)
 for setup, permissions, trust boundaries, and local commands.
 
 ## Layout

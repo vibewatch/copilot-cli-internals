@@ -7,10 +7,15 @@ import { fileURLToPath } from "node:url";
 const SCRIPT_PATH = fileURLToPath(import.meta.url);
 const REPO_ROOT = resolve(dirname(SCRIPT_PATH), "..");
 const DOCS_ROOT = join(REPO_ROOT, "docs");
-const LATEST_REPORT = "00-start-here/latest-package-update.md";
-const LATEST_ROUTE = "00-start-here/latest-package-update";
-const SUBSYSTEM_REVIEW = "00-start-here/latest-subsystem-review.md";
-const SUBSYSTEM_ROUTE = "00-start-here/latest-subsystem-review";
+const MAINTENANCE_ROOT = join(REPO_ROOT, "maintenance", "copilot-cli");
+const LATEST_REPORT = join(MAINTENANCE_ROOT, "latest-package-update.md");
+const SUBSYSTEM_REVIEW = join(MAINTENANCE_ROOT, "latest-subsystem-review.md");
+const INTERNAL_ROUTE_NAMES = [
+  "copilot-cli-1.0.71-delta",
+  "latest-package-update",
+  "latest-subsystem-review",
+  "weekly-update-automation",
+];
 const SUBSYSTEM_MANIFEST = join(
   REPO_ROOT,
   "source-atlas",
@@ -73,37 +78,30 @@ function checkNavigation() {
     join(REPO_ROOT, "website", "astro.config.mjs"),
     "utf8",
   );
-  if (!summary.includes(LATEST_REPORT)) {
-    failures.push("Latest package report is missing from docs/SUMMARY.md");
-  }
-  if (!astroConfig.includes(`/${LATEST_ROUTE}/`)) {
-    failures.push("Latest package report is missing from the website sidebar");
-  }
-  if (!summary.includes(SUBSYSTEM_REVIEW)) {
-    failures.push("Subsystem review is missing from docs/SUMMARY.md");
-  }
-  if (!astroConfig.includes(`/${SUBSYSTEM_ROUTE}/`)) {
-    failures.push("Subsystem review is missing from the website sidebar");
-  }
-}
-
-function checkOneGeneratedRoute(routeName, label) {
-  const route = join(REPO_ROOT, "website", "dist", routeName, "index.html");
-  if (!existsSync(route)) {
-    failures.push(`Generated route is missing: ${relative(REPO_ROOT, route)}`);
-    return;
-  }
-
-  const html = readFileSync(route, "utf8");
-  const h1Count = (html.match(/<h1\b/g) ?? []).length;
-  if (h1Count !== 1) {
-    failures.push(`Generated ${label} route has ${h1Count} H1 elements`);
+  for (const routeName of INTERNAL_ROUTE_NAMES) {
+    if (summary.includes(routeName)) {
+      failures.push(`Internal maintenance page appears in docs/SUMMARY.md: ${routeName}`);
+    }
+    if (astroConfig.includes(routeName)) {
+      failures.push(`Internal maintenance page appears in the website sidebar: ${routeName}`);
+    }
   }
 }
 
 function checkGeneratedRoutes() {
-  checkOneGeneratedRoute(LATEST_ROUTE, "latest-package");
-  checkOneGeneratedRoute(SUBSYSTEM_ROUTE, "subsystem-review");
+  for (const routeName of INTERNAL_ROUTE_NAMES) {
+    const route = join(
+      REPO_ROOT,
+      "website",
+      "dist",
+      "00-start-here",
+      routeName,
+      "index.html",
+    );
+    if (existsSync(route)) {
+      failures.push(`Internal maintenance route was generated: ${relative(REPO_ROOT, route)}`);
+    }
+  }
 }
 
 function analyzeSubsystemReview(
@@ -204,7 +202,7 @@ function analyzeSubsystemReview(
 }
 
 function checkSubsystemReview(allowPending) {
-  const reviewPath = join(DOCS_ROOT, SUBSYSTEM_REVIEW);
+  const reviewPath = SUBSYSTEM_REVIEW;
   if (!existsSync(reviewPath)) {
     failures.push(`Subsystem review is missing: ${SUBSYSTEM_REVIEW}`);
     return;
@@ -311,14 +309,19 @@ function checkAtlasCounts() {
 
 function main() {
   const options = parseArgs(process.argv.slice(2));
-  const markdownFiles = walk(DOCS_ROOT).filter((file) => file.endsWith(".md"));
-  checkMarkdownLinks(markdownFiles);
+  const publicMarkdownFiles = walk(DOCS_ROOT).filter((file) => file.endsWith(".md"));
+  const maintenanceMarkdownFiles = walk(MAINTENANCE_ROOT).filter((file) =>
+    file.endsWith(".md"),
+  );
+  checkMarkdownLinks([...publicMarkdownFiles, ...maintenanceMarkdownFiles]);
   checkNavigation();
   checkGeneratedRoutes();
   checkSubsystemReview(options.allowPendingSubsystems);
   checkAtlasCounts();
 
-  console.log(`Checked ${markdownFiles.length} Markdown files.`);
+  console.log(
+    `Checked ${publicMarkdownFiles.length} public and ${maintenanceMarkdownFiles.length} maintenance Markdown files.`,
+  );
   if (failures.length > 0) {
     for (const failure of failures) console.error(failure);
     process.exitCode = 1;
