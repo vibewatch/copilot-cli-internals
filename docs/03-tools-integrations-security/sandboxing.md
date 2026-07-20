@@ -1,12 +1,12 @@
 # Sandbox implementation
 
-Local command sandboxing is an execution constraint applied after a shell command has been approved. The runtime path starts at `sandbox.enabled` and the feature-gated `/sandbox` command, then flows through shell configuration, MXC adapter loading, platform checks, and sandboxed process spawn.
+Local sandboxing is an execution constraint applied after a tool request has been approved. In Copilot CLI `1.0.71`, the effective sandbox config is shared by shell execution, selected built-in file/search tools, LSP servers, MCP servers, and `web_fetch`; native runtime APIs build and spawn the policy-constrained process.
 
 Read [Shell command execution events](shell-command-execution-events.md) for sync/async/detached shell task behavior and [Tool, path, and URL permissions](tool-path-url-permissions.md) for approval before execution.
 
 This document answers a narrow reverse-engineering question: **does the extracted Copilot CLI implement sandboxing, and if so, how is it wired?**
 
-The answer is **yes**. The bundle contains a real sandbox implementation, not just leftover prompt strings. It has settings schema support, a feature-gated `/sandbox` slash command, session and shell configuration plumbing, and a process-spawn path backed by the bundled MXC sandbox adapter and `mxc-bin` executables.
+The answer is **yes**. The current bundle exposes persistent settings, `/sandbox`, one-run `--sandbox`/`--no-sandbox` overrides, per-operation bypass requests, and native policy/spawn APIs. The package no longer ships the old `mxc-bin` helper tree; that implementation is retained below only as historical `1.0.54` context.
 
 However, the implementation is easy to misread because the word “sandbox” appears in three different contexts:
 
@@ -29,41 +29,58 @@ The rest of this document focuses on local command sandboxing and calls out wher
 
 | Area | Semantic alias | Minified anchor | Approx. line | Role |
 |---|---|---:|---:|---|
-| Settings schema | `SettingsSandboxSchema` | `sandbox:Rt({ ... })` | 239 | Defines `sandbox.enabled`, filesystem path lists, raw `policy`, raw `config`, and `addCurrentWorkingDirectory`. |
-| Feature gate | `SandboxFeatureGate` | `SANDBOX:"off"` | 239 | Declares the `SANDBOX` feature flag as off by default. |
-| Sandbox status reader | `SandboxStatusReader` | `BBn(...)` | 1254 | Reads `settings.sandbox.enabled`, defaulting to `false`. |
-| Sandbox toggle writer | `SandboxToggleWriter` | `LBn(...)` | 1254 | Writes `sandbox.enabled` while preserving other sandbox settings. |
-| Slash command handler | `SandboxSlashCommand` | `jps(...)` | 1331 | Implements `/sandbox enable`, `/sandbox disable`, and current-status output. |
-| Slash command metadata | `SandboxSlashMetadata` | command entry `name:"sandbox"` | 1340 | Registers `/sandbox` with hint `[enable|disable]` and description `Configure sandbox modes`. |
-| Slash command gating | `SlashCommandBuilder` | `P_t(...)` | 5024 | Filters feature-gated slash commands with `sandboxEnabled`. |
-| TUI slash enablement | `InteractiveSlashGate` | `sandboxEnabled:e.SANDBOX` | 7340 | Makes `/sandbox` visible only when the `SANDBOX` gate is enabled. |
-| TUI session option | `InteractiveSessionOptions` | `sandboxConfig:ao.sandbox?.enabled ? ...` | 7340 | Passes sandbox settings into the session only when `sandbox.enabled` is true. |
-| Session option cache | `SessionShellConfigCache` | `sandboxConfig`, `resolvedShellConfig` | 4471 | Stores sandbox config and invalidates the cached shell config when it changes. |
-| Shell config factory | `ShellConfigFactory` | `djn(...)` | 4211 | Chooses default shell, applies safety/init/flags, then applies `withSandbox(...)`. |
-| Shell config model | `ShellConfig` | `u0` | 5390 | Holds shell type, tool names, process flags, and the `sandbox` object. |
-| Shell config clone | `ShellConfig.withSandbox` | `withSandbox(e)` | 5390 | Returns a shell config clone carrying the sandbox settings. |
-| Shell tools factory | `ShellToolsFactory` | `Wjs(...)` | 5734 | Avoids the alternate non-PTY backend when sandboxing is enabled. |
-| Sandboxed shell spawn | `SandboxedShellSpawner` | `_lo(...)` | 5638 | Loads MXC, checks platform support, builds policy/config, and calls sandbox spawn. |
-| MXC adapter loader | `MxcSandboxAdapterLoader` | `Y7s(...)`, `K7s(...)` | 5638 | Sets `MXC_BIN_DIR` to bundled `mxc-bin` and loads the sandbox module. |
-| MXC spawn wrapper | `MxcSpawnWrapper` | `SCr(...)` | 5638 | Calls `spawnSandboxFromConfig(...)` and logs success/failure. |
-| Shell session creation | `InteractiveShellSession.create` | `dve.create(...)` | 5640 | Enforces PowerShell-only local sandboxing before calling `SandboxedShellSpawner`. |
-| MXC platform support | `MxcPlatformSupport` | `dVs(...)` | 5637 | Reports macOS unsupported, Linux requiring LXC, and Windows AppContainer support on supported builds. |
-| MXC policy conversion | `MxcPolicyToConfig` | `mlo(...)` | 5638 | Converts policy into process/AppContainer/LXC/WSLC/microVM config. |
-| Packaged sandbox binaries | `SandboxBinaryInventory` | `mxc-bin` entries | manifest 72-219 | Contains `lxc-exec`, `wxc-exec.exe`, Windows sandbox daemon/guest binaries, and related assets. |
-| Cloud sandbox sessions | `CloudSessionFlow` | `--cloud`, `copilot-developer-sandbox` | 4516, 6599, 8221 | Creates/provisions remote cloud sandbox sessions; separate from local `/sandbox`. |
+| Effective config | Sandbox normalization | `Z2(...)`, `FT(...)`, `sandboxConfigsEqual` | 122 | Resolves enabled state and compares live configuration. |
+| One-run CLI override | Root options | `--sandbox`, `--no-sandbox` | 5821, 5899 | Overrides the current session without changing saved settings. |
+| Shell plan | Native shell manager | `toolShellPlanExecution`, `requestSandboxBypass` | 206-207 | Plans normal, sandboxed, or approved-bypass execution. |
+| Native policy spawn | Sandbox process adapter | `S.sandboxBuildPolicy(...).spawn(...)` | 122 | Spawns through the native policy runtime and adapts stdio handles. |
+| Web fetch enforcement | `QMe.resolveSandbox()` | `requestSandboxBypass`, `sandbox_denied` | 140 | Applies active network policy to outbound/local fetches. |
+| LSP enforcement | LSP sandbox config | `X2(...)`, `sandboxLspServers`, `renameApplied` | 122, 216-222 | Starts LSPs in the effective sandbox and checks read/rename effects. |
+| MCP enforcement | MCP sandbox config | `hG(...)`, `sandboxMcpServers` | 122, 2603 | Applies or restarts MCP servers when sandbox policy changes. |
+| Bypass UI | Sandbox approval dialog | `requestSandboxBypass`, `disable sandbox for session` | 3628 | Supports one-time bypass or disabling the sandbox for the live session when policy allows. |
+| Alpine guard | musl check | `Sandboxed shell execution is not supported on Alpine Linux/musl` | 608 | Rejects an unsupported runtime/platform combination explicitly. |
 
 ## What exists and what does not
 
 | Question | Finding |
 |---|---|
 | Is there a sandbox implementation? | Yes. There is config schema, a slash command, runtime propagation, a shell spawn guard, MXC policy/config construction, and bundled sandbox binaries. |
-| Is there a normal root `--sandbox` CLI flag? | No public root `--sandbox` flag was found in captured help or root option construction. Local command sandboxing is exposed through settings and the feature-gated `/sandbox` slash command. |
+| Is there a normal root `--sandbox` CLI flag? | Yes. `--sandbox` and `--no-sandbox` override the saved value for one session and do not persist it. |
 | Is `/sandbox` always visible? | No. The slash command is filtered by the `SANDBOX` feature gate, which defaults to `off` in the static gate table. |
 | Is local sandboxing the same as `--cloud`? | No. `--cloud` provisions a cloud sandbox session; `/sandbox` toggles local shell-command sandbox settings. |
 | Does the prompt text enforce sandboxing? | No. Prompt wording can describe a sandboxed environment, but enforcement happens at shell process spawn time. |
 | Does it replace the permission service? | No. Permissions decide whether a request may execute; the sandbox constrains what the spawned process can access after execution starts. |
 
-## Terminology map
+## Current 1.0.71 enforcement map
+
+```mermaid
+flowchart TD
+    Settings[settings sandbox config] --> Override{CLI override?}
+    Override -->|--sandbox| On[enabled for this session]
+    Override -->|--no-sandbox| Off[disabled for this session]
+    Override -->|none| Effective[persisted effective config]
+    On --> Policy[native sandbox policy]
+    Effective --> Policy
+    Policy --> Shell[shell manager]
+    Policy --> LSP[LSP processes and file effects]
+    Policy --> MCP[MCP server processes]
+    Policy --> Fetch[web_fetch network policy]
+    Policy --> Files[built-in edit/search operations]
+    Shell --> Bypass{operation requests bypass?}
+    Fetch --> Bypass
+    Files --> Bypass
+    Bypass -->|approved and allowBypass| Direct[run outside policy once]
+    Bypass -->|not approved| Constrained[run constrained or deny]
+```
+
+The policy is no longer only a shell-session choice. Session option updates propagate sandbox changes to shell, LSP, and MCP managers; `web_fetch` resolves the live config on each call. Tools can request a bypass only when `sandbox.allowBypass` is enabled, and the permission UI records whether the operation ran sandboxed or bypassed.
+
+The extracted package now delegates core sandbox behavior to the native runtime (`prebuilds/linux-x64/runtime.node`) rather than package-local `mxc-bin` helpers. Runtime source still exposes policy construction, spawn, equality, telemetry, and denial helpers through `S.sandbox*` APIs, but the implementation behind those calls is outside `app.js`.
+
+## Historical 1.0.54 MXC/PTY path
+
+The sections below document the old package-local helper and PTY architecture for delta research. They are not the active `1.0.71` implementation.
+
+### Historical terminology map
 
 ```mermaid
 flowchart TD
@@ -81,7 +98,7 @@ flowchart TD
     Prompt --> NoEnforce["no process isolation by itself"]
 ```
 
-## Entry points and visibility
+### Historical entry points and visibility
 
 Local command sandboxing starts from configuration, not from a root CLI flag.
 
@@ -121,7 +138,7 @@ flowchart TD
     Disable --> Changed
 ```
 
-## Runtime propagation
+### Historical runtime propagation
 
 Once enabled in settings, sandbox configuration is carried into the session and then into the shell tool configuration.
 
@@ -153,7 +170,7 @@ Two details matter here:
 
 For the full command lifecycle around this branch -- including PTY vs non-TTY backend selection, sync/async/detached execution, background promotion, and output buffering -- see [Shell command execution events](shell-command-execution-events.md).
 
-## Shell execution flow
+### Historical shell execution flow
 
 The enforcement point is shell session creation. When sandboxing is disabled, the runtime spawns a normal PTY shell. When sandboxing is enabled, it first checks the shell type.
 
@@ -179,7 +196,7 @@ The observed guard is explicit: **local command sandboxing is only supported for
 
 This caveat should be read carefully. The bundled MXC library contains Linux/LXC support, but the CLI shell-session branch traced here requires PowerShell before calling the sandbox adapter.
 
-## MXC adapter and platform support
+### Historical MXC adapter and platform support
 
 The CLI embeds and loads an MXC sandbox package. Before spawning, it sets `MXC_BIN_DIR` to the package-local `mxc-bin` directory if that directory exists. The extraction manifest confirms the package includes sandbox-related binaries, including:
 
@@ -202,7 +219,7 @@ For the normal local shell path on Windows, the default shell is PowerShell, so 
 
 Binary-level evidence about packaged MXC helper fingerprints is kept with repository research notes outside the final wiki.
 
-## Policy construction
+### Historical policy construction
 
 The sandboxed shell spawner has three configuration modes.
 
@@ -261,7 +278,7 @@ When neither raw config nor raw policy is present, the runtime builds a base pol
 
 Path normalization filters to existing directories and realpaths them when possible. That makes the policy less dependent on symlinks and non-existent paths.
 
-## Local sandbox, cloud sandbox, and permissions
+### Historical local sandbox, cloud sandbox, and permissions
 
 ```mermaid
 flowchart LR
@@ -290,7 +307,7 @@ These layers answer different questions:
 
 The layers are complementary. Enabling a sandbox does not automatically approve shell commands, and approving a shell command does not imply the spawned process is sandboxed.
 
-## Platform and exposure caveats
+### Historical platform and exposure caveats
 
 - The `SANDBOX` gate defaults to `off`, so `/sandbox` is not part of the default slash-command list unless enabled through feature-flag mechanisms.
 - A public root `--sandbox` flag was not observed in captured help or root option construction.
@@ -301,7 +318,7 @@ The layers are complementary. Enabling a sandbox does not automatically approve 
 - `--cloud` is a separate, hidden cloud-session feature controlled by cloud-session logic and the `CLI_CLOUD_SESSIONS` gate, not by `/sandbox`.
 - The generated base local sandbox policy allows outbound network and UI windows; it is not a no-network/no-UI sandbox by default.
 
-## Takeaways
+### Historical takeaways
 
 The extracted CLI has a real sandbox implementation, but it is not a broad, always-on OS isolation layer.
 

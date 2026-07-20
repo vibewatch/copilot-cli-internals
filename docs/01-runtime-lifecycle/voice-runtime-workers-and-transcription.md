@@ -1,64 +1,57 @@
-# Voice runtime workers and transcription pipeline
+# Voice runtime server and transcription pipeline
 
-This document drills into the voice-mode backend that sits below [`voice-mode-foundry-local.md`](voice-mode-foundry-local.md). The existing voice-mode page explains the staff-gated `/voice` command, settings, runtime inspection, model picker, and TUI entry points. This page focuses on the core code paths that actually record audio, install/locate the Foundry Local runtime, load speech models, and turn PCM buffers into preview/final text.
+This document drills into the voice backend below [`voice-mode-foundry-local.md`](voice-mode-foundry-local.md). In Copilot CLI `1.0.71`, the interactive process is a client of a reusable local voice server. Microphone capture and Foundry transcription are no longer shipped as `voice-mic.worker.js` and `voice-foundry.worker.js`; those files existed in the `1.0.54` baseline and are preserved later on this page only as historical context.
 
-The analyzed implementation is split across `app.js` and three bundled worker files:
+The current package splits responsibility across:
 
-- `copilot-cli-pkg/voice-mic.worker.js` captures microphone PCM through `@picovoice/pvrecorder-node`.
-- `copilot-cli-pkg/voice-installer.worker.js` resolves/downloads the Foundry Local native runtime.
-- `copilot-cli-pkg/voice-foundry.worker.js` manages Foundry Local models and transcription sessions.
+- `app.js`, which resolves the endpoint, connects or spawns the server, and owns TUI state;
+- a detached CLI child running in `COPILOT_VOICE_SERVER_MODE`;
+- the native runtime boundary used by the voice engine;
+- `voice-installer.worker.js` and `foundry-local-sdk`, which still support runtime installation.
 
-Because these files are bundled/minified, line numbers are approximate. The worker bundles are mostly one-line payloads, so the exact string anchors and offsets are more useful than line numbers.
-
-For the user-facing command and settings path, start with [Voice mode and Foundry Local](voice-mode-foundry-local.md). The sections below trace worker-thread RPC, microphone PCM capture, runtime installation, model loading, streaming previews, final transcription, and cleanup; the resulting text re-enters the normal prompt/session flow rather than creating a separate model pipeline.
+Because `app.js` is bundled/minified, line numbers are approximate. Exact strings and semantic aliases are the stable search anchors.
 
 ## Source anchors
 
 | Semantic alias | Minified anchor | Approx. location | Role |
 |---|---|---:|---|
-| Voice hook/controller | `qHo(...)` | `app.js` ~6861 | React-style voice controller: inspect runtime, warm model, open mic, expose `enable`, `disable`, `selectModel`, and status. |
-| Recording bridge | `$Ho(...)` | `app.js` ~6861 | Binds a loaded Foundry model handle to a microphone source and forwards PCM chunks into an active transcription session. |
-| Model-handle wrapper | `GHo(...)` | `app.js` ~6861 | Loads a model through the Foundry client and returns `beginRecording(...)` / `cancelCurrentRecording()`. |
-| Foundry RPC client | `cNr` / `UHo(...)` | `app.js` ~6861 | Main-thread wrapper around `voice-foundry.worker.js` RPC methods and events. |
-| Foundry recording session | `uNr` | `app.js` ~6861 | Per-recording session wrapper; forwards `appendSession`, `stopSession`, `cancelSession`, and `sessionPreview`. |
-| Foundry worker channel | `FHo(...)` | `app.js` ~6861 | Creates the `voice-foundry.worker.js` worker RPC channel with `nativeLocation`. |
-| Mic worker channel | `QHo(...)` | `app.js` ~6861 | Creates the `voice-mic.worker.js` worker RPC channel and decodes transferable PCM buffers. |
-| Microphone source adapter | `HHo(...)` | `app.js` ~6861 | Main-thread adapter for mic `start`/`stop` plus `pcm` and `error` subscriptions. |
-| Runtime installer | `OHo(...)` / `ZFa(...)` | `app.js` ~6861 | Caches runtime inspection and launches `voice-installer.worker.js` for install/update. |
-| Slash command entry | `/voice`, `inspectRuntime`, `voice-runtime-download`, `voice-models` | `app.js` ~4916 | User-facing control path that triggers runtime/model dialogs and calls the controller. |
-| TUI session injection | `voice:e.VOICE ? { ... }` | `app.js` ~7342 | Injects voice controller methods into the interactive session only when the `VOICE` gate is enabled. |
-| Mic backend state machine | `var O=1600,C=15,l=class{...}` | `voice-mic.worker.js` line 59 | Opens `PvRecorder`, reads PCM frames, emits `pcm`, and handles start/stop/shutdown. |
-| Runtime install state | `var J=1,b=".complete"`, platform map | `voice-installer.worker.js` line 59 | Builds the runtime cache path, validates required files, and marks completed downloads. |
-| Foundry backend state machine | `var h=class{managerPromise;state={tag:"unloaded"}...}` | `voice-foundry.worker.js` line 59 | Lists/downloads/loads models and opens streaming or batch transcription sessions. |
+| Endpoint resolver | `Axn(...)`, `copilot-voice` | `app.js` ~4402 | Builds a version/user-scoped Unix socket or Windows named pipe and PID-file path. |
+| Boot sanitizer | `Dyi(...)`, `Myi(...)` | `app.js` ~4404 | Copies only valid voice settings and normalizes device identity to `{ name, occurrence }`. |
+| Server spawn | `Txn(...)`, `COPILOT_VOICE_SERVER_MODE` | `app.js` ~4404 | Launches a detached, hidden CLI child with sanitized boot data. |
+| Connect or spawn | `kxn(...)` | `app.js` ~4404 | Reuses a live server, retries connection, and recovers from stale PID/socket state. |
+| Engine client factory | `Nxn(...)` | `app.js` ~4404 | Selects the dedicated server path or the fallback engine worker path. |
+| TUI controller | `Fxn(...)` | `app.js` ~4404 | Starts the engine, subscribes to snapshots/connection state, and shuts it down through the shared shutdown service. |
+| Slash command | `voice-models`, `voice-devices`, `voiceActivation` | `app.js` ~2438 | Opens pickers or toggles the engine through the current activation API. |
+| Runtime installer | `voice-installer.worker.js`, `foundry-local-sdk` | package worker | Retains the isolated install/update path for local Foundry dependencies. |
 
 ## High-level pipeline
 
 ```mermaid
 flowchart TD
-    User[User holds space / toggles dictation] --> UI[TUI voice hook]
-    UI --> Controller[app.js qHo controller]
-    Controller --> Installer[OHo runtime installer]
-    Installer --> InstallerWorker[voice-installer.worker.js]
-    Controller --> FoundryClient[cNr Foundry client]
-    FoundryClient --> FoundryWorker[voice-foundry.worker.js]
-    Controller --> MicSource[HHo microphone source]
-    MicSource --> MicWorker[voice-mic.worker.js]
-    MicWorker -->|pcm events| MicSource
-    MicSource -->|PCM sink| Recording[$Ho recording bridge]
-    Recording -->|appendSession| FoundryWorker
-    FoundryWorker -->|sessionPreview| FoundryClient
-    FoundryWorker -->|final text| FoundryClient
-    FoundryClient --> UI
+    User[User holds space / toggles dictation] --> UI[TUI voice controller]
+    UI --> Endpoint[Axn endpoint + PID file]
+    Endpoint --> Existing{live server?}
+    Existing -->|yes| Socket[connect over framed JSON-RPC]
+    Existing -->|no| Spawn[Txn detached CLI child]
+    Spawn --> Socket
+    Socket --> Server[copilot-voice engine]
+    Server --> Installer[voice-installer worker]
+    Server --> Native[native capture and Foundry runtime]
+    Native -->|preview/final text| Server
+    Server --> UI
 ```
 
-The split is deliberate. The main TUI process owns settings, UI state, status text, and lifecycle cleanup. Native code and long-running voice work are isolated behind worker-thread RPC channels:
+The split keeps native capture and model work out of the TUI. The endpoint includes the CLI version so incompatible releases do not share a server. The child is detached with ignored stdio and `windowsHide:true`; connection setup then uses a PID file plus bounded retries to distinguish a slow start from stale state.
 
-- mic capture can fail or block without freezing the TUI;
-- Foundry Local runtime/model operations run outside the TUI loop;
-- PCM buffers are transferred rather than copied when possible;
-- shutdown can terminate or dispose each subsystem independently.
+The boot payload deliberately avoids forwarding the entire settings object. `Dyi(...)` preserves only `enabled`, `selectedModel`, and a validated `selectedDevice`. Device identity uses a display name plus duplicate-name occurrence index instead of a transient platform device number.
 
-## Main-thread controller in app.js
+`Fxn(...)` tracks the engine client, snapshot, connection state, and fatal error. It registers a pre-shutdown callback, disposes stale connections, and can reacquire an engine after a lost connection.
+
+## Historical 1.0.54 worker architecture
+
+The sections below document the superseded baseline for package-delta research. They do not describe the active `1.0.71` package: `voice-mic.worker.js` and `voice-foundry.worker.js` were removed when capture/transcription moved behind the dedicated engine boundary.
+
+### Historical main-thread controller in app.js
 
 The voice controller created by `qHo(...)` is the runtime coordinator. It keeps a small state machine in React state:
 
@@ -84,7 +77,7 @@ The `enable({ modelId })` path serializes work through an internal promise chain
 
 When the selected model changes, `qHo(...)` cancels any current recording before switching the active model. On fatal backend failure, it aborts the active controller, moves to `error`, and disposes the owned mic/client pair.
 
-## Recording bridge: $Ho(...)
+### Historical recording bridge: $Ho(...)
 
 `$Ho(...)` is the short-lived object for one recording. It joins a loaded model handle from `GHo(...)` with the microphone source from `HHo(...)`.
 
@@ -108,7 +101,7 @@ Runtime flow:
 
 This bridge is where audio becomes model input. Everything above it is UI/setup; everything below it is mic or Foundry worker implementation.
 
-## Microphone worker
+### Historical microphone worker
 
 `voice-mic.worker.js` exposes a tiny RPC backend with four methods:
 
@@ -153,7 +146,7 @@ The worker posts PCM as a transferable event:
 
 `app.js` decodes the `pcm` event back into a `Buffer` before handing it to `HHo(...)`.
 
-## Runtime installer worker
+### Historical runtime installer worker
 
 `voice-installer.worker.js` is responsible for turning “voice runtime is needed” into a concrete native library location.
 
@@ -203,7 +196,7 @@ Install flow:
 
 On Windows, the returned location also reports whether `Microsoft.WindowsAppRuntime.Bootstrap.dll` exists. The Foundry worker later uses that to add a `Bootstrap` setting when creating the manager.
 
-## Foundry worker
+### Historical Foundry worker
 
 `voice-foundry.worker.js` is the transcription backend. It exposes these RPC methods:
 
@@ -269,7 +262,7 @@ Batch session flow:
 
 Batch mode has no live preview because transcription happens only after the WAV file is finalized.
 
-## Main-thread Foundry client wrapper
+### Historical main-thread Foundry client wrapper
 
 `cNr` wraps the Foundry worker RPC channel in a main-thread client API:
 
@@ -290,7 +283,7 @@ Batch mode has no live preview because transcription happens only after the WAV 
 
 This wrapper keeps recording-session state (`open`, `stopping`, `final`, `cancelled`, `errored`) on the main side so UI callbacks cannot fire after terminal states.
 
-## End-to-end dictation sequence
+### Historical end-to-end dictation sequence
 
 ```mermaid
 sequenceDiagram
@@ -317,7 +310,7 @@ sequenceDiagram
     Foundry-->>UI: final text
 ```
 
-## Failure and cleanup behavior
+### Historical failure and cleanup behavior
 
 | Failure point | Handling |
 |---|---|
@@ -331,7 +324,7 @@ sequenceDiagram
 | Windows native dependency missing | Foundry manager initialization maps dependency-load errors to a Visual C++ Redistributable message. |
 | Shutdown | `qHo.shutdown()` aborts active state, cancels recording, closes mic, disposes Foundry client, and worker shutdown callbacks clear subscribers. |
 
-## Relationship to other docs
+### Related docs
 
 - [`voice-mode-foundry-local.md`](voice-mode-foundry-local.md) covers `/voice`, settings, model picker, and TUI affordances.
 - [`loader-bootstrap.md`](loader-bootstrap.md) covers the secure native-module routing that makes `foundry-local-sdk` and `@picovoice/pvrecorder-node` loadable from the extracted package.

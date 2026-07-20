@@ -1,7 +1,7 @@
 import type { CopilotSession } from "./session.js";
 import { type ExtensionInfo, type PermissionHandler, type ResumeSessionConfig } from "./types.js";
-export { Canvas, CanvasError, createCanvas, type CanvasAction, type CanvasActionContext, type CanvasDeclaration, type CanvasHostContext, type CanvasJsonSchema, type CanvasLifecycleContext, type CanvasOpenContext, type CanvasOpenResponse, type CanvasOptions, } from "./canvas.js";
-export type JoinSessionConfig = Omit<ResumeSessionConfig, "onPermissionRequest"> & {
+export { Canvas, CanvasError, createCanvas, type CanvasAction, type CanvasDeclaration, type CanvasHostContext, type CanvasJsonSchema, type CanvasOptions, } from "./canvas.js";
+export type JoinSessionConfig = Omit<ResumeSessionConfig, "onPermissionRequest" | "extensionSdkPath"> & {
     onPermissionRequest?: PermissionHandler;
 };
 export type { ExtensionInfo };

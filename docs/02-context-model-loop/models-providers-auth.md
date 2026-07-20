@@ -15,6 +15,8 @@ This document deepens the model/auth/provider coverage that was previously summa
 | Subagent model override | `task` model validation | `createTaskTool(...)` | 3735-3815 | Validates and may downshift subagent model overrides. |
 | Session subagent model selection | `selectSubagentModel(...)`, `emitSubagentModelTelemetry(...)` | `Vur(...)`, `jur(...)` | 4030-4036 | Chooses treatment/default/session models for built-in subagents and emits `subagent_model_selection` telemetry. |
 | Feature gates | `FeatureFlagService` | `Pfe`, `ILt` | 239 | Enables model-adjacent behavior such as special subagent models or advisor paths. |
+| Current model metadata | Built-in model definitions | `claude-sonnet-5`, `claude-opus-4.8`, `gpt-5.6-*` | 618-620, 2039 | Confirms current catalog families and supported reasoning efforts. |
+| Provider transport | Custom-provider transport | `COPILOT_PROVIDER_TRANSPORT`, `http`, `websockets` | 3279, 5307 | Selects HTTP or persistent WebSocket transport for Responses-compatible providers. |
 
 ## Authentication and provider decision tree
 
@@ -124,6 +126,21 @@ Inputs that influence the selected model include:
 - account plan/model availability;
 - feature gates and experiments.
 
+### Current model families
+
+The catalog remains account- and rollout-dependent, but the `1.0.71` package contains metadata or release support for these newer families:
+
+| Family | Package evidence |
+|---|---|
+| GPT-5.6 | Internal `gpt-5.6-*` variants and `1.0.70` release support. |
+| Claude Sonnet 5 | `claude-sonnet-5` model metadata. |
+| Claude Opus 4.8 / Fast | `claude-opus-4.8` metadata and Fast rollout support. |
+| Claude Fable 5 | Added in `1.0.61`. |
+| Kimi K2.7 Code | Added in `1.0.69`. |
+| Gemini 3.5 Flash | Minimal reasoning-effort support added in `1.0.69`. |
+
+Presence in the bundle does not guarantee account availability. The runtime still intersects model metadata with the authenticated catalog, policy, plan, hidden-model settings, and provider capabilities before showing a model.
+
 ## BYOK/custom provider path
 
 Custom provider mode lets the CLI run model calls against a non-default provider endpoint.
@@ -141,6 +158,8 @@ flowchart LR
 ```
 
 Custom provider mode changes model routing, but it does not automatically grant GitHub API, MCP, remote-session, or telemetry behavior. Those paths are independently controlled by auth, offline mode, and policy.
+
+For OpenAI-compatible Responses providers, `COPILOT_PROVIDER_TRANSPORT` accepts `http` (default) or `websockets`. WebSocket transport is only meaningful with the Responses wire API and can use a persistent connection when the corresponding runtime feature is active.
 
 ## Subagent model overrides
 

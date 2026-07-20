@@ -1,6 +1,6 @@
 # MCP Apps and canvas bridge
 
-This page documents the UI-capability bridge added in the refreshed `@github/copilot` `1.0.54` package. It covers two related but distinct surfaces:
+This page documents the UI-capability bridge in the extracted `@github/copilot` `1.0.71` package. It covers two related but distinct surfaces:
 
 - **Canvas renderer support** lets SDK/server clients register renderable canvases, expose model tools for opening and acting on those canvases, and receive canvas lifecycle events.
 - **MCP Apps support** lets MCP servers expose UI metadata/resources behind an opt-in `mcp-apps` session capability, with app-originated MCP tool calls reported back through session events.
@@ -9,7 +9,7 @@ Read this with [Embedded server, ACP, and JSON-RPC protocol](../01-runtime-lifec
 
 ## Source anchors
 
-`app.js` is bundled/minified, so semantic aliases below are explanatory. Approximate line numbers refer to the extracted `1.0.54` package.
+`app.js` is bundled/minified, so semantic aliases below are explanatory. Approximate line numbers refer to the extracted `1.0.71` package.
 
 | Area | Semantic alias | Minified anchor / string | Approx. line | What it proves |
 |---|---|---|---:|---|
@@ -18,6 +18,8 @@ Read this with [Embedded server, ACP, and JSON-RPC protocol](../01-runtime-lifec
 | Canvas system prompt | Canvas instructions | `<canvases>`, `open_canvas`, `list_canvas_capabilities` | 4260 | The prompt tells the model when and how to use canvases. |
 | Canvas manager | Canvas registry/instances | `A0t`, `registerProvider`, `openInstances`, `availability` | 4821 | Providers register canvas declarations; open instances become ready/stale and emit events. |
 | Canvas events | Session canvas events | `session.canvas.opened`, `session.canvas.registry_changed` | 4821 | Canvas lifecycle updates are ephemeral session events. |
+| Durable canvas state | Canvas replay events | `session.canvas.recorded`, `session.canvas.removed`, `session.canvas.listOpen` | 167, 2651, 2742 | Open instance identity survives replay/restart separately from transient availability and URL state. |
+| Node SDK canvas API | Per-canvas factory | `createCanvas(...)`, `CanvasOptions`, `CanvasAction` | `copilot-sdk/canvas.d.ts` | Extensions bind open, close, and action handlers while sending only declaration metadata over the wire. |
 | SDK/server capability ingress | Session capability options | `requestCanvasRenderer`, `requestMcpApps`, `buildSdkSessionCapabilities` | 6375 | SDK/server create/resume can opt sessions into canvas and MCP Apps capabilities. |
 | SDK connection registration | Canvas provider registration | `registerCanvasesForConnection(...)` | 6375 | Connected SDK/server clients can register canvas providers by connection. |
 | MCP Apps diagnostics | MCP Apps API surface | `mcp.apps.diagnose`, `_meta.ui`, `McpAppsDiagnoseResult` | 4856 | Runtime exposes a diagnostic API for capability and `_meta.ui` visibility. |
@@ -101,6 +103,29 @@ sequenceDiagram
 
 If the model tries to act on a stale instance, routing fails with a provider-unavailable error and the model should re-issue `open_canvas` after a provider reconnects.
 
+### Durable restart recovery
+
+The current runtime separates durable instance identity from ephemeral renderer state:
+
+1. Opening a canvas emits `session.canvas.recorded` with `instanceId`, provider/canvas IDs, title, and input, but not the transient URL.
+2. Replay rebuilds `durableOpenCanvases` from `session.canvas.recorded` and `session.canvas.removed`.
+3. `session.canvas.listOpen` returns the reconstructed open-instance set to SDK clients.
+4. When a matching provider reconnects, the runtime can reopen the renderer and emit current availability through ephemeral canvas events.
+
+This is why open canvases can resume across CLI restarts without persisting a stale local URL or claiming that a disconnected provider is ready.
+
+### SDK handler boundary
+
+The Node SDK exports experimental `createCanvas(options)`. `CanvasOptions` combines declaration metadata with in-process closures:
+
+| Handler | Direction |
+|---|---|
+| `open(ctx)` | Required provider callback for `canvas.open`. |
+| `onClose(ctx)` | Optional fire-and-forget callback for `canvas.close`. |
+| `actions[].handler(ctx)` | Required callback for each declared `canvas.action.invoke`. |
+
+Only IDs, descriptions, schemas, and action metadata cross the session create/resume wire. Handler closures remain in the SDK process and are dispatched by canvas ID.
+
 ## MCP Apps lifecycle
 
 MCP Apps is separate from canvas providers. It starts from MCP server tool/resource metadata and is gated by `MCP_APPS` or `COPILOT_MCP_APPS=true`.
@@ -153,9 +178,9 @@ The shared operational point is that both surfaces make a connected host UI more
 | App calls an MCP tool without `mcp-apps` capability | Session rejects the app-originated call/resource path. |
 | MCP tool has no callable UI metadata | App-originated call path rejects it as not callable from MCP Apps. |
 
-## Documentation action from the 1.0.54 delta
+## Package evolution
 
-This subsystem is the only new atlas delta from the 1.0.54 update that warranted a dedicated page. Other deltas were narrower and are covered in existing pages:
+The `1.0.54` baseline exposed the first canvas/MCP Apps bridge. Releases through `1.0.71` added session-scoped extension canvases, durable open-instance recovery, the `session.canvas.listOpen` API, and the public experimental Node SDK factory described above.
 
 | Delta | Documentation action |
 |---|---|

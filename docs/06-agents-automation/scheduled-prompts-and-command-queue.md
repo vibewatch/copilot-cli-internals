@@ -4,8 +4,8 @@ This document explains how the extracted Copilot CLI bundle implements scheduled
 
 The key distinction is:
 
-- **Scheduled prompts** enqueue plain user messages on a timer.
-- **Queued commands** ask a UI/protocol client to execute or route slash-command text.
+- **Scheduled entries** enqueue either a normal user message or a slash command on a timer.
+- **Queued commands** ask a UI/protocol client to execute or route slash-command text. Since `1.0.62`, `/every` and `/after` can create this kind of scheduled entry directly.
 
 Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted bundle and will shift across releases.
 
@@ -15,7 +15,7 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 |---|---|---:|---|
 | Slash commands | `/every`, `/after`, `YBn(...)` | 1303, 1340 | User-visible recurring and one-shot scheduled prompt commands. |
 | Schedule validation | `Invalid interval`, `Minimum interval`, `Maximum interval`, `J7n=1e4`, `Z7n=864e5` | 4210 | Intervals are parsed and bounded between 10 seconds and 1 day. |
-| Slash-command restriction | `only schedules plain messages — slash commands are not supported` | 1303 | Scheduled entries cannot be slash commands. |
+| Scheduled command dispatch | `session.commands.enqueue`, `session.commands.execute` | 167, 2651 | Scheduled slash commands enter the same client-mediated command queue as manually queued commands. |
 | Registry class | `ScheduleRegistry`, minified `Sbt` | 4210 | Stores entries, hydrates from events, schedules timers, and disposes on shutdown. |
 | Create/cancel events | `session.schedule_created`, `session.schedule_cancelled` | 4210, 4361 | Durable session events define schedule state. |
 | Session access | `getScheduleRegistry()` | 4471, 7344 | Registry is lazily created and reused by TUI dialogs/tools. |
@@ -48,15 +48,10 @@ It performs these checks:
 1. Argument text must not be empty.
 2. The first non-space token is parsed as an interval/delay.
 3. The rest of the input becomes the prompt text.
-4. Prompt text must not be empty.
-5. Prompt text must not start with `/`.
-6. The parsed interval must be within bounds.
+4. Prompt or command text must not be empty.
+5. The parsed schedule must resolve to a valid future execution time.
 
-The error text makes the key design choice explicit:
-
-> `/every` only schedules plain messages — slash commands are not supported.
-
-This prevents scheduled prompts from becoming a hidden automation channel for arbitrary slash commands such as `/mcp`, `/plugin`, or `/reset-allowed-tools`.
+Older builds rejected text beginning with `/`. The current runtime accepts it and records whether the entry is a normal prompt or a command so timer execution can choose the correct queue path.
 
 ## Interval limits
 
@@ -127,9 +122,12 @@ Cancellation uses `stop(id)`, which:
 
 ## Timer execution
 
-At each tick, the registry enqueues the scheduled prompt into the session as a normal prompt/message. For recurring entries, it schedules the next tick unless the entry was cancelled. For one-shot entries, it cancels/removes the entry after firing.
+At each tick, the registry branches on the scheduled text:
 
-Because scheduled prompts become ordinary queued user prompts, they inherit the same model/tool/permission behavior as manually submitted prompts.
+- plain text enters the session as a normal queued user prompt;
+- text beginning with `/` enters the session command queue and is dispatched to the TUI/protocol owner of that slash command.
+
+For recurring entries, the registry schedules the next tick unless the entry was cancelled. For one-shot entries, it cancels/removes the entry after firing. Normal prompts inherit the usual model/tool/permission behavior; commands inherit the same availability and ownership checks as manually invoked slash commands.
 
 ## Shutdown behavior
 
@@ -194,17 +192,11 @@ The session prompt queue emits `pending_messages.modified` whenever queued messa
 
 This makes commands client-mediated while keeping ordinary scheduled messages inside the agent queue.
 
-## Why scheduled slash commands are blocked
+## Scheduled slash-command dispatch
 
-Blocking scheduled slash commands avoids several edge cases:
+Slash-command scheduling makes the feature a session-local automation surface rather than only a timed reminder. Examples include `/every 1d /chronicle standup` and other commands that declare themselves runnable while work is active.
 
-- recurring `/mcp` or `/plugin` management changes;
-- recurring permission resets;
-- recursive `/every` creation;
-- background command execution without clear user intent;
-- ambiguous command ownership in ACP/embedded-server sessions.
-
-By scheduling only plain prompts, the feature acts like a timed user reminder/request rather than a general cron system.
+This does not bypass command policy. The command still has to exist in the active client, pass its normal availability checks, and be accepted by the client-mediated command queue. A recurring command can therefore fail after a configuration or capability change even though its schedule remains valid.
 
 ## Relationship to other docs
 

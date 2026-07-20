@@ -2,6 +2,8 @@
 
 This page records the confirmed hosted coding-agent runtime contract discovered through a constant-first reverse-engineering pass over `source-atlas/surface-index.json` and the corresponding `copilot-cli-pkg/app.js` anchors. It is the source-anchored internals page for hosted-runtime environment surfaces and the operational contracts they feed.
 
+The detailed envelope below was reconstructed from the `1.0.54` JavaScript baseline. In `1.0.71`, many `COPILOT_AGENT_*` parser strings no longer appear in `app.js` while the native `runtime.node` surface expanded substantially. Treat the envelope as a confirmed historical contract whose current JavaScript boundary is partially delegated to native code, not as proof that each old minified function still exists at the listed line.
+
 The scope is narrower than generic feature gates or observability: it explains which high-signal environment variables and provider/client constants form real hosted runtime contracts, and which ones are only allowlist, redaction, forwarding, or bundled-SDK surfaces.
 
 Because `app.js` is bundled and minified, line numbers are approximate anchors for the analyzed bundle. Treat minified names as search handles, not public APIs.

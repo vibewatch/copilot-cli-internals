@@ -100,7 +100,7 @@ The scan found conversion logic around line `3439` that maps internal tool objec
 
 The bundle uses both concrete tool names and compatibility aliases.
 
-For the detailed `bash`/`powershell` path after the generic tool callback is invoked, see [`shell-command-execution-events.md`](shell-command-execution-events.md). That page traces the shell manager, PTY and process backends, sync/async/detached execution, output buffering, and background task state.
+For the detailed `bash`/`powershell` path after the generic tool callback is invoked, see [`shell-command-execution-events.md`](shell-command-execution-events.md). That page traces the native-backed shell manager, sync/async/detached execution, output buffering, and background task state.
 
 | Family | Representative names | Purpose |
 |---|---|---|

@@ -54,7 +54,7 @@ flowchart TD
 | Terminal ergonomics | [Terminal setup and shell environment](terminal-setup-and-shell-environment.md) | Defines shell detection, Shift+Enter setup, history state, and command-environment context. |
 | Syntax and diff rendering | [Tree-sitter WASM usage](tree-sitter-wasm-usage.md) | Explains packaged grammars, highlight queries, and rendering fallbacks. |
 | Voice entry point | [Voice mode and Foundry Local](voice-mode-foundry-local.md) | Covers voice mode activation, Foundry Local checks, settings, and native modules. |
-| Voice backend | [Voice runtime workers and transcription pipeline](voice-runtime-workers-and-transcription.md) | Traces microphone, installer, worker state machines, PCM flow, transcription, and cleanup. |
+| Voice backend | [Voice runtime server and transcription pipeline](voice-runtime-workers-and-transcription.md) | Traces the dedicated local engine, endpoint reuse/spawn, settings handoff, installation, and historical worker migration. |
 
 ## Handoffs
 

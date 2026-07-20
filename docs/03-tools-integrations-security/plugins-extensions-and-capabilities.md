@@ -20,6 +20,8 @@ The distinction matters because discovery, persistence, and runtime registration
 | Plugin cache layout | `installed-plugins`, `plugin-data` | State directories under the CLI state root. |
 | Plugin manager | `ET` class, `getInstalledPluginsDir`, `getPluginCacheDir`, `getPluginDataDir` | Install/update/uninstall and data-dir helpers. |
 | Marketplace install | `installFromMarketplace` | Marketplace plugin lookup, source resolution, install, and config save. |
+| Marketplace management | `plugin marketplace list/add/remove/browse/update` | Root and slash-command paths register, inspect, browse, refresh, and remove catalogs. |
+| Plugin source pin | `source.sha` | GitHub and URL sources can resolve to an exact commit SHA. |
 | Local plugin injection | `--plugin-dir <directory>` | Runtime option scans local directories for `plugin.json`. |
 | Plugin contributions | `skills`, `agents`, `hooks`, `mcpServers`, `lspServers` | Plugin metadata schema allows multiple capability types. |
 | Extension gate | `EXTENSIONS` | Feature flag text says extensions are programmatic tools and hooks via `@github/copilot-sdk`. |
@@ -44,6 +46,7 @@ Plugins are visible from both root command mode and interactive slash-command mo
 |---|---|
 | `copilot plugin` | Root CLI command for plugin install/list/marketplace/uninstall/update. |
 | `/plugin` | Interactive command for plugin management inside a session. |
+| `/plugins` | Full-screen dashboard for installed plugins. |
 | `--plugin-dir <directory>` | Loads one or more local plugin directories for the current invocation. |
 | `/env` | Shows loaded plugins, skills, agents, MCP servers, LSPs, and extensions. |
 
@@ -108,6 +111,22 @@ The extracted bundle shows `installFromMarketplace(...)`, `installFromRepo(...)`
 
 Uninstall removes the cache directory and prunes empty parent directories. Update reuses installation and records previous-version metadata for the user-facing result.
 
+GitHub and URL source records can include `sha`. When present, the install is pinned to that exact commit instead of following a movable branch or tag reference. This makes plugin resolution reproducible while retaining `ref` as the human-facing source selector.
+
+## Marketplace management
+
+The current command group exposes:
+
+| Command | Purpose |
+|---|---|
+| `plugin marketplace list` | List registered marketplace catalogs. |
+| `plugin marketplace add <source>` | Register a GitHub or URL-backed marketplace. |
+| `plugin marketplace remove <name> [--force]` | Remove a marketplace, optionally handling installed dependents. |
+| `plugin marketplace browse <name>` | Fetch and display installable plugins from one catalog. |
+| `plugin marketplace update [name]` | Refresh one catalog or all registered catalogs. |
+
+The singular `/plugin` command exposes equivalent interactive operations. `/plugins` is a separate dashboard optimized for inspecting and managing installed plugins rather than typing subcommands.
+
 ## Local plugin directories
 
 The root CLI option `--plugin-dir <directory>` allows one or more local directories to be loaded for a single run.
@@ -134,10 +153,13 @@ The manifest schema around line `525` allows plugins to contribute multiple subs
 | `hooks` | Lifecycle, prompt, permission, and tool hooks. |
 | `mcpServers` | MCP server configuration merged into session MCP config. |
 | `lspServers` | Language server configuration merged into the LSP registry. |
+| `extensions` | Session-scoped SDK extensions loaded with the plugin. |
 | `commands` | Plugin command metadata or command-like affordances. |
 | `postInstallMessage` | User-facing install completion text. |
 
 The plugin manager has a `getInstalledPluginSkillDirs(...)` helper that walks enabled installed plugins and returns existing `skills` directories. Similar plugin-aware paths exist for MCP configs, hooks, custom agents, and LSP configs elsewhere in the bundle.
+
+Since `1.0.62`, plugins can also ship SDK extensions. Those extensions still use the session extension controller and permission boundary described below; plugin installation is only their distribution path.
 
 ## LSP server contribution
 

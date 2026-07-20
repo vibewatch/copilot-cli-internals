@@ -211,7 +211,7 @@ All reads/writes go through `sessionFs`. The path sanitizer for workspace files 
 Tool and shell output buffers also use `SessionFs`:
 
 - generic large tool results call `LW(sessionFs, largeOutputConfig, grepToolName)`;
-- shell buffers create `BW(...)` with `sessionFs` in both PTY and process backends;
+- shell output buffering uses `sessionFs` for spill files across current process-backed execution modes;
 - temp output paths are registered for cleanup with `rAe(sessionFs, filePath)`;
 - cleanup later removes temp files through the same backend, unless `COPILOT_KEEP_TEMP_FILES=true`.
 

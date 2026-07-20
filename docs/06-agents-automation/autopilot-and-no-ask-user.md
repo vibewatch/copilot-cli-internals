@@ -11,7 +11,7 @@ They sound similar, but they operate at different layers. `--autopilot` changes 
 
 | Flag | Primary layer | Main effect | What it is not |
 |---|---|---|---|
-| `--autopilot` | Agent mode and task lifecycle | Starts the session in autopilot mode, injects autopilot instructions, exposes `task_complete`, and can keep sending internal continuation prompts until completion or a limit. | It is not the same as `--allow-all`; it does not automatically grant all tool, path, and URL permissions by itself. |
+| `--autopilot` | Agent mode and task lifecycle | Starts the session in autopilot mode, injects autopilot instructions, exposes `task_complete`, and can keep sending internal continuation prompts until completion or a limit. By default a completed task returns to interactive mode. | It is not the same as `--allow-all`; it does not automatically grant all tool, path, and URL permissions by itself. |
 | `--no-ask-user` | Capability and tool assembly | Disables the `ask-user` capability so the `ask_user` or elicitation tool is not exposed to the model in the interactive/TUI session path. | It is not a mode switch, does not inject autopilot instructions, and does not create continuation turns. |
 
 In practical terms:
@@ -37,6 +37,8 @@ In practical terms:
 | `ask_user` tool | `createAskUserTool(...)` | `ZYr(...)`, `ZE = "ask_user"`, `HW` | 602 | Defines the structured user-question tool and the autonomous fallback answer. |
 | `task_complete` tool | `createTaskCompleteTool(...)` | `$Vn()`, `UM = "task_complete"`, `UTe` | 4140-4149 | Defines explicit task completion and the internal continuation prompt. |
 | TUI continuation loop | `useAutopilotContinuation(...)` | `F5o(...)` | 6615 | Continues after `session.idle` until `task_complete`, error, abort, or max count. |
+| Completion persistence | `stayInAutopilot` | continuation controller option | 4373, 5168 | Defaults to `false`; when enabled, completion does not switch the session back to interactive mode. |
+| Objective | `/autopilot <objective>`, `/goal` | objective provider | current slash-command surface | Keeps continuation prompts aligned to a named objective. |
 | Prompt-mode continuation loop | `executePromptDirectly(...)` | `session.task_complete`, `session.idle`, `UTe` | 7416 | Non-interactive autopilot loop. |
 | Slash command | `/autopilot` | `Rps(...)`, `Deo` | 1300, 4918 | Runtime and TUI slash-command paths for toggling autopilot. |
 | Plan slash command | `/plan` | `Fps(...)`, `[[PLAN]]`, `mode: "plan"` | 1305, 1340 | Converts a slash command into a plan-mode agent prompt and prefixes plan prompts. |
@@ -138,6 +140,10 @@ flowchart TD
 ```
 
 The `task_complete` tool is the runtime's explicit done signal. A normal assistant message is not enough to stop autopilot continuation; the loop watches for the event emitted by the tool.
+
+After a successful `task_complete`, the interactive runtime normally switches back to interactive mode so the next prompt is not unexpectedly autonomous. Setting `stayInAutopilot: true` preserves autopilot across completed objectives.
+
+`/autopilot <objective>` stores an explicit objective for the continuation loop; `/goal` is its alias. Changing the objective affects subsequent continuation guidance without granting additional permissions.
 
 ### Continuation loop in the TUI
 
@@ -325,6 +331,8 @@ flowchart TD
 ```
 
 The `<plan_mode>` system block tells the model to inspect the codebase, write or update `plan.md`, avoid starting implementation until explicitly requested, and use `exit_plan_mode` for approval when the runtime requires a plan-review turn. This is distinct from autopilot: plan mode is for deciding and recording the implementation plan, not for autonomous execution.
+
+The `1.0.71` runtime also enforces that distinction at the tool boundary. Built-in tools classified as workspace mutators, including editing and mutating shell/PR actions, are hard-blocked while plan mode is active. MCP and other external tools are not covered by that built-in block and remain subject to their own permission and policy paths.
 
 ### Exiting plan mode
 

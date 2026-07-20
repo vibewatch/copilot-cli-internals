@@ -1,20 +1,20 @@
 # Voice mode and Foundry Local
 
-This document explains the voice-mode implementation visible in the extracted Copilot CLI `app.js` bundle. In the analyzed bundle, voice mode is a staff-gated interactive feature that records short dictation input, transcribes it locally through Microsoft Foundry Local runtime components, and feeds the resulting text back into the CLI input loop.
+This document explains the voice-mode implementation in the extracted Copilot CLI `1.0.71` bundle. Voice mode records short dictation input, transcribes it locally through Microsoft Foundry Local components, and feeds the resulting text back into the CLI input loop.
 
-For the lower-level worker state machines that capture microphone PCM, install the Foundry runtime, load speech models, and produce streaming/batch transcription results, see [`voice-runtime-workers-and-transcription.md`](voice-runtime-workers-and-transcription.md).
+The current build no longer runs microphone capture and Foundry transcription in `voice-mic.worker.js` and `voice-foundry.worker.js`. The TUI connects to a reusable local `copilot-voice` server, spawning a detached CLI child when no healthy server is available. For that process boundary and the historical worker architecture it replaced, see [`voice-runtime-workers-and-transcription.md`](voice-runtime-workers-and-transcription.md).
 
 The important implementation point is that voice mode is not just a UI toggle. It combines:
 
 - the `/voice` slash command;
 - the `VOICE` feature gate;
-- persisted `voice.enabled` and `voice.selectedModel` settings;
-- bundled native-module routing for `foundry-local-sdk` and `@picovoice/pvrecorder-node`;
+- persisted `voice.enabled`, `voice.selectedModel`, and `voice.selectedDevice` settings;
+- a local socket/named-pipe RPC connection to the dedicated voice engine;
 - runtime inspection/download/update dialogs;
 - model selection and cache checks;
 - TUI keybindings for recording and dictation.
 
-This is the voice feature overview for [Runtime lifecycle](README.md). It explains the interactive command and settings surface; [Voice runtime workers and transcription pipeline](voice-runtime-workers-and-transcription.md) explains the lower-level microphone, installer, and Foundry worker state machines. Voice output feeds back into the same prompt/session path covered by [Context and model loop](../02-context-model-loop/README.md) and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md).
+This is the voice feature overview for [Runtime lifecycle](README.md). It explains the interactive command and settings surface; [Voice runtime server and transcription pipeline](voice-runtime-workers-and-transcription.md) explains the engine process and transport. Voice output feeds back into the same prompt/session path covered by [Context and model loop](../02-context-model-loop/README.md) and [Sessions, persistence, and remote](../04-sessions-persistence-remote/README.md).
 
 Because `app.js` is bundled/minified, symbol names are unstable. Line references below are searchable anchors in the extracted bundle and will shift across releases.
 
@@ -22,27 +22,31 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 
 | Semantic alias | Minified anchor | Approx. `app.js` line | Role |
 |---|---|---:|---|
-| Slash command | `/voice`, `Manage voice mode (dictation transcription via Foundry Local)` | 4643, 4916 | `/voice [on\|off\|models]` is the user-facing management command. |
-| Feature gate | `VOICE:"staff"`, `voiceEnabled:e.VOICE` | 239, 7344 | Voice is gated as staff-only in the analyzed configuration. |
-| Runtime settings | `voice:{enabled, selectedModel}` | 239 | Voice state is persisted in regular CLI settings. |
-| Session injection | `voice:e.VOICE?{getStatus, getSelectedModelId, inspectRuntime, enable, disable}` | 7346 | The TUI/session receives a voice controller only when the gate is enabled. |
-| Foundry runtime | `foundry-local-sdk`, `deps_versions.json`, `Microsoft.AI.Foundry.Local.Core`, `onnxruntime` | 13, 29, 6865 | The bundle vendors/loads Foundry Local runtime dependencies and audits expected package versions. |
-| Audio capture | `@picovoice/pvrecorder-node`, `pvrecorder` | 14, 29, 41 | Audio recording is routed through a vendored Picovoice recorder module. |
-| Runtime states | `runtime-missing`, `runtime-outdated`, `runtime-unsupported`, `model-not-cached` | 4916, 6865 | Enablement is blocked or redirected to dialogs depending on runtime/model state. |
-| Dialogs | `voice-runtime-download`, `voice-models` | 4916, 6617 | The TUI can ask the user to download/update runtime components or pick a model. |
-| Ready prompt | `Voice ready. Hold \`space\` to record, or \`ctrl+x v\` to toggle dictation.` | 6865 | When ready, voice mode becomes an input affordance in the interactive UI. |
+| Slash command | `/voice`, `voice-models`, `voice-devices` | 2438 | `/voice [on\|off\|models\|devices]` manages activation and opens model/device pickers. |
+| Runtime settings | `voice:{enabled, selectedModel, selectedDevice}` | 4347, 4404 | Voice state and a stable microphone descriptor are persisted in regular settings. |
+| Endpoint resolver | `Axn(...)`, `copilot-voice`, `COPILOT_VOICE_SERVER_INSTANCE` | 4402 | Resolves a version/user-scoped Unix socket or Windows named pipe plus PID file. |
+| Dedicated server spawn | `Cxn(...)`, `Txn(...)`, `kxn(...)` | 4404 | Reuses a live server when possible or spawns a detached CLI child in voice-server mode. |
+| Engine controller | `Fxn(...)`, `Nxn(...)` | 4404 | Owns connection/start/shutdown state and subscribes to engine snapshots and fatal errors. |
+| Engine boot environment | `COPILOT_VOICE_SERVER_MODE`, `COPILOT_VOICE_SERVER_BOOT` | 4404 | Marks the child process and transfers sanitized voice boot settings. |
+| TUI injection | `voiceActivation`, `voice-devices` dialog | 2438, 4427 | The slash command toggles the active engine or opens a picker supplied by the TUI. |
+| Installer boundary | `voice-installer.worker.js`, `foundry-local-sdk` | package worker, 4404 | Runtime installation remains isolated, while capture/transcription moved behind the voice server. |
 
 ## Capability map
 
 ```mermaid
 flowchart TD
     Gate[VOICE feature gate] --> Controller[Voice controller injected into TUI]
-    Settings[voice.enabled / voice.selectedModel] --> Controller
+    Settings[enabled / selectedModel / selectedDevice] --> Controller
     Command["/voice command"] --> Controller
-    Controller --> Inspect[inspect Foundry Local runtime]
+    Controller --> Endpoint[resolve local endpoint and PID file]
+    Endpoint --> Reuse{healthy voice server?}
+    Reuse -->|yes| Engine[copilot-voice server]
+    Reuse -->|no| Spawn[spawn detached CLI child]
+    Spawn --> Engine
+    Engine --> Inspect[inspect Foundry Local runtime]
     Inspect --> RuntimeDialog[download/update runtime dialog]
-    Inspect --> ModelDialog[voice model picker]
-    Controller --> Recorder[pvrecorder audio capture]
+    Inspect --> Picker[model or microphone picker]
+    Engine --> Recorder[microphone capture]
     Recorder --> Foundry[Foundry Local transcription]
     Foundry --> PromptInput[dictated text inserted into prompt]
 ```
@@ -63,10 +67,11 @@ The command accepts these subcommands:
 | `/voice on` | Enables voice mode. |
 | `/voice off` | Disables voice mode and persists `voice.enabled:false`. |
 | `/voice models` | Opens runtime/model inspection and model picker flow. |
+| `/voice devices` | Opens the microphone picker and persists the selected device. |
 
-If an unknown subcommand is passed, the command returns an error with the usage string `/voice [on|off|models]`.
+If an unknown subcommand is passed, the command returns an error with the usage string `/voice [on|off|models|devices]`.
 
-The command first checks whether `t.voice` exists. If the session was not configured with a voice controller, it returns `Voice mode is not configured for this client.` This is the runtime guard after feature-gate filtering.
+The `models` and `devices` branches open dialogs directly. Activation uses `voiceActivation`; if the engine is unavailable in the build, the command returns `Voice engine is not available in this build.`
 
 ## Runtime inspection and download/update flow
 
@@ -100,27 +105,23 @@ The settings schema contains:
 |---|---|
 | `voice.enabled` | Whether voice mode should be active on startup. |
 | `voice.selectedModel` | The selected Foundry Local transcription model ID. |
+| `voice.selectedDevice` | Stable microphone identity as `{ name, occurrence }`; `null` selects the default device. |
 
 The command loads settings through the same settings helper used elsewhere in the CLI, updates the `voice` object, writes it, and then calls `reloadConfig()` so the interactive runtime sees the new value.
 
 When a selected model is deleted or unavailable, the voice controller clears `selectedModel`, disables voice, and emits an informational message that voice mode was disabled because the selected model was deleted.
 
-## Native module routing
+## Dedicated voice server
 
-At the top of `app.js`, the SEA/bootstrap wrapper builds special `createRequire` entry points for bundled native modules:
+`Axn(...)` derives a local endpoint from the CLI version and user identity. Unix builds use a restricted socket directory and Windows uses a named pipe; both use a PID file to distinguish a live reusable server from stale state.
 
-| Vendored module | Purpose |
-|---|---|
-| `foundry-local-sdk` | Foundry Local runtime/client and installer metadata. |
-| `@picovoice/pvrecorder-node` | Microphone/audio recording support. |
+`kxn(...)` implements connect-or-spawn behavior. It tries a live PID first, removes or works around stale endpoint state, and otherwise calls `Txn(...)` to launch a detached CLI child with `COPILOT_VOICE_SERVER_MODE=1`. The sanitized `voice` boot object is serialized through `COPILOT_VOICE_SERVER_BOOT`; it includes only `enabled`, `selectedModel`, and normalized `selectedDevice` fields.
 
-The custom `require` wrapper treats these modules as vendored native modules and resolves them from package-local directories such as `foundry-local-sdk/index.js` and `pvrecorder/index.js`.
-
-This is important because the binary cannot rely on normal Node resolution for native modules embedded beside the SEA payload. The loader explicitly allows these package-local native modules while continuing to reject unexpected module paths outside the application root.
+The client uses framed JSON-RPC over the local socket. `Fxn(...)` owns start, snapshot subscription, fatal-error handling, and shutdown. This keeps microphone/native model work outside the TUI process and lets multiple interactive restarts reconnect to the same version-scoped engine.
 
 ## Foundry runtime version audit
 
-The bundle loads `foundry-local-sdk/deps_versions.json` and validates expected keys:
+The installer path still loads `foundry-local-sdk/deps_versions.json` and validates expected keys:
 
 - `foundry-local-core.nuget`;
 - `onnxruntime.version`;
@@ -165,13 +166,15 @@ sequenceDiagram
     participant Slash as /voice
     participant Settings
     participant Voice as Voice controller
+    participant Server as copilot-voice server
     participant Runtime as Foundry runtime
     participant TUI
 
     User->>Slash: /voice on
     Slash->>Settings: load config
-    Slash->>Voice: getStatus / enable(modelId?)
-    Voice->>Runtime: inspect runtime and model cache
+    Slash->>Voice: requestEnable()
+    Voice->>Server: connect or spawn; start engine
+    Server->>Runtime: inspect runtime and model cache
     alt runtime missing or outdated
         Slash-->>TUI: show voice-runtime-download dialog
     else no model or model not cached
@@ -186,7 +189,7 @@ sequenceDiagram
 
 ## Relationship to other docs
 
-- `voice-runtime-workers-and-transcription.md` explains the mic, installer, and Foundry worker internals beneath this user-facing voice flow.
+- `voice-runtime-workers-and-transcription.md` explains the current dedicated server boundary and preserves the removed `1.0.54` worker design as historical context.
 - `tui-and-slash-commands.md` explains how slash commands and dialogs are surfaced.
 - `settings-config-persistence.md` explains the settings load/write/reload path.
 - `feature-gates.md` explains static feature tiers such as `VOICE:"staff"`.

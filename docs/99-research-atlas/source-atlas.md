@@ -1,6 +1,6 @@
 # Source atlas and generated indexes
 
-This page explains how to keep a navigable map of the huge, bundled `copilot-cli-pkg/app.js` file without hand-reading all 8k+ minified lines. It pairs a generated inventory under `source-atlas/` with curated semantic anchors in the wiki.
+This page explains how to keep a navigable map of the huge, bundled `copilot-cli-pkg/app.js` file without hand-reading all 6k+ minified lines. It pairs a generated inventory under `source-atlas/` with curated semantic anchors in the wiki.
 
 The short version: use `scripts/index-app-js.mjs` to generate raw symbol and constant/string inventories, then use the curated path seeds below to trace the major runtime routes. The generated index is a discovery aid; the focused docs remain the source of confirmed behavior.
 
@@ -8,7 +8,7 @@ The short version: use `scripts/index-app-js.mjs` to generate raw symbol and con
 
 | Area | Anchor | Approx. line / path | Role |
 |---|---|---:|---|
-| Bundle under analysis | `copilot-cli-pkg/app.js` | `8684` lines | Minified production runtime that the index scans. |
+| Bundle under analysis | `copilot-cli-pkg/app.js` | `6,017` lines | Minified `1.0.71` production runtime that the index scans. |
 | Index generator | `scripts/index-app-js.mjs` | repository script | Generates raw symbol, declaration, event, env var, slash command, tool-name, JSON-RPC-ish method, and curated path seed indexes. |
 | Generated output | `source-atlas/` | generated repository-root directory | Stores `README.md`, `constants.md`, `symbols.md`, `summary.json`, `surface-index.json`, and `declarations.json`. |
 | High-level feature map | [`main-feature-map.md`](../00-start-here/main-feature-map.md) | docs page | Human-curated overview of major `app.js` capabilities and runtime ownership. |
@@ -20,19 +20,19 @@ The latest generated scan of `copilot-cli-pkg/app.js` produced:
 
 | Surface | Count |
 |---|---:|
-| Bundle size | `12,548,132` bytes |
-| Bundle lines | `9,088` |
-| Function declarations | `9,115` |
-| Class declarations/assignments | `1,920` |
-| `var`/`let`/`const` declaration blocks | `33,774` |
-| Environment-variable-like strings | `190` |
-| Feature/config-like uppercase keys | `1,619` |
-| Experiment flag strings | `24` |
-| Event strings | `94` |
-| JSON-RPC/method-like strings | `61` |
-| Confirmed slash commands | `22` |
-| Raw slash-like candidates | `128` |
-| Known tool-name hits | `25` |
+| Bundle size | `9,089,681` bytes |
+| Bundle lines | `6,017` |
+| Function declarations | `7,473` |
+| Class declarations/assignments | `612` |
+| `var`/`let`/`const` declaration blocks | `22,656` |
+| Environment-variable-like strings | `163` |
+| Feature/config-like uppercase keys | `716` |
+| Experiment flag strings | `40` |
+| Event strings | `283` |
+| JSON-RPC/method-like strings | `273` |
+| Confirmed slash commands | `21` |
+| Raw slash-like candidates | `115` |
+| Known tool-name hits | `22` |
 | Packaged YAML agent definitions | `7` |
 | Curated semantic anchor seeds | `21` |
 | Curated main path seeds | `13` |

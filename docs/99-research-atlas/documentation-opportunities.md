@@ -4,6 +4,8 @@ This report preserves a second-pass, script-assisted scan of the extracted Copil
 
 The current documentation set now covers the major runtime shape, prompts, memory/context board, compaction, loader/bootstrap, CLI routing, TUI, Tree-sitter, sessions, remote control, MCP, permissions, sandboxing, models/providers/auth, model API routing, resilience, task orchestration, autopilot, fleet mode, feature gates, and observability. The main scan candidates below have been drafted and indexed; remaining opportunities are narrow follow-ups to pursue only when a future question needs that depth.
 
+The `1.0.54 → 1.0.71` refresh is summarized in [Copilot CLI 1.0.71 package delta](../00-start-here/copilot-cli-1.0.71-delta.md). It closed new gaps for scoped settings, worktree/move behavior, durable canvases, MCP resources/live control, plugin marketplaces, built-in agent policy, voice-server architecture, native shell execution, and expanded sandbox enforcement.
+
 ## Source anchors
 
 This report is a scan summary, so the semantic aliases are surface categories extracted from `app.js`. Minified anchors are representative strings used by the scan rather than full implementation names.
@@ -75,7 +77,7 @@ Remaining gap-review set:
 
 Additional iterative gap pass:
 
-1. [`shell-command-execution-events.md`](../03-tools-integrations-security/shell-command-execution-events.md) now covers the previously scattered shell execution path: shell tool assembly, PTY vs process backends, sync/async/detached command handling, task tracking, background promotion, completion notifications, and large-output buffering.
+1. [`shell-command-execution-events.md`](../03-tools-integrations-security/shell-command-execution-events.md) now covers the current native-backed execution path and preserves the superseded PTY/process design as a labeled historical appendix.
 2. [`runtime-tool-assembly-and-filtering.md`](../03-tools-integrations-security/runtime-tool-assembly-and-filtering.md) now covers the final model-visible toolset path across built-ins, MCP, extensions, custom agents, feature gates, allow/exclude filters, deferred `tool_search`, request-time refresh, and `session.tools_updated` invalidation.
 3. [`session-fs-provider-and-state-files.md`](../04-sessions-persistence-remote/session-fs-provider-and-state-files.md) now covers the SessionFs provider and session-state file lifecycle: local vs RPC-backed filesystems, SDK reverse calls, provider guards, event/workspace files, large-output temp files, and fork/checkpoint state copying.
 4. [`voice-runtime-workers-and-transcription.md`](../01-runtime-lifecycle/voice-runtime-workers-and-transcription.md) now covers the voice backend that was only summarized by the voice-mode page: microphone, installer, and Foundry worker state machines; PCM flow; streaming/batch transcription; and cleanup.
@@ -417,3 +419,4 @@ The current important `app.js` documentation backlog is now covered by focused d
 1. A very focused cloud-sandbox/detached-child/rem-agent execution deep dive.
 2. A TUI rendering/theme/Tuikit internals document if terminal rendering itself becomes the research target.
 3. A package/native-dependency inventory document if binary packaging and vendored native modules need a broader audit beyond the loader and voice-mode docs.
+4. A focused `runtime.node` boundary analysis if native exports, handshake manifests, or binary internals become the research target.

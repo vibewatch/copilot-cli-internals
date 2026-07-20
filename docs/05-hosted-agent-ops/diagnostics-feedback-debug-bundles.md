@@ -14,7 +14,7 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 
 | Semantic alias | Minified anchor | Approx. `app.js` line | Role |
 |---|---|---:|---|
-| Diagnose command | `/diagnose`, `Analyze the current session log` | 4643, 4934 | Staff-only command builds an agent prompt from session log tail and optional user prompt. |
+| Diagnose command | `/diagnose`, `diagnoseCommand` | 2064, 2479 | Builds an agent prompt from session log tail and an optional user request. |
 | Diagnose gate | `DIAGNOSE:"staff"`, `diagnoseEnabled:e.DIAGNOSE` | 239, 7344 | Command visibility is feature/staff gated. |
 | Feedback command | `/feedback`, alias `/bug`, `Provide feedback about the CLI` | 4643, 4942 | Opens feedback dialog with session/log paths and optional log collection. |
 | Debug-log gate | `COLLECT_DEBUG_LOGS:"staff"`, `collectDebugLogsEnabled:e.COLLECT_DEBUG_LOGS` | 239, 7344 | Debug bundle collection is separately gated. |
@@ -24,6 +24,7 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 | Gist upload | `POST /gists`, `public:false`, `secret GitHub gist` | 4515, 5023 | Debug logs can be uploaded as a secret gist when logged in. |
 | Feedback bundle | `feedback.md`, `feedback-manifest.json`, `additional-logs` | 4515 | Feedback bundles include details, manifest, and optional extra logs. |
 | Root flags | `--collect-debug-logs <sessionId>`, `--collect-debug-logs-output <path>` | 8225 | Non-interactive root command can collect a session’s logs to `.tgz`. |
+| Session debug RPC | `session.debug.collectLogs` | 167 | Lets SDK/session clients request the same log-collection boundary. |
 
 ## Capability map
 

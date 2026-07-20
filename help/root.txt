@@ -10,7 +10,8 @@ Run `copilot <command> --help` for details on any subcommand.
 
 Options:
   --effort, --reasoning-effort <level>  Set the reasoning effort level (choices:
-                                        "low", "medium", "high", "xhigh")
+                                        "none", "minimal", "low", "medium",
+                                        "high", "xhigh", "max")
   --acp                                 Start as Agent Client Protocol server
   --add-dir <directory>                 Add a directory to the allowed list for
                                         file access (can be used multiple times)
@@ -31,6 +32,9 @@ Options:
   --allow-all                           Enable all permissions (equivalent to
                                         --allow-all-tools --allow-all-paths
                                         --allow-all-urls)
+  --allow-all-mcp-server-instructions   Include initialization instructions from
+                                        all MCP servers in the system prompt
+                                        instead of only allowlisted servers
   --allow-all-paths                     Disable file path verification and allow
                                         access to any path
   --allow-all-tools                     Allow all tools to run automatically
@@ -57,6 +61,9 @@ Options:
   --connect[=sessionId]                 Connect directly to a remote session
                                         (optionally specify session ID or task
                                         ID)
+  --context <tier>                      Set the context window tier (overrides
+                                        persisted setting) (choices: "default",
+                                        "long_context")
   --continue                            Resume the most recent session
   --deny-tool[=tools...]                Tools the CLI does not have permission
                                         to use; will not prompt for permission
@@ -72,11 +79,16 @@ Options:
                                         instead of the default CLI subset.
                                         Overrides --add-github-mcp-toolset and
                                         --add-github-mcp-tool options.
+  --enable-memory                       Enable memory in prompt mode (disabled by
+                                        default)
   --enable-reasoning-summaries          Request reasoning summaries for OpenAI
                                         models
   --excluded-tools[=tools...]           These tools will not be available to the
                                         model
   --experimental                        Enable experimental features
+  --extension-sdk-path <directory>      Override the bundled @github/copilot-sdk
+                                        injected into extension subprocesses
+                                        with a local copilot-sdk/ folder
   -h, --help                            display help for command
   -i, --interactive <prompt>            Start interactive mode and automatically
                                         execute this prompt
@@ -85,11 +97,13 @@ Options:
   --log-level <level>                   Set the log level (choices: "none",
                                         "error", "warning", "info", "debug",
                                         "all", "default")
+  --max-ai-credits <credits>            Set max AI credits for this session
   --max-autopilot-continues <count>     Maximum number of continuation messages
                                         in autopilot mode (default: 5)
   --mode <mode>                         Set the initial agent mode (choices:
                                         "interactive", "plan", "autopilot")
-  --model <model>                       Set the AI model to use
+  --model <model>                       Set the AI model to use (use 'auto' to
+                                        let Copilot pick automatically)
   --mouse[=value]                       Enable mouse support in alt screen mode
                                         (on|off)
   -n, --name <name>                     Set a name for the new session
@@ -106,6 +120,9 @@ Options:
   --no-mouse                            Disable mouse support in alt screen mode
   --no-remote                           Disable remote control of your session
                                         from GitHub web and mobile
+  --no-remote-export                    Disable exporting your session to GitHub
+                                        web and mobile (also disables remote
+                                        control)
   --output-format <format>              Output format: 'text' (default) or
                                         'json' (JSONL, one JSON object per line)
                                         (choices: "text", "json")
@@ -119,10 +136,13 @@ Options:
                                         (can be used multiple times)
   --remote                              Enable remote control of your session
                                         from GitHub web and mobile
-  --resume[=value]                      Resume from a previous session
-                                        (optionally specify session ID, task ID,
-                                        or name; name matching is exact,
-                                        case-insensitive)
+  --remote-export                       Export your session to GitHub web and
+                                        mobile (read-only; does not enable
+                                        remote control)
+  -r, --resume[=value]                  Resume from a previous session
+                                        (optionally specify existing session ID,
+                                        task ID, ID prefix, or name; name
+                                        matching is exact, case-insensitive)
   -s, --silent                          Output only the agent response (no
                                         stats), useful for scripting with -p
   --screen-reader                       Enable screen reader optimizations
@@ -131,6 +151,8 @@ Options:
                                         environments and redacted from output
                                         (e.g.,
                                         --secret-env-vars=MY_KEY,OTHER_KEY)
+  --session-id <id>                     Resume an existing session or task by ID,
+                                        or set the UUID for a new session
   --share[=path]                        Share session to markdown file after
                                         completion in non-interactive mode
                                         (default: ./copilot-session-<id>.md)
@@ -150,13 +172,17 @@ Commands:
   login [options]                       Authenticate with Copilot
   mcp                                   Manage MCP servers
   plugin                                Manage plugins
+  plugins                               Inspect configured plugins across kinds
+  skill                                 Manage skills
   update [channel]                      Download the latest version
   version                               Display version information
 
 Help Topics:
+  billing      AI credit usage
   commands     Interactive Mode Commands
   config       Configuration Settings
   environment  Environment Variables
+  limits       Session Limits Controls
   logging      Logging
   monitoring   Monitoring with OpenTelemetry
   permissions  Permissions
@@ -177,7 +203,7 @@ Examples:
   $ copilot -p "Fix the bug in main.js" --yolo
 
   # Start with a specific model
-  $ copilot --model gpt-5.2
+  $ copilot --model gpt-5.4
 
   # Resume the most recent session
   $ copilot --continue
@@ -188,6 +214,12 @@ Examples:
   # Resume a specific session by ID
   $ copilot --resume=<session-id>
 
+  # Start a new session with a specific UUID
+  $ copilot --session-id=0cb916db-26aa-40f2-86b5-1ba81b225fd2
+
+  # Resume or attach to an existing session or task by ID
+  $ copilot --session-id=<session-or-task-id>
+
   # Name a new session
   $ copilot --name="my feature"
 
@@ -196,9 +228,6 @@ Examples:
 
   # Resume a session by ID prefix (7+ hex chars)
   $ copilot --resume=0cb916d
-
-  # Start a new session with a specific UUID
-  $ copilot --resume=0cb916db-26aa-40f2-86b5-1ba81b225fd2
 
   # Resume with auto-approval
   $ copilot --allow-all-tools --resume

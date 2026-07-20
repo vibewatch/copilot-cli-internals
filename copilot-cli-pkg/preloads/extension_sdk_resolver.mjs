@@ -11,6 +11,9 @@ import { pathToFileURL } from "node:url";
 
 // COPILOT_SDK_PATH points to the directory containing the bundled SDK files.
 const sdkPath = process.env.COPILOT_SDK_PATH;
+process.stderr.write(
+    `[extension-resolver] resolver hook loaded: pid=${process.pid}, COPILOT_SDK_PATH=${sdkPath ?? "<unset>"}\n`,
+);
 
 export async function resolve(specifier, context, nextResolve) {
     if (!sdkPath) {

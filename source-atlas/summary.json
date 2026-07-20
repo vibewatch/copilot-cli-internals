@@ -1,28 +1,28 @@
 {
-  "generatedAt": "2026-05-26T22:34:44.128Z",
+  "generatedAt": "2026-07-20T00:24:02.078Z",
   "source": {
     "path": "/home/ythuang/workspace/copilot-cli-internals/copilot-cli-pkg/app.js",
     "relativePath": "copilot-cli-pkg/app.js",
-    "sha256": "997d2c9ea8e7819cd41e79304c8d5c25feba4ba2850f29d163a8cdbc4c603289",
-    "bytes": 12548132,
-    "lines": 9088
+    "sha256": "1466298c97677da25f484259e49c450e059f7b426498de8bbbcf007233a488b9",
+    "bytes": 9089681,
+    "lines": 6017
   },
   "output": {
     "path": "/home/ythuang/workspace/copilot-cli-internals/source-atlas",
     "relativePath": "source-atlas"
   },
   "counts": {
-    "functions": 9115,
-    "classes": 1920,
-    "declarationBlocks": 33774,
-    "envVars": 190,
-    "featureKeys": 1619,
-    "experimentFlagStrings": 24,
-    "eventStrings": 94,
-    "jsonRpcMethods": 61,
-    "confirmedSlashCommands": 22,
-    "slashCommandCandidates": 128,
-    "knownToolNameHits": 25,
+    "functions": 7473,
+    "classes": 612,
+    "declarationBlocks": 22656,
+    "envVars": 163,
+    "featureKeys": 716,
+    "experimentFlagStrings": 40,
+    "eventStrings": 283,
+    "jsonRpcMethods": 273,
+    "confirmedSlashCommands": 21,
+    "slashCommandCandidates": 115,
+    "knownToolNameHits": 22,
     "packagedAgentDefinitions": 7,
     "knownSemanticAnchors": 21,
     "mainPathSeeds": 13,
@@ -65,10 +65,10 @@
       "resolved": [
         {
           "anchor": "mke",
-          "line": 5959
+          "line": 2816
         }
       ],
-      "firstLine": 5959
+      "firstLine": 2816
     },
     {
       "semanticAlias": "mainCliAction(...) / runtime dispatcher",
@@ -83,22 +83,22 @@
       "resolved": [
         {
           "anchor": "j$o",
-          "line": 6824
+          "line": 2801
         },
         {
           "anchor": "u1t",
-          "line": 6034
+          "line": 637
         },
         {
           "anchor": "--server",
-          "line": 6371
+          "line": 2797
         },
         {
           "anchor": "--headless",
-          "line": 6379
+          "line": 3163
         }
       ],
-      "firstLine": 6034
+      "firstLine": 637
     },
     {
       "semanticAlias": "InteractiveTuiFlow",
@@ -111,14 +111,10 @@
       "resolved": [
         {
           "anchor": "j$o",
-          "line": 6824
-        },
-        {
-          "anchor": "jQa",
-          "line": 6257
+          "line": 2801
         }
       ],
-      "firstLine": 6257
+      "firstLine": 2801
     },
     {
       "semanticAlias": "runPromptMode(...)",
@@ -131,14 +127,14 @@
       "resolved": [
         {
           "anchor": "u1t",
-          "line": 6034
+          "line": 637
         },
         {
           "anchor": "session.task_complete",
-          "line": 4821
+          "line": 2594
         }
       ],
-      "firstLine": 4821
+      "firstLine": 637
     },
     {
       "semanticAlias": "buildSystemPrompt(...) / createGeneralPurposeSystemPrompt(...)",
@@ -152,18 +148,18 @@
       "resolved": [
         {
           "anchor": "X3e",
-          "line": 3105
+          "line": 632
         },
         {
           "anchor": "Wmt",
-          "line": 2029
+          "line": 143
         },
         {
           "anchor": "currentSystemMessage",
-          "line": 4940
+          "line": 2710
         }
       ],
-      "firstLine": 2029
+      "firstLine": 143
     },
     {
       "semanticAlias": "Session runtime / runAgenticLoop",
@@ -177,18 +173,18 @@
       "resolved": [
         {
           "anchor": "runAgenticLoop",
-          "line": 4952
+          "line": 2755
         },
         {
           "anchor": "getCompletionWithTools",
-          "line": 3613
+          "line": 121
         },
         {
           "anchor": "tool.execution_complete",
-          "line": 3104
+          "line": 90
         }
       ],
-      "firstLine": 3104
+      "firstLine": 90
     },
     {
       "semanticAlias": "Conversation session end-to-end",
@@ -204,26 +200,26 @@
       "resolved": [
         {
           "anchor": "--resume",
-          "line": 1940
+          "line": 669
         },
         {
           "anchor": "--continue",
-          "line": 1940
+          "line": 669
         },
         {
           "anchor": "session.start",
-          "line": 3104
+          "line": 90
         },
         {
           "anchor": "session.resume",
-          "line": 3104
+          "line": 90
         },
         {
           "anchor": "session.tools_updated",
-          "line": 3104
+          "line": 2039
         }
       ],
-      "firstLine": 1940
+      "firstLine": 90
     },
     {
       "semanticAlias": "Session persistence pipeline",
@@ -239,26 +235,26 @@
       "resolved": [
         {
           "anchor": "events.jsonl",
-          "line": 237
+          "line": 109
         },
         {
           "anchor": "workspace.yaml",
-          "line": 1312
+          "line": 2768
         },
         {
           "anchor": "session-store.db",
-          "line": 1312
+          "line": 4446
         },
         {
           "anchor": "session.snapshot_rewind",
-          "line": 3104
+          "line": 90
         },
         {
           "anchor": "session_store_sql",
-          "line": 1092
+          "line": 604
         }
       ],
-      "firstLine": 237
+      "firstLine": 90
     },
     {
       "semanticAlias": "assembleRuntimeTools(...)",
@@ -272,14 +268,14 @@
       "resolved": [
         {
           "anchor": "HCr",
-          "line": 4666
+          "line": 2810
         },
         {
           "anchor": "session.tools_updated",
-          "line": 3104
+          "line": 2039
         }
       ],
-      "firstLine": 3104
+      "firstLine": 2039
     },
     {
       "semanticAlias": "Built-in tools, execution events, and results",
@@ -293,18 +289,18 @@
       "resolved": [
         {
           "anchor": "tool.execution_start",
-          "line": 3104
+          "line": 90
         },
         {
           "anchor": "tool.execution_partial_result",
-          "line": 4821
+          "line": 2710
         },
         {
           "anchor": "tool.execution_complete",
-          "line": 3104
+          "line": 90
         }
       ],
-      "firstLine": 3104
+      "firstLine": 90
     },
     {
       "semanticAlias": "PermissionService",
@@ -319,22 +315,22 @@
       "resolved": [
         {
           "anchor": "PermissionService",
-          "line": 4821
+          "line": 2686
         },
         {
           "anchor": "permissionRequest",
-          "line": 239
+          "line": 121
         },
         {
           "anchor": "allow-tool",
-          "line": 8454
+          "line": 5488
         },
         {
           "anchor": "deny-tool",
-          "line": 8454
+          "line": 5488
         }
       ],
-      "firstLine": 239
+      "firstLine": 121
     },
     {
       "semanticAlias": "McpHost and MCP task bridge",
@@ -349,22 +345,18 @@
       "resolved": [
         {
           "anchor": "McpHost",
-          "line": 4856
+          "line": 624
         },
         {
           "anchor": "p8e",
-          "line": 3931
-        },
-        {
-          "anchor": "callToolStream",
-          "line": 240
+          "line": 2225
         },
         {
           "anchor": "taskSupport",
-          "line": 240
+          "line": 2577
         }
       ],
-      "firstLine": 240
+      "firstLine": 624
     },
     {
       "semanticAlias": "Plugin and SDK extension loading",
@@ -379,22 +371,22 @@
       "resolved": [
         {
           "anchor": "pluginCommand",
-          "line": 5119
+          "line": 2439
         },
         {
           "anchor": "setupExtensionsForSession",
-          "line": 6375
+          "line": 2799
         },
         {
           "anchor": "session.extensions_loaded",
-          "line": 4821
+          "line": 2742
         },
         {
           "anchor": "EXTENSIONS",
-          "line": 240
+          "line": 2799
         }
       ],
-      "firstLine": 240
+      "firstLine": 2439
     },
     {
       "semanticAlias": "TaskRegistry",
@@ -409,22 +401,22 @@
       "resolved": [
         {
           "anchor": "B3",
-          "line": 60
+          "line": 114
         },
         {
           "anchor": "TaskRegistry",
-          "line": 4597
+          "line": 204
         },
         {
           "anchor": "agent_completed",
-          "line": 3104
+          "line": 311
         },
         {
           "anchor": "agent_idle",
-          "line": 4821
+          "line": 311
         }
       ],
-      "firstLine": 60
+      "firstLine": 114
     },
     {
       "semanticAlias": "createTaskTool(...)",
@@ -438,14 +430,14 @@
       "resolved": [
         {
           "anchor": "I6n",
-          "line": 3091
+          "line": 170
         },
         {
           "anchor": "agent_type",
-          "line": 1604
+          "line": 374
         }
       ],
-      "firstLine": 1604
+      "firstLine": 170
     },
     {
       "semanticAlias": "BUILT_IN_AGENTS",
@@ -459,18 +451,18 @@
       "resolved": [
         {
           "anchor": "nHn",
-          "line": 1954
+          "line": 252
         },
         {
           "anchor": "general-purpose",
-          "line": 3104
+          "line": 324
         },
         {
           "anchor": "rem-agent",
-          "line": 1604
+          "line": 324
         }
       ],
-      "firstLine": 1604
+      "firstLine": 252
     },
     {
       "semanticAlias": "SessionAgentExecutor",
@@ -483,14 +475,14 @@
       "resolved": [
         {
           "anchor": "dZ",
-          "line": 222
+          "line": 167
         },
         {
           "anchor": "SessionAgentExecutor.execute",
-          "line": 4496
+          "line": 513
         }
       ],
-      "firstLine": 222
+      "firstLine": 167
     },
     {
       "semanticAlias": "Feature gates",
@@ -505,18 +497,18 @@
       "resolved": [
         {
           "anchor": "gLt",
-          "line": 60
+          "line": 2238
         },
         {
           "anchor": "v1e",
-          "line": 6856
+          "line": 3073
         },
         {
           "anchor": "COPILOT_EXP_",
-          "line": 240
+          "line": 3385
         }
       ],
-      "firstLine": 60
+      "firstLine": 2238
     },
     {
       "semanticAlias": "Telemetry and shutdown",
@@ -531,18 +523,18 @@
       "resolved": [
         {
           "anchor": "OpenTelemetry",
-          "line": 5967
+          "line": 2764
         },
         {
           "anchor": "COLLECT_DEBUG_LOGS",
-          "line": 240
+          "line": 2481
         },
         {
           "anchor": "debug",
-          "line": 60
+          "line": 61
         }
       ],
-      "firstLine": 60
+      "firstLine": 61
     },
     {
       "semanticAlias": "Debug bundle redaction boundary",
@@ -558,22 +550,22 @@
       "resolved": [
         {
           "anchor": "/collect-debug-logs",
-          "line": 4985
+          "line": 2064
         },
         {
           "anchor": "feedback-manifest.json",
-          "line": 4985
+          "line": 2064
         },
         {
           "anchor": "additional-logs",
-          "line": 4984
+          "line": 2062
         },
         {
           "anchor": "--secret-env-vars",
-          "line": 8616
+          "line": 5696
         }
       ],
-      "firstLine": 4984
+      "firstLine": 2062
     },
     {
       "semanticAlias": "HostedAgentEnvironmentEnvelope",
@@ -589,26 +581,18 @@
       "resolved": [
         {
           "anchor": "TWe",
-          "line": 6296
-        },
-        {
-          "anchor": "COPILOT_AGENT_ACTION",
-          "line": 240
+          "line": 3304
         },
         {
           "anchor": "GITHUB_COPILOT_MCP_JSON",
-          "line": 240
-        },
-        {
-          "anchor": "GITHUB_COPILOT_OIDC_MCP_TOKEN",
-          "line": 4666
+          "line": 2603
         },
         {
           "anchor": "COPILOT_OTEL_ENABLED",
-          "line": 5967
+          "line": 2764
         }
       ],
-      "firstLine": 240
+      "firstLine": 2603
     }
   ],
   "mainPaths": [
@@ -629,23 +613,23 @@
       "resolvedSeeds": [
         {
           "anchor": "j$o",
-          "line": 6824
+          "line": 2801
         },
         {
           "anchor": "u1t",
-          "line": 6034
+          "line": 637
         },
         {
           "anchor": "--server",
-          "line": 6371
+          "line": 2797
         },
         {
           "anchor": "--headless",
-          "line": 6379
+          "line": 3163
         },
         {
           "anchor": "--acp",
-          "line": 6379
+          "line": 3163
         }
       ]
     },
@@ -664,19 +648,19 @@
       "resolvedSeeds": [
         {
           "anchor": "session.start",
-          "line": 3104
+          "line": 90
         },
         {
           "anchor": "tool.execution_complete",
-          "line": 3104
+          "line": 90
         },
         {
           "anchor": "session.task_complete",
-          "line": 4821
+          "line": 2594
         },
         {
           "anchor": "session.idle",
-          "line": 3104
+          "line": 90
         }
       ]
     },
@@ -695,23 +679,19 @@
       "resolvedSeeds": [
         {
           "anchor": "events.jsonl",
-          "line": 237
+          "line": 109
         },
         {
           "anchor": "workspace.yaml",
-          "line": 1312
+          "line": 2768
         },
         {
           "anchor": "session-store.db",
-          "line": 1312
-        },
-        {
-          "anchor": "search_index",
-          "line": 1078
+          "line": 4446
         },
         {
           "anchor": "session.snapshot_rewind",
-          "line": 3104
+          "line": 90
         }
       ]
     },
@@ -731,23 +711,23 @@
       "resolvedSeeds": [
         {
           "anchor": "buildSystemPrompt",
-          "line": 4496
+          "line": 324
         },
         {
           "anchor": "X3e",
-          "line": 3105
+          "line": 632
         },
         {
           "anchor": "Wmt",
-          "line": 2029
+          "line": 143
         },
         {
           "anchor": "loadSkills",
-          "line": 5192
+          "line": 2496
         },
         {
           "anchor": "currentSystemMessage",
-          "line": 4940
+          "line": 2710
         }
       ]
     },
@@ -766,23 +746,23 @@
       "resolvedSeeds": [
         {
           "anchor": "getCompletionWithTools",
-          "line": 3613
+          "line": 121
         },
         {
           "anchor": "preRequest",
-          "line": 795
+          "line": 121
         },
         {
           "anchor": "BasicTruncator",
-          "line": 3613
+          "line": 121
         },
         {
           "anchor": "CompactionProcessor",
-          "line": 3643
+          "line": 121
         },
         {
           "anchor": "rate limit",
-          "line": 651
+          "line": 167
         }
       ]
     },
@@ -800,15 +780,15 @@
       "resolvedSeeds": [
         {
           "anchor": "HCr",
-          "line": 4666
+          "line": 2810
         },
         {
           "anchor": "initializeAndValidateTools",
-          "line": 4502
+          "line": 515
         },
         {
           "anchor": "session.tools_updated",
-          "line": 3104
+          "line": 2039
         }
       ]
     },
@@ -826,19 +806,19 @@
       "resolvedSeeds": [
         {
           "anchor": "tool.execution_start",
-          "line": 3104
+          "line": 90
         },
         {
           "anchor": "preToolUse",
-          "line": 239
+          "line": 2764
         },
         {
           "anchor": "permissionRequest",
-          "line": 239
+          "line": 121
         },
         {
           "anchor": "tool.execution_complete",
-          "line": 3104
+          "line": 90
         }
       ]
     },
@@ -858,27 +838,27 @@
       "resolvedSeeds": [
         {
           "anchor": "I6n",
-          "line": 3091
+          "line": 170
         },
         {
           "anchor": "TaskRegistry",
-          "line": 4597
+          "line": 204
         },
         {
           "anchor": "B3",
-          "line": 60
+          "line": 114
         },
         {
           "anchor": "SessionAgentExecutor",
-          "line": 4496
+          "line": 513
         },
         {
           "anchor": "dZ",
-          "line": 222
+          "line": 167
         },
         {
           "anchor": "agent_completed",
-          "line": 3104
+          "line": 311
         }
       ]
     },
@@ -897,23 +877,23 @@
       "resolvedSeeds": [
         {
           "anchor": "McpHost",
-          "line": 4856
+          "line": 624
         },
         {
           "anchor": "plugin",
-          "line": 262
+          "line": 141
         },
         {
           "anchor": "setupExtensionsForSession",
-          "line": 6375
+          "line": 2799
         },
         {
           "anchor": "session.extensions_loaded",
-          "line": 4821
+          "line": 2742
         },
         {
           "anchor": "callIdeTool",
-          "line": 6257
+          "line": 3079
         }
       ]
     },
@@ -932,23 +912,23 @@
       "resolvedSeeds": [
         {
           "anchor": "PermissionService",
-          "line": 4821
+          "line": 2686
         },
         {
           "anchor": "allow-tool",
-          "line": 8454
+          "line": 5488
         },
         {
           "anchor": "deny-tool",
-          "line": 8454
+          "line": 5488
         },
         {
           "anchor": "content exclusion",
-          "line": 239
+          "line": 128
         },
         {
           "anchor": "sandbox",
-          "line": 237
+          "line": 122
         }
       ]
     },
@@ -967,19 +947,19 @@
       "resolvedSeeds": [
         {
           "anchor": "/diagnose",
-          "line": 4985
+          "line": 2064
         },
         {
           "anchor": "/collect-debug-logs",
-          "line": 4985
+          "line": 2064
         },
         {
           "anchor": "OpenTelemetry",
-          "line": 5967
+          "line": 2764
         },
         {
           "anchor": "update",
-          "line": 60
+          "line": 93
         }
       ]
     },
@@ -998,28 +978,8 @@
       "docs": "docs/05-hosted-agent-ops/hosted-agent-environment.md",
       "resolvedSeeds": [
         {
-          "anchor": "COPILOT_AGENT_PROMPT",
-          "line": 240
-        },
-        {
-          "anchor": "COPILOT_AGENT_ACTION",
-          "line": 240
-        },
-        {
           "anchor": "GITHUB_COPILOT_MCP_JSON",
-          "line": 240
-        },
-        {
-          "anchor": "GITHUB_COPILOT_OIDC_MCP_TOKEN",
-          "line": 4666
-        },
-        {
-          "anchor": "COPILOT_AGENT_FIREWALL_LOG_FILE",
-          "line": 4609
-        },
-        {
-          "anchor": "CPD_SAVE_TRAJECTORY_OUTPUT",
-          "line": 240
+          "line": 2603
         }
       ]
     },
@@ -1038,23 +998,23 @@
       "resolvedSeeds": [
         {
           "anchor": "/collect-debug-logs",
-          "line": 4985
+          "line": 2064
         },
         {
           "anchor": "debugLogPaths",
-          "line": 5142
+          "line": 2479
         },
         {
           "anchor": "feedback-manifest.json",
-          "line": 4985
+          "line": 2064
         },
         {
           "anchor": "additional-logs",
-          "line": 4984
+          "line": 2062
         },
         {
           "anchor": "--secret-env-vars",
-          "line": 8616
+          "line": 5696
         }
       ]
     }

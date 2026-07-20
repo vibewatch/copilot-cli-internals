@@ -94,7 +94,7 @@ export default defineConfig({
     starlight({
       title: 'Copilot CLI Internal Analysis',
       description:
-        'Reverse-engineering wiki for the @github/copilot CLI bundle (app.js).',
+        'Reverse-engineering wiki for the @github/copilot CLI 1.0.71 bundle and SDK.',
       logo: {
         src: './src/assets/cat.svg',
         replacesTitle: false,
@@ -136,6 +136,7 @@ export default defineConfig({
             { label: 'Wiki home', link: '/' },
             { label: 'Start here', link: '/00-start-here/' },
             { label: 'What is app.js', link: '/00-start-here/what-is-app-js/' },
+            { label: 'What changed in 1.0.71', link: '/00-start-here/copilot-cli-1.0.71-delta/' },
             { label: 'Main feature map', link: '/00-start-here/main-feature-map/' },
             { label: 'Full table of contents', link: '/summary/' },
           ],
@@ -151,7 +152,7 @@ export default defineConfig({
             { label: 'Tree-sitter WASM usage', link: '/01-runtime-lifecycle/tree-sitter-wasm-usage/' },
             { label: 'Terminal and shell environment', link: '/01-runtime-lifecycle/terminal-setup-and-shell-environment/' },
             { label: 'Voice mode and Foundry Local', link: '/01-runtime-lifecycle/voice-mode-foundry-local/' },
-            { label: 'Voice runtime', link: '/01-runtime-lifecycle/voice-runtime-workers-and-transcription/' },
+            { label: 'Voice runtime server', link: '/01-runtime-lifecycle/voice-runtime-workers-and-transcription/' },
           ],
         },
         {

@@ -24,7 +24,7 @@ The short version: tool assembly is a two-stage pipeline. First, model/provider 
 | Session option storage | `Session.updateOptions(...)` | `updateOptions(...)` | 4471 | Stores filters, external tool definitions, requested tools, selected shell config, MCP config, and invalidates cached tool metadata. |
 | Built-in tool assembly | `assembleRuntimeTools(...)`, `assembleToolSet(...)` | `$Cr(...)`, `HCr(...)` | 5734 | Collects shell, file/edit, validation, memory, skills, ask-user, workspace, task/subagent, schedule, and model/provider-specific tools. |
 | Subagent tool assembly | `assembleSubagentTools(...)` | `Gjs(...)` | 5734 | Recursively builds subagent tool lists and injects `task`, agent, sidekick, and peer-agent tools. |
-| Shell assembly | `assembleShellTools(...)` | `Wjs(...)` | 5734 | Adds shell/read/write/stop/list tools and chooses PTY vs process backend. |
+| Shell assembly | Shell context/tool factory | `Qpe`, `getShellTool`, `getOtherTools` | 206, 608 | Adds execute/read/stop/list tools backed by the native shell manager. |
 | Memory assembly | `assembleMemoryTools(...)` | `Yjs(...)` | 5734 | Adds cloud/local memory tools when memory is enabled. |
 | Final session merge | `initializeAndValidateTools(...)` | same name | 4481 | Merges built-ins, MCP tools, and external tools; handles overrides; validates filters; builds prompt metadata and executable tool callbacks. |
 | Filtering helpers | `isToolEnabled`, `filterToolsForSelectedAgent`, `composeCurrentToolMetadata` | `Fyr(...)`, `_Jn(...)`, `Gq(...)`, `cwe(...)` | 4471 | Implements allow/exclude/default-agent/custom-agent filtering and metadata stripping. |

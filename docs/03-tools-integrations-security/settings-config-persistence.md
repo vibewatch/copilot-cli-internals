@@ -21,6 +21,9 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 | Store factory | `load`, `write`, `writeKey`, `path`, `directoryFiles` | 236 | Reusable JSON/config store helper with caching and key writes. |
 | Store kinds | `DEFAULT`, `SETTINGS`, `MCP`, `LSP`, `LOCATION_PERMISSIONS` | 236 | Multiple logical config stores exist. |
 | User settings schema | `allowedUrls`, `deniedUrls`, `disabledMcpServers`, `enabledMcpServers`, `sandbox`, `trustedFolders` | 236, 239 | Settings schema covers permissions, URLs, MCP, sandbox, plugins, UI, and more. |
+| Scoped settings | `/settings --repo`, `/settings --local`, `.github/copilot/settings.json`, `settings.local.json` | 2212, 3627 | Repository defaults and git-ignored local overrides are separate from user settings. |
+| Settings validation | `nLt`, `commandHistoryMaxSize`, `rgi(...)` | 2237, 4175 | Registered settings are validated and invalid startup values produce a targeted warning. |
+| GitHub MCP selections | `githubMcpToolsets`, `githubMcpTools`, `enableAllGithubMcpTools`, `Swn(...)` | 2644, 3642 | Selected GitHub MCP toolsets/tools are normalized and persisted. |
 | Plugin persistence | `installedPlugins`, `enabledPlugins`, `writeKey` | 528 | Plugin manager writes installed/enabled plugin state. |
 | URL permissions | `allowedUrls`, `deniedUrls`, `addAllowedUrl`, `addDeniedUrl` | 555 | URL allow/deny entries are persisted in settings. |
 | MCP persistence | `disabledMcpServers`, `enabledMcpServers`, `mcp-config.json` | 4945, 4949, 7717 | MCP server enablement and config are stored separately. |
@@ -89,17 +92,33 @@ The user settings schema is broad. Evidence anchors show support for:
 | Setting area | Example keys |
 |---|---|
 | UI/display | `theme`, `colorMode`, `renderMarkdown`, `footer`, `statusLine`, `screenReader`. |
-| Model/runtime | `model`, `effortLevel`, `continueOnAutoMode`, `stream`, `streamerMode`. |
+| Model/runtime | `model`, `effortLevel`, `continueOnAutoMode`, `stayInAutopilot`, `stream`, `streamerMode`. |
+| Timeline/input | `pinnedPrompts`, `commandHistoryMaxSize`, `timestamps`, `scrollbar`, `tabs`. |
 | URLs | `allowedUrls`, `deniedUrls`. |
 | Plugins | `installedPlugins`, `enabledPlugins`, `extraKnownMarketplaces`. |
-| MCP | `disabledMcpServers`, `enabledMcpServers`. |
+| MCP | `disabledMcpServers`, `enabledMcpServers`, `githubMcpToolsets`, `githubMcpTools`, `enableAllGithubMcpTools`. |
 | Sandbox | `sandbox.enabled`, filesystem policy, raw `policy`, raw `config`. |
-| Skills/agents | `skillDirectories`, `disabledSkills`, custom-agent settings. |
+| Skills/agents | `skillDirectories`, `disabledSkills`, `dynamicRetrieval`, `subagents.maxConcurrency`, `subagents.maxDepth`, custom-agent settings. |
+| Scheduling/voice | `beepOnSchedule`, `voice.enabled`, `voice.selectedModel`, `voice.selectedDevice`. |
 | Hooks | `disableAllHooks`, `hooks`. |
 | Trust/auth metadata | `trustedFolders`, `lastLoggedInUser`, `loggedInUsers`, `copilotTokens`. |
 | UX suppression | `askedSetupTerminals`, `suppressInitFolders`, first-launch flags. |
 
 The schema is `passthrough()` in several places, meaning future keys can survive parsing even when the current bundle does not explicitly understand them.
+
+`commandHistoryMaxSize` defaults to `50`; it bounds both Ctrl+R reverse search and up/down prompt history. `pinnedPrompts` controls whether submitted prompts remain pinned in the timeline. `stayInAutopilot` defaults to `false`, so a completed autopilot task normally returns the session to interactive mode.
+
+## User, repository, and local scopes
+
+The `/settings` dashboard and `/model` now expose three persistence targets:
+
+| Target | Storage | Intended use |
+|---|---|---|
+| User | regular user `settings.json` | Defaults shared across repositories. |
+| Repo | `.github/copilot/settings.json` | Trusted repository policy/defaults that can be shared in version control. |
+| Repo (local) | `settings.local.json` | Git-ignored overrides for one local checkout. |
+
+`--repo` and `--local` select the latter two targets in command form. Repository settings can pin model, reasoning effort, and context tier, and can extend deny lists for URLs, MCP servers, and skills. The runtime treats repository settings as trusted-workspace input rather than as a replacement for managed or user policy.
 
 ## Runtime settings versus persisted settings
 
@@ -147,12 +166,14 @@ Persisted settings hold `allowedUrls` and `deniedUrls`, while runtime flags can 
 MCP config is loaded from multiple sources, including:
 
 - user `~/.copilot/mcp-config.json`;
-- workspace `.mcp.json`;
+- workspace `.mcp.json` or `.github/mcp.json`;
 - installed plugins with MCP servers;
 - built-in/default GitHub MCP config;
 - additional runtime MCP config via `--additional-mcp-config`.
 
 Server enable/disable state is stored separately with `disabledMcpServers` and `enabledMcpServers`. The `/mcp disable` path adds a server to `disabledMcpServers` and removes it from `enabledMcpServers`. The `/mcp enable` path does the inverse and may explicitly persist built-in enabled servers.
+
+GitHub MCP selection is also persistent in `1.0.71`. `githubMcpToolsets` and `githubMcpTools` hold additional requested names, while `enableAllGithubMcpTools` selects the complete surface. `Swn(...)` sorts and deduplicates these values before comparing effective configuration, so ordering alone does not trigger a reload.
 
 ## Plugin settings
 
@@ -228,7 +249,7 @@ The exact merge order is distributed, but the effective precedence is:
 
 1. built-in defaults;
 2. persisted user settings/config;
-3. workspace/repository config where applicable;
+3. trusted repository settings, followed by git-ignored repo-local overrides where applicable;
 4. plugin-provided config contributions;
 5. environment variables such as `COPILOT_HOME` and feature flag overrides;
 6. CLI flags such as `--config-dir`, `--allow-url`, `--allow-all-urls`, `--plugin-dir`, and `--additional-mcp-config`;

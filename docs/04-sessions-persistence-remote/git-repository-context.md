@@ -19,6 +19,8 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 | Remote task metadata | `pullRequestNumber`, `repository`, `remoteSessionIds`, `resourceId` | 4487-4489 | Remote/cloud task sessions carry repository and PR/task metadata. |
 | Child repo scanning | `CHILD_GIT_REPO_SCAN` | 239, 4491 | Feature-gated additional git scan for child/session contexts. |
 | GitHub MCP context | `github-mcp-server`, `get_file_contents`, issue/PR/check tools | 528, 4288 | GitHub MCP tools and instructions enrich repo/PR/build context. |
+| Worktree commands | `/worktree`, `/move`, `uFt(...)` | 2064, 2451-2473 | Creates a clean worktree or moves current uncommitted changes into it. |
+| Root worktree option | `--worktree [name]`, `-w`, `oct(...)` | 3163, 5899 | Starts a new CLI session inside a created or reused repository worktree. |
 
 ## Runtime map
 
@@ -57,6 +59,19 @@ git rev-parse --git-common-dir
 This allows the runtime to normalize linked worktrees to the shared common directory when needed. Results are cached by working directory and worktree-resolution mode, with a bounded cache size to avoid repeated `git` calls.
 
 If the directory is not inside a Git repository, the context still records `cwd`, but `gitRoot` is not marked as found.
+
+## Worktree creation and change movement
+
+The current TUI deliberately separates two operations that were aliases in `1.0.61`:
+
+| Command | Working-tree behavior |
+|---|---|
+| `/worktree [name or task]` | Creates/switches to a new worktree and leaves current uncommitted changes in the original checkout. |
+| `/move [name or task]` | Creates/switches to a new worktree and carries staged, unstaged, and untracked changes into it. |
+
+`uFt(...)` resolves the common Git root, validates or generates a branch name, creates the worktree, and calls the native `gitMoveWorktreeChangesAsync` path only for `/move`. With no name, the runtime can derive one from the working-tree change summary and recent conversation. A task-like argument can also become the first prompt in the new worktree.
+
+The root `--worktree [name]` / `-w` option performs the startup form of this workflow. It requires a Git repository and resolves linked-worktree roots before creating or reusing the target.
 
 ## Working-directory context
 

@@ -178,7 +178,7 @@ sequenceDiagram
 
 - `tui-and-slash-commands.md` explains how the setup prompt and slash command are rendered.
 - `settings-config-persistence.md` explains how `askedSetupTerminals` is stored.
-- `shell-command-execution-events.md` explains the actual `bash`/`powershell` execution manager, PTY/process backends, and shell task tracking.
+- `shell-command-execution-events.md` explains the current native process manager, sync/async/detached execution, and shell task tracking.
 - `built-in-tools-execution-events.md` explains generic tool events around shell callbacks.
 - `sandboxing.md` explains shell execution under sandbox policies.
 - `agent-task-orchestration.md` explains how shell context can be inherited by subagents.

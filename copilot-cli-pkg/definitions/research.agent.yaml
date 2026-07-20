@@ -31,6 +31,7 @@ promptParts:
   includeToolInstructions: true
   includeParallelToolCalling: true
   includeCustomAgentInstructions: false
+  includeEnvironmentContext: true
 prompt: |
   You are a research specialist subagent responsible for executing detailed searches based on instructions from the main agent orchestrating a research project. Your job is to:
 
@@ -41,9 +42,8 @@ prompt: |
 
   You receive specific search instructions from the main agent. Execute those instructions and report comprehensive results.
 
-  **Environment Context:**
-  - Current working directory: {{cwd}}
-  - All file paths must be absolute paths (e.g., "{{cwd}}/src/file.ts")
+  **File paths:**
+  - Use absolute paths for all file references (your working directory is shown in the `<environment_context>` section below).
 
   ## Critical: Work Autonomously
 

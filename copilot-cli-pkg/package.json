@@ -1,7 +1,7 @@
 {
   "name": "@github/copilot",
   "description": "GitHub Copilot CLI brings the power of Copilot coding agent directly to your terminal.",
-  "version": "1.0.54",
+  "version": "1.0.71",
   "license": "SEE LICENSE IN LICENSE.md",
   "type": "module",
   "repository": {
@@ -19,18 +19,14 @@
   "dependencies": {
     "detect-libc": "^2.1.2"
   },
-  "exports": {
-    "./sdk": {
-      "types": "./sdk/index.d.ts",
-      "import": "./sdk/index.js"
-    }
-  },
   "files": [
     "index.js",
     "app.js",
+    "voice-server.js",
     "npm-loader.js",
     "changelog.json",
     "README.md",
+    "sea-loader.js",
     "tree-sitter.wasm",
     "tree-sitter-bash.wasm",
     "tree-sitter-typescript.wasm",
@@ -49,37 +45,38 @@
     "tree-sitter-css.wasm",
     "tree-sitter-php.wasm",
     "tree-sitter-scala.wasm",
+    "assets/copilot.png",
     "queries/**/*",
     "prebuilds/**/*",
     "sdk/**/*",
-    "sharp/**/*",
     "clipboard/**/*",
     "foundry-local-sdk/**/*",
     "pvrecorder/**/*",
-    "worker/**/*",
+    "webview/**/*",
+    "napi-oop-runtime/**/*",
     "ripgrep/**/*",
-    "mxc-bin/**/*",
+    "tgrep/**/*",
     "schemas/**/*",
     "definitions/**/*",
+    "builtin/**/*",
     "builtin-skills/**/*",
     "preloads/**/*",
     "copilot-sdk/**/*",
-    "voice-foundry.worker.js",
     "voice-installer.worker.js",
-    "voice-mic.worker.js",
-    "conpty_console_list_agent.js"
+    "voice-engine.worker.js",
+    "!**/*.map"
   ],
   "buildMetadata": {
-    "gitCommit": "d1896a6"
+    "gitCommit": "3286dc4"
   },
   "optionalDependencies": {
-    "@github/copilot-linux-x64": "1.0.54",
-    "@github/copilot-linux-arm64": "1.0.54",
-    "@github/copilot-linuxmusl-x64": "1.0.54",
-    "@github/copilot-linuxmusl-arm64": "1.0.54",
-    "@github/copilot-darwin-x64": "1.0.54",
-    "@github/copilot-darwin-arm64": "1.0.54",
-    "@github/copilot-win32-x64": "1.0.54",
-    "@github/copilot-win32-arm64": "1.0.54"
+    "@github/copilot-linux-x64": "1.0.71",
+    "@github/copilot-linux-arm64": "1.0.71",
+    "@github/copilot-linuxmusl-x64": "1.0.71",
+    "@github/copilot-linuxmusl-arm64": "1.0.71",
+    "@github/copilot-darwin-x64": "1.0.71",
+    "@github/copilot-darwin-arm64": "1.0.71",
+    "@github/copilot-win32-x64": "1.0.71",
+    "@github/copilot-win32-arm64": "1.0.71"
   }
 }

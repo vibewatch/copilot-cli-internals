@@ -72,6 +72,7 @@ export declare class CopilotClient {
      * @throws Error if the client is not connected
      */
     get rpc(): ReturnType<typeof createServerRpc>;
+    private logDebugTiming;
     /**
      * Creates a new CopilotClient instance.
      *
@@ -132,8 +133,9 @@ export declare class CopilotClient {
      *
      * This method performs graceful cleanup:
      * 1. Closes all active sessions (releases in-memory resources)
-     * 2. Closes the JSON-RPC connection
-     * 3. Terminates the CLI server process (if spawned by this client)
+     * 2. Requests runtime shutdown for SDK-owned CLI processes
+     * 3. Closes the JSON-RPC connection
+     * 4. Terminates the CLI server process (if spawned by this client)
      *
      * Note: session data on disk is preserved, so sessions can be resumed later.
      * To permanently remove session data before stopping, call
@@ -190,34 +192,26 @@ export declare class CopilotClient {
      * ```
      */
     forceStop(): Promise<void>;
+    /** Mode-specific defaults spread under the caller's config (app values win). */
+    private configDefaultsForMode;
     /**
-     * Creates a new conversation session with the Copilot CLI.
-     *
-     * Sessions maintain conversation state, handle events, and manage tool execution.
-     * If the client is not connected, this method automatically starts the connection.
-     *
-     * @param config - Optional configuration for the session
-     * @returns A promise that resolves with the created session
-     * @throws Error if the client fails to start
-     *
-     * @example
-     * ```typescript
-     * // Basic session
-     * const session = await client.createSession({ onPermissionRequest: approveAll });
-     *
-     * // Session with model and tools
-     * const session = await client.createSession({
-     *   onPermissionRequest: approveAll,
-     *   model: "gpt-4",
-     *   tools: [{
-     *     name: "get_weather",
-     *     description: "Get weather for a location",
-     *     parameters: { type: "object", properties: { location: { type: "string" } } },
-     *     handler: async (args) => ({ temperature: 72 })
-     *   }]
-     * });
-     * ```
+     * Returns the systemMessage config to use, adjusted for the current mode.
+     * In empty mode we ensure the environment_context section is removed
+     * unless the app has already taken control of it. `append` (and
+     * unspecified) mode is promoted to `customize` so we can also strip
+     * environment_context; the caller's `content` is preserved verbatim
+     * because the runtime appends it as additional instructions in both
+     * customize and append modes.
      */
+    private getSystemMessageConfigForMode;
+    /**
+     * Mode-specific options applied via session.options.update after create/resume.
+     *
+     * In empty mode, defaults the four overridable feature flags to safe values
+     * (caller values from `config` win). `installedPlugins=[]` is unconditional
+     * in empty mode — apps that need custom plugins should switch modes.
+     */
+    private updateSessionOptionsForMode;
     createSession(config: SessionConfig): Promise<CopilotSession>;
     /**
      * Resumes an existing conversation session by its ID.
@@ -467,6 +461,4 @@ export declare class CopilotClient {
     private handleAutoModeSwitchRequest;
     private handleHooksInvoke;
     private handleSystemMessageTransform;
-    private handleCanvasProviderRequest;
-    private handleCanvasActionInvokeRequest;
 }

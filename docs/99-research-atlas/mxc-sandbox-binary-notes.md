@@ -1,6 +1,6 @@
-# MXC sandbox binary notes
+# Historical MXC sandbox binary notes (1.0.54 baseline)
 
-This page records a static reverse-engineering pass over the bundled MXC sandbox runtime under `copilot-cli-pkg/mxc-bin`. It complements [Sandbox implementation](../03-tools-integrations-security/sandboxing.md), which explains how Copilot CLI routes shell sessions into the MXC adapter.
+This page records a static reverse-engineering pass over the MXC sandbox payload bundled with the repository's `1.0.54` baseline under `copilot-cli-pkg/mxc-bin`. The `1.0.71` package no longer ships that helper tree and delegates sandbox operations through native `runtime.node` APIs. Read [Sandbox implementation](../03-tools-integrations-security/sandboxing.md) for the current boundary; retain this page only for historical package comparison.
 
 The goal here is narrower: identify what the packaged binaries are, how they were built, what helper roles they appear to implement, and what sandbox behavior can be inferred from metadata, symbols, imports, SPDX manifests, and strings.
 

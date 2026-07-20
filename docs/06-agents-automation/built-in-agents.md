@@ -13,6 +13,7 @@ The short version: the model-visible `task` tool can dispatch to a small built-i
 | Task tool | `createTaskTool(...)`, `TASK_TOOL_NAME`, `taskToolInputSchema` | `I6n(...)`, `H3="task"`, `v6n` | 3735-3815 | The main model-facing delegation surface accepts `agent_type`, `prompt`, `name`, optional `model`, and optional sync/background mode. |
 | Built-in catalog | `BUILT_IN_AGENTS` | `nHn`, `security-review` | 4496 | Static catalog entries for `explore`, `task`, `general-purpose`, `rubber-duck`, `code-review`, `security-review`, `research`, and `rem-agent`. |
 | Active catalog filter | `filterBuiltInAgents(...)` | `P0e(...)` | 4037 | Filters built-ins by feature flag and context, for example `rem-agent` being CLI/context-board gated. |
+| Built-in policy | `includedBuiltinAgents`, `excludedBuiltinAgents`, `ox(...)` | `ox(...)` | 324, 374 | Applies task/subagent allow and deny lists before an agent is advertised or executed. |
 | YAML loader | `loadBuiltInAgentDefinition(...)` | `D0e(...)` | 4037 | Loads `${name}.agent.yaml` from the packaged `definitions` directory and caches the parsed definition. |
 | YAML executable set | `isYamlBuiltInAgent(...)` | `N0e(...)`, `Yur`, `oHn`, `mxs` | 4496 | Separates YAML-backed executable agents from the runtime-only `general-purpose` entry. |
 | General-purpose executor | `executeGeneralPurposeAgent(...)` | `Wur(...)`, `_U="general-purpose"` | 4033-4037 | Handles `general-purpose` with the standard CLI prompt/toolset and selected model defaults. |
@@ -126,7 +127,7 @@ It intentionally does **not** comment on style, formatting, naming, grammar, min
 
 ### security-review
 
-`security-review` is a vulnerability-focused reviewer introduced in the refreshed `1.0.54` package. The runtime catalog gates it with the `SECURITY_REVIEW` feature flag, and the `/security-review` slash command is marked experimental. Its command macro builds an agent prompt that tells the main agent to call the `task` tool with `agent_type: "security-review"`.
+`security-review` is a vulnerability-focused reviewer introduced in `1.0.51`. It became available without experimental mode in `1.0.64`. Its command macro builds an agent prompt that tells the main agent to call the `task` tool with `agent_type: "security-review"`.
 
 The packaged YAML prompt is narrower than general code review:
 
@@ -246,6 +247,17 @@ The selection flow has a few practical implications:
 - Feature flags and context filters can make a cataloged built-in unavailable in a given session.
 - Custom agents join the same `agent_type` namespace, so a runtime task prompt may mention both built-in and custom names.
 
+## Built-in availability policy
+
+Copilot CLI `1.0.71` adds explicit policy fields for task and subagent contexts:
+
+| Field | Effect |
+|---|---|
+| `includedBuiltinAgents` | When present, only the named built-ins pass the positive filter. |
+| `excludedBuiltinAgents` | Removes named built-ins even when they otherwise pass feature/context checks. |
+
+`ox(...)` applies the policy both when the task tool validates an `agent_type` and when it constructs the advertised agent catalog. Parent and child session options are merged by the session settings path, so a delegated agent cannot recover a built-in its effective policy excludes. Plugin/custom agents remain a separate catalog and are not implicitly matched by these built-in-only fields.
+
 ## Relationship to adjacent docs
 
 | Question | Read next |
@@ -262,4 +274,4 @@ The selection flow has a few practical implications:
 - Seven are YAML-backed under `copilot-cli-pkg/definitions/*.agent.yaml`; `general-purpose` is runtime-defined.
 - The model-visible `task` tool is the normal dispatch surface for built-ins, custom agents, and background/multi-turn behavior.
 - Slash commands are mostly macros that steer the main agent toward the appropriate built-in agent.
-- Catalog membership is not the same as availability; feature flags, runtime context, model support, and tool assembly can filter the active surface.
+- Catalog membership is not the same as availability; feature flags, runtime context, model support, and explicit include/exclude policy can filter the active surface.

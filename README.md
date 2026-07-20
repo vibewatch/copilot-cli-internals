@@ -1,6 +1,6 @@
 # Copilot CLI Internals
 
-Reverse-engineering wiki for the [`@github/copilot`](https://www.npmjs.com/package/@github/copilot) CLI, based on static analysis of the extracted bundle in [`copilot-cli-pkg/app.js`](copilot-cli-pkg/app.js). The notes target whatever bundle currently sits in `copilot-cli-pkg/`; see its [`package.json`](copilot-cli-pkg/package.json) for the exact analysed version.
+Reverse-engineering wiki for the [`@github/copilot`](https://www.npmjs.com/package/@github/copilot) CLI, based on static analysis of the extracted bundle in [`copilot-cli-pkg/app.js`](copilot-cli-pkg/app.js). The current baseline is `1.0.71`; see the [package delta](docs/00-start-here/copilot-cli-1.0.71-delta.md) and [`package.json`](copilot-cli-pkg/package.json) for identity and build metadata.
 
 The notes are organised into eight reader-oriented sections (runtime, context, sessions, tools, security, models, agents, operations) rather than mirroring the bundle's file layout. Because `app.js` is minified, symbol names are unstable — source anchors are pointers for grepping the analysed bundle, not public API.
 
@@ -19,7 +19,7 @@ This repository README is a project entry point, not a direct `app.js` implement
 | Path | Contents |
 |---|---|
 | [`REVERSE_ENGINEERING_WORKFLOW.md`](REVERSE_ENGINEERING_WORKFLOW.md) | Practical workflow used to turn the minified bundle into source-anchored internals docs. |
-| [`docs/`](docs/) | Source markdown (69 pages across 8 sections). Start at [`docs/README.md`](docs/README.md). |
+| [`docs/`](docs/) | Source markdown (71 pages across 8 sections). Start at [`docs/README.md`](docs/README.md). |
 | [`copilot-cli-pkg/`](copilot-cli-pkg/) | The extracted `@github/copilot` package being analysed. |
 | [`website/`](website/) | Astro + Starlight site that renders `docs/` as a browsable wiki. |
 | [`help/`](help/) | Captured `--help` text from the CLI, used as a primary source. |

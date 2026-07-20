@@ -14,6 +14,8 @@ This page explains the human-facing branch of [Runtime lifecycle](README.md). It
 | TUI component tree | `InteractiveTuiRoot` | `jQa(...)` and nearby React/Ink-style components | 7000-7445 | Hosts input, transcript, dialogs, task/session widgets, model/status UI, and event subscriptions. |
 | Embedded server | `EmbeddedServer` | `p1t` | 7441 | Registers the foreground session and supports JSON-RPC/extension integration while the TUI is active. |
 | Slash commands | `slashCommandRegistry` | `Z6o(...)` usage plus command definitions | 7000-7445, 1300-1340 | Normalizes typed slash commands into session actions, prompts, mode changes, or dialogs. |
+| Current command constants | Slash-command surface | `/move`, `/worktree`, `/refine`, `/plugins`, `/settings`, `/voice`, `/diagnose` | 2064 | Confirms the expanded `1.0.71` interactive command set. |
+| Current handlers | Command implementations | `uFt(...)`, `diagnoseCommand`, `voice-devices` | 2438-2479 | Routes worktree, diagnostics, and voice-device operations. |
 | Agent slash commands | `researchCommand`, `reviewCommand`, `subconsciousCommand`, `fleetCommand`, `autopilotCommand` | `Yps`, `eLn`, `Wps`, `Lps`, `Rps` | 1300-1340 | Implements commands that steer the main agent toward `task`, fleet, or mode changes. |
 | Compaction slash command | `compactCommand` | `kps(...)` | 1300, 1340 | Calls session-history compaction to summarize old conversation history and reduce context-window usage. |
 | Sandbox slash command | `SandboxSlashCommand` | `jps(...)` | 1331 | Implements `/sandbox enable`, `/sandbox disable`, and status output when the `SANDBOX` gate exposes the command. |
@@ -94,12 +96,29 @@ The bundled command list is broad. Some commands are directly visible in the ana
 | Mode control | `/autopilot`, plan/autopilot toggles | Changes the session mode between interactive, plan, and autopilot-style behavior. |
 | Agent orchestration | `/research`, `/review`, `/subconscious run`, `/fleet` | Injects an agent prompt or starts a fleet/autopilot workflow. |
 | Context management | `/compact`, `/session checkpoints` | Summarizes current conversation history, updates context metrics, and exposes compaction checkpoints. |
-| Session control | resume, fork, switch, rename, delete, background-session commands | Routes into local/background session managers. |
+| Session/repository control | resume, fork/branch, switch, rename, delete, `/worktree`, `/move` | Routes into local/background session managers and worktree creation. |
 | Tool and permission UI | permission approvals, path/URL/tool decisions, shell actions | Opens dialogs or records decisions in the permission service. |
-| Runtime settings and sandboxing | `/sandbox enable`, `/sandbox disable` | Writes the separate local command sandbox setting and triggers runtime settings refresh. |
-| Integrations | MCP dialogs, plugin/extension manager, skills UI | Loads, reloads, or configures integration-provided capabilities. |
-| Diagnostics/help | debug logs, feedback, help, status views | Exposes runtime/support information without leaving the TUI. |
-| Model and voice | model picker, reasoning effort, voice selection/recording paths | Updates model configuration or starts voice-specific UI paths when enabled. |
+| Runtime settings and sandboxing | `/settings`, `/sandbox enable`, `/sandbox disable` | Edits scoped settings or changes the current sandbox state. |
+| Integrations | `/mcp`, `/plugin`, `/plugins`, `/skills`/`/skill`, extension manager | Loads, reloads, or configures integration-provided capabilities. |
+| Diagnostics/help | `/diagnose`, debug logs, feedback, help, status views | Exposes runtime/support information without leaving the TUI. |
+| Model and voice | model picker, reasoning effort, `/voice models`, `/voice devices` | Updates model configuration or starts voice-specific picker/recording paths. |
+
+## Current command and navigation additions
+
+The `1.0.55` through `1.0.71` releases expanded the TUI beyond the earlier chat-and-dialog surface:
+
+| Surface | Current behavior |
+|---|---|
+| `/worktree` / `/move` | Create a clean worktree or carry uncommitted changes into it, respectively. |
+| `/refine` | Rewrites rough prompt text into a clearer prompt before submission. |
+| `/plugins` | Opens the installed-plugin dashboard; `/plugin` retains command-style management. |
+| `/settings` | Opens user, Repo, and Repo (local) scope tabs. |
+| `/voice devices` | Opens the persisted microphone picker. |
+| `/diagnose` | Builds an agent investigation prompt from the current session log. |
+| `/skill` | Alias for `/skills`; root `copilot skill` can list/add/remove skills. |
+| `/branch` / `/loop` | Aliases for `/fork` and `/every`. |
+
+Slash-command matching is case-insensitive in `1.0.71`, including autocomplete. The split session sidebar also persists selected sessions across restarts and uses `ctrl+x` then `h` to hide/show the split view.
 
 ## Agent-oriented slash commands
 
@@ -168,7 +187,7 @@ flowchart LR
 
 The TUI acts as the human-interaction adapter for these requests. The underlying permission service still owns rule precedence and persistence decisions. The full permission pipeline is documented in [`tool-path-url-permissions.md`](../03-tools-integrations-security/tool-path-url-permissions.md).
 
-`/sandbox` looks adjacent to permission commands because it affects command execution safety, but it is not a permission approval. It writes `settings.sandbox.enabled`; later shell-session construction decides whether to spawn through the local sandbox path. See [`sandboxing.md`](../03-tools-integrations-security/sandboxing.md) for the full flow and platform caveats.
+`/sandbox` looks adjacent to permission commands because it affects command execution safety, but it is not a permission approval. It writes `settings.sandbox.enabled`; root `--sandbox` and `--no-sandbox` override that value for one invocation without persisting it. See [`sandboxing.md`](../03-tools-integrations-security/sandboxing.md) for the full flow and platform caveats.
 
 ## Embedded server and extension coupling
 

@@ -46,23 +46,27 @@ flowchart TD
 
 ## api.schema.json
 
-`api.schema.json` describes **86 JSON-RPC methods** across three owner groups:
+`api.schema.json` in `1.0.71` describes **275 unique JSON-RPC methods** across four owner groups:
 
 | Group | Count | Direction | Main responsibility |
 |---|---:|---|---|
-| `server` | 16 | Client → CLI server | Process/session-independent calls such as handshake, model/tool listing, MCP/skill discovery/config, `sessionFs.setProvider`, and session fork. |
-| `session` | 60 | Client → active session | Calls that require `sessionId`, such as model/mode/name/plan/workspace APIs, skills/MCP/extensions, tool and command responses, UI elicitation, permissions, shell execution, history, usage, and remote toggles. |
-| `clientSession` | 10 | CLI server → SDK client | Delegated `sessionFs.*` calls implemented by the client-provided session filesystem provider. |
+| `server` | 75 | Client → CLI server | Process/session-independent handshake, discovery, configuration, auth, sessions, plugins, skills, MCP, and managed-server operations. |
+| `session` | 180 | Client → active session | Model/mode/name/plan/workspace, canvas, MCP/resources, extensions, tasks, permissions, shell, history, event-log, visibility, schedule, and other live-session APIs. |
+| `clientSession` | 16 | CLI server → SDK client | Session-scoped reverse calls such as provider tokens, SessionFs, canvas handlers, sampling, and host callbacks. |
+| `clientGlobal` | 4 | CLI server → SDK client | Connection-global hook and controller callbacks. |
 
-The schema marks **32 methods as `experimental`** and one method, `connect`, as `internal`. Those flags are preserved in the generated TypeScript declarations as comments such as `@experimental` and `@internal`. The `sessionFs.*` reverse-call implementation behind the `clientSession` group is documented in [SessionFs provider and state-file lifecycle](session-fs-provider-and-state-files.md).
+All `275` method leaves in this package are marked `experimental`; selected payloads or methods also carry internal visibility. Consumers should treat the generated surface as version-coupled rather than assuming wire stability. The `sessionFs.*` reverse-call implementation behind the `clientSession` group is documented in [SessionFs provider and state-file lifecycle](session-fs-provider-and-state-files.md).
 
 ### Method inventory
 
-| Group | Methods |
+| Area | Representative current methods |
 |---|---|
-| `server` | `ping`, `connect`, `models.list`, `tools.list`, `account.getQuota`, `mcp.config.list`, `mcp.config.add`, `mcp.config.update`, `mcp.config.remove`, `mcp.config.enable`, `mcp.config.disable`, `mcp.discover`, `skills.config.setDisabledSkills`, `skills.discover`, `sessionFs.setProvider`, `sessions.fork` |
-| `session` | `session.suspend`, `session.auth.getStatus`, `session.model.getCurrent`, `session.model.switchTo`, `session.mode.get`, `session.mode.set`, `session.name.get`, `session.name.set`, `session.plan.read`, `session.plan.update`, `session.plan.delete`, `session.workspaces.getWorkspace`, `session.workspaces.listFiles`, `session.workspaces.readFile`, `session.workspaces.createFile`, `session.instructions.getSources`, `session.fleet.start`, `session.agent.list`, `session.agent.getCurrent`, `session.agent.select`, `session.agent.deselect`, `session.agent.reload`, `session.tasks.startAgent`, `session.tasks.list`, `session.tasks.promoteToBackground`, `session.tasks.cancel`, `session.tasks.remove`, `session.tasks.sendMessage`, `session.skills.list`, `session.skills.enable`, `session.skills.disable`, `session.skills.reload`, `session.mcp.list`, `session.mcp.enable`, `session.mcp.disable`, `session.mcp.reload`, `session.mcp.oauth.login`, `session.plugins.list`, `session.extensions.list`, `session.extensions.enable`, `session.extensions.disable`, `session.extensions.reload`, `session.tools.handlePendingToolCall`, `session.commands.list`, `session.commands.invoke`, `session.commands.handlePendingCommand`, `session.commands.respondToQueuedCommand`, `session.ui.elicitation`, `session.ui.handlePendingElicitation`, `session.permissions.handlePendingPermissionRequest`, `session.permissions.setApproveAll`, `session.permissions.resetSessionApprovals`, `session.log`, `session.shell.exec`, `session.shell.kill`, `session.history.compact`, `session.history.truncate`, `session.usage.getMetrics`, `session.remote.enable`, `session.remote.disable` |
-| `clientSession` | `sessionFs.readFile`, `sessionFs.writeFile`, `sessionFs.appendFile`, `sessionFs.exists`, `sessionFs.stat`, `sessionFs.mkdir`, `sessionFs.readdir`, `sessionFs.readdirWithTypes`, `sessionFs.rm`, `sessionFs.rename` |
+| Canvas | `session.canvas.list`, `listOpen`, `open`, `close`, `action.invoke` |
+| MCP live management | `session.mcp.reloadWithConfig`, `startServer`, `restartServer`, `stopServer` |
+| MCP resources | `session.mcp.resources.read`, `list`, `listTemplates` |
+| Event log | `session.eventLog.read`, `tail`, `registerInterest`, `releaseInterest` |
+| Session runtime | `session.options.update`, `settings.snapshot`, `metadata.snapshot`, `visibility.get/set`, `schedule.list/stop` |
+| Reverse callbacks | `providerToken.getToken`, `sessionFs.*`, canvas provider callbacks, hooks and controller callbacks |
 
 ### SDK generation check
 
@@ -75,7 +79,7 @@ When cross-checking against `app.js`, exact string matching is useful but not su
 
 ## session-events.schema.json
 
-`session-events.schema.json` defines a discriminated union rooted at `#/definitions/SessionEvent`. A script-assisted inventory found **99 concrete event type strings**; **40** of those event definitions are explicitly ephemeral-only in the schema.
+`session-events.schema.json` defines a discriminated union rooted at `#/definitions/SessionEvent`. The `1.0.71` schema contains **110 concrete event type strings**; **60** event definitions are explicitly ephemeral-only.
 
 Every event has the same envelope pattern:
 
@@ -99,6 +103,7 @@ Every event has the same envelope pattern:
 | User and UI callbacks | `user.message`, `user_input.requested`, `user_input.completed`, `elicitation.requested`, `elicitation.completed`, `exit_plan_mode.requested`, `exit_plan_mode.completed`, `auto_mode_switch.requested`, `auto_mode_switch.completed` | Bridges runtime prompts back to SDK/host clients. |
 | External clients and commands | `external_tool.requested`, `external_tool.completed`, `command.execute`, `command.queued`, `command.completed`, `commands.changed` | Used by SDK tools, extension-owned commands, and queued command execution. |
 | MCP, skills, extensions | `mcp.oauth_required`, `mcp.oauth_completed`, `session.mcp_servers_loaded`, `session.mcp_server_status_changed`, `skill.invoked`, `session.skills_loaded`, `session.extensions_loaded`, `session.custom_agents_updated` | Mirrors integration/configuration state. |
+| Canvas and MCP resources | `session.canvas.recorded`, `session.canvas.removed`, `session.canvas.opened`, `mcp.resources.list_changed` | Separates durable canvas identity from ephemeral renderer/resource catalog state. |
 | Subagents/tasks | `subagent.started`, `subagent.completed`, `subagent.failed`, `subagent.selected`, `subagent.deselected`, `session.background_tasks_changed`, `session.task_complete` | Provides task/subagent attribution and progress. |
 | Attachments/resources | `file`, `directory`, `selection`, `github_reference`, `blob`, `image`, `audio`, `resource`, `resource_link`, `terminal`, `text`, `object` | Normalizes attachment/resource blocks used in messages and tool results. |
 | Compaction/history/remote | `session.compaction_start`, `session.compaction_complete`, `session.snapshot_rewind`, `session.truncation`, `session.handoff`, `session.remote_steerable_changed` | Supports history mutation, handoff, checkpoint/rewind, and remote session state. |

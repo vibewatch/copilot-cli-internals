@@ -1,15 +1,18 @@
+import type { CanvasJsonSchema, CanvasProviderCloseRequest, CanvasProviderInvokeActionRequest, CanvasProviderOpenRequest, CanvasProviderOpenResult } from "./generated/rpc.js";
+export type { CanvasJsonSchema, CanvasHostContext, CanvasHostContextCapabilities, } from "./generated/rpc.js";
 /**
  * Extension-owned canvases declared via
  * `joinSession({ canvases: [createCanvas({...})] })`.
  *
- * The runtime sends provider callbacks directly as `canvas.open`,
- * `canvas.close`, and `canvas.action.invoke` JSON-RPC requests. The SDK
- * routes those requests by `canvasId` to the in-process handlers bound by
- * `createCanvas`. Re-opening with an existing `instanceId` is how the host
- * focuses an existing panel; reload is a renderer-only concern.
+ * The runtime sends provider callbacks as `canvas.open`, `canvas.close`, and
+ * `canvas.action.invoke` JSON-RPC requests via the codegen client session API
+ * pipeline. The SDK routes those requests by `canvasId` to the in-process
+ * handlers bound by `createCanvas`. Re-opening with an existing `instanceId`
+ * is how the host focuses an existing panel; reload is a renderer-only concern.
+ *
+ * @experimental Canvas types are part of an experimental wire-protocol surface
+ * and may change or be removed in future SDK or CLI releases.
  */
-/** JSON Schema object used for canvas inputs. */
-export type CanvasJsonSchema = Record<string, unknown>;
 /**
  * A single agent-callable action contributed by a canvas. The metadata
  * (`name`, `description`, `inputSchema`) is serialized over the wire on
@@ -18,6 +21,9 @@ export type CanvasJsonSchema = Record<string, unknown>;
  *
  * Names MUST NOT start with `canvas.` — that prefix is reserved for
  * lifecycle verbs.
+ *
+ * @experimental This type is part of an experimental wire-protocol surface
+ * and may change or be removed in future SDK or CLI releases.
  */
 export interface CanvasAction {
     /** Action identifier, unique within the canvas. */
@@ -27,11 +33,14 @@ export interface CanvasAction {
     /** Optional JSON Schema for the action's `input` payload. */
     inputSchema?: CanvasJsonSchema;
     /** Required per-action dispatch handler. */
-    handler: (ctx: CanvasActionContext) => Promise<unknown> | unknown;
+    handler: (ctx: CanvasProviderInvokeActionRequest) => Promise<unknown> | unknown;
 }
 /**
  * Declarative metadata for a single canvas, serialized over the wire on
  * `session.create` / `session.resume`.
+ *
+ * @experimental This type is part of an experimental wire-protocol surface
+ * and may change or be removed in future SDK or CLI releases.
  */
 export interface CanvasDeclaration {
     /** Canvas id, unique within the declaring connection. */
@@ -45,67 +54,12 @@ export interface CanvasDeclaration {
     /** Agent-invocable actions exposed via `invoke_canvas_action`. */
     actions?: Omit<CanvasAction, "handler">[];
 }
-/** Response returned from `open`. */
-export interface CanvasOpenResponse {
-    /** URL the host should render. Optional for native canvases. */
-    url?: string;
-    /** Provider-supplied title shown in host chrome. */
-    title?: string;
-    /** Provider-supplied status text shown in host chrome. */
-    status?: string;
-}
-/** Host capabilities passed to canvas callbacks. */
-export interface CanvasHostContext {
-    capabilities?: {
-        canvases?: boolean;
-    };
-}
-/** Context handed to a canvas's `open` handler. */
-export interface CanvasOpenContext {
-    /** Session that requested the canvas. */
-    sessionId: string;
-    /** Extension id that owns the canvas. */
-    extensionId: string;
-    /** Canvas id (matches the declaring `CanvasDeclaration.id`). */
-    canvasId: string;
-    /** Stable instance id supplied by the runtime. */
-    instanceId: string;
-    /** Validated `input` payload, shaped by `CanvasDeclaration.inputSchema`. */
-    input: unknown;
-    /** Host capabilities supplied by the runtime. */
-    host?: CanvasHostContext;
-}
-/** Context handed to a canvas action handler. */
-export interface CanvasActionContext {
-    /** Session that invoked the action. */
-    sessionId: string;
-    /** Extension id that owns the canvas. */
-    extensionId: string;
-    /** Canvas id targeted by the action. */
-    canvasId: string;
-    /** Instance id targeted by the action. */
-    instanceId: string;
-    /** Action name from `CanvasAction.name`. */
-    actionName: string;
-    /** Validated `input` payload, shaped by the action's `inputSchema`. */
-    input: unknown;
-    /** Host capabilities supplied by the runtime. */
-    host?: CanvasHostContext;
-}
-/** Context handed to a canvas's `onClose` handler. */
-export interface CanvasLifecycleContext {
-    /** Session owning the canvas instance. */
-    sessionId: string;
-    /** Extension id that owns the canvas. */
-    extensionId: string;
-    /** Canvas id (matches the declaring `CanvasDeclaration.id`). */
-    canvasId: string;
-    /** Instance id this lifecycle event applies to. */
-    instanceId: string;
-    /** Host capabilities supplied by the runtime. */
-    host?: CanvasHostContext;
-}
-/** Structured error returned from canvas handlers. */
+/**
+ * Structured error returned from canvas handlers.
+ *
+ * @experimental This class is part of an experimental wire-protocol surface
+ * and may change or be removed in future SDK or CLI releases.
+ */
 export declare class CanvasError extends Error {
     readonly code: string;
     constructor(code: string, message: string);
@@ -115,6 +69,9 @@ export declare class CanvasError extends Error {
 /**
  * Options accepted by {@link createCanvas}. Combines the declarative
  * {@link CanvasDeclaration} fields with the in-process handler closures.
+ *
+ * @experimental This interface is part of an experimental wire-protocol surface
+ * and may change or be removed in future SDK or CLI releases.
  */
 export interface CanvasOptions {
     /** @see CanvasDeclaration.id */
@@ -132,13 +89,13 @@ export interface CanvasOptions {
      */
     actions?: CanvasAction[];
     /** Required. Open a new canvas instance. */
-    open: (ctx: CanvasOpenContext) => Promise<CanvasOpenResponse> | CanvasOpenResponse;
+    open: (ctx: CanvasProviderOpenRequest) => Promise<CanvasProviderOpenResult> | CanvasProviderOpenResult;
     /**
      * Optional. Notified when a canvas instance is closed by the user, the
      * agent, or the host. Fire-and-forget: the return value is ignored and
      * errors are logged but not surfaced to the runtime.
      */
-    onClose?: (ctx: CanvasLifecycleContext) => Promise<void> | void;
+    onClose?: (ctx: CanvasProviderCloseRequest) => Promise<void> | void;
 }
 /** A registered canvas: declarative metadata + in-process handler closures.
  *
@@ -147,6 +104,9 @@ export interface CanvasOptions {
  * ergonomics) where other SDKs (Rust, Python, Go, .NET) expose a single
  * `CanvasHandler` per session that switches on `canvasId`. Both shapes target
  * the same JSON-RPC wire protocol; the divergence is API ergonomics only.
+ *
+ * @experimental This class is part of an experimental wire-protocol surface
+ * and may change or be removed in future SDK or CLI releases.
  */
 export declare class Canvas {
     readonly declaration: CanvasDeclaration;
@@ -159,5 +119,8 @@ export declare class Canvas {
  * `DefineTool`'s co-location ergonomics) where other SDKs (Rust, Python, Go,
  * .NET) expose a single `CanvasHandler` per session that switches on
  * `canvasId`. Both shapes target the same JSON-RPC wire protocol.
+ *
+ * @experimental This function is part of an experimental wire-protocol surface
+ * and may change or be removed in future SDK or CLI releases.
  */
 export declare function createCanvas(options: CanvasOptions): Canvas;

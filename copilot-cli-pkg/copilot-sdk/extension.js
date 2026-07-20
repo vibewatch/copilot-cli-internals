@@ -18,7 +18,11 @@ var __require = /* @__PURE__ */ ((x) => typeof require !== "undefined" ? require
   throw Error('Dynamic require of "' + x + '" is not supported');
 });
 var __commonJS = (cb, mod) => function __require2() {
-  return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+  try {
+    return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+  } catch (e) {
+    throw mod = 0, e;
+  }
 };
 var __copyProps = (to, from, except, desc) => {
   if (from && typeof from === "object" || typeof from === "function") {
@@ -37,9 +41,9 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 
-// node_modules/vscode-jsonrpc/lib/common/is.js
+// node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/common/is.js
 var require_is = __commonJS({
-  "node_modules/vscode-jsonrpc/lib/common/is.js"(exports) {
+  "node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/common/is.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.stringArray = exports.array = exports.func = exports.error = exports.number = exports.string = exports.boolean = void 0;
@@ -74,35 +78,35 @@ var require_is = __commonJS({
   }
 });
 
-// node_modules/vscode-jsonrpc/lib/common/messages.js
+// node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/common/messages.js
 var require_messages = __commonJS({
-  "node_modules/vscode-jsonrpc/lib/common/messages.js"(exports) {
+  "node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/common/messages.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Message = exports.NotificationType9 = exports.NotificationType8 = exports.NotificationType7 = exports.NotificationType6 = exports.NotificationType5 = exports.NotificationType4 = exports.NotificationType3 = exports.NotificationType2 = exports.NotificationType1 = exports.NotificationType0 = exports.NotificationType = exports.RequestType9 = exports.RequestType8 = exports.RequestType7 = exports.RequestType6 = exports.RequestType5 = exports.RequestType4 = exports.RequestType3 = exports.RequestType2 = exports.RequestType1 = exports.RequestType = exports.RequestType0 = exports.AbstractMessageSignature = exports.ParameterStructures = exports.ResponseError = exports.ErrorCodes = void 0;
     var is = require_is();
-    var ErrorCodes2;
-    (function(ErrorCodes3) {
-      ErrorCodes3.ParseError = -32700;
-      ErrorCodes3.InvalidRequest = -32600;
-      ErrorCodes3.MethodNotFound = -32601;
-      ErrorCodes3.InvalidParams = -32602;
-      ErrorCodes3.InternalError = -32603;
-      ErrorCodes3.jsonrpcReservedErrorRangeStart = -32099;
-      ErrorCodes3.serverErrorStart = -32099;
-      ErrorCodes3.MessageWriteError = -32099;
-      ErrorCodes3.MessageReadError = -32098;
-      ErrorCodes3.PendingResponseRejected = -32097;
-      ErrorCodes3.ConnectionInactive = -32096;
-      ErrorCodes3.ServerNotInitialized = -32002;
-      ErrorCodes3.UnknownErrorCode = -32001;
-      ErrorCodes3.jsonrpcReservedErrorRangeEnd = -32e3;
-      ErrorCodes3.serverErrorEnd = -32e3;
-    })(ErrorCodes2 || (exports.ErrorCodes = ErrorCodes2 = {}));
+    var ErrorCodes3;
+    (function(ErrorCodes4) {
+      ErrorCodes4.ParseError = -32700;
+      ErrorCodes4.InvalidRequest = -32600;
+      ErrorCodes4.MethodNotFound = -32601;
+      ErrorCodes4.InvalidParams = -32602;
+      ErrorCodes4.InternalError = -32603;
+      ErrorCodes4.jsonrpcReservedErrorRangeStart = -32099;
+      ErrorCodes4.serverErrorStart = -32099;
+      ErrorCodes4.MessageWriteError = -32099;
+      ErrorCodes4.MessageReadError = -32098;
+      ErrorCodes4.PendingResponseRejected = -32097;
+      ErrorCodes4.ConnectionInactive = -32096;
+      ErrorCodes4.ServerNotInitialized = -32002;
+      ErrorCodes4.UnknownErrorCode = -32001;
+      ErrorCodes4.jsonrpcReservedErrorRangeEnd = -32e3;
+      ErrorCodes4.serverErrorEnd = -32e3;
+    })(ErrorCodes3 || (exports.ErrorCodes = ErrorCodes3 = {}));
     var ResponseError3 = class _ResponseError extends Error {
       constructor(code, message, data) {
         super(message);
-        this.code = is.number(code) ? code : ErrorCodes2.UnknownErrorCode;
+        this.code = is.number(code) ? code : ErrorCodes3.UnknownErrorCode;
         this.data = data;
         Object.setPrototypeOf(this, _ResponseError.prototype);
       }
@@ -312,9 +316,9 @@ var require_messages = __commonJS({
   }
 });
 
-// node_modules/vscode-jsonrpc/lib/common/linkedMap.js
+// node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/common/linkedMap.js
 var require_linkedMap = __commonJS({
-  "node_modules/vscode-jsonrpc/lib/common/linkedMap.js"(exports) {
+  "node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/common/linkedMap.js"(exports) {
     "use strict";
     var _a;
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -682,9 +686,9 @@ var require_linkedMap = __commonJS({
   }
 });
 
-// node_modules/vscode-jsonrpc/lib/common/disposable.js
+// node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/common/disposable.js
 var require_disposable = __commonJS({
-  "node_modules/vscode-jsonrpc/lib/common/disposable.js"(exports) {
+  "node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/common/disposable.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Disposable = void 0;
@@ -700,9 +704,9 @@ var require_disposable = __commonJS({
   }
 });
 
-// node_modules/vscode-jsonrpc/lib/common/ral.js
+// node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/common/ral.js
 var require_ral = __commonJS({
-  "node_modules/vscode-jsonrpc/lib/common/ral.js"(exports) {
+  "node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/common/ral.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var _ral;
@@ -725,9 +729,9 @@ var require_ral = __commonJS({
   }
 });
 
-// node_modules/vscode-jsonrpc/lib/common/events.js
+// node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/common/events.js
 var require_events = __commonJS({
-  "node_modules/vscode-jsonrpc/lib/common/events.js"(exports) {
+  "node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/common/events.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Emitter = exports.Event = void 0;
@@ -854,9 +858,9 @@ var require_events = __commonJS({
   }
 });
 
-// node_modules/vscode-jsonrpc/lib/common/cancellation.js
+// node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/common/cancellation.js
 var require_cancellation = __commonJS({
-  "node_modules/vscode-jsonrpc/lib/common/cancellation.js"(exports) {
+  "node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/common/cancellation.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.CancellationTokenSource = exports.CancellationToken = void 0;
@@ -943,9 +947,9 @@ var require_cancellation = __commonJS({
   }
 });
 
-// node_modules/vscode-jsonrpc/lib/common/sharedArrayCancellation.js
+// node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/common/sharedArrayCancellation.js
 var require_sharedArrayCancellation = __commonJS({
-  "node_modules/vscode-jsonrpc/lib/common/sharedArrayCancellation.js"(exports) {
+  "node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/common/sharedArrayCancellation.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.SharedArrayReceiverStrategy = exports.SharedArraySenderStrategy = void 0;
@@ -1021,9 +1025,9 @@ var require_sharedArrayCancellation = __commonJS({
   }
 });
 
-// node_modules/vscode-jsonrpc/lib/common/semaphore.js
+// node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/common/semaphore.js
 var require_semaphore = __commonJS({
-  "node_modules/vscode-jsonrpc/lib/common/semaphore.js"(exports) {
+  "node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/common/semaphore.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Semaphore = void 0;
@@ -1089,9 +1093,9 @@ var require_semaphore = __commonJS({
   }
 });
 
-// node_modules/vscode-jsonrpc/lib/common/messageReader.js
+// node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/common/messageReader.js
 var require_messageReader = __commonJS({
-  "node_modules/vscode-jsonrpc/lib/common/messageReader.js"(exports) {
+  "node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/common/messageReader.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ReadableStreamMessageReader = exports.AbstractMessageReader = exports.MessageReader = void 0;
@@ -1278,9 +1282,9 @@ ${JSON.stringify(Object.fromEntries(headers))}`));
   }
 });
 
-// node_modules/vscode-jsonrpc/lib/common/messageWriter.js
+// node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/common/messageWriter.js
 var require_messageWriter = __commonJS({
-  "node_modules/vscode-jsonrpc/lib/common/messageWriter.js"(exports) {
+  "node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/common/messageWriter.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.WriteableStreamMessageWriter = exports.AbstractMessageWriter = exports.MessageWriter = void 0;
@@ -1390,9 +1394,9 @@ var require_messageWriter = __commonJS({
   }
 });
 
-// node_modules/vscode-jsonrpc/lib/common/messageBuffer.js
+// node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/common/messageBuffer.js
 var require_messageBuffer = __commonJS({
-  "node_modules/vscode-jsonrpc/lib/common/messageBuffer.js"(exports) {
+  "node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/common/messageBuffer.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.AbstractMessageBuffer = void 0;
@@ -1538,9 +1542,9 @@ ${header}`);
   }
 });
 
-// node_modules/vscode-jsonrpc/lib/common/connection.js
+// node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/common/connection.js
 var require_connection = __commonJS({
-  "node_modules/vscode-jsonrpc/lib/common/connection.js"(exports) {
+  "node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/common/connection.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.createMessageConnection = exports.ConnectionOptions = exports.MessageStrategy = exports.CancellationStrategy = exports.CancellationSenderStrategy = exports.CancellationReceiverStrategy = exports.RequestCancellationReceiverStrategy = exports.IdCancellationReceiverStrategy = exports.ConnectionStrategy = exports.ConnectionError = exports.ConnectionErrors = exports.LogTraceNotification = exports.SetTraceNotification = exports.TraceFormat = exports.TraceValues = exports.Trace = exports.NullLogger = exports.ProgressType = exports.ProgressToken = void 0;
@@ -2667,9 +2671,9 @@ ${JSON.stringify(message, null, 4)}`);
   }
 });
 
-// node_modules/vscode-jsonrpc/lib/common/api.js
+// node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/common/api.js
 var require_api = __commonJS({
-  "node_modules/vscode-jsonrpc/lib/common/api.js"(exports) {
+  "node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/common/api.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ProgressType = exports.ProgressToken = exports.createMessageConnection = exports.NullLogger = exports.ConnectionOptions = exports.ConnectionStrategy = exports.AbstractMessageBuffer = exports.WriteableStreamMessageWriter = exports.AbstractMessageWriter = exports.MessageWriter = exports.ReadableStreamMessageReader = exports.AbstractMessageReader = exports.MessageReader = exports.SharedArrayReceiverStrategy = exports.SharedArraySenderStrategy = exports.CancellationToken = exports.CancellationTokenSource = exports.Emitter = exports.Event = exports.Disposable = exports.LRUCache = exports.Touch = exports.LinkedMap = exports.ParameterStructures = exports.NotificationType9 = exports.NotificationType8 = exports.NotificationType7 = exports.NotificationType6 = exports.NotificationType5 = exports.NotificationType4 = exports.NotificationType3 = exports.NotificationType2 = exports.NotificationType1 = exports.NotificationType0 = exports.NotificationType = exports.ErrorCodes = exports.ResponseError = exports.RequestType9 = exports.RequestType8 = exports.RequestType7 = exports.RequestType6 = exports.RequestType5 = exports.RequestType4 = exports.RequestType3 = exports.RequestType2 = exports.RequestType1 = exports.RequestType0 = exports.RequestType = exports.Message = exports.RAL = void 0;
@@ -2869,9 +2873,9 @@ var require_api = __commonJS({
   }
 });
 
-// node_modules/vscode-jsonrpc/lib/node/ril.js
+// node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/node/ril.js
 var require_ril = __commonJS({
-  "node_modules/vscode-jsonrpc/lib/node/ril.js"(exports) {
+  "node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/node/ril.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var util_1 = __require("util");
@@ -3025,9 +3029,9 @@ var require_ril = __commonJS({
   }
 });
 
-// node_modules/vscode-jsonrpc/lib/node/main.js
+// node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/node/main.js
 var require_main = __commonJS({
-  "node_modules/vscode-jsonrpc/lib/node/main.js"(exports) {
+  "node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/lib/node/main.js"(exports) {
     "use strict";
     var __createBinding = exports && exports.__createBinding || (Object.create ? (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
@@ -3285,15 +3289,15 @@ var require_main = __commonJS({
   }
 });
 
-// node_modules/vscode-jsonrpc/node.js
+// node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/node.js
 var require_node = __commonJS({
-  "node_modules/vscode-jsonrpc/node.js"(exports, module) {
+  "node_modules/.pnpm/vscode-jsonrpc@8.2.1/node_modules/vscode-jsonrpc/node.js"(exports, module) {
     "use strict";
     module.exports = require_main();
   }
 });
 
-// node_modules/@github/copilot-sdk/dist/client.js
+// node_modules/.pnpm/@github+copilot-sdk@1.0.3/node_modules/@github/copilot-sdk/dist/client.js
 var import_node2 = __toESM(require_node(), 1);
 import { spawn } from "node:child_process";
 import { randomUUID } from "node:crypto";
@@ -3303,7 +3307,7 @@ import { Socket } from "node:net";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-// node_modules/@github/copilot-sdk/dist/generated/rpc.js
+// node_modules/.pnpm/@github+copilot-sdk@1.0.3/node_modules/@github/copilot-sdk/dist/generated/rpc.js
 function createServerRpc(connection) {
   return {
     /**
@@ -3391,7 +3395,11 @@ function createServerRpc(connection) {
          *
          * @param params MCP server names to disable for new sessions.
          */
-        disable: async (params) => connection.sendRequest("mcp.config.disable", params)
+        disable: async (params) => connection.sendRequest("mcp.config.disable", params),
+        /**
+         * Drops this runtime process's in-memory MCP server-definition cache so the next MCP config read observes disk.
+         */
+        reload: async () => connection.sendRequest("mcp.config.reload", {})
       },
       /**
        * Discovers MCP servers from user, workspace, plugin, and builtin sources.
@@ -3401,6 +3409,96 @@ function createServerRpc(connection) {
        * @returns MCP servers discovered from user, workspace, plugin, and built-in sources.
        */
       discover: async (params) => connection.sendRequest("mcp.discover", params)
+    },
+    /** @experimental */
+    plugins: {
+      /**
+       * Lists plugins installed in user/global state.
+       *
+       * @returns Plugins installed in user/global state.
+       */
+      list: async () => connection.sendRequest("plugins.list", {}),
+      /**
+       * Installs a plugin from a marketplace, GitHub repo, URL, or local path.
+       *
+       * @param params Plugin source and optional working directory for relative-path resolution.
+       *
+       * @returns Result of installing a plugin.
+       */
+      install: async (params) => connection.sendRequest("plugins.install", params),
+      /**
+       * Uninstalls an installed plugin.
+       *
+       * @param params Name (or spec) of the plugin to uninstall.
+       */
+      uninstall: async (params) => connection.sendRequest("plugins.uninstall", params),
+      /**
+       * Updates an installed plugin to its latest published version.
+       *
+       * @param params Name (or spec) of the plugin to update.
+       *
+       * @returns Result of updating a single plugin.
+       */
+      update: async (params) => connection.sendRequest("plugins.update", params),
+      /**
+       * Updates every installed plugin to its latest published version.
+       *
+       * @returns Result of updating all installed plugins.
+       */
+      updateAll: async () => connection.sendRequest("plugins.updateAll", {}),
+      /**
+       * Enables installed plugins for new sessions.
+       *
+       * @param params Plugin names (or specs) to enable.
+       */
+      enable: async (params) => connection.sendRequest("plugins.enable", params),
+      /**
+       * Disables installed plugins for new sessions.
+       *
+       * @param params Plugin names (or specs) to disable.
+       */
+      disable: async (params) => connection.sendRequest("plugins.disable", params),
+      /** @experimental */
+      marketplaces: {
+        /**
+         * Lists all registered marketplaces (defaults + user-added).
+         *
+         * @returns All registered marketplaces, including built-in defaults.
+         */
+        list: async () => connection.sendRequest("plugins.marketplaces.list", {}),
+        /**
+         * Registers a new marketplace from a source (owner/repo, URL, or local path).
+         *
+         * @param params Marketplace source to register.
+         *
+         * @returns Result of registering a new marketplace.
+         */
+        add: async (params) => connection.sendRequest("plugins.marketplaces.add", params),
+        /**
+         * Removes a previously-registered marketplace. When the marketplace has dependent plugins and `force` is not set, the marketplace is left intact and the result lists the dependents so the caller can decide whether to retry with `force=true`.
+         *
+         * @param params Name of the marketplace to remove and an optional force flag.
+         *
+         * @returns Outcome of the remove attempt, including dependent-plugin info when applicable.
+         */
+        remove: async (params) => connection.sendRequest("plugins.marketplaces.remove", params),
+        /**
+         * Lists plugins advertised by a registered marketplace.
+         *
+         * @param params Name of the marketplace whose plugin catalog to fetch.
+         *
+         * @returns Plugins advertised by the marketplace.
+         */
+        browse: async (params) => connection.sendRequest("plugins.marketplaces.browse", params),
+        /**
+         * Re-fetches one or all registered marketplace catalogs.
+         *
+         * @param params Optional marketplace name; omit to refresh all.
+         *
+         * @returns Result of refreshing one or more marketplace catalogs.
+         */
+        refresh: async (params) => connection.sendRequest("plugins.marketplaces.refresh", params)
+      }
     },
     skills: {
       config: {
@@ -3418,7 +3516,69 @@ function createServerRpc(connection) {
        *
        * @returns Skills discovered across global and project sources.
        */
-      discover: async (params) => connection.sendRequest("skills.discover", params)
+      discover: async (params) => connection.sendRequest("skills.discover", params),
+      /**
+       * Returns the canonical directories where a client may create skills that the runtime will recognize, including ones that do not exist yet. Project directories become active once created.
+       *
+       * @param params Optional project paths to enumerate.
+       *
+       * @returns Canonical locations where skills can be created so the runtime will recognize them.
+       *
+       * @experimental
+       */
+      getDiscoveryPaths: async (params) => connection.sendRequest("skills.getDiscoveryPaths", params)
+    },
+    /** @experimental */
+    agents: {
+      /**
+       * Discovers custom agents across user, project, plugin, and remote sources.
+       *
+       * @param params Optional project paths to include in agent discovery.
+       *
+       * @returns Agents discovered across user, project, plugin, and remote sources.
+       */
+      discover: async (params) => connection.sendRequest("agents.discover", params),
+      /**
+       * Returns the canonical directories where a client may create custom agents that the runtime will recognize, including ones that do not exist yet. Project directories become active once created.
+       *
+       * @param params Optional project paths to include when enumerating agent discovery directories.
+       *
+       * @returns Canonical locations where custom agents can be created so the runtime will recognize them.
+       */
+      getDiscoveryPaths: async (params) => connection.sendRequest("agents.getDiscoveryPaths", params)
+    },
+    /** @experimental */
+    instructions: {
+      /**
+       * Discovers instruction sources across user, repository, and plugin sources.
+       *
+       * @param params Optional project paths to include in instruction discovery.
+       *
+       * @returns Instruction sources discovered across user, repository, and plugin sources.
+       */
+      discover: async (params) => connection.sendRequest("instructions.discover", params),
+      /**
+       * Returns the canonical files and directories where a client may create custom instructions that the runtime will recognize, including ones that do not exist yet. Repository targets become active once created.
+       *
+       * @param params Optional project paths to include when enumerating instruction discovery targets.
+       *
+       * @returns Canonical files and directories where custom instructions can be created so the runtime will recognize them.
+       */
+      getDiscoveryPaths: async (params) => connection.sendRequest("instructions.getDiscoveryPaths", params)
+    },
+    user: {
+      settings: {
+        /**
+         * Drops this runtime process's in-memory user settings cache so the next settings read observes disk.
+         */
+        reload: async () => connection.sendRequest("user.settings.reload", {})
+      }
+    },
+    runtime: {
+      /**
+       * Gracefully shuts down an SDK-owned runtime. The response is sent only after cleanup completes; callers may then terminate the owned runtime process.
+       */
+      shutdown: async () => connection.sendRequest("runtime.shutdown", {})
     },
     sessionFs: {
       /**
@@ -3431,7 +3591,40 @@ function createServerRpc(connection) {
       setProvider: async (params) => connection.sendRequest("sessionFs.setProvider", params)
     },
     /** @experimental */
+    llmInference: {
+      /**
+       * Registers an SDK client as the LLM inference callback provider.
+       *
+       * @returns Indicates whether the calling client was registered as the LLM inference provider.
+       */
+      setProvider: async () => connection.sendRequest("llmInference.setProvider", {}),
+      /**
+       * Delivers the response head (status + headers) for an in-flight request, correlated by the requestId the runtime supplied in httpRequestStart. Must be called exactly once per request before any httpResponseChunk frames.
+       *
+       * @param params Response head.
+       *
+       * @returns Whether the start frame was accepted.
+       */
+      httpResponseStart: async (params) => connection.sendRequest("llmInference.httpResponseStart", params),
+      /**
+       * Delivers a body byte range (or a terminal transport error) for an in-flight response, correlated by requestId. Set `end` true on the last chunk. When `error` is set the response terminates with a transport-level failure and the runtime raises an APIConnectionError.
+       *
+       * @param params A response body chunk or terminal error.
+       *
+       * @returns Whether the chunk was accepted.
+       */
+      httpResponseChunk: async (params) => connection.sendRequest("llmInference.httpResponseChunk", params)
+    },
+    /** @experimental */
     sessions: {
+      /**
+       * Creates or resumes a local session and returns the opened session ID.
+       *
+       * @param params Open a session by creating, resuming, attaching, connecting to a remote, or handing off.
+       *
+       * @returns Result of opening a session.
+       */
+      open: async (params) => connection.sendRequest("sessions.open", params),
       /**
        * Creates a new session by forking persisted history from an existing session.
        *
@@ -3449,11 +3642,11 @@ function createServerRpc(connection) {
        */
       connect: async (params) => connection.sendRequest("sessions.connect", params),
       /**
-       * Lists persisted sessions, optionally filtered by working-directory context.
+       * Lists sessions, optionally filtered by source and working-directory context. Returned entries are discriminated by `isRemote`: local entries carry only the lightweight `LocalSessionMetadataValue` shape; remote entries carry the full `RemoteSessionMetadataValue` shape (repository, PR number, taskType, etc.).
        *
-       * @param params Optional metadata-load limit and context filter applied to the returned sessions.
+       * @param params Optional source filter, metadata-load limit, and context filter applied to the returned sessions.
        *
-       * @returns Persisted sessions matching the filter, ordered most-recently-modified first.
+       * @returns Sessions matching the filter, ordered most-recently-modified first.
        */
       list: async (params) => connection.sendRequest("sessions.list", params),
       /**
@@ -3481,14 +3674,6 @@ function createServerRpc(connection) {
        */
       getLastForContext: async (params) => connection.sendRequest("sessions.getLastForContext", params),
       /**
-       * Computes the absolute path to a session's persisted events.jsonl file.
-       *
-       * @param params Session ID whose event-log file path to compute.
-       *
-       * @returns Absolute path to the session's events.jsonl file on disk.
-       */
-      getEventFilePath: async (params) => connection.sendRequest("sessions.getEventFilePath", params),
-      /**
        * Returns the on-disk byte size of each session's workspace directory.
        *
        * @returns Map of sessionId -> on-disk size in bytes for each session's workspace directory.
@@ -3502,14 +3687,6 @@ function createServerRpc(connection) {
        * @returns Session IDs from the input set that are currently in use by another process.
        */
       checkInUse: async (params) => connection.sendRequest("sessions.checkInUse", params),
-      /**
-       * Returns a session's persisted remote-steerable flag, if any has been recorded.
-       *
-       * @param params Session ID to look up the persisted remote-steerable flag for.
-       *
-       * @returns The session's persisted remote-steerable flag, or omitted when no value has been persisted.
-       */
-      getPersistedRemoteSteerable: async (params) => connection.sendRequest("sessions.getPersistedRemoteSteerable", params),
       /**
        * Closes a session: emits shutdown, flushes pending events, releases the in-use lock, and disposes the active session.
        *
@@ -3555,7 +3732,7 @@ function createServerRpc(connection) {
        *
        * @param params Session metadata records to enrich with summary and context information.
        *
-       * @returns The same metadata records, with summary and context fields backfilled where available.
+       * @returns The enriched metadata records, with summary and context fields backfilled where available. Sessions confirmed empty and unnamed are omitted.
        */
       enrichMetadata: async (params) => connection.sendRequest("sessions.enrichMetadata", params),
       /**
@@ -3581,20 +3758,118 @@ function createServerRpc(connection) {
        *
        * @returns Replace the manager-wide additional plugins. New session creations and subsequent hook reloads see the new set; already-running sessions keep their existing hook installation until the next reload.
        */
-      setAdditionalPlugins: async (params) => connection.sendRequest("sessions.setAdditionalPlugins", params)
+      setAdditionalPlugins: async (params) => connection.sendRequest("sessions.setAdditionalPlugins", params),
+      /**
+       * Attaches the runtime-managed remote-control singleton to a session, awaiting initial setup. If remote control is already attached to a different session, the singleton is transferred (preserving the underlying Mission Control connection). Returns the final status.
+       *
+       * @param params Parameters for attaching the remote-control singleton to a session.
+       *
+       * @returns Wrapper for the singleton's current status.
+       */
+      startRemoteControl: async (params) => connection.sendRequest("sessions.startRemoteControl", params),
+      /**
+       * Atomically rebinds the remote-control singleton to a different session, preserving the underlying Mission Control connection. When `expectedFromSessionId` is provided and does not match the singleton's current `attachedSessionId`, the transfer is rejected with `transferred: false` and the current status is returned unchanged.
+       *
+       * @param params Parameters for atomically rebinding the remote-control singleton.
+       *
+       * @returns Outcome of a transferRemoteControl call.
+       */
+      transferRemoteControl: async (params) => connection.sendRequest("sessions.transferRemoteControl", params),
+      /**
+       * Patches the steering state of the active remote-control singleton. When remote control is off, this is a no-op and the off status is returned. Today only `enabled: true` is actionable on the underlying exporter; passing `false` is reserved for future use.
+       *
+       * @param params Patch for the singleton's steering state.
+       *
+       * @returns Wrapper for the singleton's current status.
+       */
+      setRemoteControlSteering: async (params) => connection.sendRequest("sessions.setRemoteControlSteering", params),
+      /**
+       * Stops the remote-control singleton. When `expectedSessionId` is provided and does not match the singleton's current `attachedSessionId`, the stop is rejected with `stopped: false` and the current status is returned unchanged (unless `force` is set, in which case the singleton is unconditionally torn down).
+       *
+       * @param params Parameters for stopping the remote-control singleton.
+       *
+       * @returns Outcome of a stopRemoteControl call.
+       */
+      stopRemoteControl: async (params) => connection.sendRequest("sessions.stopRemoteControl", params),
+      /**
+       * Returns the current state of the remote-control singleton, including the attached session id and frontend URL when active.
+       *
+       * @returns Wrapper for the singleton's current status.
+       */
+      getRemoteControlStatus: async () => connection.sendRequest("sessions.getRemoteControlStatus", {})
+    },
+    /** @experimental */
+    agentRegistry: {
+      /**
+       * Spawns a managed-server child with the supplied configuration and returns a discriminated-union result. The caller (typically the CLI controller) is responsible for attaching to the spawned child and sending any follow-up prompt. When the controller-local spawn gate is closed the server returns JSON-RPC MethodNotFound.
+       *
+       * @param params Inputs to spawn a managed-server child via the controller's spawn delegate.
+       *
+       * @returns Outcome of an agentRegistry.spawn call.
+       */
+      spawn: async (params) => connection.sendRequest("agentRegistry.spawn", params)
     }
   };
 }
 function createInternalServerRpc(connection) {
   return {
     /**
-     * Performs the SDK server connection handshake and validates the optional connection token.
+     * Performs the SDK server connection handshake and validates the optional connection token. Marked internal because this is JSON-RPC transport plumbing invoked automatically by an SDK client's own `connect()` wrapper, not a user-facing method. Stays internal as long as the SDK client owns the handshake; would only become public if the SDK ever exposed the raw schema surface to consumers without a connection wrapper.
      *
      * @param params Optional connection token presented by the SDK client during the handshake.
      *
      * @returns Handshake result reporting the server's protocol version and package version on success.
      */
-    connect: async (params) => connection.sendRequest("connect", params)
+    connect: async (params) => connection.sendRequest("connect", params),
+    /** @experimental */
+    sessions: {
+      /**
+       * Computes the absolute path to a session's persisted events.jsonl file. Internal: filesystem paths are only meaningful in-process (CLI and runtime share a filesystem). Currently used by the CLI's contribution-graph feature to read historical events directly. Remote SDK consumers must not depend on this; a proper event-query API would replace it if the contribution graph ever needed to work over the wire.
+       *
+       * @param params Session ID whose event-log file path to compute.
+       *
+       * @returns Absolute path to the session's events.jsonl file on disk.
+       */
+      getEventFilePath: async (params) => connection.sendRequest("sessions.getEventFilePath", params),
+      /**
+       * Returns a session's persisted remote-steerable flag, if any has been recorded. Internal: this is CLI-specific book-keeping used by `--continue` / `--resume` to inherit the prior session's remote-steerable preference. SDK consumers that want similar behavior should manage their own persistence around start/stop calls rather than relying on this runtime-side flag.
+       *
+       * @param params Session ID to look up the persisted remote-steerable flag for.
+       *
+       * @returns The session's persisted remote-steerable flag, or omitted when no value has been persisted.
+       */
+      getPersistedRemoteSteerable: async (params) => connection.sendRequest("sessions.getPersistedRemoteSteerable", params),
+      /**
+       * Gets the dynamic-context board entry count associated with a session, when available. Internal: this exists solely so CLI telemetry events (`rem_spawn_gate`, `rem_consolidation_complete`) can pair START / END board counts around the detached rem-agent spawn. "Dynamic context board" is a runtime-internal concept that is not part of the public SDK contract; the long-term plan is to relocate the telemetry emission into the runtime so this method can be deleted entirely.
+       *
+       * @param params Session ID whose board entry count should be returned.
+       *
+       * @returns Dynamic-context board entry count, when available.
+       */
+      getBoardEntryCount: async (params) => connection.sendRequest("sessions.getBoardEntryCount", params),
+      /**
+       * Cursor-based long-poll for sessions spawned by the runtime (e.g. in response to a Mission Control `start_session` command). The cursor is an opaque token; pass it back to receive only spawn events that occurred AFTER the cursor was issued. Omit the cursor on the first call to receive any events buffered since the runtime started. Internal: this is a CLI background-daemon plumbing primitive. SDK consumers that need to react to runtime-spawned sessions should subscribe to a higher-level event stream rather than driving a long-poll loop.
+       *
+       * @param params Cursor and optional long-poll wait for polling runtime-spawned sessions.
+       *
+       * @returns Batch of spawn events plus a cursor for follow-up polls.
+       */
+      pollSpawnedSessions: async (params) => connection.sendRequest("sessions.pollSpawnedSessions", params),
+      /**
+       * Registers extension-provided tools on the given session, gated by an optional `enabled` callback. Returns an opaque unsubscribe function the caller must invoke to deregister the tools when the extension is torn down. Marked internal because `loader`, `enabled`, and the returned `unsubscribe` are in-process handles that cannot cross the JSON-RPC boundary. Disappears once extension discovery / launch / tool registration are owned by the runtime: SDK consumers will pass pure config (search paths, disabled ids) via `SessionOptions` and the runtime will resolve, launch, register, and tear down extensions itself.
+       *
+       * @param params Params to attach an extension loader's tools to a session.
+       *
+       * @returns Handle for releasing the extension tool registration.
+       */
+      registerExtensionToolsOnSession: async (params) => connection.sendRequest("sessions.registerExtensionToolsOnSession", params),
+      /**
+       * Attaches (or detaches) an in-process ExtensionController delegate for the given session, used by shared-API surfaces that need to query or modify the session's extension state. Pass `controller: undefined` to detach. Marked internal because the controller is an in-process object that cannot cross the JSON-RPC boundary. Disappears alongside `registerExtensionToolsOnSession`: once the runtime owns extension management, the public surface exposes list/enable/disable/reload as dedicated RPCs served by the runtime.
+       *
+       * @param params Params to attach or detach an in-process ExtensionController delegate.
+       */
+      configureSessionExtensions: async (params) => connection.sendRequest("sessions.configureSessionExtensions", params)
+    }
   };
 }
 function createSessionRpc(connection, sessionId) {
@@ -3678,27 +3953,30 @@ function createSessionRpc(connection, sessionId) {
        * @param params Canvas close parameters.
        */
       close: async (params) => connection.sendRequest("session.canvas.close", { sessionId, ...params }),
-      /**
-       * Invokes an action on an open canvas instance.
-       *
-       * @param params Canvas action invocation parameters.
-       *
-       * @returns Canvas action invocation result.
-       */
-      invokeAction: async (params) => connection.sendRequest("session.canvas.invokeAction", { sessionId, ...params })
+      /** @experimental */
+      action: {
+        /**
+         * Invokes an action on an open canvas instance.
+         *
+         * @param params Canvas action invocation parameters.
+         *
+         * @returns Canvas action invocation result.
+         */
+        invoke: async (params) => connection.sendRequest("session.canvas.action.invoke", { sessionId, ...params })
+      }
     },
     /** @experimental */
     model: {
       /**
        * Gets the currently selected model for the session.
        *
-       * @returns The currently selected model and reasoning effort for the session.
+       * @returns The currently selected model, reasoning effort, and context tier for the session. The context tier reflects `Session.getContextTier()`, restored from the session journal on resume.
        */
       getCurrent: async () => connection.sendRequest("session.model.getCurrent", { sessionId }),
       /**
        * Switches the session to a model and optional reasoning configuration.
        *
-       * @param params Target model identifier and optional reasoning effort, summary, and capability overrides.
+       * @param params Target model identifier and optional reasoning effort, summary, capability overrides, and context tier.
        *
        * @returns The model identifier active on the session after the switch.
        */
@@ -3710,7 +3988,15 @@ function createSessionRpc(connection, sessionId) {
        *
        * @returns Update the session's reasoning effort without changing the selected model. Use `switchTo` instead when you also need to change the model. The runtime stores the effort on the session and applies it to subsequent turns.
        */
-      setReasoningEffort: async (params) => connection.sendRequest("session.model.setReasoningEffort", { sessionId, ...params })
+      setReasoningEffort: async (params) => connection.sendRequest("session.model.setReasoningEffort", { sessionId, ...params }),
+      /**
+       * Lists models available to this session using its own auth and integration context. Connected hosts (CLI TUI, GitHub App) should call this through the session client so remote sessions return the remote CLI's available models rather than the caller's.
+       *
+       * @param params Optional listing options.
+       *
+       * @returns The list of models available to this session.
+       */
+      list: async (params) => connection.sendRequest("session.model.list", { sessionId, ...params })
     },
     /** @experimental */
     mode: {
@@ -3767,7 +4053,19 @@ function createSessionRpc(connection, sessionId) {
       /**
        * Deletes the session plan file from the workspace.
        */
-      delete: async () => connection.sendRequest("session.plan.delete", { sessionId })
+      delete: async () => connection.sendRequest("session.plan.delete", { sessionId }),
+      /**
+       * Reads todo rows from the session SQL database for plan rendering.
+       *
+       * @returns Todo rows read from the session SQL database. Empty when no session database is available.
+       */
+      readSqlTodos: async () => connection.sendRequest("session.plan.readSqlTodos", { sessionId }),
+      /**
+       * Reads todo rows AND dependency edges from the session SQL database for structured progress UI. Same defensive behavior as readSqlTodos — returns empty arrays when the database, tables, or columns aren't available. Clients should call this on session start and after every `session.todos_changed` event to refresh structured-UI rendering.
+       *
+       * @returns Todo rows + dependency edges read from the session SQL database.
+       */
+      readSqlTodosWithDependencies: async () => connection.sendRequest("session.plan.readSqlTodosWithDependencies", { sessionId })
     },
     /** @experimental */
     workspaces: {
@@ -3818,7 +4116,15 @@ function createSessionRpc(connection, sessionId) {
        *
        * @returns Descriptor for the saved paste file, or null when the workspace is unavailable.
        */
-      saveLargePaste: async (params) => connection.sendRequest("session.workspaces.saveLargePaste", { sessionId, ...params })
+      saveLargePaste: async (params) => connection.sendRequest("session.workspaces.saveLargePaste", { sessionId, ...params }),
+      /**
+       * Computes a diff for the session workspace.
+       *
+       * @param params Parameters for computing a workspace diff.
+       *
+       * @returns Workspace diff result for the requested mode.
+       */
+      diff: async (params) => connection.sendRequest("session.workspaces.diff", { sessionId, ...params })
     },
     /** @experimental */
     instructions: {
@@ -3994,11 +4300,19 @@ function createSessionRpc(connection, sessionId) {
     /** @experimental */
     mcp: {
       /**
-       * Lists MCP servers configured for the session and their connection status.
+       * Lists MCP servers configured for the session, their connection status, and host-level state. The host-level state (disabled/filtered servers, failed/needs-auth/pending connections, mcp3p policy, full config) is empty/zero when no MCP host has been initialized for the session.
        *
-       * @returns MCP servers configured for the session, with their connection status.
+       * @returns MCP servers configured for the session, with their connection status and host-level state.
        */
       list: async () => connection.sendRequest("session.mcp.list", { sessionId }),
+      /**
+       * Lists the tools exposed by a connected MCP server on this session's host.
+       *
+       * @param params Server name whose tool list should be returned.
+       *
+       * @returns Tools exposed by the connected MCP server. Throws when the server is not connected.
+       */
+      listTools: async (params) => connection.sendRequest("session.mcp.listTools", { sessionId, ...params }),
       /**
        * Enables an MCP server for the session.
        *
@@ -4045,8 +4359,30 @@ function createSessionRpc(connection, sessionId) {
        * @returns Indicates whether the auto-managed `github` MCP server was removed (false when nothing to remove).
        */
       removeGitHub: async () => connection.sendRequest("session.mcp.removeGitHub", { sessionId }),
+      /**
+       * Stops an individual MCP server on the session's host.
+       *
+       * @param params Server name for an individual MCP server stop.
+       */
+      stopServer: async (params) => connection.sendRequest("session.mcp.stopServer", { sessionId, ...params }),
+      /**
+       * Checks whether a named MCP server is currently running on the session's host.
+       *
+       * @param params Server name to check running status for.
+       *
+       * @returns Whether the named MCP server is running.
+       */
+      isServerRunning: async (params) => connection.sendRequest("session.mcp.isServerRunning", { sessionId, ...params }),
       /** @experimental */
       oauth: {
+        /**
+         * Resolves a pending MCP OAuth request with a host-provided token or cancellation. The pending request is emitted as mcp.oauth_required with the data necessary to authorize the request.
+         *
+         * @param params Pending MCP OAuth request ID and host-provided token or cancellation response.
+         *
+         * @returns Indicates whether the pending MCP OAuth response was accepted.
+         */
+        handlePendingRequest: async (params) => connection.sendRequest("session.mcp.oauth.handlePendingRequest", { sessionId, ...params }),
         /**
          * Starts OAuth authentication for a remote MCP server.
          *
@@ -4111,7 +4447,24 @@ function createSessionRpc(connection, sessionId) {
        *
        * @returns Plugins installed for the session, with their enabled state and version metadata.
        */
-      list: async () => connection.sendRequest("session.plugins.list", { sessionId })
+      list: async () => connection.sendRequest("session.plugins.list", { sessionId }),
+      /**
+       * Reloads the session's plugin set, refreshing MCP servers, custom agents, hooks, and skills cache so SDK-driven changes via `server.plugins.*` take effect immediately.
+       *
+       * @param params Optional flags controlling which side effects the reload performs.
+       */
+      reload: async (params) => connection.sendRequest("session.plugins.reload", { sessionId, ...params })
+    },
+    /** @experimental */
+    provider: {
+      /**
+       * Returns the provider endpoint and credentials the session is currently configured to talk to, so the caller can make inference calls directly against the same backend the session uses.
+       *
+       * @param params Optional model identifier to scope the endpoint snapshot to.
+       *
+       * @returns A snapshot of the provider endpoint the session is currently configured to talk to.
+       */
+      getEndpoint: async (params) => connection.sendRequest("session.provider.getEndpoint", { sessionId, ...params })
     },
     /** @experimental */
     options: {
@@ -4156,7 +4509,13 @@ function createSessionRpc(connection, sessionId) {
       /**
        * Reloads extension definitions and processes for the session.
        */
-      reload: async () => connection.sendRequest("session.extensions.reload", { sessionId })
+      reload: async () => connection.sendRequest("session.extensions.reload", { sessionId }),
+      /**
+       * Push attachments into the next user-message turn from an extension. The host should surface them as composer pills and forward them via the next session.send call. Callable only by extension-owned connections.
+       *
+       * @param params Parameters for session.extensions.sendAttachmentsToMessage.
+       */
+      sendAttachmentsToMessage: async (params) => connection.sendRequest("session.extensions.sendAttachmentsToMessage", { sessionId, ...params })
     },
     /** @experimental */
     tools: {
@@ -4173,7 +4532,21 @@ function createSessionRpc(connection, sessionId) {
        *
        * @returns Resolve, build, and validate the runtime tool list for this session. Subagent sessions and consumer flows that need an initialized tool set before `send` invoke this. Default base-class implementation is a no-op for sessions that don't support tool validation.
        */
-      initializeAndValidate: async () => connection.sendRequest("session.tools.initializeAndValidate", { sessionId })
+      initializeAndValidate: async () => connection.sendRequest("session.tools.initializeAndValidate", { sessionId }),
+      /**
+       * Returns lightweight metadata for the session's currently initialized tools.
+       *
+       * @returns Current lightweight tool metadata snapshot for the session.
+       */
+      getCurrentMetadata: async () => connection.sendRequest("session.tools.getCurrentMetadata", { sessionId }),
+      /**
+       * Updates the current session's live subagent settings after user settings change. The persisted user settings remain the source of truth for future sessions.
+       *
+       * @param params Subagent settings to apply to the current session
+       *
+       * @returns Empty result after applying subagent settings
+       */
+      updateSubagentSettings: async (params) => connection.sendRequest("session.tools.updateSubagentSettings", { sessionId, ...params })
     },
     /** @experimental */
     commands: {
@@ -4229,6 +4602,12 @@ function createSessionRpc(connection, sessionId) {
     /** @experimental */
     telemetry: {
       /**
+       * Gets the telemetry engagement ID currently associated with the session, when available.
+       *
+       * @returns Telemetry engagement ID for the session, when available.
+       */
+      getEngagementId: async () => connection.sendRequest("session.telemetry.getEngagementId", { sessionId }),
+      /**
        * Sets feature override key/value pairs to attach to subsequent telemetry events for the session.
        *
        * @param params Feature override key/value pairs to attach to subsequent telemetry events from this session.
@@ -4237,6 +4616,14 @@ function createSessionRpc(connection, sessionId) {
     },
     /** @experimental */
     ui: {
+      /**
+       * Runs a transient no-tools model query against the current conversation context.
+       *
+       * @param params Transient question to answer without adding it to conversation history.
+       *
+       * @returns Transient answer generated from current conversation context.
+       */
+      ephemeralQuery: async (params) => connection.sendRequest("session.ui.ephemeralQuery", { sessionId, ...params }),
       /**
        * Requests structured input from a UI-capable client.
        *
@@ -4332,6 +4719,20 @@ function createSessionRpc(connection, sessionId) {
        * @returns Indicates whether the operation succeeded.
        */
       setApproveAll: async (params) => connection.sendRequest("session.permissions.setApproveAll", { sessionId, ...params }),
+      /**
+       * Enables or disables full allow-all permissions (tools, paths, and URLs) for the session. Used by attach-mode clients (e.g. LocalRpcSession's `/allow-all` forwarder) to flip the target session's permission state. Unlike `setApproveAll`, this swaps in the unrestricted path and URL managers and emits `session.permissions_changed` on transition. The result returns the authoritative post-mutation state so callers can update their local mirrors without racing the `session.permissions_changed` notification on the same wire.
+       *
+       * @param params Whether to enable full allow-all permissions for the session.
+       *
+       * @returns Indicates whether the operation succeeded and reports the post-mutation state.
+       */
+      setAllowAll: async (params) => connection.sendRequest("session.permissions.setAllowAll", { sessionId, ...params }),
+      /**
+       * Returns whether full allow-all permissions are currently active for the session.
+       *
+       * @returns Current full allow-all permission state.
+       */
+      getAllowAll: async () => connection.sendRequest("session.permissions.getAllowAll", { sessionId }),
       /**
        * Adds or removes session-scoped or location-scoped permission rules.
        *
@@ -4486,6 +4887,12 @@ function createSessionRpc(connection, sessionId) {
        */
       isProcessing: async () => connection.sendRequest("session.metadata.isProcessing", { sessionId }),
       /**
+       * Returns a snapshot of activity flags for the session.
+       *
+       * @returns Current activity flags for the session.
+       */
+      activity: async () => connection.sendRequest("session.metadata.activity", { sessionId }),
+      /**
        * Returns the token breakdown for the session's current context window for a given model.
        *
        * @param params Model identifier and token limits used to compute the context-info breakdown.
@@ -4535,7 +4942,23 @@ function createSessionRpc(connection, sessionId) {
        *
        * @returns Indicates whether the signal was delivered; false if the process was unknown or already exited.
        */
-      kill: async (params) => connection.sendRequest("session.shell.kill", { sessionId, ...params })
+      kill: async (params) => connection.sendRequest("session.shell.kill", { sessionId, ...params }),
+      /**
+       * Executes a user-requested shell command through the session runtime.
+       *
+       * @param params User-requested shell command and cancellation handle.
+       *
+       * @returns Result of a user-requested shell command.
+       */
+      executeUserRequested: async (params) => connection.sendRequest("session.shell.executeUserRequested", { sessionId, ...params }),
+      /**
+       * Cancels a user-requested shell command by request ID.
+       *
+       * @param params User-requested shell execution cancellation handle.
+       *
+       * @returns Cancellation result for a user-requested shell command.
+       */
+      cancelUserRequested: async (params) => connection.sendRequest("session.shell.cancelUserRequested", { sessionId, ...params })
     },
     /** @experimental */
     history: {
@@ -4738,15 +5161,40 @@ function registerClientSessionApiHandlers(connection, getHandlers) {
     if (!handler) throw new Error(`No sessionFs handler registered for session: ${params.sessionId}`);
     return handler.sqliteExists(params);
   });
+  connection.onRequest("canvas.open", async (params) => {
+    const handler = getHandlers(params.sessionId).canvas;
+    if (!handler) throw new Error(`No canvas handler registered for session: ${params.sessionId}`);
+    return handler.open(params);
+  });
+  connection.onRequest("canvas.close", async (params) => {
+    const handler = getHandlers(params.sessionId).canvas;
+    if (!handler) throw new Error(`No canvas handler registered for session: ${params.sessionId}`);
+    return handler.close(params);
+  });
+  connection.onRequest("canvas.action.invoke", async (params) => {
+    const handler = getHandlers(params.sessionId).canvas;
+    if (!handler) throw new Error(`No canvas handler registered for session: ${params.sessionId}`);
+    return handler.invoke(params);
+  });
 }
 
-// node_modules/@github/copilot-sdk/dist/canvas.js
+// node_modules/.pnpm/@github+copilot-sdk@1.0.3/node_modules/@github/copilot-sdk/dist/sdkProtocolVersion.js
+var SDK_PROTOCOL_VERSION = 3;
+function getSdkProtocolVersion() {
+  return SDK_PROTOCOL_VERSION;
+}
+
+// node_modules/.pnpm/@github+copilot-sdk@1.0.3/node_modules/@github/copilot-sdk/dist/session.js
+var import_node = __toESM(require_node(), 1);
+
+// node_modules/.pnpm/@github+copilot-sdk@1.0.3/node_modules/@github/copilot-sdk/dist/canvas.js
 var CanvasError = class _CanvasError extends Error {
   constructor(code, message) {
     super(message);
     this.code = code;
     this.name = "CanvasError";
   }
+  code;
   /** Default error when an action is declared but no `handler` is wired. */
   static noHandler() {
     return new _CanvasError(
@@ -4785,59 +5233,8 @@ var Canvas = class {
 function createCanvas(options) {
   return new Canvas(options);
 }
-async function dispatchCanvasProviderRequest(canvas, actionName, params) {
-  switch (actionName) {
-    case "canvas.open": {
-      const result = await canvas.open({
-        sessionId: params.sessionId,
-        extensionId: params.extensionId,
-        canvasId: params.canvasId,
-        instanceId: params.instanceId,
-        input: params.input,
-        host: params.host
-      });
-      return result ?? {};
-    }
-    case "canvas.close": {
-      if (canvas.onClose) {
-        await canvas.onClose({
-          sessionId: params.sessionId,
-          extensionId: params.extensionId,
-          canvasId: params.canvasId,
-          instanceId: params.instanceId,
-          host: params.host
-        });
-      }
-      return void 0;
-    }
-    default: {
-      const perAction = canvas.actionHandlers.get(actionName);
-      if (!perAction) {
-        throw CanvasError.noHandler();
-      }
-      return perAction({
-        sessionId: params.sessionId,
-        extensionId: params.extensionId,
-        canvasId: params.canvasId,
-        instanceId: params.instanceId,
-        actionName,
-        input: params.input,
-        host: params.host
-      });
-    }
-  }
-}
 
-// node_modules/@github/copilot-sdk/dist/sdkProtocolVersion.js
-var SDK_PROTOCOL_VERSION = 3;
-function getSdkProtocolVersion() {
-  return SDK_PROTOCOL_VERSION;
-}
-
-// node_modules/@github/copilot-sdk/dist/session.js
-var import_node = __toESM(require_node(), 1);
-
-// node_modules/@github/copilot-sdk/dist/telemetry.js
+// node_modules/.pnpm/@github+copilot-sdk@1.0.3/node_modules/@github/copilot-sdk/dist/telemetry.js
 async function getTraceContext(provider) {
   if (!provider) return {};
   try {
@@ -4847,7 +5244,7 @@ async function getTraceContext(provider) {
   }
 }
 
-// node_modules/@github/copilot-sdk/dist/session.js
+// node_modules/.pnpm/@github+copilot-sdk@1.0.3/node_modules/@github/copilot-sdk/dist/session.js
 function deserializeHookInput(raw) {
   if (!raw || typeof raw !== "object" || typeof raw.timestamp !== "number") {
     return raw;
@@ -4855,6 +5252,13 @@ function deserializeHookInput(raw) {
   const obj = raw;
   const { cwd, ...rest } = obj;
   return { ...rest, timestamp: new Date(obj.timestamp), workingDirectory: cwd };
+}
+function isOpenCanvasInstance(value) {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+  const instance = value;
+  return typeof instance.instanceId === "string" && instance.instanceId.length > 0 && typeof instance.extensionId === "string" && instance.extensionId.length > 0 && typeof instance.canvasId === "string" && instance.canvasId.length > 0 && typeof instance.reopen === "boolean" && (instance.availability === "ready" || instance.availability === "stale");
 }
 var CopilotSession = class {
   /**
@@ -4872,6 +5276,9 @@ var CopilotSession = class {
     this._workspacePath = _workspacePath;
     this.traceContextProvider = traceContextProvider;
   }
+  sessionId;
+  connection;
+  _workspacePath;
   eventHandlers = /* @__PURE__ */ new Set();
   typedEventHandlers = /* @__PURE__ */ new Map();
   toolHandlers = /* @__PURE__ */ new Map();
@@ -4940,8 +5347,10 @@ var CopilotSession = class {
       ...await getTraceContext(this.traceContextProvider),
       sessionId: this.sessionId,
       prompt: options.prompt,
+      displayPrompt: options.displayPrompt,
       attachments: options.attachments,
       mode: options.mode,
+      agentMode: options.agentMode,
       requestHeaders: options.requestHeaders
     });
     return response.messageId;
@@ -5088,6 +5497,39 @@ var CopilotSession = class {
       }
     } else if (event.type === "capabilities.changed") {
       this._capabilities = { ...this._capabilities, ...event.data };
+    } else if (event.type === "session.canvas.opened") {
+      this.upsertOpenCanvasFromEvent(event.data);
+    } else if (event.type === "session.canvas.closed") {
+      this.removeOpenCanvasFromEvent(event.data);
+    }
+  }
+  upsertOpenCanvasFromEvent(data) {
+    if (!isOpenCanvasInstance(data)) {
+      console.warn("failed to deserialize session.canvas.opened payload");
+      return;
+    }
+    this.upsertOpenCanvas(data);
+  }
+  removeOpenCanvasFromEvent(data) {
+    if (!data || typeof data !== "object" || typeof data.instanceId !== "string" || data.instanceId.length === 0) {
+      console.warn("failed to deserialize session.canvas.closed payload");
+      return;
+    }
+    this.removeOpenCanvas(data.instanceId);
+  }
+  removeOpenCanvas(instanceId) {
+    this.openCanvasInstances = this.openCanvasInstances.filter(
+      (open) => open.instanceId !== instanceId
+    );
+  }
+  upsertOpenCanvas(instance) {
+    const index = this.openCanvasInstances.findIndex(
+      (open) => open.instanceId === instance.instanceId
+    );
+    if (index >= 0) {
+      this.openCanvasInstances[index] = instance;
+    } else {
+      this.openCanvasInstances.push(instance);
     }
   }
   /**
@@ -5225,22 +5667,52 @@ var CopilotSession = class {
    */
   registerCanvases(canvases) {
     this.canvases.clear();
-    if (!canvases) {
+    if (!canvases || canvases.length === 0) {
+      delete this.clientSessionApis.canvas;
       return;
     }
     for (const canvas of canvases) {
       this.canvases.set(canvas.declaration.id, canvas);
     }
-  }
-  /**
-   * Retrieves a registered canvas by id.
-   *
-   * @param canvasId - The id of the canvas to retrieve
-   * @returns The registered Canvas if found, or undefined
-   * @internal Used by the SDK's direct `canvas.*` dispatcher.
-   */
-  getCanvas(canvasId) {
-    return this.canvases.get(canvasId);
+    const self = this;
+    this.clientSessionApis.canvas = {
+      async open(params) {
+        const canvas = self.canvases.get(params.canvasId);
+        if (!canvas) throw new Error(`No canvas registered with id "${params.canvasId}"`);
+        try {
+          return await canvas.open(params) ?? {};
+        } catch (error) {
+          throw toCanvasRpcError(error);
+        }
+      },
+      async close(params) {
+        const canvas = self.canvases.get(params.canvasId);
+        if (!canvas) throw new Error(`No canvas registered with id "${params.canvasId}"`);
+        try {
+          if (canvas.onClose) {
+            await canvas.onClose(params);
+          }
+        } catch (error) {
+          throw toCanvasRpcError(error);
+        }
+      },
+      async invoke(params) {
+        const canvas = self.canvases.get(params.canvasId);
+        if (!canvas) throw new Error(`No canvas registered with id "${params.canvasId}"`);
+        const handler = canvas.actionHandlers.get(params.actionName);
+        if (!handler) {
+          throw new CanvasError(
+            "canvas_action_no_handler",
+            "No handler implemented for this canvas action"
+          );
+        }
+        try {
+          return await handler(params);
+        } catch (error) {
+          throw toCanvasRpcError(error);
+        }
+      }
+    };
   }
   /**
    * Registers command handlers for this session.
@@ -5339,10 +5811,10 @@ var CopilotSession = class {
     this._capabilities = capabilities ?? {};
   }
   /**
-   * Snapshot of canvas instances that were already open when the session was
-   * resumed. Populated from the `session.resume` response; empty for freshly
-   * created sessions. Returns a defensive copy — mutating the returned array
-   * has no effect on the session.
+   * Snapshot of canvas instances currently known to be open for this session.
+   * Populated from the `session.resume` response and live `session.canvas.opened`
+   * and `session.canvas.closed` events. Returns a defensive copy — mutating the
+   * returned array has no effect on the session.
    */
   get openCanvases() {
     return [...this.openCanvasInstances];
@@ -5532,6 +6004,7 @@ var CopilotSession = class {
       preToolUse: this.hooks.onPreToolUse,
       preMcpToolCall: this.hooks.onPreMcpToolCall,
       postToolUse: this.hooks.onPostToolUse,
+      postToolUseFailure: this.hooks.onPostToolUseFailure,
       userPromptSubmitted: this.hooks.onUserPromptSubmitted,
       sessionStart: this.hooks.onSessionStart,
       sessionEnd: this.hooks.onSessionEnd,
@@ -5691,8 +6164,14 @@ function isToolResultObject(value) {
   ];
   return allowedResultTypes.includes(value.resultType);
 }
+function toCanvasRpcError(error) {
+  if (error instanceof import_node.ResponseError) return error;
+  const code = error instanceof CanvasError ? error.code : "canvas_handler_error";
+  const message = error instanceof Error ? error.message : String(error);
+  return new import_node.ResponseError(import_node.ErrorCodes.InternalError, message, { code, message });
+}
 
-// node_modules/@github/copilot-sdk/dist/sessionFsProvider.js
+// node_modules/.pnpm/@github+copilot-sdk@1.0.3/node_modules/@github/copilot-sdk/dist/sessionFsProvider.js
 function normalizeSqliteParams(params) {
   if (!params) {
     return void 0;
@@ -5822,15 +6301,115 @@ function toSessionFsError(err) {
   return { code, message: e.message ?? String(err) };
 }
 
-// node_modules/@github/copilot-sdk/dist/types.js
+// node_modules/.pnpm/@github+copilot-sdk@1.0.3/node_modules/@github/copilot-sdk/dist/toolSet.js
+var VALID_TOOL_NAME = /^[a-zA-Z0-9_-]+$/;
+function validateName(kind, name) {
+  if (name === "*") {
+    return;
+  }
+  if (!VALID_TOOL_NAME.test(name)) {
+    throw new Error(
+      `Invalid ${kind} tool name '${name}': tool names must match /^[a-zA-Z0-9_-]+$/ or be the wildcard '*'.`
+    );
+  }
+}
+var ToolSet = class {
+  items = [];
+  addBuiltIn(nameOrNames) {
+    const names = typeof nameOrNames === "string" ? [nameOrNames] : nameOrNames;
+    for (const name of names) {
+      validateName("builtin", name);
+      this.items.push(`builtin:${name}`);
+    }
+    return this;
+  }
+  /**
+   * Adds a custom tool pattern. Matches tools registered via the SDK's
+   * `tools` option or via custom agents.
+   *
+   * @param name A specific custom tool name or `"*"` to match all custom tools.
+   */
+  addCustom(name) {
+    validateName("custom", name);
+    this.items.push(`custom:${name}`);
+    return this;
+  }
+  /**
+   * Adds an MCP tool pattern. Matches tools advertised by any configured
+   * MCP server.
+   *
+   * @param toolName The runtime's canonical wire name for the MCP tool
+   *   (e.g. `"github-list_issues"`), or `"*"` to match all MCP tools from
+   *   any server.
+   */
+  addMcp(toolName) {
+    validateName("mcp", toolName);
+    this.items.push(`mcp:${toolName}`);
+    return this;
+  }
+  /**
+   * Returns a defensive copy of the accumulated filter strings, suitable for
+   * passing as {@link SessionConfigBase.availableTools}.
+   */
+  toArray() {
+    return [...this.items];
+  }
+};
+
+// node_modules/.pnpm/@github+copilot-sdk@1.0.3/node_modules/@github/copilot-sdk/dist/types.js
 var defaultJoinSessionPermissionHandler = () => ({
   kind: "no-result"
 });
 
-// node_modules/@github/copilot-sdk/dist/client.js
+// node_modules/.pnpm/@github+copilot-sdk@1.0.3/node_modules/@github/copilot-sdk/dist/client.js
 var MIN_PROTOCOL_VERSION = 3;
+var RUNTIME_SHUTDOWN_TIMEOUT_MS = 1e4;
 function isZodSchema(value) {
   return value != null && typeof value === "object" && "toJSONSchema" in value && typeof value.toJSONSchema === "function";
+}
+async function withTimeout(promise, timeoutMs, message) {
+  let timeout;
+  try {
+    return await Promise.race([
+      promise,
+      new Promise((_, reject) => {
+        timeout = setTimeout(() => reject(new Error(message)), timeoutMs);
+      })
+    ]);
+  } finally {
+    if (timeout !== void 0) {
+      clearTimeout(timeout);
+    }
+  }
+}
+async function waitForChildExit(child, timeoutMs) {
+  if (child.exitCode != null || child.signalCode != null) {
+    return true;
+  }
+  return new Promise((resolve) => {
+    let timeout;
+    let settled = false;
+    const onExit = () => {
+      if (settled) {
+        return;
+      }
+      settled = true;
+      clearTimeout(timeout);
+      resolve(true);
+    };
+    timeout = setTimeout(() => {
+      if (settled) {
+        return;
+      }
+      settled = true;
+      child.off("exit", onExit);
+      resolve(false);
+    }, timeoutMs);
+    child.once("exit", onExit);
+    if (child.exitCode != null || child.signalCode != null) {
+      onExit();
+    }
+  });
 }
 function toJsonSchema(parameters) {
   if (!parameters) return void 0;
@@ -5859,15 +6438,32 @@ function toWireCustomAgents(agents) {
     return { ...rest, mcpServers: toWireMcpServers(mcpServers) };
   });
 }
-function isCanvasProviderRequestParams(params) {
-  if (!params || typeof params !== "object") {
-    return false;
+function toWireLargeOutput(config) {
+  if (!config) return void 0;
+  const { outputDirectory, ...rest } = config;
+  const wire = { ...rest };
+  if (outputDirectory !== void 0) {
+    wire.outputDir = outputDirectory;
   }
-  const request = params;
-  return typeof request.sessionId === "string" && typeof request.extensionId === "string" && typeof request.canvasId === "string" && typeof request.instanceId === "string";
+  return wire;
 }
-function isCanvasActionInvokeParams(params) {
-  return isCanvasProviderRequestParams(params) && typeof params.actionName === "string";
+function toolFilterListToArray(value) {
+  if (value === void 0) {
+    return void 0;
+  }
+  return value instanceof ToolSet ? value.toArray() : value;
+}
+function validateToolFilterList(field, list) {
+  if (!list) {
+    return;
+  }
+  for (const entry of list) {
+    if (entry === "*") {
+      throw new Error(
+        `Invalid ${field} entry '*': there is no bare wildcard. Use one or more of \`new ToolSet().addBuiltIn('*')\`, \`.addMcp('*')\`, or \`.addCustom('*')\` to target a specific source.`
+      );
+    }
+  }
 }
 function extractTransformCallbacks(systemMessage) {
   if (!systemMessage || systemMessage.mode !== "customize" || !systemMessage.sections) {
@@ -5899,22 +6495,38 @@ function getNodeExecPath() {
   }
   return process.execPath;
 }
+function getCliPlatformPackageNames() {
+  const arch = process.arch;
+  const variants = process.platform === "linux" ? ["linux", "linuxmusl"] : [process.platform];
+  return variants.map((variant) => `@github/copilot-${variant}-${arch}`);
+}
 function getBundledCliPath() {
+  const packageNames = getCliPlatformPackageNames();
   if (typeof import.meta.resolve === "function") {
-    const sdkUrl = import.meta.resolve("@github/copilot/sdk");
-    const sdkPath = fileURLToPath(sdkUrl);
-    return join(dirname(dirname(sdkPath)), "index.js");
+    for (const packageName of packageNames) {
+      try {
+        const sdkUrl = import.meta.resolve(`${packageName}/sdk`);
+        const sdkPath = fileURLToPath(sdkUrl);
+        return join(dirname(dirname(sdkPath)), "index.js");
+      } catch {
+      }
+    }
+    throw new Error(
+      `Could not resolve a @github/copilot platform package (tried ${packageNames.join(", ")}). Ensure @github/copilot is installed, or pass cliPath/cliUrl to CopilotClient.`
+    );
   }
   const req = createRequire(__filename);
   const searchPaths = req.resolve.paths("@github/copilot") ?? [];
   for (const base of searchPaths) {
-    const candidate = join(base, "@github", "copilot", "index.js");
-    if (existsSync(candidate)) {
-      return candidate;
+    for (const packageName of packageNames) {
+      const candidate = join(base, ...packageName.split("/"), "index.js");
+      if (existsSync(candidate)) {
+        return candidate;
+      }
     }
   }
   throw new Error(
-    `Could not find @github/copilot package. Searched ${searchPaths.length} paths. Ensure it is installed, or pass cliPath/cliUrl to CopilotClient.`
+    `Could not find a @github/copilot platform package (tried ${packageNames.join(", ")}). Searched ${searchPaths.length} paths. Ensure @github/copilot is installed, or pass cliPath/cliUrl to CopilotClient.`
   );
 }
 var CopilotClient = class _CopilotClient {
@@ -5977,6 +6589,13 @@ var CopilotClient = class _CopilotClient {
       this._internalRpc = createInternalServerRpc(this.connection);
     }
     return this._internalRpc;
+  }
+  logDebugTiming(message, startMs) {
+    const level = this.options.logLevel?.toLowerCase();
+    if (level === "debug" || level === "all") {
+      process.stderr.write(`[copilot-sdk] ${message}. Elapsed=${Date.now() - startMs}ms
+`);
+    }
   }
   /**
    * Creates a new CopilotClient instance.
@@ -6051,8 +6670,19 @@ var CopilotClient = class _CopilotClient {
       telemetry: options.telemetry,
       baseDirectory: options.baseDirectory,
       sessionIdleTimeoutSeconds: options.sessionIdleTimeoutSeconds ?? 0,
-      enableRemoteSessions: options.enableRemoteSessions ?? false
+      enableRemoteSessions: options.enableRemoteSessions ?? false,
+      mode: options.mode ?? "copilot-cli"
     };
+    if (this.options.mode === "empty") {
+      const hasPersistence = this.options.baseDirectory !== void 0 || this.sessionFsConfig !== null || // External runtimes manage their own persistence layer; the SDK
+      // can't enforce it from here.
+      conn.kind === "uri" || conn.kind === "parent-process";
+      if (!hasPersistence) {
+        throw new Error(
+          "CopilotClient was created with mode: 'empty' but neither 'baseDirectory' nor 'sessionFs' was set. Empty mode requires an explicit per-session persistence location; pick one."
+        );
+      }
+    }
   }
   connectionExtraArgs = [];
   /**
@@ -6153,8 +6783,9 @@ var CopilotClient = class _CopilotClient {
    *
    * This method performs graceful cleanup:
    * 1. Closes all active sessions (releases in-memory resources)
-   * 2. Closes the JSON-RPC connection
-   * 3. Terminates the CLI server process (if spawned by this client)
+   * 2. Requests runtime shutdown for SDK-owned CLI processes
+   * 3. Closes the JSON-RPC connection
+   * 4. Terminates the CLI server process (if spawned by this client)
    *
    * Note: session data on disk is preserved, so sessions can be resumed later.
    * To permanently remove session data before stopping, call
@@ -6198,6 +6829,34 @@ var CopilotClient = class _CopilotClient {
       }
     }
     this.sessions.clear();
+    let runtimeShutdownCompleted = false;
+    if (this.connection && this.cliProcess && !this.isExternalServer) {
+      const runtimeShutdownStart = Date.now();
+      const shutdownPromise = this.rpc.runtime.shutdown();
+      void shutdownPromise.catch(() => void 0);
+      try {
+        await withTimeout(
+          shutdownPromise,
+          RUNTIME_SHUTDOWN_TIMEOUT_MS,
+          `runtime.shutdown timed out after ${RUNTIME_SHUTDOWN_TIMEOUT_MS}ms`
+        );
+        runtimeShutdownCompleted = true;
+        this.logDebugTiming(
+          "CopilotClient.stop runtime shutdown complete",
+          runtimeShutdownStart
+        );
+      } catch (error) {
+        this.logDebugTiming(
+          "CopilotClient.stop runtime shutdown failed",
+          runtimeShutdownStart
+        );
+        errors.push(
+          new Error(
+            `Failed to gracefully shut down runtime: ${error instanceof Error ? error.message : String(error)}`
+          )
+        );
+      }
+    }
     if (this.connection) {
       try {
         this.connection.dispose();
@@ -6210,6 +6869,7 @@ var CopilotClient = class _CopilotClient {
       }
       this.connection = null;
       this._rpc = null;
+      this._internalRpc = null;
     }
     this.modelsCache = null;
     if (this.socket) {
@@ -6234,12 +6894,18 @@ var CopilotClient = class _CopilotClient {
       const child = this.cliProcess;
       this.cliProcess = null;
       try {
-        if (child.exitCode === null && child.signalCode === null) {
-          const exited = new Promise((resolve) => {
-            child.once("exit", () => resolve());
-          });
-          child.kill();
-          await exited;
+        if (child.exitCode == null && child.signalCode == null) {
+          const exitedGracefully = runtimeShutdownCompleted ? await waitForChildExit(child, RUNTIME_SHUTDOWN_TIMEOUT_MS) : false;
+          if (!exitedGracefully) {
+            child.kill();
+            if (!await waitForChildExit(child, RUNTIME_SHUTDOWN_TIMEOUT_MS)) {
+              errors.push(
+                new Error(
+                  `Timed out waiting for CLI process to exit after kill: ${RUNTIME_SHUTDOWN_TIMEOUT_MS}ms`
+                )
+              );
+            }
+          }
         }
       } catch (error) {
         errors.push(
@@ -6309,6 +6975,7 @@ var CopilotClient = class _CopilotClient {
       }
       this.connection = null;
       this._rpc = null;
+      this._internalRpc = null;
     }
     this.modelsCache = null;
     if (this.socket) {
@@ -6362,78 +7029,222 @@ var CopilotClient = class _CopilotClient {
    * });
    * ```
    */
+  /**
+   * Normalizes session-level tool filter options. Converts {@link ToolSet}
+   * instances to plain string arrays, rejects misuse (bare `"*"`) and the
+   * missing-availableTools case in `mode = "empty"`.
+   *
+   * The SDK always sends `toolFilterPrecedence: "excluded"` so callers can
+   * compose include + exclude lists naturally (e.g. "everything matching X
+   * except Y") regardless of mode. Allowlist-precedence is intentionally not
+   * exposed — it's available on the runtime side as a CLI-only concession to
+   * legacy behavior, but SDK consumers always get the composable semantics.
+   *
+   * @internal
+   */
+  resolveToolFilterOptions(config) {
+    const availableTools = toolFilterListToArray(config.availableTools);
+    const excludedTools = toolFilterListToArray(config.excludedTools);
+    validateToolFilterList("availableTools", availableTools);
+    validateToolFilterList("excludedTools", excludedTools);
+    if (this.options.mode === "empty") {
+      if (availableTools === void 0) {
+        throw new Error(
+          "CopilotClient is in mode: 'empty' but the session config did not specify 'availableTools'. Empty mode requires every session to explicitly opt into the tools it wants \u2014 e.g. `new ToolSet().addBuiltIn(BuiltInTools.Isolated)`."
+        );
+      }
+    }
+    return { availableTools, excludedTools, toolFilterPrecedence: "excluded" };
+  }
+  /** Mode-specific defaults spread under the caller's config (app values win). */
+  configDefaultsForMode() {
+    if (this.options.mode === "empty") {
+      return {
+        enableSessionTelemetry: false,
+        mcpOAuthTokenStorage: "in-memory",
+        skipEmbeddingRetrieval: true,
+        embeddingCacheStorage: "in-memory",
+        enableOnDemandInstructionDiscovery: false,
+        enableFileHooks: false,
+        enableHostGitOperations: false,
+        enableSessionStore: false,
+        enableSkills: false,
+        memory: { enabled: false }
+      };
+    }
+    return {};
+  }
+  /**
+   * Returns the systemMessage config to use, adjusted for the current mode.
+   * In empty mode we ensure the environment_context section is removed
+   * unless the app has already taken control of it. `append` (and
+   * unspecified) mode is promoted to `customize` so we can also strip
+   * environment_context; the caller's `content` is preserved verbatim
+   * because the runtime appends it as additional instructions in both
+   * customize and append modes.
+   */
+  getSystemMessageConfigForMode(supplied) {
+    if (this.options.mode !== "empty") return supplied;
+    if (!supplied) {
+      return {
+        mode: "customize",
+        sections: { environment_context: { action: "remove" } }
+      };
+    }
+    switch (supplied.mode) {
+      case "replace":
+        return supplied;
+      case "customize":
+        if (supplied.sections?.environment_context) return supplied;
+        return {
+          ...supplied,
+          sections: {
+            ...supplied.sections,
+            environment_context: { action: "remove" }
+          }
+        };
+      case "append":
+      case void 0:
+        return {
+          mode: "customize",
+          content: supplied.content,
+          sections: { environment_context: { action: "remove" } }
+        };
+    }
+  }
+  /**
+   * Mode-specific options applied via session.options.update after create/resume.
+   *
+   * In empty mode, defaults the four overridable feature flags to safe values
+   * (caller values from `config` win). `installedPlugins=[]` is unconditional
+   * in empty mode — apps that need custom plugins should switch modes.
+   */
+  async updateSessionOptionsForMode(session, config) {
+    const patch = {};
+    if (this.options.mode === "empty") {
+      patch.skipCustomInstructions = config.skipCustomInstructions ?? true;
+      patch.customAgentsLocalOnly = config.customAgentsLocalOnly ?? true;
+      patch.coauthorEnabled = config.coauthorEnabled ?? false;
+      patch.manageScheduleEnabled = config.manageScheduleEnabled ?? false;
+      patch.installedPlugins = [];
+    } else {
+      if (config.skipCustomInstructions !== void 0)
+        patch.skipCustomInstructions = config.skipCustomInstructions;
+      if (config.customAgentsLocalOnly !== void 0)
+        patch.customAgentsLocalOnly = config.customAgentsLocalOnly;
+      if (config.coauthorEnabled !== void 0)
+        patch.coauthorEnabled = config.coauthorEnabled;
+      if (config.manageScheduleEnabled !== void 0)
+        patch.manageScheduleEnabled = config.manageScheduleEnabled;
+    }
+    if (Object.keys(patch).length === 0) {
+      return;
+    }
+    try {
+      await session.rpc.options.update(patch);
+    } catch (e) {
+      try {
+        await session.disconnect();
+      } catch {
+      }
+      throw e;
+    }
+  }
   async createSession(config) {
     if (!this.connection) {
       await this.start();
     }
-    const sessionId = config.sessionId ?? randomUUID();
-    const session = new CopilotSession(
-      sessionId,
-      this.connection,
-      void 0,
-      this.onGetTraceContext
-    );
-    session.registerTools(config.tools);
-    session.registerCanvases(config.canvases);
-    session.registerCommands(config.commands);
-    session.registerPermissionHandler(config.onPermissionRequest);
-    if (config.onUserInputRequest) {
-      session.registerUserInputHandler(config.onUserInputRequest);
-    }
-    if (config.onElicitationRequest) {
-      session.registerElicitationHandler(config.onElicitationRequest);
-    }
-    if (config.onExitPlanModeRequest) {
-      session.registerExitPlanModeHandler(config.onExitPlanModeRequest);
-    }
-    if (config.onAutoModeSwitchRequest) {
-      session.registerAutoModeSwitchHandler(config.onAutoModeSwitchRequest);
-    }
-    if (config.hooks) {
-      session.registerHooks(config.hooks);
-    }
+    config = { ...this.configDefaultsForMode(), ...config };
+    config.systemMessage = this.getSystemMessageConfigForMode(config.systemMessage);
+    const callerSessionId = config.sessionId;
+    const useServerGeneratedId = config.cloud != null && callerSessionId == null;
+    const localSessionId = useServerGeneratedId ? void 0 : callerSessionId ?? randomUUID();
     const { wirePayload: wireSystemMessage, transformCallbacks } = extractTransformCallbacks(
       config.systemMessage
     );
-    if (transformCallbacks) {
-      session.registerTransformCallbacks(transformCallbacks);
+    const initializeSession = (sessionId) => {
+      const s = new CopilotSession(
+        sessionId,
+        this.connection,
+        void 0,
+        this.onGetTraceContext
+      );
+      s.registerTools(config.tools);
+      s.registerCanvases(config.canvases);
+      s.registerCommands(config.commands);
+      s.registerPermissionHandler(config.onPermissionRequest);
+      if (config.onUserInputRequest) {
+        s.registerUserInputHandler(config.onUserInputRequest);
+      }
+      if (config.onElicitationRequest) {
+        s.registerElicitationHandler(config.onElicitationRequest);
+      }
+      if (config.onExitPlanModeRequest) {
+        s.registerExitPlanModeHandler(config.onExitPlanModeRequest);
+      }
+      if (config.onAutoModeSwitchRequest) {
+        s.registerAutoModeSwitchHandler(config.onAutoModeSwitchRequest);
+      }
+      if (config.hooks) {
+        s.registerHooks(config.hooks);
+      }
+      if (transformCallbacks) {
+        s.registerTransformCallbacks(transformCallbacks);
+      }
+      if (config.onEvent) {
+        s.on(config.onEvent);
+      }
+      this.sessions.set(sessionId, s);
+      this.setupSessionFs(s, config);
+      return s;
+    };
+    let session;
+    let registeredId;
+    if (localSessionId !== void 0) {
+      session = initializeSession(localSessionId);
+      registeredId = localSessionId;
     }
-    if (config.onEvent) {
-      session.on(config.onEvent);
-    }
-    this.sessions.set(sessionId, session);
-    this.setupSessionFs(session, config);
+    const toolFilterOptions = this.resolveToolFilterOptions(config);
     try {
       const response = await this.connection.sendRequest("session.create", {
         ...await getTraceContext(this.onGetTraceContext),
         model: config.model,
-        sessionId,
+        sessionId: localSessionId,
         clientName: config.clientName,
         reasoningEffort: config.reasoningEffort,
+        reasoningSummary: config.reasoningSummary,
+        contextTier: config.contextTier,
         tools: config.tools?.map((tool) => ({
           name: tool.name,
           description: tool.description,
           parameters: toJsonSchema(tool.parameters),
           overridesBuiltInTool: tool.overridesBuiltInTool,
-          skipPermission: tool.skipPermission
+          skipPermission: tool.skipPermission,
+          defer: tool.defer
         })),
         canvases: config.canvases?.map((canvas) => canvas.declaration),
         requestCanvasRenderer: config.requestCanvasRenderer,
         requestExtensions: config.requestExtensions,
+        extensionSdkPath: config.extensionSdkPath,
         extensionInfo: config.extensionInfo,
         commands: config.commands?.map((cmd) => ({
           name: cmd.name,
           description: cmd.description
         })),
         systemMessage: wireSystemMessage,
-        availableTools: config.availableTools,
-        excludedTools: config.excludedTools,
+        availableTools: toolFilterOptions.availableTools,
+        excludedTools: toolFilterOptions.excludedTools,
+        toolFilterPrecedence: toolFilterOptions.toolFilterPrecedence,
         provider: config.provider,
+        providers: config.providers,
+        models: config.models,
         enableSessionTelemetry: config.enableSessionTelemetry,
         modelCapabilities: config.modelCapabilities,
+        largeOutput: toWireLargeOutput(config.largeOutput),
         requestPermission: !!config.onPermissionRequest,
         requestUserInput: !!config.onUserInputRequest,
         requestElicitation: !!config.onElicitationRequest,
+        ...config.enableMcpApps ? { requestMcpApps: true } : {},
         requestExitPlanMode: !!config.onExitPlanModeRequest,
         requestAutoModeSwitch: !!config.onAutoModeSwitchRequest,
         hooks: !!(config.hooks && Object.values(config.hooks).some(Boolean)),
@@ -6441,25 +7252,55 @@ var CopilotClient = class _CopilotClient {
         streaming: config.streaming,
         includeSubAgentStreamingEvents: config.includeSubAgentStreamingEvents ?? true,
         mcpServers: toWireMcpServers(config.mcpServers),
+        mcpOAuthTokenStorage: config.mcpOAuthTokenStorage,
         envValueMode: "direct",
         customAgents: toWireCustomAgents(config.customAgents),
         defaultAgent: config.defaultAgent,
         agent: config.agent,
-        configDir: config.configDir,
+        configDir: config.configDirectory,
         enableConfigDiscovery: config.enableConfigDiscovery,
+        skipEmbeddingRetrieval: config.skipEmbeddingRetrieval,
+        embeddingCacheStorage: config.embeddingCacheStorage,
+        organizationCustomInstructions: config.organizationCustomInstructions,
+        enableOnDemandInstructionDiscovery: config.enableOnDemandInstructionDiscovery,
+        enableFileHooks: config.enableFileHooks,
+        enableHostGitOperations: config.enableHostGitOperations,
+        enableSessionStore: config.enableSessionStore,
+        enableSkills: config.enableSkills,
         skillDirectories: config.skillDirectories,
+        pluginDirectories: config.pluginDirectories,
         instructionDirectories: config.instructionDirectories,
         disabledSkills: config.disabledSkills,
         infiniteSessions: config.infiniteSessions,
+        memory: config.memory,
         gitHubToken: config.gitHubToken,
         remoteSession: config.remoteSession,
         cloud: config.cloud
       });
-      const { workspacePath, capabilities } = response;
+      const {
+        sessionId: returnedSessionId,
+        workspacePath,
+        capabilities
+      } = response;
+      if (!returnedSessionId) {
+        throw new Error("session.create response did not include a sessionId");
+      }
+      if (localSessionId !== void 0 && localSessionId !== returnedSessionId) {
+        throw new Error(
+          `session.create returned sessionId ${returnedSessionId} but the caller requested ${localSessionId}`
+        );
+      }
+      if (session === void 0) {
+        session = initializeSession(returnedSessionId);
+        registeredId = returnedSessionId;
+      }
       session["_workspacePath"] = workspacePath;
       session.setCapabilities(capabilities);
+      await this.updateSessionOptionsForMode(session, config);
     } catch (e) {
-      this.sessions.delete(sessionId);
+      if (registeredId !== void 0) {
+        this.sessions.delete(registeredId);
+      }
       throw e;
     }
     return session;
@@ -6517,6 +7358,8 @@ var CopilotClient = class _CopilotClient {
     if (config.hooks) {
       session.registerHooks(config.hooks);
     }
+    config = { ...this.configDefaultsForMode(), ...config };
+    config.systemMessage = this.getSystemMessageConfigForMode(config.systemMessage);
     const { wirePayload: wireSystemMessage, transformCallbacks } = extractTransformCallbacks(
       config.systemMessage
     );
@@ -6528,6 +7371,7 @@ var CopilotClient = class _CopilotClient {
     }
     this.sessions.set(sessionId, session);
     this.setupSessionFs(session, config);
+    const toolFilterOptions = this.resolveToolFilterOptions(config);
     try {
       const response = await this.connection.sendRequest("session.resume", {
         ...await getTraceContext(this.onGetTraceContext),
@@ -6535,48 +7379,68 @@ var CopilotClient = class _CopilotClient {
         clientName: config.clientName,
         model: config.model,
         reasoningEffort: config.reasoningEffort,
+        reasoningSummary: config.reasoningSummary,
+        contextTier: config.contextTier,
         systemMessage: wireSystemMessage,
-        availableTools: config.availableTools,
-        excludedTools: config.excludedTools,
+        availableTools: toolFilterOptions.availableTools,
+        excludedTools: toolFilterOptions.excludedTools,
+        toolFilterPrecedence: toolFilterOptions.toolFilterPrecedence,
         enableSessionTelemetry: config.enableSessionTelemetry,
         tools: config.tools?.map((tool) => ({
           name: tool.name,
           description: tool.description,
           parameters: toJsonSchema(tool.parameters),
           overridesBuiltInTool: tool.overridesBuiltInTool,
-          skipPermission: tool.skipPermission
+          skipPermission: tool.skipPermission,
+          defer: tool.defer
         })),
         canvases: config.canvases?.map((canvas) => canvas.declaration),
         requestCanvasRenderer: config.requestCanvasRenderer,
         requestExtensions: config.requestExtensions,
+        extensionSdkPath: config.extensionSdkPath,
         extensionInfo: config.extensionInfo,
         commands: config.commands?.map((cmd) => ({
           name: cmd.name,
           description: cmd.description
         })),
         provider: config.provider,
+        providers: config.providers,
+        models: config.models,
         modelCapabilities: config.modelCapabilities,
+        largeOutput: toWireLargeOutput(config.largeOutput),
         requestPermission: config.onPermissionRequest !== defaultJoinSessionPermissionHandler,
         requestUserInput: !!config.onUserInputRequest,
         requestElicitation: !!config.onElicitationRequest,
+        ...config.enableMcpApps ? { requestMcpApps: true } : {},
         requestExitPlanMode: !!config.onExitPlanModeRequest,
         requestAutoModeSwitch: !!config.onAutoModeSwitchRequest,
         hooks: !!(config.hooks && Object.values(config.hooks).some(Boolean)),
         workingDirectory: config.workingDirectory,
-        configDir: config.configDir,
+        configDir: config.configDirectory,
         enableConfigDiscovery: config.enableConfigDiscovery,
+        skipEmbeddingRetrieval: config.skipEmbeddingRetrieval,
+        embeddingCacheStorage: config.embeddingCacheStorage,
+        organizationCustomInstructions: config.organizationCustomInstructions,
+        enableOnDemandInstructionDiscovery: config.enableOnDemandInstructionDiscovery,
+        enableFileHooks: config.enableFileHooks,
+        enableHostGitOperations: config.enableHostGitOperations,
+        enableSessionStore: config.enableSessionStore,
+        enableSkills: config.enableSkills,
         streaming: config.streaming,
         includeSubAgentStreamingEvents: config.includeSubAgentStreamingEvents ?? true,
         mcpServers: toWireMcpServers(config.mcpServers),
+        mcpOAuthTokenStorage: config.mcpOAuthTokenStorage,
         envValueMode: "direct",
         customAgents: toWireCustomAgents(config.customAgents),
         defaultAgent: config.defaultAgent,
         agent: config.agent,
         skillDirectories: config.skillDirectories,
+        pluginDirectories: config.pluginDirectories,
         instructionDirectories: config.instructionDirectories,
         disabledSkills: config.disabledSkills,
         infiniteSessions: config.infiniteSessions,
-        suppressResumeEvent: config.suppressResumeEvent,
+        memory: config.memory,
+        disableResume: config.suppressResumeEvent,
         continuePendingWork: config.continuePendingWork,
         gitHubToken: config.gitHubToken,
         remoteSession: config.remoteSession,
@@ -6586,6 +7450,7 @@ var CopilotClient = class _CopilotClient {
       session["_workspacePath"] = workspacePath;
       session.setCapabilities(capabilities);
       session.setOpenCanvases(openCanvases ?? []);
+      await this.updateSessionOptionsForMode(session, config);
     } catch (e) {
       this.sessions.delete(sessionId);
       throw e;
@@ -6964,6 +7829,9 @@ var CopilotClient = class _CopilotClient {
       if (this.options.baseDirectory) {
         envWithoutNodeDebug.COPILOT_HOME = this.options.baseDirectory;
       }
+      if (this.options.mode === "empty") {
+        envWithoutNodeDebug.COPILOT_DISABLE_KEYTAR = "1";
+      }
       if (!this.resolvedCliPath) {
         throw new Error(
           "Path to Copilot CLI is required. Please supply it via `RuntimeConnection.forStdio({ path })` or `RuntimeConnection.forTcp({ path })`, set the COPILOT_CLI_PATH environment variable, or use `RuntimeConnection.forUri(...)` to connect to an already-running runtime."
@@ -6974,6 +7842,8 @@ var CopilotClient = class _CopilotClient {
         envWithoutNodeDebug.COPILOT_OTEL_ENABLED = "true";
         if (t.otlpEndpoint !== void 0)
           envWithoutNodeDebug.OTEL_EXPORTER_OTLP_ENDPOINT = t.otlpEndpoint;
+        if (t.otlpProtocol !== void 0)
+          envWithoutNodeDebug.OTEL_EXPORTER_OTLP_PROTOCOL = t.otlpProtocol;
         if (t.filePath !== void 0)
           envWithoutNodeDebug.COPILOT_OTEL_FILE_EXPORTER_PATH = t.filePath;
         if (t.exporterType !== void 0)
@@ -7200,18 +8070,6 @@ stderr: ${stderrOutput}`
       "systemMessage.transform",
       async (params) => await this.handleSystemMessageTransform(params)
     );
-    this.connection.onRequest(
-      "canvas.open",
-      async (params) => this.handleCanvasProviderRequest("canvas.open", params)
-    );
-    this.connection.onRequest(
-      "canvas.close",
-      async (params) => this.handleCanvasProviderRequest("canvas.close", params)
-    );
-    this.connection.onRequest(
-      "canvas.action.invoke",
-      async (params) => this.handleCanvasActionInvokeRequest(params)
-    );
     const sessions = this.sessions;
     registerClientSessionApiHandlers(this.connection, (sessionId) => {
       const session = sessions.get(sessionId);
@@ -7333,29 +8191,9 @@ stderr: ${stderrOutput}`
     }
     return await session._handleSystemMessageTransform(params.sections);
   }
-  async handleCanvasProviderRequest(actionName, params) {
-    if (!isCanvasProviderRequestParams(params)) {
-      throw new Error("Invalid canvas provider request payload");
-    }
-    const session = this.sessions.get(params.sessionId);
-    if (!session) {
-      throw new Error(`Session not found: ${params.sessionId}`);
-    }
-    const canvas = session.getCanvas(params.canvasId);
-    if (!canvas) {
-      throw new Error(`No canvas registered with id "${params.canvasId}"`);
-    }
-    return dispatchCanvasProviderRequest(canvas, actionName, params);
-  }
-  async handleCanvasActionInvokeRequest(params) {
-    if (!isCanvasActionInvokeParams(params)) {
-      throw new Error("Invalid canvas provider request payload");
-    }
-    return this.handleCanvasProviderRequest(params.actionName, params);
-  }
 };
 
-// node_modules/@github/copilot-sdk/dist/extension.js
+// node_modules/.pnpm/@github+copilot-sdk@1.0.3/node_modules/@github/copilot-sdk/dist/extension.js
 async function joinSession(config = {}) {
   const sessionId = process.env.SESSION_ID;
   if (!sessionId) {
@@ -7364,8 +8202,10 @@ async function joinSession(config = {}) {
     );
   }
   const client = new CopilotClient({ _internalConnection: { kind: "parent-process" } });
+  const { extensionSdkPath: _stripped, ...rest } = config;
+  void _stripped;
   return client.resumeSession(sessionId, {
-    ...config,
+    ...rest,
     onPermissionRequest: config.onPermissionRequest ?? defaultJoinSessionPermissionHandler,
     suppressResumeEvent: config.suppressResumeEvent ?? true
   });

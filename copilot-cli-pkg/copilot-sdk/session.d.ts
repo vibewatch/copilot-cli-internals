@@ -1,6 +1,6 @@
 import { createSessionRpc } from "./generated/rpc.js";
 import type { OpenCanvasInstance } from "./generated/rpc.js";
-import type { MessageOptions, ReasoningEffort, ModelCapabilitiesOverride, SessionCapabilities, SessionEvent, SessionEventHandler, SessionEventType, SessionUiApi, TypedSessionEventHandler } from "./types.js";
+import type { MessageOptions, ContextTier, ReasoningEffort, ReasoningSummary, ModelCapabilitiesOverride, SessionCapabilities, SessionEvent, SessionEventHandler, SessionEventType, SessionUiApi, TypedSessionEventHandler } from "./types.js";
 /** Assistant message event - the final response from the assistant. */
 export type AssistantMessageEvent = Extract<SessionEvent, {
     type: "assistant.message";
@@ -169,11 +169,15 @@ export declare class CopilotSession {
      * ```
      */
     on(handler: SessionEventHandler): () => void;
+    private upsertOpenCanvasFromEvent;
+    private removeOpenCanvasFromEvent;
+    private removeOpenCanvas;
+    private upsertOpenCanvas;
     /**
-     * Snapshot of canvas instances that were already open when the session was
-     * resumed. Populated from the `session.resume` response; empty for freshly
-     * created sessions. Returns a defensive copy — mutating the returned array
-     * has no effect on the session.
+     * Snapshot of canvas instances currently known to be open for this session.
+     * Populated from the `session.resume` response and live `session.canvas.opened`
+     * and `session.canvas.closed` events. Returns a defensive copy — mutating the
+     * returned array has no effect on the session.
      */
     get openCanvases(): OpenCanvasInstance[];
     private assertElicitation;
@@ -261,6 +265,8 @@ export declare class CopilotSession {
      */
     setModel(model: string, options?: {
         reasoningEffort?: ReasoningEffort;
+        reasoningSummary?: ReasoningSummary;
+        contextTier?: ContextTier;
         modelCapabilities?: ModelCapabilitiesOverride;
     }): Promise<void>;
     /**

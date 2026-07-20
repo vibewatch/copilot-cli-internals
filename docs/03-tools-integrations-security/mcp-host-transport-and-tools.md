@@ -18,6 +18,7 @@ Read [Runtime tool assembly and filtering](runtime-tool-assembly-and-filtering.m
 | Area | Semantic alias | Minified anchor / string | Role |
 |---|---|---|---|
 | Config schema | `McpConfigSchema` | `U8e`, `F8e`, `omu`, `lE` | Defines local/stdio and remote HTTP/SSE server config shapes plus user config storage. |
+| Tool deferral | MCP server `deferTools` | `"auto"`, `"never"` | Chooses normal on-demand tool search or forces a server's tools into the initial tool set. |
 | Config discovery | `loadMcpConfig(...)` | `D0(...)`, `mLo`, `JSa`, `fLo`, `Eee` | Loads and merges user, workspace, plugin, registry/default, and additional MCP configs. |
 | Extra config parser | `parseAdditionalMcpConfig(...)` | `PRr`, `hLo`, `--additional-mcp-config` | Accepts inline JSON or `@file` MCP config additions. |
 | CLI command group | `copilot mcp` builder | `b9o()` | Implements `mcp list`, `mcp get`, `mcp add`, and `mcp remove`. |
@@ -34,6 +35,8 @@ Read [Runtime tool assembly and filtering](runtime-tool-assembly-and-filtering.m
 | Permissions | `McpPermissionPath` | `onMCP`, `Wge`, `B9`, `mcp-sampling` | Maps MCP tools and sampling requests into the permission service. |
 | Events | MCP session events | `session.mcp_servers_loaded`, `session.mcp_server_status_changed` | Emits MCP status snapshots and per-server status changes. |
 | MCP Apps | `MCP_APPS`, `COPILOT_MCP_APPS`, `mcp_app.tool_call_complete`, `requestMcpApps` | Enables MCP Apps UI/resource passthrough, `mcp-apps` capability negotiation, and app-originated MCP tool-call completion events. |
+| Resource RPCs | MCP resources API | `session.mcp.resources.read`, `.list`, `.listTemplates` | Exposes paginated MCP resources and templates to SDK/session clients. |
+| Live server RPCs | Session MCP lifecycle API | `reloadWithConfig`, `startServer`, `restartServer`, `stopServer` | Lets SDK clients reconfigure individual MCP servers in a running session. |
 
 ## High-level architecture
 
@@ -70,7 +73,7 @@ The central loader is `D0(...)`. It combines multiple sources into one root obje
 | Source | Path / entry point | Notes |
 |---|---|---|
 | User config | `~/.copilot/mcp-config.json` via `lE` | Managed by `copilot mcp add/get/list/remove`; writes use `lE.write(...)`. |
-| Workspace config | `.mcp.json` via `mLo(...)` / `JSa(...)` | Loaded from trusted workspace locations. Folder trust is checked unless `COPILOT_ALLOW_ALL=true`. |
+| Workspace config | `.mcp.json` or `.github/mcp.json` via the workspace loader | Loaded from trusted workspace locations. Folder trust is checked unless `COPILOT_ALLOW_ALL=true`. Legacy partial `.vscode/mcp.json` support has been removed. |
 | Plugin config | plugin manifests and plugin config files via `fLo(...)` / `WSa(...)` | Plugin-provided MCP servers are tagged with plugin source metadata and command `cwd` when needed. |
 | Registry/default config | `gLo()` / `ALo()` path | Supports registry or product-provided server definitions when enabled. |
 | Session/CLI additions | `--additional-mcp-config <json>` or `@file` via `PRr` / `hLo` | Merged into the runtime config for the current session/startup. |
@@ -102,6 +105,7 @@ Server names are validated by `hEt` / `mR`; names cannot be empty, whitespace-on
 | `isDefaultServer` | Marks built-in/product-provided servers. |
 | `filterMapping` | Controls output filtering mode globally or per tool (`none`, `markdown`, `hidden_characters`). |
 | `timeout` | Tool-call timeout in milliseconds. |
+| `deferTools` | `auto` uses normal tool-search deferral; `never` keeps the server's tools in the initial model-visible set. |
 | `source` | Runtime-added source tag such as `user`, `workspace`, `plugin`, or `builtin`. |
 
 ### Local / stdio servers
@@ -142,10 +146,25 @@ MCP can be managed from several user-visible paths.
 | GitHub MCP flags | `--enable-all-github-mcp-tools`, `--add-github-mcp-toolset`, `--add-github-mcp-tool` | Changes which GitHub MCP toolsets/tools are requested from the built-in GitHub MCP endpoint. |
 | Runtime slash command | `/mcp list`, `/mcp show`, `/mcp enable`, `/mcp disable`, `/mcp reload` | Lightweight command handler for MCP status and session-level server toggles. |
 | TUI command/dialog | `/mcp`, `/mcp add`, `/mcp edit`, `/mcp delete`, `/mcp auth`, `/mcp search` | Opens richer configuration/status/auth/registry UI. Disable/enable persists settings where possible. |
-| JSON-RPC session API | `mcp.list`, `mcp.enable`, `mcp.disable`, `mcp.reload` | Exposes server status and runtime management to SDK/server clients. |
+| JSON-RPC session API | `session.mcp.list`, `.enable`, `.disable`, `.reloadWithConfig`, `.startServer`, `.restartServer`, `.stopServer` | Exposes status and live server management to SDK/server clients. |
+| MCP resources API | `session.mcp.resources.read`, `.list`, `.listTemplates` | Reads resource contents and paginates resource/template discovery. |
 | OAuth API | `mcp.oauth.login` | Starts browserless OAuth for remote servers and reconnects after authentication. |
 
 The CLI help captured in `help/mcp.txt` describes MCP servers as local stdio or remote HTTP/SSE endpoints and lists the command group as `add`, `get`, `list`, and `remove`.
+
+The GitHub MCP flags now have persisted equivalents. Settings keys `enableAllGithubMcpTools`, `githubMcpToolsets`, and `githubMcpTools` are merged with the command-line flags before the built-in GitHub server is configured.
+
+## Resource discovery API
+
+Release `1.0.70` exposes MCP resources over the session RPC boundary:
+
+| Method | Result |
+|---|---|
+| `session.mcp.resources.list` | Resource descriptors plus pagination cursor. |
+| `session.mcp.resources.listTemplates` | RFC 6570 resource-template descriptors plus pagination cursor. |
+| `session.mcp.resources.read` | Text/blob resource contents for one server and URI. |
+
+The runtime also emits `mcp.resources.list_changed` when a server reports that its catalog changed. MCP App `ui://` resources use the same read boundary, but normal resource discovery is not limited to MCP Apps.
 
 ## Host lifecycle
 

@@ -9,13 +9,15 @@
 import Module from "node:module";
 import { resolve as resolvePath } from "node:path";
 import { pathToFileURL } from "node:url";
-
 // Register the ESM SDK resolver hook before loading the extension
 Module.register("./extension_sdk_resolver.mjs", import.meta.url);
 
 // Register a CJS require hook so that CommonJS extensions can
 // `require("@github/copilot-sdk")` and have it resolve to the bundled SDK.
 const sdkPath = process.env.COPILOT_SDK_PATH;
+process.stderr.write(
+    `[extension-bootstrap] starting: pid=${process.pid}, COPILOT_SDK_PATH=${sdkPath ?? "<unset>"}, EXTENSION_PATH=${process.env.EXTENSION_PATH ?? "<unset>"}, SESSION_ID=${process.env.SESSION_ID ?? "<unset>"}\n`,
+);
 if (sdkPath) {
     const originalResolveFilename = Module._resolveFilename;
     Module._resolveFilename = function (request, parent, isMain, options) {
@@ -37,6 +39,7 @@ if (!extensionPath) {
 }
 
 try {
+    process.stderr.write(`[extension-bootstrap] importing extension: ${extensionPath}\n`);
     await import(pathToFileURL(extensionPath).href);
 } catch (err) {
     console.error(`[extension-bootstrap] Failed to load extension: ${err}`);
