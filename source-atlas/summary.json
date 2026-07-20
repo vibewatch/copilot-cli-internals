@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-20T01:29:40.359Z",
+  "generatedAt": "2026-07-20T02:15:55.145Z",
   "source": {
     "path": "/home/ythuang/workspace/copilot-cli-internals/copilot-cli-pkg/app.js",
     "relativePath": "copilot-cli-pkg/app.js",
@@ -24,14 +24,15 @@
     "slashCommandCandidates": 115,
     "knownToolNameHits": 22,
     "packagedAgentDefinitions": 7,
-    "knownSemanticAnchors": 23,
-    "mainPathSeeds": 15,
-    "referencedDocs": 21,
+    "knownSemanticAnchors": 24,
+    "mainPathSeeds": 16,
+    "referencedDocs": 22,
     "missingDocReferences": 0
   },
   "documentation": {
     "referencedDocs": [
       "docs/00-start-here/main-feature-map.md",
+      "docs/01-runtime-lifecycle/cli-native-platform-helper.md",
       "docs/01-runtime-lifecycle/mode-dispatch-and-runtime-startup.md",
       "docs/01-runtime-lifecycle/out-of-process-native-runtime.md",
       "docs/01-runtime-lifecycle/tui-and-slash-commands.md",
@@ -127,6 +128,41 @@
         }
       ],
       "firstLine": 63
+    },
+    {
+      "semanticAlias": "CLI native Unicode and desktop helper",
+      "anchors": [
+        "cli-native",
+        "graphemeBoundaries",
+        "lineBreakPositions",
+        "startColorSchemeListener",
+        "showDesktopNotification"
+      ],
+      "role": "Provides grapheme and line-break boundaries, Unicode width properties, OS color-scheme observation, and desktop notifications.",
+      "docs": "docs/01-runtime-lifecycle/cli-native-platform-helper.md",
+      "resolved": [
+        {
+          "anchor": "cli-native",
+          "line": 634
+        },
+        {
+          "anchor": "graphemeBoundaries",
+          "line": 634
+        },
+        {
+          "anchor": "lineBreakPositions",
+          "line": 634
+        },
+        {
+          "anchor": "startColorSchemeListener",
+          "line": 3239
+        },
+        {
+          "anchor": "showDesktopNotification",
+          "line": 3602
+        }
+      ],
+      "firstLine": 634
     },
     {
       "semanticAlias": "InteractiveTuiFlow",
@@ -710,6 +746,41 @@
         {
           "anchor": "connectFromEnvSync",
           "line": 63
+        }
+      ]
+    },
+    {
+      "path": "Native terminal layout and desktop integration",
+      "trigger": "complex Unicode rendering, color-scheme subscription, or completion/attention notification",
+      "anchorSeeds": [
+        "cli-native",
+        "graphemeBoundaries",
+        "lineBreakPositions",
+        "startColorSchemeListener",
+        "showDesktopNotification"
+      ],
+      "output": "Grapheme-safe cell layout, light/dark updates, or a best-effort desktop notification.",
+      "docs": "docs/01-runtime-lifecycle/cli-native-platform-helper.md",
+      "resolvedSeeds": [
+        {
+          "anchor": "cli-native",
+          "line": 634
+        },
+        {
+          "anchor": "graphemeBoundaries",
+          "line": 634
+        },
+        {
+          "anchor": "lineBreakPositions",
+          "line": 634
+        },
+        {
+          "anchor": "startColorSchemeListener",
+          "line": 3239
+        },
+        {
+          "anchor": "showDesktopNotification",
+          "line": 3602
         }
       ]
     },

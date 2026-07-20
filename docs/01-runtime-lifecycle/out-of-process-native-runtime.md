@@ -155,13 +155,14 @@ The CLI's runtime surface is process-global and cached. The visible `app.js` bri
 ## Security and architecture caveats
 
 - OOP mode is a process and fault boundary, not proof of security isolation. The parent still exposes powerful native capabilities to JavaScript.
-- The Rust provider implementation and its launch policy are outside this extracted JavaScript package. This page documents the Node transport and CLI binding boundary only.
+- The packaged `runtime.node` contains provider/host C exports and NAPI-OOP implementation modules, documented in [Native `runtime.node` binary architecture](native-runtime-binary.md). The external launch policy and exact host caller remain outside the visible JavaScript path.
 - Synchronous remote calls block the main JavaScript thread while `Atomics.wait` waits for the worker result.
 - Manifest compatibility is guarded by the transport protocol version and advertised shape, but semantic compatibility still depends on parent/child package alignment.
 - `napi-oop-runtime/index.js` is intentionally an empty resolution anchor; `createRequire` finds the actual package in its adjacent `node_modules` directory.
 
 ## Related docs
 
+- [Native `runtime.node` binary architecture](native-runtime-binary.md) inventories the addon's N-API bindings, stateful classes, C ABI, embedded Rust module paths, and native capability envelope.
 - [Loader and bootstrap workflows](loader-bootstrap.md) explains how execution reaches `app.js` and how package-local require roots are constrained.
 - [Mode dispatch and runtime startup](mode-dispatch-and-runtime-startup.md) begins after the native surface is available.
 - [Shell command execution events](../03-tools-integrations-security/shell-command-execution-events.md) and [Sandbox implementation](../03-tools-integrations-security/sandboxing.md) document major consumers of the native runtime without conflating them with this transport.

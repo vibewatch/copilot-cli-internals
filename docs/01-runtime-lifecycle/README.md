@@ -17,7 +17,8 @@ This page is a chapter guide. The linked implementation pages carry concrete `ap
 
 ```mermaid
 flowchart TD
-    Loader[Loader/bootstrap] --> Native[Native runtime bridge]
+    Loader[Loader/bootstrap] --> Binary[Native runtime binary]
+    Binary --> Native[In-process/OOP bridge]
     Native --> Root[Root command and pre-action setup]
     Root --> Dispatch{Runtime mode}
     Dispatch --> TUI[Interactive TUI]
@@ -32,6 +33,7 @@ flowchart TD
     Sessions --> Shutdown[Shutdown/update/logging cleanup]
 
     click Loader "./loader-bootstrap/" "Open loader and bootstrap"
+    click Binary "./native-runtime-binary/" "Open native runtime binary architecture"
     click Native "./out-of-process-native-runtime/" "Open native runtime bridge"
     click Root "./mode-dispatch-and-runtime-startup/" "Open Mode dispatch and runtime startup"
     click TUI "./tui-and-slash-commands/" "Open TUI and slash commands"
@@ -44,17 +46,19 @@ flowchart TD
 | Order | Page | Runtime question answered |
 |---:|---|---|
 | 1 | [Loader and bootstrap workflows](loader-bootstrap.md) | How does the SEA/npm package select and load the actual runtime bundle? |
-| 2 | [Out-of-process native runtime bridge](out-of-process-native-runtime.md) | How can JavaScript use a Rust-parent native surface instead of loading `runtime.node` in-process? |
-| 3 | [Mode dispatch and runtime startup](mode-dispatch-and-runtime-startup.md) | How do argv, stdin, TTY, settings, auth, and sessions choose the execution mode? |
-| 4 | [Interactive TUI and slash-command workflows](tui-and-slash-commands.md) | How does the terminal UI handle input, rendering, slash commands, dialogs, and permissions? |
-| 5 | [Embedded server, ACP, and JSON-RPC protocol](embedded-server-acp-protocol.md) | How does the CLI expose runtime/session capabilities to external hosts? |
-| 6 | [Telemetry, update, and shutdown](../05-hosted-agent-ops/telemetry-update-and-shutdown.md) | How are logs, telemetry, update/version behavior, signals, disposables, and graceful exit coordinated? |
+| 2 | [Native `runtime.node` binary architecture](native-runtime-binary.md) | What native API families, handle classes, Rust modules, and provider/host ABI are recoverable from the stripped addon? |
+| 3 | [Out-of-process native runtime bridge](out-of-process-native-runtime.md) | How can JavaScript use a Rust-parent native surface instead of loading `runtime.node` in-process? |
+| 4 | [Mode dispatch and runtime startup](mode-dispatch-and-runtime-startup.md) | How do argv, stdin, TTY, settings, auth, and sessions choose the execution mode? |
+| 5 | [Interactive TUI and slash-command workflows](tui-and-slash-commands.md) | How does the terminal UI handle input, rendering, slash commands, dialogs, and permissions? |
+| 6 | [Embedded server, ACP, and JSON-RPC protocol](embedded-server-acp-protocol.md) | How does the CLI expose runtime/session capabilities to external hosts? |
+| 7 | [Telemetry, update, and shutdown](../05-hosted-agent-ops/telemetry-update-and-shutdown.md) | How are logs, telemetry, update/version behavior, signals, disposables, and graceful exit coordinated? |
 
 ## Runtime support topics
 
 | Topic | Page | Why it belongs here |
 |---|---|---|
 | Terminal ergonomics | [Terminal setup and shell environment](terminal-setup-and-shell-environment.md) | Defines shell detection, Shift+Enter setup, history state, and command-environment context. |
+| Unicode and desktop integration | [CLI native Unicode and desktop helper](cli-native-platform-helper.md) | Maps grapheme-safe layout, cell-width properties, OS theme observation, and desktop notifications in `cli-native.node`. |
 | Syntax and diff rendering | [Tree-sitter WASM usage](tree-sitter-wasm-usage.md) | Explains packaged grammars, highlight queries, and rendering fallbacks. |
 | Voice entry point | [Voice mode and Foundry Local](voice-mode-foundry-local.md) | Covers voice mode activation, Foundry Local checks, settings, and native modules. |
 | Voice backend | [Voice runtime server and transcription pipeline](voice-runtime-workers-and-transcription.md) | Traces the dedicated local engine, endpoint reuse/spawn, settings handoff, installation, and historical worker migration. |

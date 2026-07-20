@@ -106,6 +106,12 @@ const KNOWN_ANCHORS = [
     docs: "docs/01-runtime-lifecycle/out-of-process-native-runtime.md",
   },
   {
+    semanticAlias: "CLI native Unicode and desktop helper",
+    anchors: ["cli-native", "graphemeBoundaries", "lineBreakPositions", "startColorSchemeListener", "showDesktopNotification"],
+    role: "Provides grapheme and line-break boundaries, Unicode width properties, OS color-scheme observation, and desktop notifications.",
+    docs: "docs/01-runtime-lifecycle/cli-native-platform-helper.md",
+  },
+  {
     semanticAlias: "InteractiveTuiFlow",
     anchors: ["j$o", "jQa"],
     role: "Runs the terminal UI, slash commands, dialogs, permissions, and background session UI.",
@@ -241,6 +247,13 @@ const MAIN_PATHS = [
     anchorSeeds: ["COPILOT_RUNTIME_OOP", "NAPI_OOP_SOCKET", "connectFromEnvSync", "runtime.node"],
     output: "In-process NAPI addon or manifest-driven out-of-process native-call proxy.",
     docs: "docs/01-runtime-lifecycle/out-of-process-native-runtime.md",
+  },
+  {
+    path: "Native terminal layout and desktop integration",
+    trigger: "complex Unicode rendering, color-scheme subscription, or completion/attention notification",
+    anchorSeeds: ["cli-native", "graphemeBoundaries", "lineBreakPositions", "startColorSchemeListener", "showDesktopNotification"],
+    output: "Grapheme-safe cell layout, light/dark updates, or a best-effort desktop notification.",
+    docs: "docs/01-runtime-lifecycle/cli-native-platform-helper.md",
   },
   {
     path: "Session and event lifecycle",

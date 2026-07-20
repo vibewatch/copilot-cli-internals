@@ -145,9 +145,11 @@ export default defineConfig({
           items: [
             { label: 'Overview', link: '/01-runtime-lifecycle/' },
             { label: 'Loader and bootstrap', link: '/01-runtime-lifecycle/loader-bootstrap/' },
+            { label: 'Native runtime binary', link: '/01-runtime-lifecycle/native-runtime-binary/' },
             { label: 'Out-of-process native runtime', link: '/01-runtime-lifecycle/out-of-process-native-runtime/' },
             { label: 'Mode dispatch and runtime startup', link: '/01-runtime-lifecycle/mode-dispatch-and-runtime-startup/' },
             { label: 'TUI and slash commands', link: '/01-runtime-lifecycle/tui-and-slash-commands/' },
+            { label: 'CLI native Unicode and desktop', link: '/01-runtime-lifecycle/cli-native-platform-helper/' },
             { label: 'Embedded server, ACP, JSON-RPC', link: '/01-runtime-lifecycle/embedded-server-acp-protocol/' },
             { label: 'Tree-sitter WASM usage', link: '/01-runtime-lifecycle/tree-sitter-wasm-usage/' },
             { label: 'Terminal and shell environment', link: '/01-runtime-lifecycle/terminal-setup-and-shell-environment/' },

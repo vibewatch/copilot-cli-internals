@@ -91,6 +91,7 @@ This distinction is useful when reading the rest of the wiki: if a question is a
 | Root CLI | `RootProgram` | `mke` | 8298 | Builds the `copilot` root command, global options, help topics, and subcommands. |
 | Main action | `mainCliAction(...)` | root `.action(...)` | 8298 | Initializes config, auth, gates, sessions, and routes to the selected runtime mode. |
 | Native runtime bridge | `IU()`, `$st()`, `Ust()` | `COPILOT_RUNTIME_OOP`, `NAPI_OOP_SOCKET` | 63 | Chooses in-process `runtime.node` or reconstructs its surface through a Rust-parent connect-back provider. |
+| Native UI/platform helper | `zL()`, `g4e(...)`, `bqe()` | `cli-native`, `graphemeBoundaries`, `startColorSchemeListener`, `showDesktopNotification` | 634, 3239, 3602 | Supplies Unicode layout properties, OS theme observation, and best-effort desktop notifications through `cli-native.node`. |
 | Interactive UI | `InteractiveTuiFlow` | `j$o(...)`, `jQa(...)` | 7000-7445 | Runs the terminal UI, dialogs, slash commands, permissions, and background session UI. |
 | Prompt mode | `runPromptMode(...)` | `u1t(...)`, `U4a(...)` | 7420 | Handles `-p` and stdin execution, streaming, JSONL, export/share, and autopilot continuation. |
 | Embedded server | `EmbeddedServer` | `p1t` | 7441 | Hosts foreground sessions for TUI, JSON-RPC, and extension integration. |
@@ -118,6 +119,7 @@ This distinction is useful when reading the rest of the wiki: if a question is a
 | Server/headless mode | `--server`, `--headless`, `--stdio`, `--port` | JSON-RPC service that exposes session/runtime capabilities to external hosts. | Hidden options; uses a static feature service path. |
 | ACP mode | `--acp` | Starts the Agent Client Protocol server. | Dynamic import of the ACP implementation. |
 | Native runtime boundary | First access to the native `S` surface | Loads `runtime.node` in-process or remotes manifest-defined calls/classes/constants to a Rust parent. | `COPILOT_RUNTIME_OOP`, `NAPI_OOP_SOCKET`, protocol/manifest compatibility. |
+| Native UI/platform boundary | Complex Unicode rendering, theme subscription, completion/attention notification | Segments graphemes and lines, calculates cell width, watches light/dark state, and sends optional desktop notifications. | `cli-native.node`; terminal theme query is preferred before the Linux XDG portal fallback. |
 | Local sessions | `--resume`, `--continue`, `--name` | Create, save, resume, continue, resolve by session/task/name/prefix, pick, rename, delete, and fork sessions. | Session store and local workspace state. |
 | Remote and cloud sessions | `--remote`, `--connect`, `--cloud` | Remote steering, cloud sandbox sessions, background session switching, remote start/resume. | `REMOTE_KICKSTART`, `CLI_CLOUD_SESSIONS`, authentication. |
 | Local sandboxing | `/sandbox`, `--sandbox`, `--no-sandbox`, `settings.sandbox` | Applies native policy to shell, selected file/search tools, LSP, MCP, and `web_fetch`, with explicit bypass handling. | Feature availability, platform support, effective policy, `allowBypass`. |

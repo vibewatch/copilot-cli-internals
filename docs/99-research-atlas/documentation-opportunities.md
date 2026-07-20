@@ -419,6 +419,9 @@ After the high- and medium-priority batches, a final gap scan found several impo
 The current important `app.js` documentation backlog is now covered by focused docs and indexed in the wiki `README.md`, including the later conversation-session, session-persistence/replay, debug-bundle redaction boundary, and hosted-agent environment pages. Future writing should be driven by new questions rather than by the existing gap list. Possible niche follow-ups, only if needed, are:
 
 1. A very focused cloud-sandbox/detached-child/rem-agent execution deep dive.
-2. A TUI rendering/theme/Tuikit internals document if terminal rendering itself becomes the research target.
+2. A deeper TUI/Tuikit reconciliation and rendering document if component/render-loop behavior becomes the research target; the native Unicode, width, OS-theme, and notification boundary is now covered separately.
 3. A package/native-dependency inventory document if binary packaging and vendored native modules need a broader audit beyond the loader and voice-mode docs.
-4. A focused native-binary analysis if `runtime.node` implementation internals beyond the documented JavaScript/OOP call boundary become the research target.
+
+The focused `runtime.node` follow-up is now covered by [Native `runtime.node` binary architecture](../01-runtime-lifecycle/native-runtime-binary.md), including the reflected N-API inventory, exported provider/host C ABI, embedded Rust module map, and remaining stripped-binary limits.
+
+The sibling `cli-native.node` follow-up is covered by [CLI native Unicode and desktop helper](../01-runtime-lifecycle/cli-native-platform-helper.md), including grapheme/line-break contracts, terminal width policy, XDG color-scheme observation, and D-Bus desktop notifications.

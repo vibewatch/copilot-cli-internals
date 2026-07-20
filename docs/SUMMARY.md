@@ -17,6 +17,8 @@ This file is a table-of-contents document, not a direct `app.js` implementation 
   - [Main feature map for Copilot CLI](00-start-here/main-feature-map.md)
 - [Runtime lifecycle](01-runtime-lifecycle/README.md)
   - [Loader and bootstrap workflows](01-runtime-lifecycle/loader-bootstrap.md)
+  - [Native `runtime.node` binary architecture](01-runtime-lifecycle/native-runtime-binary.md)
+  - [CLI native Unicode and desktop helper](01-runtime-lifecycle/cli-native-platform-helper.md)
   - [Out-of-process native runtime bridge](01-runtime-lifecycle/out-of-process-native-runtime.md)
   - [Mode dispatch and runtime startup](01-runtime-lifecycle/mode-dispatch-and-runtime-startup.md)
   - [Interactive TUI and slash-command workflows](01-runtime-lifecycle/tui-and-slash-commands.md)
