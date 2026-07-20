@@ -20,7 +20,7 @@ It fills a gap left by [Session manager and event replay](session-manager-and-ev
 | Tool integration | large-output and shell buffers | `LW(...)`, `BW(...)`, `rAe(...)` | 555, 567, 4481, 5654, 5691 | Writes large tool/shell output through the active session filesystem. |
 | Session manager factory | per-session filesystem factory | `sessionFsFactory`, `setSessionFsFactory(...)` | 5756 | Creates a filesystem for each session and lets server-mode clients replace the factory before sessions exist. |
 | Fork state copy | session-state cloning | `forkSession(...)`, `copyForkedSessionState(...)` | 5756 | Copies selected workspace artifacts and rewrites checkpoint paths when forking. |
-| Server RPC provider registration | `sessionFs.setProvider` | `createSessionFsApi()` | 6096-6100 | Lets one SDK/RPC connection become the process-wide session filesystem provider. |
+| Server RPC provider registration | `sessionFs.setProvider` | server wire map and provider setup | 167, 2797-2799 | Lets one SDK/RPC connection become the process-wide session filesystem provider. |
 | SDK generated handlers | `registerClientSessionApiHandlers(...)` | same name | SDK `index.js` 3467 | Registers client-side handlers for incoming `sessionFs.*` reverse requests. |
 | SDK provider adapter | `createSessionFsAdapter(...)` | same name | SDK `index.js` 4406 | Converts thrown provider errors into generated RPC result shapes. |
 | SDK client startup | provider handshake | `sessionFs.setProvider` request | SDK `index.js` 4833 | Sends `initialCwd`, `sessionStatePath`, and path conventions after connecting. |

@@ -22,7 +22,7 @@ Because `app.js` is bundled/minified, names below are semantic aliases with vers
 | Event schemas | `SessionEventSchema` | `session.start`, `session.resume`, `session.shutdown`, `system.notification`, `session.info` | 4361 | Defines durable and ephemeral session event shapes consumed by persistence, UI, telemetry, and APIs. |
 | UI projection | `TimelineProjection` | `add-timeline-entry`, `onSystemNotification`, `IFa(...)`, `jze(...)` | 1739, 4644, 4783, 6860 | Converts session events and command results into terminal/ACP/timeline-visible entries. |
 | JSON-RPC server API | `SessionServerApi` | `session.create`, `session.resume`, `session.send`, `session.getMessages`, `session.list` | 2797-2799, 3153-3156 | Exposes the same lifecycle through headless/server clients. |
-| ACP session API | `AcpSessionApi` | `session_new`, `session_load`, `session_list`, `session_fork`, `session_resume` | 6096-6100 | Adapts Agent Client Protocol sessions to the same local manager and event projection. |
+| ACP session API | `AcpSessionApi` | `session_new`, `session_load`, `session_list`, `session_fork`, `session_resume` | 3153-3157 | Adapts Agent Client Protocol sessions to the same local manager and event projection. |
 | SQLite/session store | `SessionStoreTracker` | `AR(...)`, `JZn(...)`, `session-store.db`, `search_index` | 4518-4582 | Derives searchable/indexed history from raw events and workspace files. |
 | Shutdown | `ShutdownService` | `aW` | 3385 | Flushes session writers, disposables, output, logs, and telemetry on normal or error exit. |
 

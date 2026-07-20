@@ -4,7 +4,13 @@ Coding-agent sessions can expose completion-time validators before declaring wor
 
 Read [Built-in tools, execution events, and results](built-in-tools-execution-events.md) for the generic tool callback/event wrapper. Read [Hosted agent environment](../05-hosted-agent-ops/hosted-agent-environment.md) for hosted validation env toggles such as `COPILOT_AGENT_USE_CODEQL` and related switches.
 
-These validators are not only ordinary tool callbacks. `app.js` assembles them from feature flags, repo/base-commit state, settings, and per-tool timeout budgets. Depending on flags, the model may see standalone `code_review` and `codeql_checker` tools, or a higher-level `parallel_validation` tool that runs both checks concurrently against a shared change set.
+These validators are not only ordinary tool callbacks. The runtime assembles them from feature flags, repo/base-commit state, settings, and per-tool timeout budgets. Depending on resolved configuration, the model may see standalone validation tools or a higher-level `parallel_validation` wrapper.
+
+## Current native boundary
+
+In `1.0.71`, the detailed JavaScript factories previously named `Ulo(...)`, `Kjs(...)`, `Jjs(...)`, and related helpers are no longer present in `app.js`. The current package still retains `parallel_validation`, `code_review`, and `trivialChangeDeclaration` strings inside `runtime.node`; JavaScript supplies validation settings through the native settings builder (`setValidationTimeout`, `setValidationToolEnabled`) and assembles candidates through `cAt(...)` / `buildSettingsAndTools(...)` around lines `608` and `2755-2759`.
+
+The detailed wrapper flow later on this page records the earlier JavaScript-visible implementation and remains useful for interpreting the native tool's observed contract. It is not proof that those old minified functions still own execution in `1.0.71`. Current directly visible JavaScript paths include Code Review/Autofind, CodeQL orchestration, advisory checks, and secret-scanning integration; the final wrapper selection and some schemas are native-owned.
 
 ## Source anchors
 
@@ -12,7 +18,7 @@ These validators are not only ordinary tool callbacks. `app.js` assembles them f
 
 | Area | Semantic alias | Minified anchor | Approx. line | What it does |
 |---|---|---:|---:|---|
-| Validation flags/settings | `ValidationFeatureFlags`, `ValidationToolSettings` | `Fd`, `li`, `v8r`, `GD`, `Ure`, `vfe`, `CWe`, `I8r`, `x8r` | 239 | Defines flags for parallel validation, trivial-change declarations/skips, Code Review, CodeQL, secret scanning, advisory checks, and env-driven tool enablement. |
+| Validation flags/settings | `ValidationFeatureFlags`, `ValidationToolSettings` | native settings builder methods | 324 | Defines validation timeout and per-tool enablement alongside feature/config inputs. |
 | Security prompt snippet | `buildValidationGuidance(...)` | `llr(...)` | 3289 | Adds model instructions such as validating security-sensitive changes, checking for secrets, and running validation before finalizing. |
 | Trivial-change prompt helpers | `buildParallelTrivialPrompt(...)`, `buildSingleTrivialPrompt(...)` | `_Kr(...)`, `SKr(...)` | 617-618 | Tells the model how to populate `trivialChangeDeclaration` for one or many validation tools. |
 | Trivial telemetry/schema helpers | `TrivialDeclarationSchema`, `trivialTelemetryProps(...)` | `$W`, `FZe`, `lAe`, `bBl`, `EBl`, `GW`, `QZe`, `HZe` | 618 | Defines trivial-change declaration schemas and telemetry/restricted-property extraction. |
@@ -24,12 +30,12 @@ These validators are not only ordinary tool callbacks. `app.js` assembles them f
 | Advisory dependency check | `GitHubAdvisoryTool` | `Kzt`, `Yzt(...)` | 926 | Exposes a dependency vulnerability check when the advisory validation flag is enabled. |
 | Secret scanning API | `callSecretScanningApi(...)` | `HJe(...)` | 519 | Uploads changed file content to the secret-scanning endpoint with Copilot token/repo metadata and returns scanned secrets/errors/timing. |
 | Secret scanning hook/tool | `SecretScanningPreCommitHook`, `secretScanningTool(...)` | `$Je`, `tao(...)`, `xzs(...)` | 519, 5188 | Blocks commit when introduced secrets are detected, redacts after repeated attempts, or exposes an explicit file-path scanner tool. |
-| Parallel validation tool | `createParallelValidationTool(...)` | `Ulo(...)`, `xjs(...)`, `kjs(...)`, `Rjs(...)` | 5699-5705 | Wraps Code Review and CodeQL into one model-visible tool, runs checks with `Promise.allSettled`, enforces budgets/circuit breakers, and formats combined results. |
-| Validation tool assembly | `assembleValidationTools(...)` | `Kjs(...)`, `Jjs(...)`, `Zjs(...)` | 5734 | Resolves the base commit and chooses standalone vs parallel validation, advisory checks, CodeQL, and secret scanning. |
+| Parallel validation tool | Native validation wrapper | `parallel_validation` in `runtime.node` | native binary | Wraps validation checks under a model-visible aggregate contract; old JavaScript wrapper details are preserved below as historical evidence. |
+| Validation tool assembly | Candidate assembly boundary | `cAt(...)`, `buildSettingsAndTools(...)` | 608, 2755-2759 | Combines resolved settings/repository context with JavaScript and native-backed validation candidates. |
 
-## Assembly decision flow
+## Historical JavaScript-visible assembly decision flow
 
-Validation tools are assembled late in the runtime tool-building path, after settings and repository state are available. The observed call path is:
+The following graph records the earlier JavaScript-visible implementation. In `1.0.71`, the same high-level decision belongs partly to native descriptors and should be verified through current behavior/telemetry rather than by searching these aliases:
 
 ```mermaid
 flowchart TD
@@ -71,9 +77,9 @@ Key gates:
 | `tools.validation.timeout` | Feeds the shared budgeter used by Code Review, CodeQL, and `parallel_validation`. |
 | `COPILOT_AGENT_USE_CODEQL`, `COPILOT_AGENT_USE_CCR`, `COPILOT_AGENT_USE_SECRET_SCANNING`, `COPILOT_AGENT_USE_DEPENDENCY_VULN` | Env overrides that can set validation tool enabled/disabled settings when validation-tool-settings support is enabled. |
 
-## parallel_validation call path
+## Historical parallel_validation call path
 
-`parallel_validation` exists only when more than one underlying validation tool is active. It is not a generic scheduler; it is a focused wrapper around Code Review and CodeQL.
+The earlier JavaScript-visible wrapper existed only when more than one underlying validation tool was active. It was not a generic scheduler; it focused on Code Review and CodeQL. The native binary retains the wrapper/tool strings, but the exact current internal scheduling implementation is not visible in `app.js`.
 
 ```mermaid
 sequenceDiagram
@@ -110,7 +116,7 @@ sequenceDiagram
     end
 ```
 
-Implementation details from `Ulo(...)`:
+Historical implementation details from `Ulo(...)`:
 
 - `T` counts consecutive wrapper timeouts; after `PCr = 2`, the circuit breaker returns a timeout result and explicitly tells the model not to call `parallel_validation` again.
 - `Ajs = 30000` is the minimum remaining budget threshold. Below that, the wrapper skips validation as `budget_exhausted` rather than starting tools that are likely to time out.

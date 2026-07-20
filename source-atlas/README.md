@@ -1,6 +1,6 @@
 # app.js generated source index
 
-Generated: 2026-07-20T23:09:29.840Z
+Generated: 2026-07-20T23:34:31.380Z
 
 Source: `copilot-cli-pkg/app.js`
 

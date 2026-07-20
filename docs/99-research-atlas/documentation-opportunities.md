@@ -43,6 +43,55 @@ Temporary scan artifacts were generated outside the repository:
 - `/tmp/appjs_documentation_scan.json`
 - `/tmp/appjs_surface_summary.md`
 
+## Mechanism-question convergence audit (2026-07-21)
+
+A repository-wide follow-up audited every substantive mechanism page in the public documentation against the checked-in `@github/copilot` `1.0.71` package. Navigation pages (`README.md`, `SUMMARY.md`) and research-process pages were excluded; the historical [MXC sandbox binary notes](mxc-sandbox-binary-notes.md) remained in scope because they describe an implementation mechanism.
+
+For each of the `62` pages, the pass used this loop:
+
+1. Form up to ten concrete questions that the page did not yet answer.
+2. Trace each question through `app.js`, adjacent loaders/workers/SDK/schema/help files, native exports or retained binary strings as appropriate.
+3. Patch the owning page, add a cross-link, or explicitly retain an unprovable/native/server-side boundary.
+4. Ask a second round of questions after the answers were incorporated.
+5. Stop only when no new high-value question answerable from the checked-in artifacts emerged.
+
+| Documentation area | Mechanism pages audited | Pages requiring final working-tree edits | Pages converged without a remaining edit |
+|---|---:|---:|---:|
+| Start here | 2 | 0 | 2 |
+| Runtime lifecycle | 11 | 0 | 11 |
+| Context and model loop | 10 | 4 | 6 |
+| Tools, integrations, and security | 17 | 1 | 16 |
+| Sessions, persistence, and remote | 10 | 3 | 7 |
+| Hosted agent ops | 5 | 0 | 5 |
+| Agents and automation | 6 | 3 | 3 |
+| Historical mechanism research | 1 | 0 | 1 |
+| **Total** | **62** | **11** | **51** |
+
+Pages with remaining audit-driven edits:
+
+- [Attachment and file-ingestion pipeline](../02-context-model-loop/attachments-and-file-ingestion.md)
+- [Memory and dynamic context board](../02-context-model-loop/memory-and-context-board.md)
+- [Models, providers, and authentication workflows](../02-context-model-loop/models-providers-auth.md)
+- [Prompt sources in Copilot CLI](../02-context-model-loop/prompt-sources.md)
+- [Coding-agent validation and review toolchain](../03-tools-integrations-security/coding-agent-validation-toolchain.md)
+- [API and session event schema contracts](../04-sessions-persistence-remote/api-and-session-event-schemas.md)
+- [Conversation session end-to-end](../04-sessions-persistence-remote/conversation-session-end-to-end.md)
+- [SessionFs provider and state-file lifecycle](../04-sessions-persistence-remote/session-fs-provider-and-state-files.md)
+- [Autopilot and no-ask-user flags](../06-agents-automation/autopilot-and-no-ask-user.md)
+- [Custom agents and skills packaging](../06-agents-automation/custom-agents-and-skills-packaging.md)
+- [Scheduled prompts and command queue](../06-agents-automation/scheduled-prompts-and-command-queue.md)
+
+The pass also corrected the generated atlas itself. Short minified seeds such as `B3`, `I6n`, `nHn`, `HCr`, and `dZ` could resolve to unrelated first occurrences. Known anchors and main-path seeds now use exact declarations, preserved method names, native method names, or unique runtime strings; all `24` semantic anchors and all `16` main paths resolve in the regenerated atlas.
+
+Convergence does not mean every product question is knowable from this package. Remaining boundaries are deliberately labeled rather than guessed:
+
+- detailed algorithms and storage formats owned entirely by `runtime.node`, `tgrep`, language servers, or other packaged binaries;
+- GitHub/Mission Control server policy such as command signing, server-side TTL, and multi-controller arbitration;
+- remote experiment assignment policy and service-side rollout intent;
+- exact current prompt wording returned only by native `S.prompts*` methods when no JavaScript literal or packaged YAML exposes it.
+
+Those are evidence boundaries, not locally source-answerable documentation backlog items. A future package delta, newly exposed schema, sourcemap, or server contract can reopen them.
+
 ## Adoption status
 
 The highest-priority, medium-priority, and later remaining gap-review topics identified from `app.js` have now been drafted and indexed. The outline notes below are kept as historical acceptance criteria for the implemented pages, not as open tasks.

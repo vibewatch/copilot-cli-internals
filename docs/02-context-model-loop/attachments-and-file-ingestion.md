@@ -19,7 +19,7 @@ The implementation in `app.js` is not a single attachment subsystem. It is a cro
 Representative line anchors from the analyzed bundle:
 
 - line `1026`: native document MIME mapping, base64 document readers, token/request-size estimation for files and images, and Chat-to-Responses content conversion.
-- line `3367`: base64/data payload normalization for file and image content.
+- line `143`: base64/data payload normalization for file and image content.
 - line `3439`: retry path that emits `binary_attachments_removed` after removing old image/native document payloads.
 - line `3459`: CAPI Responses request-size validation and native attachment error text.
 - line `4361`: `user.message` event schema includes attachments and native-document metadata.
@@ -125,7 +125,7 @@ One visible conversion around line `1026` converts Chat-style content into Respo
 
 The conversion keeps image detail when present and maps file objects to `file_data`, `file_id`, and `filename`.
 
-A later normalization path around line `3367` rewrites data URLs and raw base64 file data before sending. That path handles both image and file content, including `input_image`, `input_file`, `image`, and `document` style parts.
+A normalization path around line `143` rewrites data URLs and raw base64 file data before sending. That path handles both image and file content, including `input_image`, `input_file`, `image`, and `document` style parts.
 
 ## Token and request-size budgeting
 

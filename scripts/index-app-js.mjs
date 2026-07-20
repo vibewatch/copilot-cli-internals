@@ -282,7 +282,7 @@ const MAIN_PATHS = [
   {
     path: "Native runtime bridge selection",
     trigger: "first use of the native runtime surface",
-    anchorSeeds: ["COPILOT_RUNTIME_OOP", "NAPI_OOP_SOCKET", "connectFromEnvSync", "runtime.node"],
+    anchorSeeds: ["COPILOT_RUNTIME_OOP", "connectFromEnvSync"],
     output: "In-process NAPI addon or manifest-driven out-of-process native-call proxy.",
     docs: "docs/01-runtime-lifecycle/out-of-process-native-runtime.md",
   },
@@ -296,14 +296,14 @@ const MAIN_PATHS = [
   {
     path: "Session and event lifecycle",
     trigger: "new/resume/continue/name/fork/session APIs",
-    anchorSeeds: ["session.start", "Session.send", "tool.execution_complete", "session.task_complete", "session.idle"],
+    anchorSeeds: ["session.start", "tool.execution_complete", "session.task_complete", "session.idle"],
     output: "Durable event log, UI projection, state files, background work, and completion/idle signals.",
     docs: "docs/04-sessions-persistence-remote/conversation-session-end-to-end.md",
   },
   {
     path: "Session persistence, search, and branching",
     trigger: "event writes, workspace sidecars, compaction checkpoints, /reindex, /fork, /undo, or /rewind",
-    anchorSeeds: ["events.jsonl", "workspace.yaml", "session-store.db", "search_index", "session.snapshot_rewind"],
+    anchorSeeds: ["events.jsonl", "workspace.yaml", "session-store.db", "session.snapshot_rewind"],
     output: "Replayable JSONL history, sidecar artifacts, derived SQLite/FTS indexes, forked branches, and rewind boundaries.",
     docs: "docs/04-sessions-persistence-remote/session-persistence-replay-and-indexing.md",
   },
@@ -314,7 +314,6 @@ const MAIN_PATHS = [
       "S.promptsCliEnvironmentContext(",
       "this.setCurrentSystemMessageContent(Nn)",
       'this.emit("system.message",{role:"system"',
-      "loadCustomInstructions",
       "loadSkills",
     ],
     output: "System/developer/user/tool messages shaped for a provider request.",
@@ -410,9 +409,6 @@ const MAIN_PATHS = [
     anchorSeeds: [
       "S.mcpRegistryPropagatableEnvironmentVariables(",
       "GITHUB_COPILOT_MCP_JSON",
-      "GITHUB_COPILOT_OIDC_MCP_TOKEN",
-      "COPILOT_AGENT_FIREWALL_LOG_FILE",
-      "CPD_SAVE_TRAJECTORY_OUTPUT",
       "COPILOT_OTEL_ENABLED",
     ],
     output: "Hosted settings envelope, default GitHub MCP policy, OIDC token injection, OTel exporter config, firewall summaries, and trajectory files.",

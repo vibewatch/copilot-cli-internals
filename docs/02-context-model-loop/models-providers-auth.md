@@ -12,7 +12,7 @@ This document deepens the model/auth/provider coverage that was previously summa
 | Offline mode | `OfflineProviderPath` | `COPILOT_OFFLINE` checks | 3279, 5781 | Requires custom/local provider and disables GitHub network features. |
 | Model option | `--model` / model picker | root option and TUI handlers | 5687, 4172, 4426-4434 | Selects the session model or opens interactive selection. |
 | Reasoning effort | `--effort`, `--reasoning-effort` | root option | 5687 | Sets reasoning effort for supported models. |
-| Subagent model override | `task` model validation | `createTaskTool(...)` | 3735-3815 | Validates and may downshift subagent model overrides. |
+| Subagent model override | Task input/model validation | task dispatch and session executor | 374-477, 513-515 | Validates and may downshift subagent model overrides. |
 | Session subagent model selection | `selectSubagentModel(...)`, `emitSubagentModelTelemetry(...)` | `Vur(...)`, `jur(...)` | 4030-4036 | Chooses treatment/default/session models for built-in subagents and emits `subagent_model_selection` telemetry. |
 | Feature gates | Native-backed feature service and live experiment coordinator | `EG`, `lCe` | 124, 3387 | Enables model-adjacent behavior such as special subagent models or advisor paths. |
 | Current model metadata | Built-in model definitions | `claude-sonnet-5`, `claude-opus-4.8`, `gpt-5.6-*` | 618-620, 2039 | Confirms current catalog families and supported reasoning efforts. |

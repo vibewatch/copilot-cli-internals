@@ -14,9 +14,9 @@ This page cross-checks the two schema files against the bundled runtime and the 
 | Session event schema contract | `session-events.schema.json` | `copilot-cli-pkg/schemas/` | Discriminated union for persisted/forwarded session event objects. |
 | Generated RPC client surface | `createServerRpc`, `createSessionRpc`, `registerClientSessionApiHandlers` | `copilot-sdk/generated/rpc.d.ts`, `copilot-sdk/index.js` | Typed request wrappers and client-session handler registration generated from `api.schema.json`. |
 | Generated event surface | `SessionEvent`, `SessionEventType`, `SessionEventPayload` | `copilot-sdk/generated/session-events.d.ts`, `copilot-sdk/types.d.ts` | Typed event union generated from `session-events.schema.json`. |
-| Session event notification | `SESSION_EVENT:"session.event"`, `Tee.SESSION_EVENT` | `app.js` 6063, 6100 | JSON-RPC notification carrying schema-shaped events to clients. |
+| Session event notification | `SESSION_EVENT:"session.event"`, `cp.SESSION_EVENT` | `app.js` 320, 2797-2799 | JSON-RPC notification carrying schema-shaped events to clients. |
 | Runtime event envelope | `emitInternal`, `emitEphemeral` | `app.js` 4471 | Builds `id`, `timestamp`, `parentId`, optional `ephemeral`, and optional `agentId`. |
-| Event forwarder/replay | `setupSessionEventForwarding` | `app.js` 6100 | Routes live events, replays non-ephemeral history, and emits lifecycle updates. |
+| Event forwarder/replay | `setupSessionEventForwarding` | `app.js` 2799 | Routes live events, replays non-ephemeral history, and emits lifecycle updates. |
 
 ## Source files and generated surfaces
 

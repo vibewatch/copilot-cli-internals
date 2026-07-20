@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-20T23:09:29.840Z",
+  "generatedAt": "2026-07-20T23:34:31.380Z",
   "source": {
     "path": "/home/ythuang/workspace/copilot-cli-internals/copilot-cli-pkg/app.js",
     "relativePath": "copilot-cli-pkg/app.js",
@@ -780,9 +780,7 @@
       "trigger": "first use of the native runtime surface",
       "anchorSeeds": [
         "COPILOT_RUNTIME_OOP",
-        "NAPI_OOP_SOCKET",
-        "connectFromEnvSync",
-        "runtime.node"
+        "connectFromEnvSync"
       ],
       "output": "In-process NAPI addon or manifest-driven out-of-process native-call proxy.",
       "docs": "docs/01-runtime-lifecycle/out-of-process-native-runtime.md",
@@ -837,7 +835,6 @@
       "trigger": "new/resume/continue/name/fork/session APIs",
       "anchorSeeds": [
         "session.start",
-        "Session.send",
         "tool.execution_complete",
         "session.task_complete",
         "session.idle"
@@ -870,7 +867,6 @@
         "events.jsonl",
         "workspace.yaml",
         "session-store.db",
-        "search_index",
         "session.snapshot_rewind"
       ],
       "output": "Replayable JSONL history, sidecar artifacts, derived SQLite/FTS indexes, forked branches, and rewind boundaries.",
@@ -901,7 +897,6 @@
         "S.promptsCliEnvironmentContext(",
         "this.setCurrentSystemMessageContent(Nn)",
         "this.emit(\"system.message\",{role:\"system\"",
-        "loadCustomInstructions",
         "loadSkills"
       ],
       "output": "System/developer/user/tool messages shaped for a provider request.",
@@ -1201,9 +1196,6 @@
       "anchorSeeds": [
         "S.mcpRegistryPropagatableEnvironmentVariables(",
         "GITHUB_COPILOT_MCP_JSON",
-        "GITHUB_COPILOT_OIDC_MCP_TOKEN",
-        "COPILOT_AGENT_FIREWALL_LOG_FILE",
-        "CPD_SAVE_TRAJECTORY_OUTPUT",
         "COPILOT_OTEL_ENABLED"
       ],
       "output": "Hosted settings envelope, default GitHub MCP policy, OIDC token injection, OTel exporter config, firewall summaries, and trajectory files.",

@@ -17,29 +17,28 @@ For current-session context-window reduction, see [`conversation-compaction.md`]
 
 | Area | Semantic alias | Minified anchor | Approx. location | What it does |
 |---|---|---:|---:|---|
-| Memory feature resolver | `MemoryFeatureGateResolver` | `k0e(...)` | `app.js` 3625 | Enables cloud memory from `copilot-feature-agentic-memory` unless disabled; enables local memory from `copilot_swe_agent_memory_in_repo_store`. |
-| Memory prompt loader | `loadMemoryPromptContext(...)` | `b6n(...)` | `app.js` 3625 | Calls the memory prompt endpoint, returning prompt text, counts, store instructions, and tool definitions. |
-| Memory endpoint builder | `buildMemoryApiUrl(...)` | `V3e(...)`, `TIs(...)` | `app.js` 3625 | Builds internal memory API URLs for prompt, repository, and user scopes. |
-| Memory tool constants | `STORE_MEMORY_TOOL_NAME`, `VOTE_MEMORY_TOOL_NAME` | `Zk`, `K3e` | `app.js` 3625 | Defines `store_memory` and `vote_memory`. |
-| Memory tool provider | `MemoryToolProvider` | `W3e` | `app.js` 3694 | Builds store/vote tool schemas and callbacks, validates inputs, filters secrets, and requests permission. |
-| Service memory strategy | `ServiceMemoryStrategy` | `Y3e` | `app.js` 3694 | Stores and votes memories through the memory service and emits memory-tool telemetry. |
-| Local JSONL memory strategy | `JsonFileMemoryStrategy` | `FCr` | `app.js` 5730 | Stores local memories in `.github/copilot-memories.jsonl` and optimizes them at shutdown. |
-| Memory tool loader | `loadMemoryTools(...)` | `Yjs(...)` | `app.js` 5734 | Creates memory tools from service definitions, test injections, or the local JSONL strategy. |
-| Memory API cache loader | `loadMemoryApiCache(...)`, `getCachedMemoryPrompt(...)` | `nco(...)`, `t7n(...)` | `app.js` 5734 | Checks eligibility, fetches prompt API context, caches in-flight results, and invalidates on repository changes. |
+| Memory feature resolver | Native memory flags and settings checks | `S.memoryFeatureFlags()`, `Q2e(...)`, `i$(...)` | `app.js` 252 | Resolves cloud/local/user-scoped memory availability. |
+| Memory prompt loader | Service prompt/context retrieval | native memory request helpers, `Y8n(...)` | `app.js` 252 | Returns prompt text, counts, store instructions, and tool definitions. |
+| Memory endpoint builder | Memory service request planning | native-owned service strategy | `app.js` 252-311 | Builds and executes repository/user memory requests through the service client. |
+| Memory tool constants | `STORE_MEMORY_TOOL_NAME`, `VOTE_MEMORY_TOOL_NAME` | `T_="store_memory"`, `FZ="vote_memory"` | `app.js` 252 | Defines `store_memory` and `vote_memory`. |
+| Memory tool provider | `MemoryToolProvider` | `LZ` | `app.js` 311 | Builds store/vote tool schemas and callbacks, validates inputs, filters secrets, and requests permission. |
+| Service memory strategy | Service-backed strategy | `r$` usage in `_qn(...)` | `app.js` 608 | Stores and votes memories through the memory service and emits memory-tool telemetry. |
+| Local JSONL memory strategy | `JsonFileMemoryStrategy` | `zFe` | `app.js` 604-606 | Stores local memories in `.github/copilot-memories.jsonl` and optimizes them at shutdown. |
+| Memory tool loader | `loadMemoryTools(...)` | `_qn(...)` | `app.js` 608 | Creates service or local JSONL memory tools from the resolved memory mode and tool definitions. |
+| Memory API cache loader | `gAt(...)`, `oAt(...)` | `memoryApiCache` | `app.js` 608, 2742 | Caches in-flight/results, invalidates on repository changes and TTL expiry, and reuses a matching result. |
 | System prompt injection | `buildSystemPrompt(...)` call site | `aX(...)`, `memoriesContextPrompt` | `app.js` 2755-2759 | Passes enabled memory prompt text into the main system prompt. |
-| Allowed-tool mapping | `AllowedToolsFrontmatterMap` | `T4n` | `app.js` 3194 | Maps `memory`, `store_memory`, and `vote_memory` to permission kind `memory`. |
-| Memory permission dispatcher | `PermissionService.onMemory(...)` | `Kge(...)` branch | `app.js` 555 | Applies allow/deny/session rules and asks the user for memory store/vote approval when needed. |
-| Memory permission UI | `MemoryPermissionPrompt` | `DOa(...)` | `app.js` 6599 | Displays memory update approval prompts in the TUI. |
-| Context board formatter | `formatDynamicContextBoard(...)` | `K3n(...)` | `app.js` 3473 | Renders board metadata as a compact model-visible table and instructs agents to fetch full content. |
-| Consolidation context builder | `buildMemoryConsolidationContext(...)` | `Rvs(...)`, `Z3n(...)` | `app.js` 3488-3507 | Builds `rem-agent` evidence from board entries, conversation turns, and latest checkpoint. |
-| Context board tool | `createContextBoardTool(...)` | `cYn(...)`, `owe` | `app.js` 4339-4359 | Exposes `get`, `add`, `prune`, and `get_board` commands. |
-| Dynamic context store | `DynamicContextStore` methods | method names preserved | `app.js` 4630-4637 | Persists board entries in `dynamic_context_items`. |
-| Board initialization | `initDynamicContextBoard(...)` | source name preserved | `app.js` 5756 | Configures repository/branch board state on session create and resume. |
-| Built-in REM agent | `BuiltInRemAgent` | built-in catalog row | `app.js` 4037 | Registers feature-gated `rem-agent` with side effects and `context_board` access. |
+| Allowed-tool mapping | Memory permission kind | `store_memory`, `vote_memory`, native allowed-tool parser | `app.js` 252, 604-608 | Maps memory tools to the memory permission path. |
+| Memory permission dispatcher | Central permission service | memory request branch | `app.js` 109, 2686-2710 | Applies allow/deny/session rules and asks the user for memory store/vote approval when needed. |
+| Memory permission UI | `MemoryPermissionPrompt` | memory request renderer | `app.js` 3628 | Displays memory update approval prompts in the TUI. |
+| Context board formatter | Dynamic context board table | `<dynamic_context_board>` | `app.js` 185 | Renders board metadata as a compact model-visible table and instructs agents to fetch full content. |
+| Context board tool | `createContextBoardTool(...)` | native `toolContextBoardPrepareInput(...)` | `app.js` 186 | Exposes context-board operations through a native-backed descriptor. |
+| Dynamic context store | Dynamic context native/session APIs | native store plus session methods | `app.js` 185-186, 2686 | Persists and queries board entries. |
+| Board initialization | `initDynamicContextBoard(...)` | preserved method name | `app.js` 2768 | Configures repository/branch board state on session create and resume. |
+| Built-in REM agent | Built-in catalog row | `ozn`, `rem-agent` | `app.js` 324 | Registers feature-gated `rem-agent` with side effects and `context_board` access. |
 | `/subconscious run` macro | `subconsciousRunCommand(...)` | `Wps(...)`, `Udt` | `app.js` 1295, 1335-1340 | Tells the main agent to call `task` once for a background `rem-agent`. |
 | Detached REM process | `spawnDetachedMemoryAgent(...)` | detached `--agent rem-agent` spawn path | `app.js` 4446 | Spawns a detached `copilot --agent rem-agent` during interactive shutdown when eligible. |
-| Sidekick launch conditions | `SidekickLaunchConditions` | `d8s`, `p8s`, `f8s` | `app.js` 4463 | Launches sidekicks only when memories or board entries exist. |
-| Sidekick manager | `SidekickAgentManager` | `_Et` | `app.js` 4463-4464 | Starts/cancels sidekick agents and publishes their findings through the inbox. |
+| Sidekick launch conditions | Sidekick trigger definitions | native/config-backed conditions | `app.js` 2700-2704 | Launches sidekicks only when configured trigger conditions are met. |
+| Sidekick manager | `SidekickAgentManager` | `Iwe` | `app.js` 2700-2704, 2742 | Starts/cancels sidekick agents and publishes their findings through the inbox. |
 | REM agent definition | `rem-agent.agent.yaml` | n/a | `copilot-cli-pkg/definitions/rem-agent.agent.yaml` | Defines the memory-consolidation agent prompt parts and `context_board` tool access. |
 | Subconscious sidekick | `subconscious-agent.yaml` | n/a | `copilot-cli-pkg/definitions/sidekick/subconscious-agent.yaml` | Reads board entries and forwards relevant content to the inbox. |
 | GitHub context sidekick | `github-context.yaml` | n/a | `copilot-cli-pkg/definitions/sidekick/github-context.yaml` | Uses local/GitHub/prior-session tools and sends high-signal context to the inbox. |

@@ -29,13 +29,13 @@ In practical terms:
 | Initial mode helper | `resolveInitialAgentMode(...)` | `pPn(...)` | 5077 | Chooses `mode`, then `autopilot`, then `plan` for the TUI initial mode. |
 | Root dispatch | `mainCliAction(...)` | `noAskUser: !t.askUser`, autopilot/mode options | 5774-5823 | Routes parsed flags into TUI and prompt-mode branches. |
 | TUI session host | `InteractiveTuiRoot` | TUI/session options and `askUserDisabled` | 4373-4434 | Computes ask-user availability and passes `askUserDisabled` into session options. |
-| Session capability filter | `Session.getEffectiveCapabilities()` | `askUserDisabled`, `delete("ask-user")` | 4471 | Removes the `ask-user` capability when disabled. |
-| Session mode state | `Session.currentMode` | `_currentMode`, `session.mode_changed` | 4471 | Tracks the current agent mode and emits mode-change events. |
-| Tool config | `buildSettingsAndTools(...)` | `autopilotActive: r === "autopilot"` | 4481 | Marks the active turn as autopilot for prompt and tool assembly. |
-| Prompt assembly | `buildSystemPrompt(...)` | `p.autopilotActive ? jIs : ""` | 3834, 3949 | Adds the `<autopilot_mode>` prompt block when autopilot is active. |
-| Tool assembly | `assembleRuntimeTools(...)` | `ask-user`, `requestUserInput`, `$Vn()` | 5734 | Adds `ask_user` only when the capability and handler exist; adds `task_complete` when autopilot is active. |
+| Session capability filter | `Session.getEffectiveCapabilities()` | `askUserDisabled`, `delete("ask-user")` | 2710 | Removes the `ask-user` capability when disabled. |
+| Session mode state | `Session.currentMode` | mode state and `session.mode_changed` | 2710-2755 | Tracks the current agent mode and emits mode-change events. |
+| Tool config | `buildSettingsAndTools(...)` | `autopilotActive` | 2755 | Marks the active turn as autopilot for prompt and tool assembly. |
+| Prompt assembly | `aX(...)` | `p.autopilotActive ? i7n(...) : ""` | 491-498 | Adds the autopilot prompt block when autopilot is active. |
+| Tool assembly | `buildSettingsAndTools(...)` | ask-user capability, `dme()` task-complete descriptor | 604-608, 2755-2761 | Adds `ask_user` only when the capability and handler exist; adds `task_complete` when autopilot is active. |
 | `ask_user` tool | `createAskUserTool(...)` | `ZYr(...)`, `ZE = "ask_user"`, `HW` | 602 | Defines the structured user-question tool and the autonomous fallback answer. |
-| `task_complete` tool | `createTaskCompleteTool(...)` | `$Vn()`, `UM = "task_complete"`, `UTe` | 4140-4149 | Defines explicit task completion and the internal continuation prompt. |
+| `task_complete` tool | `createTaskCompleteTool(...)` | `oC="task_complete"`, `dme()`, native continuation prompt | 604 | Defines explicit task completion and the internal continuation prompt. |
 | TUI continuation loop | `useAutopilotContinuation(...)` | task-complete/idle effect | 4373 | Continues after `session.idle` until `task_complete`, error, abort, or max count. |
 | Completion persistence | `stayInAutopilot` | continuation controller option | 4373, 5168 | Defaults to `false`; when enabled, completion does not switch the session back to interactive mode. |
 | Objective | `/autopilot <objective>`, `/goal` | objective provider | current slash-command surface | Keeps continuation prompts aligned to a named objective. |

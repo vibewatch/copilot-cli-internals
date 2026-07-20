@@ -25,14 +25,14 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 | Model-visible skill tool | `HVn(...)`, `LTe="skill"`, `QVn`, `_4n(...)`, `B0s(...)` | 4138 | Builds the `skill` tool, renders available-skill instructions, filters disabled/model-disabled skills, and loads selected skill context. |
 | Skill context injection | `Aft(...)`, `<skill-context>`, `skillInvocation`, `S0s(...)` | 3146, 3085 | Reads skill body, wraps it as context, emits invocation metadata, and preserves invoked-skill instructions through compaction. |
 | Skill slash commands | `/skills`, `pto(...)`, `R_t(...)`, `dHs(...)`, `JYn(...)`, `gGo(...)` | 1312, 4361, 4918, 6103 | Lists/info/reloads skills and exposes user-invocable skills as slash/available commands that prompt the model to call the `skill` tool. |
-| Skill allowed tools | `allowed-tools`, `Xar(...)`, `w4n(...)`, `N6o(...)` | 4811, 6689 | Parses skill tool approvals and applies/restores session permission rules after a skill is invoked. |
+| Skill allowed tools | `allowed-tools`, `IFe(...)`, invoked-skill rule application | 604, 4400 | Parses skill tool approvals and applies/restores session permission rules after a skill is invoked. |
 | Custom-agent settings | `customAgents:{defaultLocalOnly}`, `customAgentsLocalOnly` | 239, 4471 | Settings/runtime options control custom-agent discovery scope. |
 | Agent events | `session.custom_agents_updated`, `emitCustomAgentsUpdated` | 4361, 4475 | Session emits agent metadata, warnings, and errors after load/merge. |
 | Provided agents | `providedCustomAgents`, `mergeProvidedCustomAgents` | 4471, 4475 | Agents passed by the host are merged with discovered agents and de-duplicated. |
 | Remote agents | `agents/swe/custom-agents`, `include_sources=org,enterprise` | 2789 | Remote custom agents can be loaded from GitHub service endpoints. |
 | Plugin agents | `source:{type:"plugin", pluginName, marketplaceName, filePath}` | 2789 | Plugins can package custom-agent definitions. |
 | Agent deferred tool loading | `deferred-tool-loading`, `deferredToolLoading`, `H8e(...)` | 3091, 3986, 4502 | Custom-agent frontmatter can opt into deferred tool loading so large explicit tool lists remain discoverable through tool search. |
-| Agent execution | `customAgents`, `disableModelInvocation`, `executeAgent`, `Unknown agent type` | 3735, 4043 | Agent names become callable subagent/custom-agent types when model invocation is enabled. |
+| Agent execution | `customAgents`, `disableModelInvocation`, task dispatch, `SessionAgentExecutor` | 374, 513-515, 2710 | Agent names become callable subagent/custom-agent types when model invocation is enabled. |
 
 ## Packaging map
 

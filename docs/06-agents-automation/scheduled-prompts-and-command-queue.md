@@ -20,7 +20,7 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 | Create/cancel events | `session.schedule_created`, `session.schedule_cancelled` | 4210, 4361 | Durable session events define schedule state. |
 | Session access | `getScheduleRegistry()`, session schedule API | 2650, 2710, 2755 | Registry is lazily created and reused by TUI dialogs/tools. |
 | Tool API bridge | `enableManageScheduleTool`, `scheduleApi` | 4471, 4481 | Schedule management can be exposed to tools when enabled. |
-| Command request queue | `command.queued`, `command.execute`, `command.completed` | 4210, 4361, 4481, 6100 | Ephemeral client command routing and completion lifecycle. |
+| Command request queue | `command.queued`, `command.execute`, `command.completed` | 2651, 2742, 3156, 3289 | Ephemeral client command routing and completion lifecycle. |
 | Queue mutation | `pending_messages.modified` | 4479 | Prompt queue changes notify the UI. |
 | Cleanup | `session.shutdown` | 4210, 4361 | Schedule timers are disposed when the session shuts down. |
 

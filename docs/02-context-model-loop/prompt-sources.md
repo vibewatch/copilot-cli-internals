@@ -48,7 +48,7 @@ The extractable set includes prompt-like strings and files that ship with the pa
 | Slash-command prompt macros | `app.js` around lines 1250-1545 | High | Includes `/init`, `/plan`, `/review`, `/research`, `/subconscious run`, and `/fleet` dispatch prompts. |
 | Fleet mode prompt | `app.js` around line 4363 | High | `FLEET_MODE_PROMPT` is a static template that can optionally append the user's request. See [`fleet-mode.md`](../06-agents-automation/fleet-mode.md). |
 | SQL/todo coordination instructions | `app.js` around lines 5205-5270 | High | Static model-visible tool instructions for session database tables such as `todos` and `todo_deps`. |
-| Task tool instructions | `app.js` around lines 3735-3815 | High | Defines the model-visible `task` schema, usage rules, background/multi-turn guidance, and agent dispatch behavior. |
+| Task tool instructions | `app.js` around lines 374-477 | High | Defines the model-visible `task` schema, usage rules, background/multi-turn guidance, and agent dispatch behavior. |
 | Built-in agent prompts | `copilot-cli-pkg/definitions/*.agent.yaml` and `copilot-cli-pkg/definitions/sidekick/*.yaml` | High | Not embedded directly as string literals in `app.js`; loaded by the built-in agent definition loader and sidekick loaders. |
 | Built-in skill prompts | `copilot-cli-pkg/builtin-skills/**/SKILL.md` | High | Loaded through the skill loader rather than hard-coded into the main system template. |
 | MCP protocol prompt schemas | `app.js` MCP protocol code around lines 4120-4127 | Medium | The protocol supports `prompts/list` and `prompts/get`, but actual MCP prompt text comes from connected MCP servers. |
@@ -133,11 +133,11 @@ The normal interactive and prompt-mode session path builds the active system pro
 
 | Step | Source | Source anchor | What it contributes |
 |---|---|---:|---|
-| Gather current tools | Session tool initialization | ~4481 | Produces the active tool metadata list used by the prompt and provider tool definitions. See [`runtime-tool-assembly-and-filtering.md`](../03-tools-integrations-security/runtime-tool-assembly-and-filtering.md). |
-| Get model-specific prompt parts | `settings.cli.systemMessage` | ~4481, ~5734 | Adds or overrides `toneAndStyle`, `rules`, `toolInstructions`, and `additionalInstructions` depending on the selected model/provider configuration. |
-| Load custom instructions | `loadCustomInstructions(...)` then `mergeCustomInstructions(...)` | ~499-512, ~3824 | Loads repo/user/VS Code/nested instruction sources and wraps them into custom-instruction blocks. |
-| Add static identity and safety | `CliIdentityTemplate`, `GuidelinesTemplate`, `EnvironmentLimitationsTemplate`, `CodeChangeRulesTemplate`, `InstructionPriorityPolicy` | ~3085-3368, ~3824 | Adds Copilot CLI identity, tone, search/delegation, tool efficiency, safety, environment limitations, and code-change rules. |
-| Add environment context | `buildCliEnvironmentContext(...)` and helpers | ~3824 | Adds current working directory, git repository root, OS, available tools, optional cwd listing, connected IDE, and repository identity. |
+| Gather current tools | `buildSettingsAndTools(...)`, `initializeAndValidateTools(...)` | ~2755-2759 | Produces the active tool metadata list used by the prompt and provider tool definitions. See [`runtime-tool-assembly-and-filtering.md`](../03-tools-integrations-security/runtime-tool-assembly-and-filtering.md). |
+| Get model-specific prompt parts | `settings.cli.systemMessage` | ~2755-2759 | Adds or overrides `toneAndStyle`, `rules`, `toolInstructions`, and `additionalInstructions` depending on the selected model/provider configuration. |
+| Load custom instructions | `OI(...)`, `Jdt(...)`, `Wz(...)` inside `aX(...)` | ~491-505 | Loads repo/user/VS Code/nested instruction sources and wraps them into custom-instruction blocks. |
+| Add static identity and safety | `aX(...)`, `ime(...)`, native `S.prompts*` fragments | ~477-505 | Adds Copilot CLI identity, tone, search/delegation, tool efficiency, safety, environment limitations, and code-change rules. |
+| Add environment context | `h7n(...)`, workspace context, `S.promptsCliEnvironmentContext(...)` | ~479-505 | Adds current working directory, git repository root, OS, available tools, optional cwd listing, connected IDE, and repository identity. |
 | Add runtime state | plan/autopilot/system-notification/memory/workspace branches | ~3824 | Adds plan-mode instructions, autopilot instructions, memory context, workspace context, content-exclusion policy, system notification rules, and GitHub CLI preference. `--autopilot` reaches this path through `autopilotActive`; `--no-ask-user` instead affects tool capability assembly and does not directly add prompt text. See [`autopilot-and-no-ask-user.md`](../06-agents-automation/autopilot-and-no-ask-user.md). |
 | Apply feature-gated changes | `resolveFeatureGate(...)` checks | ~3824 | Removes cwd listing, removes parallel-tool prompt, changes subagent parallelism wording, or prefers `gh` CLI over MCP, depending on gates. |
 | Render final system prompt | `renderCliSystemPrompt(...)` | ~3220, ~3824 | Combines identity, code-change rules, guidelines, safety, tool instructions, custom instructions, additional instructions, and final reminders. |
@@ -151,12 +151,12 @@ Subagents do not always use the same system prompt as the top-level CLI session.
 
 | Agent path | System prompt source | Source anchor | Notes |
 |---|---|---:|---|
-| Built-in YAML agents | `copilot-cli-pkg/definitions/*.agent.yaml` plus `buildAgentDefinitionSystemPrompt(...)` | ~3551-3553, ~4037-4043 | The YAML `prompt` body is rendered with variables such as `cwd`, tool names, and shell examples. `promptParts` controls whether environment context, AI safety, tool instructions, parallel-calling text, and consolidation prompts are appended. |
-| Local/plugin custom agents | Markdown body prompt plus `wrapCustomAgentDefinition(...)` and `buildAgentDefinitionSystemPrompt(...)` | ~2789, ~4043 | The Markdown body becomes the agent prompt. Agent metadata controls tools, MCP servers, skills, and model selection. |
-| Remote custom agents | GitHub API prompt text plus custom-agent wrapper | ~2789, ~4043 | The prompt is fetched at runtime, so it cannot be statically recovered from the local bundle. |
-| General-purpose agent | `createGeneralPurposeSystemPrompt(...)`, which calls `buildSystemPrompt(...)` | ~4031-4043 | Uses the standard CLI-style system prompt, then appends an extra general-purpose/system suffix. |
-| Search agent | `createSearchAgentDefinition(...)` inline agent definition | ~4064 | Uses a constrained, inline research/search system prompt and a small toolset. |
-| Coding/SWE agent path | `buildCodingAgentPrompt(...)` / `buildTaskAgentPrompt(...)` | ~3263-3291, ~4149 | Uses coding-agent and task-agent templates for cloud/SWE-style execution rather than the normal CLI session prompt. |
+| Built-in YAML agents | `copilot-cli-pkg/definitions/*.agent.yaml`, `jLe(...)`, `Dz(...)` | ~320-324, 513-515 | The YAML `prompt` body is rendered with variables such as `cwd`, tool names, and shell examples. `promptParts` controls whether environment context, AI safety, tool instructions, parallel-calling text, and consolidation prompts are appended. |
+| Local/plugin custom agents | Markdown body plus normalized agent definition and `lR` executor | ~2039, 2710, 513-515 | The Markdown body becomes the agent prompt. Agent metadata controls tools, MCP servers, skills, and model selection. |
+| Remote custom agents | GitHub API prompt text plus normalized agent definition | ~2039, 2710 | The prompt is fetched at runtime, so it cannot be statically recovered from the local bundle. |
+| General-purpose agent | `xvt(...)`, which calls `aX(...)` | ~505 | Uses the standard CLI-style system prompt, then appends an extra general-purpose/system suffix. |
+| Explore/search agent | `copilot-cli-pkg/definitions/explore.agent.yaml`, built-in catalog loader | package YAML, ~324 | Uses a constrained exploration prompt and a small toolset. |
+| Coding/SWE agent path | packaged agent definitions plus `Dz(...)`, `jLe(...)`, native `S.prompts*` fragments | ~320-505 | Uses coding-agent and task-agent prompt parts for subagent/cloud-style execution rather than the normal top-level CLI session prompt. |
 
 ```mermaid
 flowchart TD
