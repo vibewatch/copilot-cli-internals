@@ -6,17 +6,17 @@ This document expands the operational coverage for `app.js`: logging, telemetry,
 
 | Area | Semantic alias | Minified anchor | Approx. line | Role |
 |---|---|---:|---:|---|
-| Logging setup | `LoggingService` | log setup in root action | 8298 | Applies `--log-dir`, `--log-level`, color/debug flags, and log writers. |
-| Telemetry setup | `TelemetryService` | telemetry setup in root action | 8298 | Chooses active/no-op telemetry depending on auth, offline mode, and config. |
-| OpenTelemetry | `OpenTelemetryBridge` | OTel environment handling | 8298 | Enables trace/metric export when OTel environment is configured. |
+| Logging setup | `LoggingService` | log setup in root action | 5774-5781 | Applies `--log-dir`, `--log-level`, color/debug flags, and log writers. |
+| Telemetry setup | `TelemetryService` | telemetry setup in root action | 5781 | Chooses active/no-op telemetry depending on auth, offline mode, and config. |
+| OpenTelemetry | `OpenTelemetryBridge` | `CGe(...)`, native OTel config | 2764 | Enables trace/metric export when OTel environment is configured. |
 | Model-call telemetry | `model_call_success`, `model_call_failure`, `assistant.usage` | `getCompletionWithTools(...)`, session event handlers | 3439, 4149, 4487 | Carries request IDs, provider call IDs, latency, token usage, quota snapshots, and conversation-structure summaries. |
 | Streaming UI telemetry | `StreamingChunkDisplay` | `ubt` | 4207 | Emits ephemeral assistant streaming events and response-size updates from normalized chunks. |
 | Session token metrics | `session_usage_info`, `session_truncation`, `session_compaction_complete` | `q6n(...)`, `j6n(...)`, OTel mappings | 4033, 5742 | Reports token counts, truncation, compaction, removed messages/tokens, checkpoint numbers, and compaction model usage. |
-| Update command | `buildUpdateCommand()` | update command builder | 8298 | Implements `copilot update [channel]`. |
+| Update command | `buildUpdateCommand()` | inline root-command builder | 5899 | Implements `copilot update [channel]`. |
 | Loader update wrapper | `index.js update/restart wrapper` | `index.js` | package loader | Selects cached/bundled packages and restarts on update exit code. |
-| Version command | `buildVersionCommand()` | version command builder | 8298 | Reports CLI/package version metadata. |
-| Debug logs | `DebugLogCollector` | `COLLECT_DEBUG_LOGS` and TUI debug paths | 239, 7000-7445 | Exposes support/debug log collection when enabled. |
-| Shutdown | `ShutdownService` | `eke` | 7420 | Runs pre-shutdown callbacks, disposables, post-shutdown callbacks, flush, and force-exit timeout. |
+| Version command | `buildVersionCommand()` | inline root-command builder | 5899 | Reports CLI/package version metadata. |
+| Debug logs | `DebugLogCollector` | collection helpers, slash/root option paths | 2061-2064, 2558-2559, 5774 | Exposes support/debug log collection when enabled. |
+| Shutdown | `ShutdownService` | `aW` | 3385 | Runs pre-shutdown callbacks, disposables, post-shutdown callbacks, flush, and force-exit timeout. |
 
 ## Operational initialization
 
@@ -171,6 +171,16 @@ Debug collection is expected to include operational state rather than clean sour
 
 The shutdown service is a central cleanup coordinator. It prevents duplicate shutdowns, runs callbacks, disposes services, flushes output/logs, and force-exits if cleanup hangs.
 
+The ordering in `ShutdownService` is explicit:
+
+1. Run pre-shutdown callbacks serially in registration order.
+2. Dispose ordinary registered resources concurrently with `Promise.allSettled(...)`; one failed disposer does not prevent the others from running.
+3. Run post-shutdown callbacks serially in registration order.
+4. Flush the logger, then allow stdout/stderr a final bounded drain.
+5. Run the optional exit interceptor and call the configured exit function.
+
+The whole disposal phase races a `10,000 ms` watchdog. If it expires, the service logs a warning, allows up to `250 ms` for stdout/stderr to drain, and forces exit. The same `250 ms` drain cap is used after a successful disposal. Repeated shutdown requests return `already-in-progress` rather than starting another cleanup pass.
+
 ```mermaid
 sequenceDiagram
     autonumber
@@ -184,12 +194,14 @@ sequenceDiagram
     Shutdown->>Shutdown: ignore if already shutting down
     Shutdown->>Shutdown: start force-exit timer
     Shutdown->>Session: run pre-shutdown callbacks
-    Shutdown->>Services: dispose registered resources
+    Shutdown->>Services: dispose registered resources concurrently
     Services-->>Shutdown: disposed or failed
     Shutdown->>Session: run post-shutdown callbacks
     Shutdown->>Logs: flush logs, telemetry, stdout/stderr
     Shutdown->>Shutdown: process.exit(code)
 ```
+
+Remote event export has one additional best-effort shutdown path: for a small pending payload it can spawn a detached package entrypoint with `COPILOT_SHUTDOWN_FLUSH`. [`index.js`](../../copilot-cli-pkg/index.js) parses `{ url, headers, body }`, performs one POST with a 30-second abort timeout, ignores failure, and exits. This is specific to the remote exporter; see [Remote control protocol and steering](../04-sessions-persistence-remote/remote-control-protocol-and-steering.md#shutdown-flushing).
 
 Shutdown callbacks differ by mode:
 

@@ -26,7 +26,7 @@ For current-session context-window reduction, see [`conversation-compaction.md`]
 | Local JSONL memory strategy | `JsonFileMemoryStrategy` | `FCr` | `app.js` 5730 | Stores local memories in `.github/copilot-memories.jsonl` and optimizes them at shutdown. |
 | Memory tool loader | `loadMemoryTools(...)` | `Yjs(...)` | `app.js` 5734 | Creates memory tools from service definitions, test injections, or the local JSONL strategy. |
 | Memory API cache loader | `loadMemoryApiCache(...)`, `getCachedMemoryPrompt(...)` | `nco(...)`, `t7n(...)` | `app.js` 5734 | Checks eligibility, fetches prompt API context, caches in-flight results, and invalidates on repository changes. |
-| System prompt injection | `buildSystemPrompt(...)` call site | `X3e(...)` call | `app.js` 4481 | Passes enabled memory prompt text into the main system prompt. |
+| System prompt injection | `buildSystemPrompt(...)` call site | `aX(...)`, `memoriesContextPrompt` | `app.js` 2755-2759 | Passes enabled memory prompt text into the main system prompt. |
 | Allowed-tool mapping | `AllowedToolsFrontmatterMap` | `T4n` | `app.js` 3194 | Maps `memory`, `store_memory`, and `vote_memory` to permission kind `memory`. |
 | Memory permission dispatcher | `PermissionService.onMemory(...)` | `Kge(...)` branch | `app.js` 555 | Applies allow/deny/session rules and asks the user for memory store/vote approval when needed. |
 | Memory permission UI | `MemoryPermissionPrompt` | `DOa(...)` | `app.js` 6599 | Displays memory update approval prompts in the TUI. |
@@ -37,7 +37,7 @@ For current-session context-window reduction, see [`conversation-compaction.md`]
 | Board initialization | `initDynamicContextBoard(...)` | source name preserved | `app.js` 5756 | Configures repository/branch board state on session create and resume. |
 | Built-in REM agent | `BuiltInRemAgent` | built-in catalog row | `app.js` 4037 | Registers feature-gated `rem-agent` with side effects and `context_board` access. |
 | `/subconscious run` macro | `subconsciousRunCommand(...)` | `Wps(...)`, `Udt` | `app.js` 1295, 1335-1340 | Tells the main agent to call `task` once for a background `rem-agent`. |
-| Detached REM process | `spawnDetachedMemoryAgent(...)` | `T5a(...)` | `app.js` 7441 | Spawns a detached `copilot --agent rem-agent` during interactive shutdown when eligible. |
+| Detached REM process | `spawnDetachedMemoryAgent(...)` | detached `--agent rem-agent` spawn path | `app.js` 4446 | Spawns a detached `copilot --agent rem-agent` during interactive shutdown when eligible. |
 | Sidekick launch conditions | `SidekickLaunchConditions` | `d8s`, `p8s`, `f8s` | `app.js` 4463 | Launches sidekicks only when memories or board entries exist. |
 | Sidekick manager | `SidekickAgentManager` | `_Et` | `app.js` 4463-4464 | Starts/cancels sidekick agents and publishes their findings through the inbox. |
 | REM agent definition | `rem-agent.agent.yaml` | n/a | `copilot-cli-pkg/definitions/rem-agent.agent.yaml` | Defines the memory-consolidation agent prompt parts and `context_board` tool access. |

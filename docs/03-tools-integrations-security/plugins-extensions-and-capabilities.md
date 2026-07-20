@@ -34,9 +34,9 @@ Representative line anchors from the analyzed bundle:
 - line `525`: plugin manifest schema includes commands, agents, skills, hooks, MCP servers, and LSP servers.
 - line `528`: plugin manager and LSP/plugin loading helpers.
 - line `1340`: `/plugin` slash command registration.
-- line `6100`: `setupExtensionsForSession(...)` registers SDK extension tools on a session.
-- line `7445`: `--plugin-dir` local plugin scanner.
-- line `8221`: root CLI option declaration for `--plugin-dir <directory>`.
+- line `2799`: `setupExtensionsForSession(...)` registers SDK extension tools on a session.
+- line `624`: `VM(...)` implements the `--plugin-dir` local plugin scanner; the root action invokes it around line `5782`.
+- line `5696`: root CLI option declaration for `--plugin-dir <directory>`.
 
 ## User-visible surfaces
 
@@ -131,7 +131,7 @@ The singular `/plugin` command exposes equivalent interactive operations. `/plug
 
 The root CLI option `--plugin-dir <directory>` allows one or more local directories to be loaded for a single run.
 
-The scanner around line `7445`:
+The `VM(...)` scanner around line `624`:
 
 1. resolves each provided directory;
 2. deduplicates paths;
@@ -192,7 +192,7 @@ For the standalone SDK-focused map, see [Copilot SDK extension bridge](copilot-s
 
 When config discovery and `EXTENSIONS` are enabled, session creation/resume calls `setupExtensionsForSession(...)`.
 
-The setup path around line `6100`:
+The setup path around line `2799`:
 
 1. creates an extension controller/host with CLI distribution and SDK paths;
 2. adds host-level external tool definitions;

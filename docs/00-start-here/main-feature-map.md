@@ -88,26 +88,26 @@ This distinction is useful when reading the rest of the wiki: if a question is a
 
 | Area | Semantic alias | Minified anchor | Approx. line | Role |
 |---|---|---:|---:|---|
-| Root CLI | `RootProgram` | `mke` | 8298 | Builds the `copilot` root command, global options, help topics, and subcommands. |
-| Main action | `mainCliAction(...)` | root `.action(...)` | 8298 | Initializes config, auth, gates, sessions, and routes to the selected runtime mode. |
+| Root CLI | `RootProgram` | `y1`, `.name("copilot")` | 5687 | Builds the `copilot` root command, global options, help topics, and subcommands. |
+| Main action | `mainCliAction(...)` | root `.action(async t => ...)` | 5774-5899 | Initializes config, auth, gates, sessions, and routes to the selected runtime mode. |
 | Native runtime bridge | `IU()`, `$st()`, `Ust()` | `COPILOT_RUNTIME_OOP`, `NAPI_OOP_SOCKET` | 63 | Chooses in-process `runtime.node` or reconstructs its surface through a Rust-parent connect-back provider. |
 | Native UI/platform helper | `zL()`, `g4e(...)`, `bqe()` | `cli-native`, `graphemeBoundaries`, `startColorSchemeListener`, `showDesktopNotification` | 634, 3239, 3602 | Supplies Unicode layout properties, OS theme observation, and best-effort desktop notifications through `cli-native.node`. |
-| Interactive UI | `InteractiveTuiFlow` | `j$o(...)`, `jQa(...)` | 7000-7445 | Runs the terminal UI, dialogs, slash commands, permissions, and background session UI. |
-| Prompt mode | `runPromptMode(...)` | `u1t(...)`, `U4a(...)` | 7420 | Handles `-p` and stdin execution, streaming, JSONL, export/share, and autopilot continuation. |
-| Embedded server | `EmbeddedServer` | `p1t` | 7441 | Hosts foreground sessions for TUI, JSON-RPC, and extension integration. |
-| Feature gates | `LiveFeatureFlagService`, `StaticFeatureFlagService` | `Pfe`, `ILt` | 239 | Resolves local gates, environment/settings overrides, and remote experiment values. |
-| Task orchestration | `TaskRegistry`, `createTaskTool(...)` | `B3`, `I6n(...)` | 3367, 3735 | Tracks subagents, background agents, multi-turn agents, and MCP task records. |
-| Tool assembly | `assembleRuntimeTools(...)`, `initializeAndValidateTools(...)`, `assembleSubagentTools(...)` | `HCr(...)`, `Gjs(...)` | 4481, 5734 | Injects file, shell, MCP, skill, external, deferred-search, and task tools into a session or subagent; final session filtering is covered in [`runtime-tool-assembly-and-filtering.md`](../03-tools-integrations-security/runtime-tool-assembly-and-filtering.md). |
+| Interactive UI | `InteractiveTuiFlow` | `NIn(...)`, TUI session tree | 4373-4446 | Runs the terminal UI, dialogs, slash commands, permissions, and background session UI. |
+| Prompt mode | `runPromptMode(...)` | `oCe(...)`, `u9r(...)` | 3327-3384 | Handles `-p` and stdin execution, streaming, JSONL, export/share, and autopilot continuation. |
+| Embedded server | `TuiEmbeddedServer` | `gRe`, `embeddedServer.registerSession` | 4427, 4435 | Hosts foreground sessions for TUI, JSON-RPC, and extension integration. |
+| Feature gates | Native-backed feature service plus live experiment coordinator | `EG`, `_4n(...)`, `yde(...)`, `lCe` | 124, 3387 | Resolves local gates, environment/settings overrides, and remote experiment values. |
+| Task orchestration | `TaskRegistry`, task tool preparation/dispatch | `nR`, `S.toolTaskPrepareInput(...)` | 204, 374-477 | Tracks subagents, background agents, multi-turn agents, and MCP task records. |
+| Tool assembly | `buildSettingsAndTools(...)`, `initializeAndValidateTools(...)` | preserved method names | 2755-2759 | Injects file, shell, MCP, skill, external, deferred-search, and task tools into a session or subagent; final session filtering is covered in [`runtime-tool-assembly-and-filtering.md`](../03-tools-integrations-security/runtime-tool-assembly-and-filtering.md). |
 | Indexed search | tgrep startup/selector | `copilot_cli_tgrep`, `tgrep_startup`, `cde()` | 122-124, 5040, 5781 | Starts a repository index for eligible large trees and transparently falls back to ripgrep. |
-| Prompt assembly | `buildSystemPrompt(...)`, `createGeneralPurposeSystemPrompt(...)`, prompt-source loaders | `X3e(...)`, `Wmt(...)`, `q4(...)`, `I9(...)` | 499, 525, 3824, 4031 | Combines static templates with custom instructions, skills, tools, memory, hooks, MCP, and provider request formatting. |
+| Prompt assembly | `buildSystemPrompt(...)`, general-purpose wrapper, prompt-source loaders | `aX(...)`, `xvt(...)`, `ime(...)`, `m7n`, `h7n` | 479-505, 2755-2759 | Combines static templates with custom instructions, skills, tools, memory, hooks, MCP, and provider request formatting. |
 | Agentic loop harness | `Session.runAgenticLoop(...)`, `getCompletionWithTools(...)` | method name preserved, completion loop | 3439, 4481 | Builds each turn, applies request processors, streams model output, dispatches tool calls, and handles retries/errors. |
 | Request processors | `preRequest`, `postRequest`, `onRequestError`, `ImmediatePromptProcessor`, `BasicTruncator`, `CompactionProcessor` | `Qyr`, `M3`, `ECe`, `zJ`, `_Ce` | 3062, 3092, 3439, 4471, 4483 | Last-mile context shaping and reliability hooks around provider requests. |
 | MCP host | `McpHost` and transport layer | `p8e`, `T6o(...)` | 4138, 7320 | Connects MCP servers, loads tools, and handles task support, elicitation, and sampling. |
-| Plugins | `pluginCommand`, plugin loaders | `z6o(...)` and loaders | 2789, 8298 | Manages plugins and loads plugin-provided agents, skills, hooks, MCP, and LSP servers. |
-| Permissions | `PermissionService` | `Kge(...)` usage | 7420, 8298 | Applies tool, path, URL, hook, and MCP approval rules. |
-| Auth | `AuthManager` | `EX` usage | 7420, 8298 | Resolves GitHub/GHE login state, tokens, provider configuration, and model catalog access. |
-| Init | `runInitCommand()` | `g$o()` | 7420 | Analyzes a repository with a restricted tool set and writes `.github/copilot-instructions.md`. |
-| Shutdown | `ShutdownService` | `eke` | 7420 | Runs signal handling, disposables, log/telemetry flushing, and force-exit timeout logic. |
+| Plugins | `pluginCommand`, plugin loaders | `fLt()` and loaders | 2247-2439, 5774-5899 | Manages plugins and loads plugin-provided agents, skills, hooks, MCP, and LSP servers. |
+| Permissions | `PermissionService` | root/session permission assembly | 2710-2761, 5774-5899 | Applies tool, path, URL, hook, and MCP approval rules. |
+| Auth | `AuthManager` | `zI` usage | 5781 | Resolves GitHub/GHE login state, tokens, provider configuration, and model catalog access. |
+| Init | `runInitCommand()` | `dcn()` | 3387, 5899 | Analyzes a repository with a restricted tool set and writes `.github/copilot-instructions.md`. |
+| Shutdown | `ShutdownService` | `aW` | 3385 | Runs signal handling, disposables, log/telemetry flushing, and force-exit timeout logic. |
 
 ## Major feature matrix
 

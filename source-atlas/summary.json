@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-20T02:15:55.145Z",
+  "generatedAt": "2026-07-20T23:09:29.840Z",
   "source": {
     "path": "/home/ythuang/workspace/copilot-cli-internals/copilot-cli-pkg/app.js",
     "relativePath": "copilot-cli-pkg/app.js",
@@ -60,24 +60,25 @@
     {
       "semanticAlias": "RootProgram",
       "anchors": [
-        "mke",
+        "var y1=new _s().name(\"copilot\")",
         "RootProgram"
       ],
       "role": "Builds the root copilot command, global options, help topics, and subcommands.",
       "docs": "docs/00-start-here/main-feature-map.md",
       "resolved": [
         {
-          "anchor": "mke",
-          "line": 2816
+          "anchor": "var y1=new _s().name(\"copilot\")",
+          "line": 5687
         }
       ],
-      "firstLine": 2816
+      "firstLine": 5687
     },
     {
       "semanticAlias": "mainCliAction(...) / runtime dispatcher",
       "anchors": [
-        "j$o",
-        "u1t",
+        ".action(async t=>{if(t.printDebugInfo",
+        "NIn({",
+        "oCe({",
         "--server",
         "--headless"
       ],
@@ -85,12 +86,16 @@
       "docs": "docs/01-runtime-lifecycle/mode-dispatch-and-runtime-startup.md",
       "resolved": [
         {
-          "anchor": "j$o",
-          "line": 2801
+          "anchor": ".action(async t=>{if(t.printDebugInfo",
+          "line": 5774
         },
         {
-          "anchor": "u1t",
-          "line": 637
+          "anchor": "NIn({",
+          "line": 5823
+        },
+        {
+          "anchor": "oCe({",
+          "line": 3387
         },
         {
           "anchor": "--server",
@@ -101,7 +106,7 @@
           "line": 3163
         }
       ],
-      "firstLine": 637
+      "firstLine": 2797
     },
     {
       "semanticAlias": "Out-of-process native runtime bridge",
@@ -167,81 +172,90 @@
     {
       "semanticAlias": "InteractiveTuiFlow",
       "anchors": [
-        "j$o",
-        "jQa"
+        "async function NIn(",
+        "embeddedServer.registerSession"
       ],
       "role": "Runs the terminal UI, slash commands, dialogs, permissions, and background session UI.",
       "docs": "docs/01-runtime-lifecycle/tui-and-slash-commands.md",
       "resolved": [
         {
-          "anchor": "j$o",
-          "line": 2801
+          "anchor": "async function NIn(",
+          "line": 4446
+        },
+        {
+          "anchor": "embeddedServer.registerSession",
+          "line": 4427
         }
       ],
-      "firstLine": 2801
+      "firstLine": 4427
     },
     {
       "semanticAlias": "runPromptMode(...)",
       "anchors": [
-        "u1t",
+        "async function oCe(",
+        "async function u9r(",
         "session.task_complete"
       ],
       "role": "Handles -p/stdin/non-TTY execution, streaming, JSONL, autopilot continuation, and pending background work.",
       "docs": "docs/01-runtime-lifecycle/mode-dispatch-and-runtime-startup.md",
       "resolved": [
         {
-          "anchor": "u1t",
-          "line": 637
+          "anchor": "async function oCe(",
+          "line": 3327
+        },
+        {
+          "anchor": "async function u9r(",
+          "line": 3364
         },
         {
           "anchor": "session.task_complete",
           "line": 2594
         }
       ],
-      "firstLine": 637
+      "firstLine": 2594
     },
     {
       "semanticAlias": "buildSystemPrompt(...) / createGeneralPurposeSystemPrompt(...)",
       "anchors": [
-        "X3e",
-        "Wmt",
-        "currentSystemMessage"
+        "S.promptsCliEnvironmentContext(",
+        "this.setCurrentSystemMessageContent(Nn)",
+        "this.emit(\"system.message\",{role:\"system\""
       ],
       "role": "Assembles identity, tools, instructions, skills, memory, runtime state, and provider-visible system context.",
       "docs": "docs/02-context-model-loop/prompt-sources.md",
       "resolved": [
         {
-          "anchor": "X3e",
-          "line": 632
+          "anchor": "S.promptsCliEnvironmentContext(",
+          "line": 505
         },
         {
-          "anchor": "Wmt",
-          "line": 143
+          "anchor": "this.setCurrentSystemMessageContent(Nn)",
+          "line": 2759
         },
         {
-          "anchor": "currentSystemMessage",
-          "line": 2710
+          "anchor": "this.emit(\"system.message\",{role:\"system\"",
+          "line": 2759
         }
       ],
-      "firstLine": 143
+      "firstLine": 505
     },
     {
       "semanticAlias": "Session runtime / runAgenticLoop",
       "anchors": [
-        "runAgenticLoop",
-        "getCompletionWithTools",
+        "async runAgenticLoop(",
+        "async processQueue(){this.isProcessing",
         "tool.execution_complete"
       ],
       "role": "Queues prompts, builds requests, streams model output, dispatches tools, emits durable events, and handles retries.",
       "docs": "docs/04-sessions-persistence-remote/session-manager-and-event-replay.md",
       "resolved": [
         {
-          "anchor": "runAgenticLoop",
-          "line": 2755
+          "anchor": "async runAgenticLoop(",
+          "line": 2757
         },
         {
-          "anchor": "getCompletionWithTools",
-          "line": 121
+          "anchor": "async processQueue(){this.isProcessing",
+          "line": 2755
         },
         {
           "anchor": "tool.execution_complete",
@@ -253,8 +267,8 @@
     {
       "semanticAlias": "Conversation session end-to-end",
       "anchors": [
-        "--resume",
-        "--continue",
+        ".addOption(new mi(\"-r, --resume [value]\"",
+        ".option(\"--continue\"",
         "session.start",
         "session.resume",
         "session.tools_updated"
@@ -263,12 +277,12 @@
       "docs": "docs/04-sessions-persistence-remote/conversation-session-end-to-end.md",
       "resolved": [
         {
-          "anchor": "--resume",
-          "line": 669
+          "anchor": ".addOption(new mi(\"-r, --resume [value]\"",
+          "line": 5696
         },
         {
-          "anchor": "--continue",
-          "line": 669
+          "anchor": ".option(\"--continue\"",
+          "line": 5696
         },
         {
           "anchor": "session.start",
@@ -323,16 +337,20 @@
     {
       "semanticAlias": "assembleRuntimeTools(...)",
       "anchors": [
-        "HCr",
-        "assembleRuntimeTools",
+        "async initializeAndValidateTools(){try{let e=await this.buildSettingsAndTools()",
+        "buildSettingsAndTools(",
         "session.tools_updated"
       ],
       "role": "Builds the final model-visible toolset from built-ins, MCP, SDK extensions, plugins, custom agents, filters, and gates.",
       "docs": "docs/03-tools-integrations-security/runtime-tool-assembly-and-filtering.md",
       "resolved": [
         {
-          "anchor": "HCr",
-          "line": 2810
+          "anchor": "async initializeAndValidateTools(){try{let e=await this.buildSettingsAndTools()",
+          "line": 2755
+        },
+        {
+          "anchor": "buildSettingsAndTools(",
+          "line": 2755
         },
         {
           "anchor": "session.tools_updated",
@@ -399,8 +417,8 @@
     {
       "semanticAlias": "PermissionService",
       "anchors": [
-        "PermissionService",
-        "permissionRequest",
+        "requestPermissionWithHooks(",
+        "permission.requested",
         "allow-tool",
         "deny-tool"
       ],
@@ -408,12 +426,12 @@
       "docs": "docs/03-tools-integrations-security/tool-path-url-permissions.md",
       "resolved": [
         {
-          "anchor": "PermissionService",
-          "line": 2686
+          "anchor": "requestPermissionWithHooks(",
+          "line": 2710
         },
         {
-          "anchor": "permissionRequest",
-          "line": 121
+          "anchor": "permission.requested",
+          "line": 2603
         },
         {
           "anchor": "allow-tool",
@@ -424,13 +442,13 @@
           "line": 5488
         }
       ],
-      "firstLine": 121
+      "firstLine": 2603
     },
     {
       "semanticAlias": "McpHost and MCP task bridge",
       "anchors": [
-        "McpHost",
-        "p8e",
+        "mcpHostStateCreate()",
+        "doInvokeToolWithTask(",
         "callToolStream",
         "taskSupport"
       ],
@@ -438,24 +456,24 @@
       "docs": "docs/03-tools-integrations-security/mcp-host-transport-and-tools.md",
       "resolved": [
         {
-          "anchor": "McpHost",
-          "line": 624
+          "anchor": "mcpHostStateCreate()",
+          "line": 2578
         },
         {
-          "anchor": "p8e",
-          "line": 2225
+          "anchor": "doInvokeToolWithTask(",
+          "line": 2583
         },
         {
           "anchor": "taskSupport",
           "line": 2577
         }
       ],
-      "firstLine": 624
+      "firstLine": 2577
     },
     {
       "semanticAlias": "Plugin and SDK extension loading",
       "anchors": [
-        "pluginCommand",
+        "async function VM(",
         "setupExtensionsForSession",
         "session.extensions_loaded",
         "EXTENSIONS"
@@ -464,8 +482,8 @@
       "docs": "docs/03-tools-integrations-security/plugins-extensions-and-capabilities.md",
       "resolved": [
         {
-          "anchor": "pluginCommand",
-          "line": 2439
+          "anchor": "async function VM(",
+          "line": 624
         },
         {
           "anchor": "setupExtensionsForSession",
@@ -480,143 +498,160 @@
           "line": 2799
         }
       ],
-      "firstLine": 2439
+      "firstLine": 624
     },
     {
       "semanticAlias": "TaskRegistry",
       "anchors": [
-        "B3",
-        "TaskRegistry",
-        "agent_completed",
-        "agent_idle"
+        "nR=class{tasks=new Map",
+        "promoteAgentToBackground(",
+        "waitForAgents()",
+        "cancelRecursive("
       ],
       "role": "Tracks background, multi-turn, and MCP task state, results, cancellation, and notifications.",
       "docs": "docs/06-agents-automation/agent-task-orchestration.md",
       "resolved": [
         {
-          "anchor": "B3",
-          "line": 114
-        },
-        {
-          "anchor": "TaskRegistry",
+          "anchor": "nR=class{tasks=new Map",
           "line": 204
         },
         {
-          "anchor": "agent_completed",
-          "line": 311
+          "anchor": "promoteAgentToBackground(",
+          "line": 204
         },
         {
-          "anchor": "agent_idle",
-          "line": 311
+          "anchor": "waitForAgents()",
+          "line": 204
+        },
+        {
+          "anchor": "cancelRecursive(",
+          "line": 204
         }
       ],
-      "firstLine": 114
+      "firstLine": 204
     },
     {
       "semanticAlias": "createTaskTool(...)",
       "anchors": [
-        "I6n",
-        "H3=\"task\"",
+        "S.toolTaskPrepareInput(",
+        "Unknown agent_type:",
         "agent_type"
       ],
       "role": "Exposes subagent dispatch to the main model via the task tool schema and callback.",
       "docs": "docs/06-agents-automation/agent-task-orchestration.md",
       "resolved": [
         {
-          "anchor": "I6n",
-          "line": 170
+          "anchor": "S.toolTaskPrepareInput(",
+          "line": 477
+        },
+        {
+          "anchor": "Unknown agent_type:",
+          "line": 374
         },
         {
           "anchor": "agent_type",
           "line": 374
         }
       ],
-      "firstLine": 170
+      "firstLine": 374
     },
     {
       "semanticAlias": "BUILT_IN_AGENTS",
       "anchors": [
-        "nHn",
-        "general-purpose",
-        "rem-agent"
+        "$_t=[\"explore\",\"task\",\"code-review\",\"rubber-duck\"]",
+        "ozn=[\"research\",\"rem-agent\",\"security-review\"]",
+        "qLe=[...H_t,\"general-purpose\"]"
       ],
       "role": "Catalogs built-in agent types and their runtime availability filters.",
       "docs": "docs/06-agents-automation/built-in-agents.md",
       "resolved": [
         {
-          "anchor": "nHn",
-          "line": 252
-        },
-        {
-          "anchor": "general-purpose",
+          "anchor": "$_t=[\"explore\",\"task\",\"code-review\",\"rubber-duck\"]",
           "line": 324
         },
         {
-          "anchor": "rem-agent",
+          "anchor": "ozn=[\"research\",\"rem-agent\",\"security-review\"]",
+          "line": 324
+        },
+        {
+          "anchor": "qLe=[...H_t,\"general-purpose\"]",
           "line": 324
         }
       ],
-      "firstLine": 252
+      "firstLine": 324
     },
     {
       "semanticAlias": "SessionAgentExecutor",
       "anchors": [
-        "dZ",
-        "SessionAgentExecutor.execute"
+        "SessionAgentExecutor.execute() called",
+        "s?.multiTurnConfig",
+        "this.notifySubagentComplete()"
       ],
       "role": "Runs built-in/custom session-based subagents, hook loops, multi-turn waits, and teardown.",
       "docs": "docs/06-agents-automation/agent-task-orchestration.md",
       "resolved": [
         {
-          "anchor": "dZ",
-          "line": 167
+          "anchor": "SessionAgentExecutor.execute() called",
+          "line": 513
         },
         {
-          "anchor": "SessionAgentExecutor.execute",
+          "anchor": "s?.multiTurnConfig",
           "line": 513
+        },
+        {
+          "anchor": "this.notifySubagentComplete()",
+          "line": 515
         }
       ],
-      "firstLine": 167
+      "firstLine": 513
     },
     {
       "semanticAlias": "Feature gates",
       "anchors": [
-        "gLt",
-        "v1e",
-        "LiveFeatureFlagService",
-        "COPILOT_EXP_"
+        "S.featureFlagsAvailabilityJson()",
+        "COPILOT_CLI_ENABLED_FEATURE_FLAGS",
+        "getFlagWithExpOverride(",
+        "persistenceResolvePath(AT(),\"exp-cache\""
       ],
       "role": "Resolves static gates, environment/settings overrides, and experiment treatments.",
       "docs": "docs/05-hosted-agent-ops/feature-gates.md",
       "resolved": [
         {
-          "anchor": "gLt",
-          "line": 2238
+          "anchor": "S.featureFlagsAvailabilityJson()",
+          "line": 124
         },
         {
-          "anchor": "v1e",
-          "line": 3073
+          "anchor": "COPILOT_CLI_ENABLED_FEATURE_FLAGS",
+          "line": 124
         },
         {
-          "anchor": "COPILOT_EXP_",
-          "line": 3385
+          "anchor": "getFlagWithExpOverride(",
+          "line": 124
+        },
+        {
+          "anchor": "persistenceResolvePath(AT(),\"exp-cache\"",
+          "line": 3387
         }
       ],
-      "firstLine": 2238
+      "firstLine": 124
     },
     {
       "semanticAlias": "Telemetry and shutdown",
       "anchors": [
-        "ShutdownService",
-        "OpenTelemetry",
+        "var aW=class{disposables=[]",
+        "S.otelResolveConfig",
         "COLLECT_DEBUG_LOGS",
-        "debug"
+        "/collect-debug-logs"
       ],
       "role": "Handles logging, telemetry, diagnostics, update/version flows, signal handling, and cleanup.",
       "docs": "docs/05-hosted-agent-ops/telemetry-update-and-shutdown.md",
       "resolved": [
         {
-          "anchor": "OpenTelemetry",
+          "anchor": "var aW=class{disposables=[]",
+          "line": 3385
+        },
+        {
+          "anchor": "S.otelResolveConfig",
           "line": 2764
         },
         {
@@ -624,11 +659,11 @@
           "line": 2481
         },
         {
-          "anchor": "debug",
-          "line": 61
+          "anchor": "/collect-debug-logs",
+          "line": 2064
         }
       ],
-      "firstLine": 61
+      "firstLine": 2064
     },
     {
       "semanticAlias": "Debug bundle redaction boundary",
@@ -664,18 +699,18 @@
     {
       "semanticAlias": "HostedAgentEnvironmentEnvelope",
       "anchors": [
-        "TWe",
-        "COPILOT_AGENT_ACTION",
+        "S.mcpRegistryPropagatableEnvironmentVariables(",
         "GITHUB_COPILOT_MCP_JSON",
         "GITHUB_COPILOT_OIDC_MCP_TOKEN",
+        "COPILOT_AGENT_FIREWALL_LOG_FILE",
         "COPILOT_OTEL_ENABLED"
       ],
       "role": "Maps hosted coding-agent environment variables, MCP/OIDC bootstrap, OTel switches, firewall/trajectory output, and bundled managed-agent SDK watchpoints.",
       "docs": "docs/05-hosted-agent-ops/hosted-agent-environment.md",
       "resolved": [
         {
-          "anchor": "TWe",
-          "line": 3304
+          "anchor": "S.mcpRegistryPropagatableEnvironmentVariables(",
+          "line": 2577
         },
         {
           "anchor": "GITHUB_COPILOT_MCP_JSON",
@@ -686,7 +721,7 @@
           "line": 2764
         }
       ],
-      "firstLine": 2603
+      "firstLine": 2577
     }
   ],
   "mainPaths": [
@@ -694,36 +729,49 @@
       "path": "Startup and runtime mode routing",
       "trigger": "`copilot` argv, stdin, TTY, and global options",
       "anchorSeeds": [
-        "RootProgram",
-        "mainCliAction",
-        "j$o",
-        "u1t",
-        "--server",
-        "--headless",
-        "--acp"
+        "var y1=new _s().name(\"copilot\")",
+        ".action(async t=>{if(t.printDebugInfo",
+        "async function NIn(",
+        "async function oCe(",
+        "async function u9r(",
+        ".addOption(new mi(\"--server\"",
+        ".addOption(new mi(\"--headless\"",
+        ".addOption(new mi(\"--acp\""
       ],
       "output": "Interactive TUI, prompt mode, server/headless JSON-RPC, or ACP mode.",
       "docs": "docs/00-start-here/main-feature-map.md",
       "resolvedSeeds": [
         {
-          "anchor": "j$o",
-          "line": 2801
+          "anchor": "var y1=new _s().name(\"copilot\")",
+          "line": 5687
         },
         {
-          "anchor": "u1t",
-          "line": 637
+          "anchor": ".action(async t=>{if(t.printDebugInfo",
+          "line": 5774
         },
         {
-          "anchor": "--server",
-          "line": 2797
+          "anchor": "async function NIn(",
+          "line": 4446
         },
         {
-          "anchor": "--headless",
-          "line": 3163
+          "anchor": "async function oCe(",
+          "line": 3327
         },
         {
-          "anchor": "--acp",
-          "line": 3163
+          "anchor": "async function u9r(",
+          "line": 3364
+        },
+        {
+          "anchor": ".addOption(new mi(\"--server\"",
+          "line": 5696
+        },
+        {
+          "anchor": ".addOption(new mi(\"--headless\"",
+          "line": 5696
+        },
+        {
+          "anchor": ".addOption(new mi(\"--acp\"",
+          "line": 5696
         }
       ]
     },
@@ -850,35 +898,30 @@
       "path": "Prompt and context assembly",
       "trigger": "session initialization, subagent creation, slash command prompt macro, provider request",
       "anchorSeeds": [
-        "buildSystemPrompt",
-        "X3e",
-        "Wmt",
+        "S.promptsCliEnvironmentContext(",
+        "this.setCurrentSystemMessageContent(Nn)",
+        "this.emit(\"system.message\",{role:\"system\"",
         "loadCustomInstructions",
-        "loadSkills",
-        "currentSystemMessage"
+        "loadSkills"
       ],
       "output": "System/developer/user/tool messages shaped for a provider request.",
       "docs": "docs/02-context-model-loop/prompt-sources.md",
       "resolvedSeeds": [
         {
-          "anchor": "buildSystemPrompt",
-          "line": 324
+          "anchor": "S.promptsCliEnvironmentContext(",
+          "line": 505
         },
         {
-          "anchor": "X3e",
-          "line": 632
+          "anchor": "this.setCurrentSystemMessageContent(Nn)",
+          "line": 2759
         },
         {
-          "anchor": "Wmt",
-          "line": 143
+          "anchor": "this.emit(\"system.message\",{role:\"system\"",
+          "line": 2759
         },
         {
           "anchor": "loadSkills",
           "line": 2496
-        },
-        {
-          "anchor": "currentSystemMessage",
-          "line": 2710
         }
       ]
     },
@@ -886,15 +929,20 @@
       "path": "Model request, streaming, retry, and compaction",
       "trigger": "agent turn needs a completion with tools",
       "anchorSeeds": [
+        "async runAgenticLoop(",
         "getCompletionWithTools",
         "preRequest",
-        "BasicTruncator",
-        "CompactionProcessor",
+        "history_truncated",
+        "compaction_started",
         "rate limit"
       ],
       "output": "Provider request/response stream, retry/fallback behavior, request-size handling, and token-budget mutation.",
       "docs": "docs/02-context-model-loop/resilience-rate-limits-concurrency.md",
       "resolvedSeeds": [
+        {
+          "anchor": "async runAgenticLoop(",
+          "line": 2757
+        },
         {
           "anchor": "getCompletionWithTools",
           "line": 121
@@ -904,12 +952,12 @@
           "line": 121
         },
         {
-          "anchor": "BasicTruncator",
-          "line": 121
+          "anchor": "history_truncated",
+          "line": 2583
         },
         {
-          "anchor": "CompactionProcessor",
-          "line": 121
+          "anchor": "compaction_started",
+          "line": 2644
         },
         {
           "anchor": "rate limit",
@@ -921,21 +969,20 @@
       "path": "Runtime tool assembly",
       "trigger": "session/subagent tool initialization or tool surface invalidation",
       "anchorSeeds": [
-        "HCr",
-        "assembleRuntimeTools",
-        "initializeAndValidateTools",
+        "async initializeAndValidateTools(){try{let e=await this.buildSettingsAndTools()",
+        "buildSettingsAndTools(",
         "session.tools_updated"
       ],
       "output": "Final model-visible tool definitions, filters, permissions, and dynamic tool invalidation.",
       "docs": "docs/03-tools-integrations-security/runtime-tool-assembly-and-filtering.md",
       "resolvedSeeds": [
         {
-          "anchor": "HCr",
-          "line": 2810
+          "anchor": "async initializeAndValidateTools(){try{let e=await this.buildSettingsAndTools()",
+          "line": 2755
         },
         {
-          "anchor": "initializeAndValidateTools",
-          "line": 515
+          "anchor": "buildSettingsAndTools(",
+          "line": 2755
         },
         {
           "anchor": "session.tools_updated",
@@ -984,7 +1031,7 @@
       "anchorSeeds": [
         "tool.execution_start",
         "preToolUse",
-        "permissionRequest",
+        "requestPermissionWithHooks(",
         "tool.execution_complete"
       ],
       "output": "Permissioned execution, partial/progress/result events, telemetry, and session history records.",
@@ -999,8 +1046,8 @@
           "line": 2764
         },
         {
-          "anchor": "permissionRequest",
-          "line": 121
+          "anchor": "requestPermissionWithHooks(",
+          "line": 2710
         },
         {
           "anchor": "tool.execution_complete",
@@ -1012,39 +1059,29 @@
       "path": "Subagent and task orchestration",
       "trigger": "main model calls `task` or slash macro steers toward an agent",
       "anchorSeeds": [
-        "I6n",
-        "TaskRegistry",
-        "B3",
-        "SessionAgentExecutor",
-        "dZ",
-        "agent_completed"
+        "nR=class{tasks=new Map",
+        "S.toolTaskPrepareInput(",
+        "SessionAgentExecutor.execute() called",
+        "this.emit(\"subagent.completed\""
       ],
       "output": "Sync/background/multi-turn agent state, result handoff, and subagent lifecycle events.",
       "docs": "docs/06-agents-automation/agent-task-orchestration.md",
       "resolvedSeeds": [
         {
-          "anchor": "I6n",
-          "line": 170
-        },
-        {
-          "anchor": "TaskRegistry",
+          "anchor": "nR=class{tasks=new Map",
           "line": 204
         },
         {
-          "anchor": "B3",
-          "line": 114
+          "anchor": "S.toolTaskPrepareInput(",
+          "line": 477
         },
         {
-          "anchor": "SessionAgentExecutor",
+          "anchor": "SessionAgentExecutor.execute() called",
           "line": 513
         },
         {
-          "anchor": "dZ",
-          "line": 167
-        },
-        {
-          "anchor": "agent_completed",
-          "line": 311
+          "anchor": "this.emit(\"subagent.completed\"",
+          "line": 2742
         }
       ]
     },
@@ -1052,22 +1089,22 @@
       "path": "Integrations and extension loading",
       "trigger": "MCP config, plugin dirs, installed plugins, SDK extension feature gate, IDE bridge",
       "anchorSeeds": [
-        "McpHost",
-        "plugin",
+        "mcpHostStateCreate()",
+        "async function VM(",
         "setupExtensionsForSession",
         "session.extensions_loaded",
-        "callIdeTool"
+        "callIdeTool("
       ],
       "output": "External tools, hooks, prompts, resources, agents, skills, LSP/IDE surfaces, and SDK commands.",
       "docs": "docs/03-tools-integrations-security/plugins-extensions-and-capabilities.md",
       "resolvedSeeds": [
         {
-          "anchor": "McpHost",
-          "line": 624
+          "anchor": "mcpHostStateCreate()",
+          "line": 2578
         },
         {
-          "anchor": "plugin",
-          "line": 141
+          "anchor": "async function VM(",
+          "line": 624
         },
         {
           "anchor": "setupExtensionsForSession",
@@ -1078,7 +1115,7 @@
           "line": 2742
         },
         {
-          "anchor": "callIdeTool",
+          "anchor": "callIdeTool(",
           "line": 3079
         }
       ]
@@ -1087,18 +1124,19 @@
       "path": "Permissions, policy, and sandbox boundaries",
       "trigger": "tool/path/URL/MCP/hook/shell action needs approval or policy check",
       "anchorSeeds": [
-        "PermissionService",
+        "requestPermissionWithHooks(",
         "allow-tool",
         "deny-tool",
         "content exclusion",
-        "sandbox"
+        "sandboxCheckFilesystemAccess",
+        "sandboxCheckNetworkAccess"
       ],
       "output": "Allow/deny/redaction/sandbox decisions before dangerous or policy-sensitive work.",
       "docs": "docs/03-tools-integrations-security/tool-path-url-permissions.md",
       "resolvedSeeds": [
         {
-          "anchor": "PermissionService",
-          "line": 2686
+          "anchor": "requestPermissionWithHooks(",
+          "line": 2710
         },
         {
           "anchor": "allow-tool",
@@ -1113,8 +1151,12 @@
           "line": 128
         },
         {
-          "anchor": "sandbox",
-          "line": 122
+          "anchor": "sandboxCheckFilesystemAccess",
+          "line": 135
+        },
+        {
+          "anchor": "sandboxCheckNetworkAccess",
+          "line": 135
         }
       ]
     },
@@ -1124,9 +1166,9 @@
       "anchorSeeds": [
         "/diagnose",
         "/collect-debug-logs",
-        "ShutdownService",
-        "OpenTelemetry",
-        "update"
+        "var aW=class{disposables=[]",
+        "S.otelResolveConfig",
+        "new _s(\"update\").summary(\"Download the latest version\")"
       ],
       "output": "Debug bundles, telemetry/logs/traces, update/version behavior, and cleanup.",
       "docs": "docs/05-hosted-agent-ops/telemetry-update-and-shutdown.md",
@@ -1140,12 +1182,16 @@
           "line": 2064
         },
         {
-          "anchor": "OpenTelemetry",
+          "anchor": "var aW=class{disposables=[]",
+          "line": 3385
+        },
+        {
+          "anchor": "S.otelResolveConfig",
           "line": 2764
         },
         {
-          "anchor": "update",
-          "line": 93
+          "anchor": "new _s(\"update\").summary(\"Download the latest version\")",
+          "line": 5861
         }
       ]
     },
@@ -1153,19 +1199,27 @@
       "path": "Hosted agent environment and ops",
       "trigger": "hosted coding-agent job environment, MCP/OIDC bootstrap, OTel env, firewall log, or trajectory output",
       "anchorSeeds": [
-        "COPILOT_AGENT_PROMPT",
-        "COPILOT_AGENT_ACTION",
+        "S.mcpRegistryPropagatableEnvironmentVariables(",
         "GITHUB_COPILOT_MCP_JSON",
         "GITHUB_COPILOT_OIDC_MCP_TOKEN",
         "COPILOT_AGENT_FIREWALL_LOG_FILE",
-        "CPD_SAVE_TRAJECTORY_OUTPUT"
+        "CPD_SAVE_TRAJECTORY_OUTPUT",
+        "COPILOT_OTEL_ENABLED"
       ],
       "output": "Hosted settings envelope, default GitHub MCP policy, OIDC token injection, OTel exporter config, firewall summaries, and trajectory files.",
       "docs": "docs/05-hosted-agent-ops/hosted-agent-environment.md",
       "resolvedSeeds": [
         {
+          "anchor": "S.mcpRegistryPropagatableEnvironmentVariables(",
+          "line": 2577
+        },
+        {
           "anchor": "GITHUB_COPILOT_MCP_JSON",
           "line": 2603
+        },
+        {
+          "anchor": "COPILOT_OTEL_ENABLED",
+          "line": 2764
         }
       ]
     },

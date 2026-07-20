@@ -8,17 +8,17 @@ This document explains how the `/fleet` feature is implemented in the extracted 
 
 | Area | Semantic alias | Minified anchor | Approx. line | Role |
 |---|---|---:|---:|---|
-| Slash command handler | `fleetCommand(...)` | `Lps(t, e)` | 1305 | Handles `/fleet [prompt]`, trims the prompt, and calls `session.fleet.start(...)`. |
-| Slash command registration | `builtInSlashCommands` | command object with `name: "fleet"` | 1340 | Registers `/fleet` as a built-in runtime command: “Enable fleet mode for parallel subagent execution”. |
-| Fleet API implementation | `createFleetApi(session)` | `rKn(t)` | 4361 | Adds `session.fleet.start({ prompt })`; builds the fleet prompt and sends it into the current session. |
-| Fleet prompt template | `FLEET_MODE_PROMPT` | `eKn` | 4363 | Instructs the main agent to use SQL todos and parallel `task` calls. |
-| Fleet API schema | `FleetStartRequest`, `FleetStartResult` | `tKn` | 4396 | Defines the `prompt` input and `{ started: boolean }` result shape for the session API. |
-| Session API surface | `SessionApi.fleet` | `fleet=rKn(this)` | 4471 | Exposes fleet operations on the session object. |
+| Slash command handler | Fleet slash-command path | `/fleet`, session fleet API | 2064, 2438-2456 | Handles `/fleet [prompt]`, trims the prompt, and calls `session.fleet.start(...)`. |
+| Slash command registration | Built-in slash-command set | `/fleet` constant and command metadata | 2064, 2438-2559 | Registers `/fleet` as a built-in runtime command. |
+| Fleet API implementation | Session fleet API | `fleet.start`, fleet prompt builder | 632, 2686 | Adds `session.fleet.start({ prompt })`; builds the fleet prompt and sends it into the current session. |
+| Fleet prompt template | Fleet-mode prompt literal | `Now proceed with the user's request using fleet mode.` | 2663-2686 | Instructs the main agent to use SQL todos and parallel `task` calls. |
+| Fleet API schema | `FleetStartRequest`, `FleetStartResult` | generated schemas | `schemas/api.schema.json` | Defines the `prompt` input and `{ started: boolean }` result shape for the session API. |
+| Session API surface | `SessionApi.fleet` | `fleet.start` | 632, 2686 | Exposes fleet operations on the session object. |
 | RPC schema | `session.fleet.start` | `schemas/api.schema.json` | 552, 3012 | Exposes fleet start over JSON-RPC/SDK with an experimental stability marker. |
-| Plan-mode action | `autopilot_fleet` | `cZ` | 3617-3625, 6405, 7340 | Lets the plan approval UI accept a plan and immediately start autopilot plus fleet mode. |
-| Task execution layer | `createTaskTool(...)` | `I6n(...)` | 3735-3815 | Executes the subagents that fleet mode asks the main agent to dispatch. |
-| Background tracking | `TaskRegistry` | `B3` | 3367 | Tracks background subagents, status, messages, cancellation, and completion. |
-| SQL coordination | `session SQL tool` | `todos`, `todo_deps` instructions | 5205-5268 | Provides per-session todo/dependency tables used as the fleet source of truth. |
+| Plan-mode action | `autopilot_fleet` | mode-switch and plan approval paths | 2755, 3598 | Lets the plan approval UI accept a plan and immediately start autopilot plus fleet mode. |
+| Task execution layer | Task tool factory/native preparation | `S.toolTaskPrepareInput(...)` | 374-477 | Executes the subagents that fleet mode asks the main agent to dispatch. |
+| Background tracking | `TaskRegistry` | `nR` | 204 | Tracks background subagents, status, messages, cancellation, and completion. |
+| SQL coordination | Session SQL tool | `todos`, `todo_deps` instructions and updates | 2663-2686, 3317 | Provides per-session todo/dependency tables used as the fleet source of truth. |
 
 ## Key idea
 

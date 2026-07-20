@@ -2,6 +2,12 @@
 
 This file extracts prompt-related strings from `copilot-cli-pkg/app.js` and normalizes runtime substitutions to either `{{placeholder}}` form for logical catalog slots or `${sourceStyleExpression}` form when showing the JavaScript-derived rendering rule. It focuses on model-facing prompts and prompt templates; routine UI labels, telemetry messages, and third-party dependency strings are intentionally omitted.
 
+## Version boundary
+
+The expanded prompt literals and short aliases in the long-form catalog were originally reconstructed while more prompt composition remained JavaScript-visible. In the checked-in `1.0.71` package, the current top-level composition path is `xvt(...)` → `aX(...)` → `ime(...)`, with identity/environment fragments such as `m7n` and `h7n`; much of the wording is returned by native `S.prompts*` methods in `runtime.node`.
+
+Treat older aliases such as `X3e`, `Wmt`, `j0s`, `nxs`, `I6n`, and `nHn` below as historical lookup names for expanded-literal research, not as current `1.0.71` JavaScript identifiers. Rendered examples remain useful for understanding prompt intent, but current-version wording is confirmed only where a present `S.prompts*` call, JavaScript literal, or packaged YAML definition exposes it.
+
 ## Catalog structure
 
 The catalog is organized by runtime role, then by concrete prompt family. Use the early tables to identify where a placeholder comes from, then jump to the relevant prompt family for the literal or rendered text.
@@ -69,9 +75,11 @@ The remaining unexpanded placeholders fall into these buckets rather than being 
 
 | Semantic alias | Minified anchor | Approx. location | Role |
 |---|---|---:|---|
-| Base identity fragment | `fft` | `app.js` 3101-3137 | Defines the core Copilot/agent identity used by system prompt builders. |
-| Top-level prompt builders | `j0s`, `Y0s`, `nxs`, `X3e(...)` | `app.js` 3101-4031 | Assemble identity, rules, tools, custom instructions, and runtime context into active system prompts. |
-| General-purpose prompt slot fillers | `XIs`, `exs`, `txs`, `rxs`, `oxs(...)`, `o6n(...)`, `Wmt(...)` | `app.js` 3817-4031 | Fill the `nxs` placeholders for tone/style, search/delegation, tool efficiency, environment context, and the general-purpose no-temp-dir suffix. |
+| Current top-level composition | `aX(...)`, `ime(...)`, `qzn` | `app.js` 479-505 | Assembles identity, rules, tools, custom instructions, runtime context, selected-agent instructions, and final reminders. |
+| Current general-purpose wrapper | `xvt(...)`, `m7n`, `h7n`, `u7n`, `d7n`, `p7n`, `g7n` | `app.js` 479-505 | Supplies identity, tone/style, search/delegation, tool-efficiency, and environment fragments for the general-purpose agent. |
+| Historical base identity fragment | `fft` | earlier JS-visible baseline | Defines the core Copilot/agent identity used by older system prompt builders. |
+| Historical top-level prompt builders | `j0s`, `Y0s`, `nxs`, `X3e(...)` | earlier JS-visible baseline | Assemble identity, rules, tools, custom instructions, and runtime context in the expanded-literal research below. |
+| Historical general-purpose slot fillers | `XIs`, `exs`, `txs`, `rxs`, `oxs(...)`, `o6n(...)`, `Wmt(...)` | earlier JS-visible baseline | Fill the legacy `nxs` placeholders documented below. |
 | Coding/task rule fragments | `uft`, `CCe`, `X0s`, `TCe` | `app.js` 3101-3230 | Provide coding, validation, task-execution, and general guideline layers. |
 | Tool instruction fragments | `yft`, `Vae`, `H0s(...)` | `app.js` 3203-3230 | Render model-visible tool-use instructions and parallel/direct calling guidance. |
 | Custom instruction wrappers | `I0s`, `hft` | `app.js` 3101-3230 | Wrap instruction priority and org/repo/user custom instruction text. |
@@ -85,7 +93,7 @@ This matrix is the shortest holistic view of the catalog. It separates **entry p
 
 | Runtime lane | Entry trigger | Main builder or prompt set | Core prompt families | Late-bound inputs | Primary catalog sections |
 |---|---|---|---|---|---|
-| General-purpose CLI | Normal CLI session or general-purpose agent wrapper. | `Wmt(...)` → `X3e(...)` → `nxs`. | Preamble, tone/style, search/delegation, tool efficiency, environment context, optional version/model info. | Current working directory, git root, repository identity, OS, cwd listing, connected IDE, model/version, session capabilities. | [General-purpose main prompt assembly](#general-purpose-main-prompt-assembly). |
+| General-purpose CLI | Normal CLI session or general-purpose agent wrapper. | `xvt(...)` → `aX(...)` → `ime(...)` / `m7n`. | Preamble, tone/style, search/delegation, tool efficiency, environment context, optional version/model info. | Current working directory, git root, repository identity, OS, cwd listing, connected IDE, model/version, session capabilities. | [General-purpose main prompt assembly](#general-purpose-main-prompt-assembly). |
 | Default coding agent | Coding/custom-agent request that is not forced into the task-agent path. | `x4n(...)` → `bft(...)` → `j0s`. | `tTs` identity, `sTs`/`CCe` code-change bundle, `TCe`/`Eft` guidelines, `jae` environment limits, `yft` tools, `hft` custom instructions, `Vae` final reminders. | Security context, `reportProgressInstruction`, tool config overrides, active tools, LSP languages, MCP/server instructions, org/repo instructions. | [Main agent assembly templates](#main-agent-assembly-templates), [Default coding-agent rendered text](#default-coding-agent-rendered-text-for-the-highlighted-slots). |
 | Task agent | Task-agent subagent or `x4n(..., agentKind === "task")` branch. | `v4n(...)` → `K0s(...)` → `Y0s`. | `J0s` identity, `Z0s` task instructions, `X0s` planning/exploration rules, wrapped code-change instructions, stricter `eTs` report-progress guidance, `W0s` tips. | Create-PR capability, tool config overrides, runtime report-progress override, org/repo instructions, active tools. | [Task-agent expansion path](#task-agent-expansion-path), [Task-instruction fragment](#task-instruction-fragment). |
 | Slash-command macros | `/init`, `/plan`, `/review`, `/research`, `/subconscious run`. | Command-specific prompt literal inserted as a request seed. | Repository-instruction generation, plan creation, code-review dispatch, research dispatch, memory-consolidation dispatch. | User request, review instructions, research topic/report path, memory worker dispatch parameters. | [Command and orchestration prompt macros](#command-and-orchestration-prompt-macros). |
@@ -641,17 +649,17 @@ Path: `v4n(...)` → `K0s(...)` → `Y0s`.
 
 ### General-purpose main prompt assembly
 
-Source: `nxs` is the inner CLI/general-purpose identity template. `X3e(...)` computes each slot before rendering it, and `Wmt(...)` is the general-purpose-agent wrapper that calls `X3e(...)` with `version: void 0`, `currentWorkingDirectory: location`, `capabilities: { parallel_tool_calls: true }`, and `sessionCapabilities: NWe` (`memory`, `cli-documentation`, `ask-user`). `Wmt(...)` then appends the no-temporary-directory suffix from `o6n(...)`.
+Current source path: `m7n` is the inner CLI identity template, `aX(...)` computes each slot and calls `ime(...)` for outer assembly, and `xvt(...)` is the general-purpose-agent wrapper. It calls `aX(...)` with `version: void 0`, `currentWorkingDirectory: location`, `capabilities: { parallel_tool_calls: true }`, and the general-purpose session-capability set, then appends its subagent-specific completion guidance.
 
 | Placeholder | Filled by | Value in the general-purpose-agent path |
 |---|---|---|
-| `{{preamble}}` | `yt` inside `X3e(...)` | `You are the GitHub Copilot CLI, a terminal assistant built by GitHub.` plus the session-mode sentence. Because `Wmt(...)` uses `NWe` and does not include `interactive-mode`, the rendered general-purpose agent gets the non-interactive sentence shown below. |
-| `{{tone_and_style}}` | `XIs.with({ instructions: parts.toneAndStyle || ZIs })` | The `# Tone and style` block shown below. `parts.toneAndStyle` can override it; `Wmt(...)` passes empty `parts`, so it uses `ZIs`. |
-| `{{search_and_delegation}}` | `exs.with({ glob_tool_name, grep_tool_name, shell_tool_name })` | The `# Search and delegation` block shown below. Tool names come from `toolConfigOverrides`; defaults are `glob`, `grep`, and `bash`. |
-| `{{tool_efficiency}}` | `(SUBAGENT_PARALLELISM_PROMPTS ? rxs : txs).with(...)` | One of the two `# Tool usage efficiency` blocks. The default/static branch is the parallel-calling block; the feature-gated branch adds direct-action and sync-over-background guidance. |
-| `{{version_information}}` | `version ? \`Version number: ${version}\` : ""` | Empty for `Wmt(...)`, because it calls `X3e(...)` with `version: void 0`. |
-| `{{model_information}}` | `modelId` and optional `modelDisplayName` passed to `X3e(...)` | Empty for `Wmt(...)`, because no `modelId` is passed. When present, it renders `Powered by <model ... />` plus the “when asked which model” instruction. |
-| `{{environment_context}}` | `oxs(currentWorkingDirectory, location, availableCommandList, cwdListing, connectedIde, repository)` plus `JIs` | The `<environment_context>` block shown below. It expands each field separately: cwd, git root, optional repository identity, OS, optional cwd listing, detected tools, optional IDE, and Windows-only path guidance. |
+| `{{preamble}}` | `Cr` inside `aX(...)`, rendered by `m7n` | `You are the GitHub Copilot CLI, a terminal assistant built by GitHub.` plus the session-mode sentence. Because `xvt(...)` omits `interactive-mode`, the general-purpose agent receives the non-interactive form. |
+| `{{tone_and_style}}` | `u7n` with `parts.toneAndStyle || c7n` | The tone/style block. `xvt(...)` passes empty `parts`, so the native default returned through `c7n` is used. |
+| `{{search_and_delegation}}` | `d7n` with glob/grep/shell tool names | Search/delegation guidance using tool names from `toolConfigOverrides`, defaulting to `glob`, `grep`, and `bash`. |
+| `{{tool_efficiency}}` | `p7n` or `g7n` based on `SUBAGENT_PARALLELISM_PROMPTS` | Base or enhanced tool-efficiency guidance. |
+| `{{version_information}}` | `version ? \`Version number: ${version}\` : ""` | Empty for `xvt(...)`, because it calls `aX(...)` with `version: void 0`. |
+| `{{model_information}}` | `modelId` and optional `modelDisplayName` passed to `aX(...)` | Empty for `xvt(...)`, because no model ID is passed. When present, `aX(...)` renders the current model metadata. |
+| `{{environment_context}}` | `h7n(currentWorkingDirectory, location, availableCommandList, connectedIde, repository)` | The environment block with cwd, Git root, repository, OS, detected tools, and optional IDE; directory-listing context is assembled elsewhere in `aX(...)`. |
 
 Expanded for the general-purpose-agent path, with environment fields shown as their runtime expressions:
 
@@ -702,16 +710,16 @@ Environment field expansion comes from these expressions:
 
 | Field | Source expression | Render rule |
 |---|---|---|
-| Current working directory | `currentWorkingDirectory`; `Wmt(...)` passes `location` | Always rendered. |
-| Git repository root | `location === "" ? "" : vb(location)` inside `oxs(...)` | If empty, renders `Not a git repository`. |
-| Git repository | `repository` passed into `Wmt(...)`; often `(await F7(location))?.identifier` | Omitted when absent. |
-| Operating System | `MIs.type()` (`node:os.type()`) | Always rendered, for example `Linux`, `Darwin`, or `Windows_NT`. |
-| Directory contents | `iKt(currentWorkingDirectory)`, gated by `REMOVE_CWD_LISTING` | Omitted only when `REMOVE_CWD_LISTING` is enabled; otherwise renders the listing, or `<unavailable>` if empty/unavailable. |
-| Available tools | `XUe("git")`, `XUe("curl")`, `XUe("gh")` in `X3e(...)` | Renders the comma-joined subset found on `PATH`. |
+| Current working directory | `currentWorkingDirectory`; `xvt(...)` passes `location` | Always rendered. |
+| Git repository root | resolved `location` passed to `h7n(...)` | If empty, renders `Not a git repository`. |
+| Git repository | `repository` passed into `xvt(...)` / `aX(...)` | Omitted when absent. |
+| Operating System | `node:os.type()` inside `h7n(...)` | Always rendered, for example `Linux`, `Darwin`, or `Windows_NT`. |
+| Directory contents | workspace context assembled by `aX(...)`, with `REMOVE_CWD_LISTING` eligibility | Omitted when the feature removes it; otherwise supplied as runtime context rather than by `h7n(...)` itself. |
+| Available tools | asynchronous `git`/`curl`/`gh` existence checks inside `aX(...)` | Renders the comma-joined subset found on `PATH`. |
 | Connected IDE | `connectedIde.ideName` and `connectedIde.workspaceFolder` | Omitted when no IDE context is passed. |
 | Windows path instruction | `JIs` gated by `LIs` / Windows platform detection | Omitted on non-Windows; appended inside the XML-rendered environment context on Windows. |
 
-For non-`Wmt(...)` callers of the same `X3e(...)`/`nxs` template, these conditional slots can render as follows:
+For non-`xvt(...)` callers of the same `aX(...)` / `m7n` composition path, these conditional slots can render as follows:
 
 ```text
 Version number: ${version}
@@ -869,13 +877,13 @@ ${tips_from_call_site}* Do not create markdown files for planning, notes, or tra
 
 | Call site | Source value | Rendered meaning |
 |---|---|---|
-| Main CLI / general prompt (`X3e(...)`) | `oe` | Empty by default, then conditionally concatenates the Rubber Duck guidance (`FIs` or `QIs`), self-documentation guidance (`HIs`), and the git co-author trailer (`GIs`). |
+| Main CLI / general prompt (`aX(...)`) | current additional-instruction assembly | Conditionally combines Rubber Duck guidance, self-documentation guidance, system notifications, memory/session context, plan/autopilot blocks, canvases, content-exclusion guidance, and the git co-author trailer. |
 | Task agent prompt (`v4n(...)` / `Y0s`) | `r0(Eft.override({ reporting_progress: reportProgressInstruction || eTs }))` | The `Eft` instruction bundle: new-requirement handling, report-progress workflow, and CI/build-failure workflow. The task-agent path swaps in the stricter `eTs` report-progress text unless a runtime override is provided. |
 | Coding agent prompt (`x4n(...)`) | `Eft.override({ reporting_progress: reportProgressInstruction || Eft.parts.reporting_progress })` | The default `Eft` instruction bundle, unless runtime config overrides the report-progress section. |
 
 `{{tips}}` has these concrete expansions.
 
-Main CLI / general prompt (`X3e(...)`) uses `WIs(hasApplyPatchTool)` when `ask_user` is unavailable:
+Main CLI / general prompt (`aX(...)`) selects the no-ask-user guideline path when `ask_user` is unavailable:
 
 ```text
 * Reflect on command output before proceeding to next step

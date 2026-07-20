@@ -16,21 +16,21 @@ The short version: the model-visible `task` tool is the main subagent router, wh
 | Research prompt | `buildResearchOrchestratorPrompt(...)` | `wLn(...)` | 1346-1537 | Builds the research-orchestrator system prompt that delegates investigation to `agent_type: "research"`. |
 | Custom agents | `loadCustomAgents(...)`, `loadCustomAgentMcpServers(...)`, `convertCustomAgentMcpConfig(...)` | `yar`, `xSs`, `bQn`, `gar`, `L5e` | 2789 | Loads local/plugin/remote custom agents and their MCP tools. |
 | Custom agent executor | `CustomAgentExecutor` | `$vs(...)` | 3553 | Wraps a custom agent as an executable subagent/tool. |
-| Task registry | `TaskRegistry` | `B3` | 3367 | Tracks agent tasks, states, message queues, progress, results, and cancellation. |
-| Background launch | `launchBackgroundAgent(...)` | `Bur(...)` | 3698 | Starts a background agent through the task registry. |
-| Task tool | `createTaskTool(...)`, `taskToolInputSchema`, `TASK_TOOL_NAME` | `I6n(...)`, `v6n`, `H3="task"` | 3735-3815 | Defines the `task` tool schema, instructions, dispatch callback, sync/background modes. |
-| Task completion tool | `createTaskCompleteTool(...)`, `TASK_COMPLETE_TOOL_NAME`, continuation prompt | `$Vn()`, `UM="task_complete"`, `UTe`, `Dgr` | 4140-4149 | Defines the explicit main-agent completion tool, summary schema, terminal-tool instructions, and hidden continuation reminder. |
-| Built-in agents | `BUILT_IN_AGENTS` | `nHn`, `security-review` | 4496 | Catalog of built-in agents: `explore`, `task`, `general-purpose`, `rubber-duck`, `code-review`, `security-review`, `research`, `rem-agent`. |
-| Session subagent executor | `SessionAgentExecutor` | `dZ` | 4037-4039 | Runs built-in/session-based agents, emits subagent boundaries, applies hooks, supports multi-turn loops. |
-| MCP task bridge | `doInvokeToolWithTask`, `consumeTaskStreamNonBlocking` | same names | 4138 | Converts MCP `taskSupport: "required"` tools into background `mcp-task` agent records. |
-| Tool assembly | `assembleRuntimeTools(...)`, `assembleSubagentTools(...)` | `HCr(...)`, `Gjs(...)` | 5734 | Builds tool lists recursively and injects `task`, agent tools, MCP tools, skills, shell tools, etc. |
-| Session runtime | `getToolConfig`, `waitForPendingBackgroundTasks` | same names | 4481-4487 | Wires hooks, task registry, MCP host, session events, and shutdown waiting. |
-| Completion event emission | `tool.execution_complete`, `session.task_complete` | `ue===UM`, `emit("session.task_complete", ...)` | 4481 | Converts a `task_complete` tool execution into the durable completion event consumed by autopilot/prompt-mode loops and timeline projection. |
-| Session idleness | `emitSessionIdle(...)`, `emitDeferredSessionIdleIfReady(...)`, `hasActiveBackgroundWork(...)` | same names | 4481 | Emits `session.idle` only when the foreground loop and running background agents are drained; this is not the same as task completion. |
-| TUI autopilot continuation | `useAutopilotContinuation(...)` | `F5o(...)` | 6615 | Watches `session.task_complete`, `session.error`, `abort`, and `session.idle`; sends `UTe` until completion or limit. |
-| Completion timeline projection | `buildTimelineEntries(...)`, task-complete renderer | `session.task_complete`, `a3o(...)`, `onTaskComplete` | 6639, 6860 | Hides the raw `task_complete` tool call and renders a `Task complete` timeline entry from the session event. |
-| Prompt/autopilot | `runPromptMode(...)`, prompt-mode listeners | `u1t(...)` | 7420 | Prompt mode, `session.task_complete`, and autopilot continuation loop. |
-| Detached memory agent | `spawnDetachedMemoryAgent(...)` | `T5a(...)` | 7445 | Spawns a detached `rem-agent` on shutdown when subconscious memory is enabled. |
+| Task registry | `TaskRegistry` | `nR` | 204 | Tracks agent tasks, states, message queues, progress, results, and cancellation. |
+| Background launch | Task tool background branch | task provider callback and `nR` | 374-477 | Starts a background agent through the task registry. |
+| Task tool | Task tool factory and native input preparation | `S.toolTaskPrepareInput(...)`, `agent_type` | 374-477 | Defines the `task` tool schema, instructions, dispatch callback, sync/background modes. |
+| Task completion tool | `createTaskCompleteTool(...)`, continuation prompt | `oC="task_complete"`, `dme(...)`, native prompt helpers | 604 | Defines the explicit main-agent completion tool, summary schema, terminal-tool instructions, and hidden continuation reminder. |
+| Built-in agents | Built-in catalog arrays | `$_t`, `ozn`, `qLe` | 324 | Catalog of built-in agents: `explore`, `task`, `general-purpose`, `rubber-duck`, `code-review`, `security-review`, `research`, `rem-agent`. |
+| Session subagent executor | `SessionAgentExecutor` | `lR`, preserved execute log string | 513-515 | Runs built-in/session-based agents, emits subagent boundaries, applies hooks, supports multi-turn loops. |
+| MCP task bridge | `doInvokeToolWithTask`, task stream consumption | preserved method/native task support | 2577-2583 | Converts MCP `taskSupport: "required"` tools into background `mcp-task` agent records. |
+| Tool assembly | `buildSettingsAndTools(...)`, `initializeAndValidateTools(...)` | preserved methods | 2755-2759 | Builds tool lists recursively and injects `task`, agent tools, MCP tools, skills, shell tools, etc. |
+| Session runtime | task registry and `waitForPendingBackgroundTasks` | preserved methods | 2755-2762 | Wires hooks, task registry, MCP host, session events, and shutdown waiting. |
+| Completion event emission | `tool.execution_complete`, `session.task_complete` | `hn===oC`, `emit("session.task_complete", ...)` | 2762 | Converts a `task_complete` tool execution into the durable completion event consumed by autopilot/prompt-mode loops and timeline projection. |
+| Session idleness | session idle/deferred-idle methods | preserved methods | 2755-2762 | Emits `session.idle` only when the foreground loop and running background agents are drained; this is not the same as task completion. |
+| TUI autopilot continuation | `useAutopilotContinuation(...)` | task-complete/idle effect | 4373 | Watches `session.task_complete`, `session.error`, `abort`, and `session.idle`; sends `UTe` until completion or limit. |
+| Completion timeline projection | `buildTimelineEntries(...)`, task-complete renderer | `session.task_complete`, `Task complete` | 3289, 3325 | Hides the raw `task_complete` tool call and renders a `Task complete` timeline entry from the session event. |
+| Prompt/autopilot | `runPromptMode(...)`, prompt-mode listeners | `oCe(...)`, `u9r(...)` | 3327-3384 | Prompt mode, `session.task_complete`, and autopilot continuation loop. |
+| Detached memory agent | `spawnDetachedMemoryAgent(...)` | detached `--agent rem-agent` spawn path | 4446 | Spawns a detached `rem-agent` on shutdown when subconscious memory is enabled. |
 
 ## Big picture
 
@@ -320,7 +320,7 @@ Important behavior in the dispatch callback:
 - Subagent recursion is capped by `COPILOT_SUBAGENT_MAX_DEPTH`, defaulting to `6`.
 - Concurrent subagents are capped by `COPILOT_SUBAGENT_MAX_CONCURRENT`, with plan-dependent defaults and an env cap up to `256`.
 
-At the method level, the `createTaskTool(...)` callback (`I6n`) has four important branch points:
+At the method level, the task callback around lines `374-477` has four important branch points after `S.toolTaskPrepareInput(...)` normalizes the request:
 
 | Branch | Source-level behavior | Why it matters |
 |---|---|---|
@@ -460,7 +460,7 @@ flowchart TD
 
 ### SessionAgentExecutor method flow
 
-The session-based executor (`dZ`) is the built-in-agent path behind `SESSION_BASED_SUBAGENTS`. It creates a child session rather than running a loose callback. That makes hooks, skills, tool initialization, selected model, events, and teardown look like a normal session lifecycle.
+The session-based executor (`lR`, identified by the preserved `SessionAgentExecutor.execute()` log string) creates a child session rather than running a loose callback. That makes hooks, skills, tool initialization, selected model, events, and teardown look like a normal session lifecycle.
 
 | Method | Main responsibilities |
 |---|---|

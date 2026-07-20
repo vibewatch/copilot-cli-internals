@@ -19,10 +19,10 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 |---|---|---:|---|
 | Built-in fetch tool | `web_fetch`, `Fetching web content`, `raw`, `start_index` | 1144 | Tool fetches a URL and returns markdown or raw HTML with pagination. |
 | GitHub MCP web search shim | `github-mcp-server-web_search`, `web_search`, `Bgr(...)` | 4149 | GitHub MCP web search can be renamed/exposed as `web_search`. |
-| Tool categories | `web_fetch`, `web_search`, `fetch`, `search` | 6103 | Web tools map to fetch/search categories for permissions/tool grouping. |
+| Tool categories | `web_fetch`, `web_search`, `fetch`, `search` | 3155-3156 | Web tools map to fetch/search categories for permissions/tool grouping. |
 | URL permission request mapping | `case "url": toolName:"web_fetch"` | 4211 | URL permission prompts are represented as `web_fetch` tool requests. |
 | URL allow/deny settings | `allowedUrls`, `deniedUrls`, `Dy`, `pZe` | 239, 555 | Persistent URL allow/deny lists and unrestricted mode. |
-| CLI URL flags | `--allow-url`, `--deny-url`, `--allow-all-urls`, `--allow-all`, `--yolo` | 8090-8130, 8221 | User-visible URL permission flags and help text. |
+| CLI URL flags | `--allow-url`, `--deny-url`, `--allow-all-urls`, `--allow-all`, `--yolo` | 5522-5562, 5687-5782 | User-visible URL permission flags and help text. |
 | Feature gate | `DISABLE_WEB_TOOLS` | 239 | Static feature gate can disable web tools. |
 | Built-in GitHub MCP toolsets | `X-MCP-Toolsets`, `web_search`, `X-MCP-Tools` | 2789, 4207, 4288 | Built-in GitHub MCP requests can include web search/toolset headers. |
 | Tool allowlist parsing | `webfetch`, `web_fetch`, `websearch`, `web_search` | 3194 | Tool names are recognized in allowed-tools parsing. |
@@ -147,7 +147,7 @@ This allows permission UI and telemetry to present URL access in the same framew
 
 ## Tool grouping
 
-The tool-category mapper around line `6103` groups:
+The tool-category mapper around lines `3155-3156` groups:
 
 | Tool name | Category |
 |---|---|

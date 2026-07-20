@@ -25,10 +25,10 @@ In practical terms:
 
 | Area | Semantic alias | Minified anchor | Approx. line | What it shows |
 |---|---|---:|---:|---|
-| CLI flags | `RootProgram` options | `--no-ask-user`, `--autopilot`, `--max-autopilot-continues`, `--mode` | 8221 | Flag definitions, defaults, choices, and conflicts. |
-| Initial mode helper | `resolveInitialAgentMode(...)` | `F8a(...)` | 7816 | Chooses `mode`, then `autopilot`, then `plan` for the TUI initial mode. |
-| Root dispatch | `mainCliAction(...)` | `noAskUser: !t.askUser`, `autopilot: t.autopilot || t.mode === "autopilot"` | 8327 | Routes parsed flags into TUI and prompt-mode branches. |
-| TUI session host | `InteractiveTuiRoot` | `jQa(...)`, `zB = !noAskUser && config.askUser !== false` | 7335-7340 | Computes ask-user availability and passes `askUserDisabled` into session options. |
+| CLI flags | `RootProgram` options | `--no-ask-user`, `--autopilot`, `--max-autopilot-continues`, `--mode` | 5678-5696 | Flag definitions, defaults, choices, and conflicts. |
+| Initial mode helper | `resolveInitialAgentMode(...)` | `pPn(...)` | 5077 | Chooses `mode`, then `autopilot`, then `plan` for the TUI initial mode. |
+| Root dispatch | `mainCliAction(...)` | `noAskUser: !t.askUser`, autopilot/mode options | 5774-5823 | Routes parsed flags into TUI and prompt-mode branches. |
+| TUI session host | `InteractiveTuiRoot` | TUI/session options and `askUserDisabled` | 4373-4434 | Computes ask-user availability and passes `askUserDisabled` into session options. |
 | Session capability filter | `Session.getEffectiveCapabilities()` | `askUserDisabled`, `delete("ask-user")` | 4471 | Removes the `ask-user` capability when disabled. |
 | Session mode state | `Session.currentMode` | `_currentMode`, `session.mode_changed` | 4471 | Tracks the current agent mode and emits mode-change events. |
 | Tool config | `buildSettingsAndTools(...)` | `autopilotActive: r === "autopilot"` | 4481 | Marks the active turn as autopilot for prompt and tool assembly. |
@@ -36,10 +36,10 @@ In practical terms:
 | Tool assembly | `assembleRuntimeTools(...)` | `ask-user`, `requestUserInput`, `$Vn()` | 5734 | Adds `ask_user` only when the capability and handler exist; adds `task_complete` when autopilot is active. |
 | `ask_user` tool | `createAskUserTool(...)` | `ZYr(...)`, `ZE = "ask_user"`, `HW` | 602 | Defines the structured user-question tool and the autonomous fallback answer. |
 | `task_complete` tool | `createTaskCompleteTool(...)` | `$Vn()`, `UM = "task_complete"`, `UTe` | 4140-4149 | Defines explicit task completion and the internal continuation prompt. |
-| TUI continuation loop | `useAutopilotContinuation(...)` | `F5o(...)` | 6615 | Continues after `session.idle` until `task_complete`, error, abort, or max count. |
+| TUI continuation loop | `useAutopilotContinuation(...)` | task-complete/idle effect | 4373 | Continues after `session.idle` until `task_complete`, error, abort, or max count. |
 | Completion persistence | `stayInAutopilot` | continuation controller option | 4373, 5168 | Defaults to `false`; when enabled, completion does not switch the session back to interactive mode. |
 | Objective | `/autopilot <objective>`, `/goal` | objective provider | current slash-command surface | Keeps continuation prompts aligned to a named objective. |
-| Prompt-mode continuation loop | `executePromptDirectly(...)` | `session.task_complete`, `session.idle`, `UTe` | 7416 | Non-interactive autopilot loop. |
+| Prompt-mode continuation loop | `u9r(...)` | `session.task_complete`, `session.idle`, `UTe` | 3364-3384 | Non-interactive autopilot loop. |
 | Slash command | `/autopilot` | `Rps(...)`, `Deo` | 1300, 4918 | Runtime and TUI slash-command paths for toggling autopilot. |
 | Plan slash command | `/plan` | `Fps(...)`, `[[PLAN]]`, `mode: "plan"` | 1305, 1340 | Converts a slash command into a plan-mode agent prompt and prefixes plan prompts. |
 | Plan-mode prompt block | `<plan_mode>` | `plan_mode`, `exit_plan_mode` | 3934 | Instructs the model to create/update `plan.md`, avoid implementation, and end with plan approval when required. |

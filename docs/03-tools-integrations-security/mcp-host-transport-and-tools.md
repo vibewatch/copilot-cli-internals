@@ -397,7 +397,7 @@ The startup and auth-change flow is:
 6. Otherwise build/restart the built-in GitHub MCP server.
 7. On logout/auth loss, `removeGitHubMcp()` stops the built-in server unless the user explicitly configured it.
 
-The runtime also auto-disables the built-in GitHub MCP server in some non-GitHub repository situations. `TTt(...)` inspects the current Git remotes, and `wTt(...)` returns true when the repository has Azure DevOps remotes, has no GitHub remotes, the user did not configure `github-mcp-server`, and the server is not already disabled. Both the interactive MCP setup (`T6o(...)`, approximately `app.js` line 6689) and prompt-mode setup (`u1t(...)`, approximately line 7391) add `github-mcp-server` to the disabled-server list in that case. The TUI additionally displays the informational re-enable hint: `/mcp enable github-mcp-server`.
+The runtime also auto-disables the built-in GitHub MCP server in some non-GitHub repository situations. `TTt(...)` inspects the current Git remotes, and `wTt(...)` returns true when the repository has Azure DevOps remotes, has no GitHub remotes, the user did not configure `github-mcp-server`, and the server is not already disabled. Both the interactive MCP setup (the TUI/session initialization path around `app.js` lines 4400-4427) and prompt-mode setup (`oCe(...)`, approximately lines 3327-3353) add `github-mcp-server` to the disabled-server list in that case. The TUI additionally displays the informational re-enable hint: `/mcp enable github-mcp-server`.
 
 ## Built-in and in-memory servers
 

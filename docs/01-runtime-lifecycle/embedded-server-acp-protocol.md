@@ -12,16 +12,16 @@ This page covers the protocol-host branch of [Runtime lifecycle](README.md). It 
 
 | Semantic alias | Minified anchor | Approx. `app.js` line | Role |
 |---|---|---:|---|
-| CLI server flags | `--server`, `--ui-server`, `--headless`, `--acp`, `--stdio`, `--host` | 8225 | Root CLI can run headless JSON-RPC server, embedded UI server, or ACP server. |
+| CLI server flags | `--server`, `--ui-server`, `--headless`, `--acp`, `--stdio`, `--host` | 5687-5782 | Root CLI can run headless JSON-RPC server, embedded UI server, or ACP server. |
 | JSON-RPC schemas | `jsonrpc:"2.0"`, `ParseError`, `InvalidRequest`, `MethodNotFound`, `InvalidParams` | 4120, 6105 | Protocol layer validates JSON-RPC messages and maps standard error codes. |
-| ACP connection | `ACP connection closed`, `sendRequest`, `sendNotification`, `pendingResponses` | 6105 | Connection class handles request/response correlation and serialized writes. |
+| ACP connection | `ACP connection closed`, `sendRequest`, `sendNotification`, `pendingResponses` | 3153-3155 | Connection class handles request/response correlation and serialized writes. |
 | Session events | `SESSION_EVENT:"session.event"`, `SESSION_LIFECYCLE:"session.lifecycle"` | 6066, 6103 | Server forwards session events and lifecycle notifications. |
 | External tools | `external_tool.requested`, `external_tool.completed`, `respondToExternalTool` | 4210, 4361, 4396, 4471 | Extension/client tools are requested through events and completed by client responses. |
 | Elicitation | `elicitation.requested`, `elicitation.completed`, `respondToElicitation`, `handlePendingElicitation` | 4210, 4361, 4396, 4471 | UI/client can satisfy structured form/URL elicitation requests. |
 | Sampling | `sampling.requested`, `sampling.completed`, `respondToSampling` | 4210, 4361, 4471 | MCP sampling requests can be delegated to capable clients. |
 | Commands | `command.queued`, `command.execute`, `command.completed`, `respondToQueuedCommand` | 4210, 4361, 4471 | Server protocol can queue and execute slash/SDK commands through clients. |
 | Capability changes | `capabilities.changed`, `commands.changed`, `capabilityProviders` | 4361, 4471, 6103 | Connections can add/remove UI capabilities and SDK commands dynamically. |
-| Permission bridge | `requestPermission`, `requestPermissionCallback`, `permissionCallbackProviders` | 6103, 6106 | ACP clients can own permission prompts or callbacks. |
+| Permission bridge | `requestPermission`, `requestPermissionCallback`, `permissionCallbackProviders` | 2797-2799, 3155-3156 | ACP clients can own permission prompts or callbacks. |
 | Canvas bridge | `requestCanvasRenderer`, `session.canvas.opened`, `session.canvas.registry_changed`, `open_canvas` | 372, 4821, 6375 | SDK/server clients can register renderable canvases, expose canvas tools, and receive canvas lifecycle events. |
 | MCP Apps bridge | `requestMcpApps`, `mcp_app.tool_call_complete`, `mcp-apps` capability | 4940, 6375 | SDK/server clients can opt into MCP Apps capability negotiation when the feature gate or env override allows it. |
 

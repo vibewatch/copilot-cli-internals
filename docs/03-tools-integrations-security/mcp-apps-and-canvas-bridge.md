@@ -21,8 +21,8 @@ Read this with [Embedded server, ACP, and JSON-RPC protocol](../01-runtime-lifec
 | Durable canvas state | Canvas replay events | `session.canvas.recorded`, `session.canvas.removed`, `session.canvas.listOpen` | 167, 2651, 2742 | Open instance identity survives replay/restart separately from transient availability and URL state. |
 | Node SDK canvas API | Per-canvas factory | `createCanvas(...)`, `CanvasOptions`, `CanvasAction` | `copilot-sdk/canvas.d.ts` | Extensions bind open, close, and action handlers while sending only declaration metadata over the wire. |
 | Native canvas renderer | Local webview/window manager | `Ffi()`, `Ofi()`, `Dfi()`, `pendingOpens`, `windows` | 4402 | Loads `@webviewjs/webview`, owns native windows per session/instance, and falls back to a logged URL when unavailable. |
-| SDK/server capability ingress | Session capability options | `requestCanvasRenderer`, `requestMcpApps`, `buildSdkSessionCapabilities` | 6375 | SDK/server create/resume can opt sessions into canvas and MCP Apps capabilities. |
-| SDK connection registration | Canvas provider registration | `registerCanvasesForConnection(...)` | 6375 | Connected SDK/server clients can register canvas providers by connection. |
+| SDK/server capability ingress | Session capability options | `requestCanvasRenderer`, `requestMcpApps`, `buildSdkSessionCapabilities` | 2797-2799 | SDK/server create/resume can opt sessions into canvas and MCP Apps capabilities. |
+| SDK connection registration | Canvas provider registration | `registerCanvasesForConnection(...)` | 2797-2799 | Connected SDK/server clients can register canvas providers by connection. |
 | MCP Apps diagnostics | MCP Apps API surface | `mcp.apps.diagnose`, `_meta.ui`, `McpAppsDiagnoseResult` | 4856 | Runtime exposes a diagnostic API for capability and `_meta.ui` visibility. |
 | MCP Apps tool calls | App-originated MCP call event | `mcp_app.tool_call_complete`, `supportsMcpApps()` | 4940 | App-originated MCP calls emit success/error/duration/result metadata. |
 

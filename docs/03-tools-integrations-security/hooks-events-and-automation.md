@@ -26,7 +26,7 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 | VS Code compatibility | `_vsCodeCompat`, `SessionStart`, `UserPromptSubmit`, `PreToolUse`, `Stop` | 238, 2797 | Legacy/PascalCase hook names are mapped to canonical camelCase names. |
 | MCP tool-call hook | `preMcpToolCall`, `metaToUse`, `createMcpToolCallInterceptor` | 3102, 3336, 4597 | Hooks can inspect outgoing MCP tool calls and replace or clear `_meta` before the MCP provider calls `tools/call`. |
 | Security overrides | `COPILOT_HOOK_ALLOW_LOCALHOST`, `COPILOT_HOOK_ALLOW_HTTP_AUTH_HOOKS` | 238, 2792 | Local development and HTTP auth-hook override gates. |
-| Repo/user hook config | `.github/hooks/*.json`, `disableAllHooks`, `hooks` | 7923 | Settings/help text describes hook config shape and repo/user scopes. |
+| Repo/user hook config | `.github/hooks/*.json`, `disableAllHooks`, `hooks` | 5256-5258 | Settings/help text describes hook config shape and repo/user scopes. |
 | Hook execution events | `hook.start`, `hook.end`, `hookInvocationId` | 4361, 4471 | Sessions emit start/end events around hook invocation. |
 | Permission hook integration | `permissionRequest`, `resolvedByHook`, `permission.completed` | 4471 | Hooks can resolve authorization requests before normal prompting. |
 | Failure guidance | `postToolUseFailure`, `Additional guidance from postToolUseFailure hook` | 2794 | Failed tools can receive hook-provided model guidance. |
@@ -126,8 +126,8 @@ Hook definitions can come from multiple locations:
 
 | Source | Evidence | Notes |
 |---|---|---|
-| User/global config | Settings help text around line 7923 | Global config hooks act as user-level hooks. |
-| Repository settings | Settings help text around line 7923 | Repo settings hooks act as repo-level hooks. |
+| User/global config | Settings help text around lines 5256-5258 | Global config hooks act as user-level hooks. |
+| Repository settings | Settings help text around lines 5256-5258 | Repo settings hooks act as repo-level hooks. |
 | `.github/hooks/*.json` | Settings help says same schema as `.github/hooks/*.json` | File-based repository hook discovery. |
 | Plugins | Plugin manifest includes `hooks` | Plugins can package hook definitions. |
 | SDK extensions | `EXTENSIONS` text mentions programmatic tools and hooks | Runtime extensions can provide hooks/tools when gated on. |

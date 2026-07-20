@@ -115,9 +115,11 @@ The Linux binary retains the portal destination/path, the `org.freedesktop.appea
 - addon loading failure disables this path rather than failing the CLI;
 - title/body/subtitle content is normalized and length-limited before the native call;
 - an icon is resolved from packaged Copilot assets when available;
-- completion and attention notifications have separate cooldowns;
+- completion and attention notifications have separate cooldowns: two seconds for completion and five seconds for attention;
 - the cooldown timestamp is updated only when `showDesktopNotification(...)` returns a truthy success result;
 - native errors are swallowed at this outer adapter boundary.
+
+The cooldowns are distinct from the native notification timeout. Completion notifications are submitted with a six-second display timeout, while attention notifications are resident/time-sensitive and use a zero timeout in the JavaScript request. The per-kind `Gcn` timestamp map suppresses duplicates only after a successful native submission, so a failed desktop-bus call does not block an immediate retry.
 
 The Linux prebuild embeds `notify-rust` `4.18.0`, `zbus` `5.17.0`, `dbus` `0.9.12`, and the `org.freedesktop.Notifications` protocol strings. It therefore talks to the desktop notification service over the session bus rather than requiring a dynamically linked GUI toolkit. Retained `xdotool` and `wmctrl` strings are dependency-level evidence for notification activation behavior, but the stripped binary is insufficient to claim that every desktop environment takes that path.
 

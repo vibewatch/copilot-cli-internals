@@ -31,7 +31,7 @@ This document explains how the extracted `@github/copilot` CLI bundle handles mo
 | Circuit breaker | `HostCircuitBreaker` | `b1e`, `QQ` | `app.js` 236-238 | Opens after repeated network/5xx failures, blocks requests briefly, then half-opens for a probe. |
 | Session queue | `SessionMessageQueue` | `ua.itemQueue`, `processQueue(...)` | `app.js` 4475-4481 | Serializes normal messages in one session and defers idle while background agents are active. |
 | Serial operation queue | `SerialOperationQueue` | `nj` | `app.js` 239 | Generic one-at-a-time async operation queue used by runtime services. |
-| Task registry | `TaskRegistry` | `B3` | `app.js` 3367 | Tracks background/sync agents, states, waiters, cancellation, completion, and active-time accounting. |
+| Task registry | `TaskRegistry` | `nR` | `app.js` 204 | Tracks background/sync agents, states, waiters, cancellation, completion, and active-time accounting. |
 | Subagent concurrency limiter | `SubagentConcurrencyLimiter` | `qmt` | `app.js` 3698 | Caps concurrent subagent execution and releases slots on completion or idle wait. |
 | WebSocket Responses fallback | `WebSocketResponsesResilience` | `Pmt` | `app.js` 3469-3472 | Prevents concurrent reuse, falls back to HTTP Responses on early WebSocket failures, and closes/reset state. |
 | Quota message map | `QuotaErrorMessages` | `Rii` | `app.js` 191 | Maps 402 quota/billing errors to user-facing messages. |

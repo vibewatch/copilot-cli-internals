@@ -6,14 +6,14 @@ This document expands the session coverage that was previously spread across the
 
 | Area | Semantic alias | Minified anchor | Approx. line | Role |
 |---|---|---:|---:|---|
-| Root session router | `mainCliAction(...)` | root `.action(...)` | 8298 | Parses `--resume`, `--continue`, `--name`, `--connect`, `--cloud`, and remote flags before dispatching a mode. |
-| Local sessions | `LocalSessionManager` | `P6` usage | 8298 | Creates, stores, resumes, continues, names, and resolves local sessions. |
-| Background sessions | `BackgroundSessionManager` | `sV` usage | 6599, 8298 | Tracks multiple concurrent sessions in interactive mode. |
-| Remote sessions | `RemoteSessionManager` / remote exporter | remote manager usage | 8298 | Connects the foreground runtime to remote steering/start-session flows. |
-| Cloud sessions | `CloudSessionFlow` | cloud branch in main action | 8298 | Creates or attaches to a cloud-backed sandbox session; distinct from local `/sandbox` command sandboxing. |
-| Session store | `SessionStore`, `session indexing` | `SESSION_STORE`, `SESSION_INDEXING`, `CLOUD_SESSION_STORE` | 239, 8298 | Persists/searches session history and powers chronicle-style workflows. |
-| Task registry | `TaskRegistry` | `B3` | 3367 | Tracks background subagent and MCP task state inside a session. |
-| Shutdown/save | `ShutdownService` | `eke` | 7420 | Saves sessions, waits for pending work, and ends foreground sessions cleanly. |
+| Root session router | `mainCliAction(...)` | root `.action(...)` | 5774-5899 | Parses `--resume`, `--continue`, `--name`, `--connect`, `--cloud`, and remote flags before dispatching a mode. |
+| Local sessions | `LocalSessionManager` | local manager and startup resolver | 2767-2768, 5781-5899 | Creates, stores, resumes, continues, names, and resolves local sessions. |
+| Background sessions | `BackgroundSessionManager` | manager/session UI usage | 3042, 4426-4446 | Tracks multiple concurrent sessions in interactive mode. |
+| Remote sessions | `RemoteSessionManager` / remote exporter | remote manager usage | 2784-2799, 5781-5899 | Connects the foreground runtime to remote steering/start-session flows. |
+| Cloud sessions | `CloudSessionFlow` | cloud branch in main action | 3642, 5774-5899 | Creates or attaches to a cloud-backed sandbox session; distinct from local `/sandbox` command sandboxing. |
+| Session store | `SessionStore`, session indexing | `SESSION_STORE`, `SESSION_INDEXING`, `CLOUD_SESSION_STORE` | 322, 625-632, 2768 | Persists/searches session history and powers chronicle-style workflows. |
+| Task registry | `TaskRegistry` | `nR` | 204 | Tracks background subagent and MCP task state inside a session. |
+| Shutdown/save | `ShutdownService` | `aW` | 3385 | Saves sessions, waits for pending work, and ends foreground sessions cleanly. |
 
 ## Session selection at startup
 

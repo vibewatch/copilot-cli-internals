@@ -25,7 +25,7 @@ Because `app.js` is bundled/minified, source anchors below are search aids for t
 | Live indexer | `SessionStoreTracker` | `JZn(...)`, post-tool hooks | 4518-4582 | Subscribes to live events and tool completions to maintain SQLite rows. |
 | Reindex command | `SessionReindexCommand` | `/reindex`, `Index all session history into the session store.` | 4643-4644 | Rebuilds local SQLite rows and optionally syncs cloud session state. |
 | SQL query tool | `SessionStoreSqlTool` | `session_store_sql`, `executeReadOnly`, `SQLITE_READ`, `SQLITE_SELECT` | 4518 | Exposes read-only local/global session-store queries. |
-| State migration | `CopilotStateMigration` | `.copilot`, `session-state`, `session-store.db`, `command-history-state` | 7449 | Treats session-state and session-store DB as first-class persistent artifacts. |
+| State migration | `CopilotStateMigration` | `.copilot`, `session-state`, `session-store.db`, `command-history-state` | 4446 | Treats session-state and session-store DB as first-class persistent artifacts. |
 | Cloud sync | `CloudSessionStoreSync` | `Starting cloud session sync`, `eventsUploaded`, `backfillQueued`, `analytics/backfill` | 4516, 4643-4644 | Uploads/indexes events into optional cloud session-store paths when gated. |
 
 ## Layer model

@@ -26,7 +26,7 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 | User-facing note | `Some results were excluded due to content exclusion policies` | 579 | Successful tool output can include a note when results were filtered. |
 | Model policy reminder | `<content_exclusion_policy>`, `Do NOT attempt to access the file through alternative tools or commands` | 3828 | System prompt explicitly tells the model not to bypass content exclusion. |
 | Content match rules | `ifAnyMatch`, `ifNoneMatch`, `Content excluded by ifAnyMatch` | 4198 | Rules can depend on path and file content matches. |
-| Secret env vars | `--secret-env-vars`, `stripped from shell and MCP server environments and redacted from output` | 8225 | CLI flag declares secret environment variables for stripping/redaction. |
+| Secret env vars | `--secret-env-vars`, stripped from shell/MCP environments and redacted from output | 5696, 5774 | CLI flag declares secret environment variables for stripping/redaction. |
 | Secret redaction | `redactSecrets`, `[REDACTED]`, `Secret scanning` | 519, 525 | Secret-scanning remediation can rewrite detected tokens as `[REDACTED]`. |
 
 ## Layer map

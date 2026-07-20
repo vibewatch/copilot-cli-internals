@@ -20,7 +20,7 @@ This is a runtime-support page under [Runtime lifecycle](README.md). It explains
 | Windows Terminal target | `sendInput`, `settings.json`, `WindowsTerminal_8wekyb3d8bbwe` | 4501, 4512 | Windows Terminal setup edits profile/keybinding settings JSON. |
 | Shell context | `shellContext`, `inheritedShellContext`, `parentShellContext` | 4471, 4475, 4481 | Session and subagent shell processes are tracked separately from terminal keybinding setup. |
 | Shell logging | `logInteractiveShells` | 4471 | Runtime option controlling shell process logging behavior. |
-| Command history state | `command-history-state`, `command-history-state.json` | 7449 | Command history is a persisted state artifact under `.copilot`. |
+| Command history state | `command-history-state`, `command-history-state.json` | 4446 | Command history is a persisted state artifact under `.copilot`. |
 
 ## Capability map
 

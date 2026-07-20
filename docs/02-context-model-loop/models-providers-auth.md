@@ -6,15 +6,15 @@ This document deepens the model/auth/provider coverage that was previously summa
 
 | Area | Semantic alias | Minified anchor | Approx. line | Role |
 |---|---|---:|---:|---|
-| Auth manager | `AuthManager` | `EX` usage | 7420, 8298 | Resolves GitHub/GHE authentication and model catalog access. |
-| Login command | `buildLoginCommand()` | `m9o()` | 8298 | Implements `copilot login` and token storage behavior. |
-| Provider config | `ProviderConfig` | provider env parsing around `COPILOT_PROVIDER_*` | 239, 8298 | Reads BYOK/custom provider environment and model limit values. |
-| Offline mode | `OfflineProviderPath` | `COPILOT_OFFLINE` checks | 239, 8298 | Requires custom/local provider and disables GitHub network features. |
-| Model option | `--model` / model picker | root option and TUI handlers | 7000-8298 | Selects the session model or opens interactive selection. |
-| Reasoning effort | `--effort`, `--reasoning-effort` | root option | 8298 | Sets reasoning effort for supported models. |
+| Auth manager | `AuthManager` | `zI` usage | 5781 | Resolves GitHub/GHE authentication and model catalog access. |
+| Login command | `buildLoginCommand()` | `oRn()`; executor `rRn(...)` | 4738-4776 | Implements `copilot login` and token storage behavior. |
+| Provider config | `ProviderConfig` | provider env parsing around `COPILOT_PROVIDER_*` | 169, 3279, 5774-5781 | Reads BYOK/custom provider environment and model limit values. |
+| Offline mode | `OfflineProviderPath` | `COPILOT_OFFLINE` checks | 3279, 5781 | Requires custom/local provider and disables GitHub network features. |
+| Model option | `--model` / model picker | root option and TUI handlers | 5687, 4172, 4426-4434 | Selects the session model or opens interactive selection. |
+| Reasoning effort | `--effort`, `--reasoning-effort` | root option | 5687 | Sets reasoning effort for supported models. |
 | Subagent model override | `task` model validation | `createTaskTool(...)` | 3735-3815 | Validates and may downshift subagent model overrides. |
 | Session subagent model selection | `selectSubagentModel(...)`, `emitSubagentModelTelemetry(...)` | `Vur(...)`, `jur(...)` | 4030-4036 | Chooses treatment/default/session models for built-in subagents and emits `subagent_model_selection` telemetry. |
-| Feature gates | `FeatureFlagService` | `Pfe`, `ILt` | 239 | Enables model-adjacent behavior such as special subagent models or advisor paths. |
+| Feature gates | Native-backed feature service and live experiment coordinator | `EG`, `lCe` | 124, 3387 | Enables model-adjacent behavior such as special subagent models or advisor paths. |
 | Current model metadata | Built-in model definitions | `claude-sonnet-5`, `claude-opus-4.8`, `gpt-5.6-*` | 618-620, 2039 | Confirms current catalog families and supported reasoning efforts. |
 | Provider transport | Custom-provider transport | `COPILOT_PROVIDER_TRANSPORT`, `http`, `websockets` | 3279, 5307 | Selects HTTP or persistent WebSocket transport for Responses-compatible providers. |
 
@@ -210,7 +210,7 @@ flowchart TD
     Telemetry --> Exec["SessionAgentExecutor.setSelectedModel"]
 ```
 
-This complements the `task`-tool override validation: `I6n(...)` validates the optional user/model-requested override at dispatch time, while `Vur(...)` chooses the final session-based subagent model after feature flags, treatment availability, and guardrails are known.
+This complements task-tool override validation: the dispatch path around lines `374-477` validates native-prepared task input and the optional requested model, while the session-based executor around lines `513-515` resolves the final subagent model after feature flags, treatment availability, and guardrails are known.
 
 ## Offline mode implications
 

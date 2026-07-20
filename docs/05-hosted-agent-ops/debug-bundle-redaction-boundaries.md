@@ -10,20 +10,20 @@ Because `app.js` is bundled/minified, anchors below are approximate search ancho
 
 | Area | Semantic alias | Minified anchor / string | Approx. line | Role |
 |---|---|---:|---:|---|
-| Diagnose command | `DiagnoseCommand` | `/diagnose`, `Analyze the current session log` | 4643, 4934 | Reads the current session log tail and asks an agent to analyze it. |
-| Feedback command | `FeedbackCommand` | `/feedback`, `/bug`, `Provide feedback about the CLI` | 4643, 4942 | Opens the feedback dialog with session/log paths and optional log collection. |
-| Collect command | `CollectDebugLogsCommand` | `/collect-debug-logs`, `file`, `gist`, `Collect debug logs to .tgz file or GitHub gist` | 4643, 5023 | Packages current debug/session logs into a local archive or secret gist. |
-| Feature gates | `DebugCollectionGates` | `DIAGNOSE:"staff"`, `COLLECT_DEBUG_LOGS:"staff"`, `collectDebugLogsEnabled` | 239, 7344 | Controls whether diagnostics and debug collection commands are visible/enabled. |
-| Runtime debug paths | `DebugLogPaths` | `debugLogPaths`, `sessionFile`, `logFile` | 4940, 4942, 5023 | Supplies known session/runtime log files to feedback and collection commands. |
-| Bundle helper | `DebugBundleBuilder` | `feedback.md`, `feedback-manifest.json`, `additional-logs`, `No files to include in feedback bundle` | 4515 | Builds a named file map for feedback/debug archives. |
-| Archive output | `LocalDebugArchive` | `copilot-debug-logs-<id>.tgz`, `copilot-debug-logs-${Date.now()}` | 4515, 5023, 8225 | Creates local `.tgz` files via a temporary staging directory. |
-| Gist upload | `SecretGistDebugUpload` | `POST /gists`, `public:false`, `secret GitHub gist` | 4515, 5023 | Uploads bundle entries to an unlisted GitHub gist when requested. |
-| Root flags | `RootDebugCollectionFlags` | `--collect-debug-logs <sessionId>`, `--collect-debug-logs-output <path>` | 8225 | Allows non-interactive staff-gated collection by session ID. |
-| Logging setup | `LoggingService` | `--log-dir`, `--log-level`, log setup in root action | 8298 | Configures runtime log writers before session modes start. |
-| Secret env vars | `SecretEnvVarRedaction` | `--secret-env-vars`, `stripped from shell and MCP server environments and redacted from output` | 8225 | User-declared secret names are stripped from tool environments and redacted from output. |
+| Diagnose command | `DiagnoseCommand` | `/diagnose`, `diagnoseCommand`, `Analyze the current session log` | 2064, 2473-2479 | Reads the current session log tail and asks an agent to analyze it. |
+| Feedback command | `FeedbackCommand` | `/feedback`, `/bug`, `Provide feedback about the CLI` | 2064, 2481 | Opens the feedback dialog with session/log paths and optional log collection. |
+| Collect command | `CollectDebugLogsCommand` | `/collect-debug-logs`, `file`, `gist`, `Collect debug logs to .tgz file or GitHub gist` | 2061-2064, 2559 | Packages current debug/session logs into a local archive or secret gist. |
+| Feature gates | `DebugCollectionGates` | `DIAGNOSE`, `COLLECT_DEBUG_LOGS`, `collectDebugLogsEnabled` | 124, 2559, 4427 | Controls whether diagnostics and debug collection commands are visible/enabled. |
+| Runtime debug paths | `DebugLogPaths` | `debugLogPaths`, `sessionFile`, `logFile` | 2481, 2559 | Supplies known session/runtime log files to feedback and collection commands. |
+| Bundle helper | `DebugBundleBuilder` | `feedback.md`, `feedback-manifest.json`, `additional-logs`, `No files to include in feedback bundle` | 2061-2064 | Builds a named file map for feedback/debug archives. |
+| Archive output | `LocalDebugArchive` | `copilot-debug-logs-<id>.tgz`, `copilot-debug-logs-${Date.now()}` | 2061-2064, 5774 | Creates local `.tgz` files via a temporary staging directory. |
+| Gist upload | `SecretGistDebugUpload` | `POST /gists`, `public:false`, `secret GitHub gist` | 2063, 2558-2559 | Uploads bundle entries to an unlisted GitHub gist when requested. |
+| Root flags | `RootDebugCollectionFlags` | `--collect-debug-logs <sessionId>`, `--collect-debug-logs-output <path>` | 5696, 5774 | Allows non-interactive staff-gated collection by session ID. |
+| Logging setup | `LoggingService` | `--log-dir`, `--log-level`, log setup in root action | 5696, 5774-5781 | Configures runtime log writers before session modes start. |
+| Secret env vars | `SecretEnvVarRedaction` | `--secret-env-vars`, stripped from shell/MCP environments and redacted from output | 5696, 5774 | User-declared secret names are stripped from tool environments and redacted from output. |
 | Content exclusion | `ContentExclusionService` | `CONTENT_EXCLUSION`, `ContentExclusionFilter`, `excludedCount` | 239, 559-561, 4198 | Blocks/filters excluded path/content from normal tool output paths. |
 | Secret scanning redaction | `SecretScanningRedaction` | `redactSecrets`, `[REDACTED]`, `Secret scanning` | 519-525 | Rewrites detected secret tokens in files after remediation attempts. |
-| Shutdown flush | `ShutdownService` | `eke` | 7420 | Flushes logs/telemetry/output on normal or error exit. |
+| Shutdown flush | `ShutdownService` | `aW` | 3385 | Flushes logs/telemetry/output on normal or error exit. |
 
 ## Collection surfaces
 

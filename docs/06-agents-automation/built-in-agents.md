@@ -10,19 +10,19 @@ The short version: the model-visible `task` tool can dispatch to a small built-i
 
 | Area | Semantic alias | Minified anchor | Approx. line | What it proves |
 |---|---|---:|---:|---|
-| Task tool | `createTaskTool(...)`, `TASK_TOOL_NAME`, `taskToolInputSchema` | `I6n(...)`, `H3="task"`, `v6n` | 3735-3815 | The main model-facing delegation surface accepts `agent_type`, `prompt`, `name`, optional `model`, and optional sync/background mode. |
-| Built-in catalog | `BUILT_IN_AGENTS` | `nHn`, `security-review` | 4496 | Static catalog entries for `explore`, `task`, `general-purpose`, `rubber-duck`, `code-review`, `security-review`, `research`, and `rem-agent`. |
-| Active catalog filter | `filterBuiltInAgents(...)` | `P0e(...)` | 4037 | Filters built-ins by feature flag and context, for example `rem-agent` being CLI/context-board gated. |
+| Task tool | Task tool factory and native input preparation | `S.toolTaskPrepareInput(...)`, `agent_type` | 374-477 | The main model-facing delegation surface accepts `agent_type`, `prompt`, `name`, optional `model`, and optional sync/background mode. |
+| Built-in catalog | Built-in catalog arrays | `$_t`, `ozn`, `qLe` | 324 | Static catalog entries for `explore`, `task`, `general-purpose`, `rubber-duck`, `code-review`, `security-review`, `research`, and `rem-agent`. |
+| Active catalog filter | Built-in policy and session lookup | catalog/policy helpers | 324, 374, 2710 | Filters built-ins by feature flag and context, for example `rem-agent` being CLI/context-board gated. |
 | Built-in policy | `includedBuiltinAgents`, `excludedBuiltinAgents`, `ox(...)` | `ox(...)` | 324, 374 | Applies task/subagent allow and deny lists before an agent is advertised or executed. |
-| YAML loader | `loadBuiltInAgentDefinition(...)` | `D0e(...)` | 4037 | Loads `${name}.agent.yaml` from the packaged `definitions` directory and caches the parsed definition. |
-| YAML executable set | `isYamlBuiltInAgent(...)` | `N0e(...)`, `Yur`, `oHn`, `mxs` | 4496 | Separates YAML-backed executable agents from the runtime-only `general-purpose` entry. |
-| General-purpose executor | `executeGeneralPurposeAgent(...)` | `Wur(...)`, `_U="general-purpose"` | 4033-4037 | Handles `general-purpose` with the standard CLI prompt/toolset and selected model defaults. |
-| Session-based agent executor | `SessionAgentExecutor` | `dZ` | 4037-4043 | Creates child sessions for built-in/custom agents, runs turns, emits boundaries, handles hooks, and tears down. |
-| Dispatcher | `createAgentExecutorRegistry(...)` | `Zur(...)`, `cHn(...)`, `Lur(...)`, `Uur(...)` | 4043 | Routes `general-purpose`, YAML built-ins, and custom agents to their appropriate executor. |
-| Session YAML selection | `tryLoadBuiltinYamlAgent(...)` | same semantic method | 4471 | Lets a named YAML built-in be selected as a session/custom-agent-like definition. |
-| Runtime tool assembly | `assembleRuntimeTools(...)` | `HCr(...)`, `$Cr(...)`, `$js(...)` | 5734 | Injects the `task` tool and may suppress `rubber-duck` when feature/model conditions are not met. |
+| YAML loader | `loadBuiltInAgentDefinition(...)` | packaged-definition loader/cache | 324 | Loads `${name}.agent.yaml` from the packaged `definitions` directory and caches the parsed definition. |
+| YAML executable set | `isYamlBuiltInAgent(...)` | `$_t`, `ozn`, `H_t`, `qLe` | 324 | Separates YAML-backed executable agents from the runtime-only `general-purpose` entry. |
+| General-purpose executor | `executeGeneralPurposeAgent(...)` | runtime general-purpose branch | 320-324, 374 | Handles `general-purpose` with the standard CLI prompt/toolset and selected model defaults. |
+| Session-based agent executor | `SessionAgentExecutor` | `lR` | 513-515 | Creates child sessions for built-in/custom agents, runs turns, emits boundaries, handles hooks, and tears down. |
+| Dispatcher | Agent executor registry | runtime dispatcher branches | 320-324, 374 | Routes `general-purpose`, YAML built-ins, and custom agents to their appropriate executor. |
+| Session YAML selection | Built-in definition lookup | session agent lookup | 2710 | Lets a named YAML built-in be selected as a session/custom-agent-like definition. |
+| Runtime tool assembly | `buildSettingsAndTools(...)`, task provider | preserved methods/native descriptors | 2755-2759 | Injects the `task` tool and may suppress `rubber-duck` when feature/model conditions are not met. |
 | Slash-command macros | `/review`, `/security-review`, `/research`, `/subconscious run` | `reviewCommand`, `Ndo`, `researchCommand`, `subconsciousRunCommand` | 5173 | User-facing macros route into `code-review`, `security-review`, `research`, and `rem-agent`. |
-| Detached memory agent | `spawnDetachedMemoryAgent(...)` | `T5a(...)` | 7441 | Shutdown can launch a detached `copilot --agent rem-agent` process when subconscious memory is enabled. |
+| Detached memory agent | `spawnDetachedMemoryAgent(...)` | detached `--agent rem-agent` spawn path | 4446 | Shutdown can launch a detached `copilot --agent rem-agent` process when subconscious memory is enabled. |
 
 ## Runtime model
 
@@ -50,7 +50,7 @@ flowchart TD
 
 The key distinction is **cataloged** versus **active** versus **YAML-backed**:
 
-- `nHn` is the static built-in catalog observed in the bundle.
+- `$_t`, `ozn`, and `qLe` are the current static catalog arrays observed in the bundle.
 - `P0e(...)` filters catalog entries by runtime feature flags and context.
 - `N0e(...)` recognizes the YAML-backed executable set: `explore`, `task`, `code-review`, `security-review`, `rubber-duck`, `research`, and `rem-agent`.
 - `general-purpose` is still a built-in `agent_type`, but it is constructed in runtime code rather than loaded from `definitions/general-purpose.agent.yaml`.

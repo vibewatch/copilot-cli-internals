@@ -10,57 +10,38 @@ There is also one literal MCP permission-gate flag path. That path is covered se
 
 | Area | Semantic alias | Minified anchor | Approx. line | What it does |
 |---|---|---:|---:|---|
-| Settings schema | `enabledFeatureFlags`, `feature_flags.enabled`, `experimental` | same strings | 239 | User/settings-level gate inputs. |
-| Low-level feature lookup | `isLocalFeatureFlagEnabled(settings, flagName)` | `li(t,e)` | 239 | Reads `settings.featureFlags[name]` or lowercase equivalent. |
-| Static gate table | `FEATURE_AVAILABILITY_TIERS`, `KNOWN_FEATURE_FLAGS`, `DEFAULT_ALWAYS_ON_FLAGS`, `FEATURE_FLAG_DESCRIPTIONS` | `v1e`, `I1e`, `kfe`, `L8r` | 239 | Declares all known CLI feature flags, availability tiers, defaults, and descriptions. |
-| Sandbox gate | `SANDBOX` | `SANDBOX:"off"` | 239 | Controls whether the local `/sandbox` slash command is exposed; defaults to off. |
-| Tier resolver | `resolveAvailabilityTiers(isStaff,isExperimental,isTeam)` | `bLt(...)` | 239 | Converts `on/off/staff/team/experimental/staff-or-experimental` tiers into booleans. |
-| Env overrides | `applyEnvironmentFlagOverrides(flags)` | `ELt(...)` | 239 | Applies `COPILOT_CLI_ENABLED_FEATURE_FLAGS` and per-flag env variables. |
-| Settings overrides | `applySettingsFlagOverrides(config, flags)` | `_Lt(...)` | 239 | Applies `enabledFeatureFlags` or legacy `feature_flags.enabled`. |
-| Flag name normalization | `normalizeFeatureFlagName(name)` | `ALt(...)` | 239 | Case-insensitive mapping from input name to canonical flag name. |
-| Feature service | `LiveFeatureFlagService` | `Pfe` | 239 | Live feature flag service; resolves local gates and remote experiment overrides. |
-| Static feature service | `StaticFeatureFlagService`, `createStaticFeatureFlagService(context)` | `ILt`, `X8r(...)` | 239 | Synchronous/static feature service used for server/headless-style paths. |
-| Experiment mapping | `LEGACY_FLAG_TO_EXPERIMENT_PARAM` | `Z8r` | 239 | Maps selected legacy feature flags to remote experiment parameter names. |
-| Experiment request filters | `buildExperimentRequestFilters(...)` | `W8r(...)` | 239 | Builds TAS/experiment filters from version, audience, opt-in, first launch, plan, etc. |
-| Assignment context headers | `captureApiExperimentAssignmentContext(...)`, `API_EXPERIMENT_ASSIGNMENT_CONTEXT_HEADER`, `CLIENT_EXPERIMENT_ASSIGNMENT_CONTEXT_HEADER` | `S3(...)`, `TBn`, `TSe` | 1252 | Captures API assignment context and sends it back on future API calls. |
-| Repo/team gate | `isTeamRepositoryAllowlisted(cwd)`, `TEAM_REPOSITORY_HASH_ALLOWLIST`, `sha256Hex(value)` | `W$o(...)`, `w5a`, `xo(...)` | 7441, 926 | Hashes `owner/repo` and checks an embedded allowlist. |
-| CLI construction | main `.action(...)` | main `.action(...)` | 8298 | Builds `{isStaff,isExperimental,isTeam,config}` and creates the feature service. |
-| MCP permission gate | `hasMcpPermissionGateFlag(env)`, `MCP_PERMISSION_GATE_FLAG`, `resolveGithubMcpUrl(readonly)` | `O7n(...)`, `CUs`, `p5e(...)` | 4207, 1343 | Checks `COPILOT_FEATURE_FLAGS` for `copilot_swe_agent_mcp_permission_gate` and chooses GitHub MCP URL mode. |
+| Settings/env inputs | `enabledFeatureFlags`, legacy settings, `COPILOT_CLI_ENABLED_FEATURE_FLAGS`, per-flag env | native create-input fields, `RMe`, `Jpt()`, `Zpt()` | 124 | Supplies local gate inputs to the native feature service. |
+| Static gate table | Availability tiers and known keys | `vG`, `S.featureFlagsAvailabilityJson()` | 124 | Loads the native availability map used to derive known flags and defaults. |
+| Native-backed feature service | Local snapshot, config/env overrides, experiment-aware lookup | `EG`, `S.featureFlagService*` | 124 | Owns resolved local flags, experiment flags, listeners, assignment context, reset, and lookup methods. |
+| Static service factory | Static/headless service construction | `_4n(...)`, `yde(...)` | 124 | Creates `EG` without the live auth-driven experiment coordinator. |
+| Live experiment coordinator | Auth subscription, TAS fetch, cache refresh | `lCe`, `cCe(...)` | 3387 | Applies remote experiment responses to `EG` and refreshes cached assignments. |
+| Experiment mapping | Defined experiment keys and legacy mapping | `y4n`, `RMi`, native JSON maps | 124 | Maps selected local feature names to experiment parameters. |
+| Experiment request filters | Version/audience/plan/tracking filters | `ncn(...)`, `acn(...)` | 3385-3387 | Builds TAS request filters and cache keys. |
+| Assignment context | Primary and secondary assignment context | `EG.captureSecondaryAssignmentContext(...)` and snapshot methods | 124 | Captures assignment context and exposes it to later API requests. |
+| Repo/team gate | `isTeamRepositoryAllowlisted(cwd)` | `RRe(...)`, native `featureFlagsIsTeamRepoSlug` | 4446 | Resolves `owner/repo` and checks the native allowlist. |
+| CLI construction | main `.action(...)` | main `.action(...)` | 5774-5781 | Builds `{isStaff,isExperimental,isTeam,config}` and creates the feature service. |
+| MCP permission gate | Raw hosted-agent MCP permission mode | `Kfr`, `m4t(...)`, `copilot_swe_agent_mcp_permission_gate` | 2603 | Checks the separate raw environment mechanism used by hosted MCP setup. |
 
 ## Can the original names be recovered?
 
-Not from this extracted package alone. The published package includes `app.js` but no `app.js.map` or `sourcesContent`, and the only `sourceMappingURL` hits in `app.js` are embedded CSS/vendor artifacts. `package.json` points to `github/copilot-cli` and records build commit `eb38dfb`; exact pre-minification names would require that source tree or a matching sourcemap.
+Not from this extracted package alone. The published package includes `app.js` but no `app.js.map` or `sourcesContent`, and the only `sourceMappingURL` hits in `app.js` are embedded CSS/vendor artifacts. `package.json` points to `github/copilot-cli` and records build commit `3286dc4`; exact pre-minification names would require that source tree or a matching sourcemap.
 
 What is recoverable is a set of **semantic names** derived from call sites, data flow, string constants, schemas, and side effects. These should be treated as analysis aliases, not proven source identifiers.
 
-| Semantic alias | Minified anchor | Confidence | Why |
+| Semantic alias | Current anchor | Confidence | Why |
 |---|---|---:|---|
-| `isLocalFeatureFlagEnabled(settings, flagName)` | `li(t,e)` | High | Reads `settings.featureFlags[flag]` or lowercase equivalent and falls back to `false`. |
-| `FEATURE_AVAILABILITY_TIERS` | `v1e` | High | Object mapping feature names to `on`, `off`, `staff`, `team`, `experimental`, etc. |
-| `KNOWN_FEATURE_FLAGS` | `I1e` | High | `Object.keys(FEATURE_AVAILABILITY_TIERS)`. |
-| `DEFAULT_ALWAYS_ON_FLAGS` or `STATIC_DEFAULT_FLAGS` | `kfe` | Medium | Frozen map where each flag is `true` only when the tier is exactly `on`. Used for reset/default state. |
-| `FEATURE_FLAG_DESCRIPTIONS` | `L8r` | High | Human-readable descriptions for selected flags. |
-| `normalizeFeatureFlagName(name)` | `ALt(name)` | High | Case-insensitive lookup returning the canonical known feature flag name. |
-| `resolveAvailabilityTiers(isStaff,isExperimental,isTeam)` | `bLt(...)` | High | Converts `FEATURE_AVAILABILITY_TIERS` availability tiers into a boolean flag map. |
-| `applyEnvironmentFlagOverrides(flags)` | `ELt(flags)` | High | Applies `COPILOT_CLI_ENABLED_FEATURE_FLAGS` and direct per-flag env vars. |
-| `applySettingsFlagOverrides(config, flags)` | `_Lt(config, flags)` | High | Applies `enabledFeatureFlags` and legacy `feature_flags.enabled`. |
-| `LiveFeatureFlagService` | `Pfe` | High | Maintains local flags, subscribes to auth, fetches experiment assignments, exposes async getters. |
-| `StaticFeatureFlagService` | `ILt` | High | Same local resolution surface but no live auth/experiment retrieval; env experiment overrides only. |
-| `createStaticFeatureFlagService(context)` | `X8r(context)` | High | Factory returning `new StaticFeatureFlagService(context)`. |
-| `LEGACY_FLAG_TO_EXPERIMENT_PARAM` | `Z8r` | High | Maps local feature flag names to experiment parameter names. |
-| `buildExperimentRequestFilters(...)` | `W8r(filtersInput)` | Medium-high | Builds TAS filter/randomization-unit payload from CLI version, audience, opt-in, first launch, plan, tracking ID. |
-| `resolveExperimentBackedFlag(...)` | `Vf(service, expName, legacyName, fallbackFlags)` | High | Uses `getFlagWithExpOverride` when service exists, otherwise falls back to snapshot flags. |
-| `captureApiExperimentAssignmentContext(...)` | `S3(headers, service)` | High | Reads `X-Copilot-API-Exp-Assignment-Context` and stores it on the feature service. |
-| `API_EXPERIMENT_ASSIGNMENT_CONTEXT_HEADER` | `TBn` | High | Constant string `X-Copilot-API-Exp-Assignment-Context`. |
-| `CLIENT_EXPERIMENT_ASSIGNMENT_CONTEXT_HEADER` | `TSe` | High | Constant string `X-Copilot-Client-Exp-Assignment-Context`. |
-| `isTeamRepositoryAllowlisted(cwd)` | `W$o(cwd)` | High | Resolves `owner/repo`, SHA-256 hashes it, checks embedded allowlist. |
-| `TEAM_REPOSITORY_HASH_ALLOWLIST` | `w5a` | High | Set of two SHA-256 hashes used by `isTeamRepositoryAllowlisted(...)`. |
-| `sha256Hex(value)` | `xo(value)` | High | Uses Node `crypto.createHash("sha256")` and returns hex digest. |
-| `hasMcpPermissionGateFlag(env)` | `O7n(env)` | High | Checks raw `COPILOT_FEATURE_FLAGS` for `copilot_swe_agent_mcp_permission_gate`. |
-| `MCP_PERMISSION_GATE_FLAG` | `CUs` | High | Constant string `copilot_swe_agent_mcp_permission_gate`. |
-| `resolveGithubMcpUrl(readonly)` | `p5e(readonly)` | Medium-high | Builds GitHub MCP URL and appends `/readonly` when requested. |
+| Native availability map | `vG`, `S.featureFlagsAvailabilityJson()` | High | Directly loads the current tier map from `runtime.node`. |
+| Native-backed feature service | `EG`, `S.featureFlagServiceCreate(...)` | High | Constructor input includes staff/experimental/team context, config, local overrides, environment, and experiment overrides. |
+| Local snapshot lookup | `EG.getLegacyFlag`, `getAllFlags`, `getAllExpFlagsSync` | High | Reads the native-returned snapshot without waiting for remote assignment. |
+| Experiment-aware lookup | `EG.getFlag`, `getFlagWithExpOverride`, `getExpFlag` | High | Calls native async feature/experiment lookup methods. |
+| Static factory | `_4n(...)`, `yde(...)` | High | Creates `EG` without attaching the live auth coordinator. |
+| Live experiment coordinator | `lCe` | High | Subscribes to auth, retrieves TAS assignments, updates `EG`, and schedules cache refresh. |
+| Live factory | `cCe(...)` | High | Couples `EG` and `lCe` and forwards retrieval telemetry. |
+| Experiment cache | `aCe`, `exp-cache` | High | Persists schema-versioned assignment responses and reads them by audience hash. |
+| Team repository gate | `RRe(...)`, `S.featureFlagsIsTeamRepoSlug(...)` | High | Resolves repository identity and delegates allowlist evaluation to native code. |
+| Hosted MCP permission flag | `Kfr`, `m4t(...)` | High | Reads the distinct `COPILOT_PERMISSION_MODE` / raw MCP permission-gate path. |
 
-These aliases are used throughout the diagrams and prose below so the document reads like source-level architecture notes. The `Minified anchor` column remains available for cross-referencing back into the minified bundle.
+Semantic names remain useful in diagrams and prose, but current source lookup should start from the anchors above. Older aliases from earlier extracted builds should not be searched as if they were current `1.0.71` identifiers.
 
 ## Gate inputs
 

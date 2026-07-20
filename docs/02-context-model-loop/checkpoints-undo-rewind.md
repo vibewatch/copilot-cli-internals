@@ -10,7 +10,8 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 
 | Semantic alias | Minified anchor | Approx. `app.js` line | Role |
 |---|---|---:|---|
-| Slash constants | `/rewind`, `/undo`, `/fork` | 4643, 4942 | The command table exposes rewind/undo/fork surfaces. |
+| Rewind command | `QFt`, `name:I9e`, `aliases:[Ote]`, `snapshot-rewind` | 2547 | Registers `/undo` as the canonical command, `/rewind` as its alias, and opens the shared rewind dialog. |
+| Fork command | `/fork` | 2064 and command handler area | Exposes the separate session-fork surface. |
 | Fork command help | `Fork the current session into a new session, optionally with a name` | 4942 | Fork is a separate session-branching surface. |
 | Event schema | `session.snapshot_rewind`, `upToEventId`, `eventsRemoved` | 4361 | Rewind emits structured metadata about the cutoff event and removed event count. |
 | JSONL truncation | `truncate`, `eventsRemoved`, `eventsKept`, `events.jsonl` | 236 | Persistent local session history can be rewritten up to an event ID. |
@@ -75,14 +76,16 @@ The event is ephemeral because it describes a runtime UI update about the snapsh
 
 ## /undo versus /rewind
 
-The evidence in `app.js` clearly exposes both slash-command constants and the shared `session.snapshot_rewind` mechanism. The exact command-to-target selection logic is minified/scattered, but the likely division is:
+In the analyzed bundle, these are not separate rollback modes. `QFt` registers:
 
-| Surface | Role |
-|---|---|
-| `/undo` | A quick rollback to a recent change/turn boundary. |
-| `/rewind` | A richer rewind UI or command path for selecting an earlier event/snapshot boundary. |
+```text
+name: /undo
+aliases: [/rewind]
+help: Rewind the last turn and revert file changes
+execute: show dialog { kind: "snapshot-rewind" }
+```
 
-Both ultimately need the same primitive: identify a target event ID, truncate the event log, rebuild state, and notify clients through `session.snapshot_rewind`.
+Both spellings therefore open the same dialog and use the same primitive: identify a target event ID, truncate the event log, rebuild state, and notify clients through `session.snapshot_rewind`. `/rewind` is the spelling shown in the Session command menu, while `/undo` remains the descriptor's canonical command name.
 
 ## Forking a session
 

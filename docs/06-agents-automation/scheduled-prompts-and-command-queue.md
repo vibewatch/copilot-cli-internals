@@ -18,7 +18,7 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 | Scheduled command dispatch | `session.commands.enqueue`, `session.commands.execute` | 167, 2651 | Scheduled slash commands enter the same client-mediated command queue as manually queued commands. |
 | Registry class | `ScheduleRegistry`, minified `Sbt` | 4210 | Stores entries, hydrates from events, schedules timers, and disposes on shutdown. |
 | Create/cancel events | `session.schedule_created`, `session.schedule_cancelled` | 4210, 4361 | Durable session events define schedule state. |
-| Session access | `getScheduleRegistry()` | 4471, 7344 | Registry is lazily created and reused by TUI dialogs/tools. |
+| Session access | `getScheduleRegistry()`, session schedule API | 2650, 2710, 2755 | Registry is lazily created and reused by TUI dialogs/tools. |
 | Tool API bridge | `enableManageScheduleTool`, `scheduleApi` | 4471, 4481 | Schedule management can be exposed to tools when enabled. |
 | Command request queue | `command.queued`, `command.execute`, `command.completed` | 4210, 4361, 4481, 6100 | Ephemeral client command routing and completion lifecycle. |
 | Queue mutation | `pending_messages.modified` | 4479 | Prompt queue changes notify the UI. |
@@ -93,6 +93,18 @@ The registry also tracks the highest seen ID and sets `nextId = maxId + 1`. Afte
 
 This design makes scheduled prompts survive session replay/resume within the event log model without needing a separate schedules file.
 
+### Self-paced schedule hydration
+
+The current event schema also supports self-paced, or `dynamic`, schedules. These do not have an automatically computed fixed cadence. Their next wakeup is controlled by the model through the `manage_schedule` `wakeup` action.
+
+| Event | Self-paced hydration effect |
+|---|---|
+| `session.schedule_created` with `selfPaced: true` | Creates the dynamic schedule. |
+| `session.schedule_rearmed` | Stores `nextRunAt`, the model-selected epoch-millisecond wakeup. |
+| `session.schedule_cancelled` | Removes the dynamic schedule and its pending wakeup. |
+
+During replay, the registry remembers the most recent `nextRunAt` and also derives the requested delay from the rearm event timestamp. It recreates the timer for the recorded wakeup and retains that delay for recovery after an aborted scheduled turn.
+
 ## Creating and cancelling schedules
 
 ```mermaid
@@ -128,6 +140,23 @@ At each tick, the registry branches on the scheduled text:
 - text beginning with `/` enters the session command queue and is dispatched to the TUI/protocol owner of that slash command.
 
 For recurring entries, the registry schedules the next tick unless the entry was cancelled. For one-shot entries, it cancels/removes the entry after firing. Normal prompts inherit the usual model/tool/permission behavior; commands inherit the same availability and ownership checks as manually invoked slash commands.
+
+Timers are ordinary unreferenced JavaScript `setTimeout` handles, not an external job runner. Long waits are split at the platform timeout ceiling: when an intermediate timer fires before `nextRunAt`, `armTimer(...)` arms another timer instead of running early.
+
+Resume behavior depends on the schedule type. Fixed interval and cron entries do not persist every intended tick; hydration calls `scheduleNextTick(...)`, which computes one future run from the current resume time and therefore skips cadences missed while the process was stopped. Self-paced entries restore their durable `nextRunAt`; if that timestamp is already past, `armTimer(...)` uses a zero-delay timer and makes that one retained wakeup eligible promptly after resume.
+
+## Self-paced execution and rearming
+
+A self-paced schedule fires a tagged prompt with source `schedule-<id>` and then parks: `runTick(...)` deliberately does not compute another run. The model must call `manage_schedule` with the `wakeup` action to select the next finite wakeup time. `rearmSelfPaced(...)` then:
+
+1. verifies that the schedule still exists and is self-paced;
+2. rejects a non-finite wakeup value;
+3. replaces any existing timer;
+4. records the non-negative requested delay;
+5. emits durable `session.schedule_rearmed { id, nextRunAt }` state;
+6. arms the new timer.
+
+If a scheduled turn aborts after firing but before it re-arms itself, the registry can reuse the previously recorded delay and schedule another attempt. A self-paced entry left parked without an active timer or in-flight delivery can also be swept and cancelled, preventing an inert schedule from remaining indefinitely in the live registry.
 
 ## Shutdown behavior
 

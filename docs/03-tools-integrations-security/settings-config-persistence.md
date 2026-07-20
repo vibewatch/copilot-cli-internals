@@ -30,9 +30,9 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 | Sandbox persistence | `sandbox`, `resolvedRuntimeSettings()`, `/sandbox enable` | 1254, 1333 | Sandbox enablement is read/written via runtime settings. |
 | Trusted folders | `trustedFolders`, `isFolderTrusted`, `addTrustedFolder` | 6021 | Trusted folders are normalized and persisted. |
 | Terminal setup | `askedSetupTerminals` | 4512 | “Already asked” prompts are persisted to avoid repeated setup prompts. |
-| Config migration | `config.json`, `settings.json`, `Settings migration` | 7441-7443 | Legacy config can be migrated/merged into settings. |
-| Relocation files | `session-state`, `session-store.db`, `installed-plugins`, `mcp-config`, `permissions-config` | 7445 | State/config files are relocated into `.copilot` roots. |
-| CLI options | `--config-dir`, `--additional-mcp-config`, `--allow-url`, `--allow-all-urls` | 7774, 8221 | CLI options override or augment persisted config. |
+| Config migration | `config.json`, `settings.json`, `QIn()`, `HIn(...)` | 4446, 5774 | Legacy config can be migrated/merged into settings. |
+| Relocation files | `session-state`, `session-store.db`, `installed-plugins`, `mcp-config`, `permissions-config` | 4446 | State/config files are relocated into `.copilot` roots. |
+| CLI options | `--config-dir`, `--additional-mcp-config`, `--allow-url`, `--allow-all-urls` | 5687-5782 | CLI options override or augment persisted config. |
 
 ## Configuration roots
 

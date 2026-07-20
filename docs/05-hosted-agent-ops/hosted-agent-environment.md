@@ -105,6 +105,8 @@ The same constant cluster defines two important supporting lists:
 - `Ife` contains secret-like env names such as `GITHUB_COPILOT_GITHUB_TOKEN`, `GITHUB_TOKEN`, `GITHUB_COPILOT_API_TOKEN`, `CAPI_HMAC_KEY`, `ANTHROPIC_API_KEY`, `AIP_SWE_AGENT_TOKEN`, `GITHUB_MCP_SERVER_TOKEN`, `GITHUB_PERSONAL_ACCESS_TOKEN`, `GITHUB_VERIFICATION_TOKEN`, `COPILOT_PROVIDER_API_KEY`, and `COPILOT_PROVIDER_BEARER_TOKEN`.
 - `Y7` contains hosted-agent env names that are considered safe or necessary for propagation, plus `...Ife`. It includes many `COPILOT_AGENT_*` and provider variables and is reused by helper paths that construct child/process environments.
 
+For MCP process construction, `B3t()` does not copy `process.env` directly. It serializes the current environment into the native `mcpRegistryPropagatableEnvironmentVariables(...)` helper and parses the filtered object that comes back. The current allow/deny decision is therefore native-owned even though JavaScript supplies the full candidate environment. This boundary prevents the MCP launcher from treating every parent-process variable as automatically propagatable.
+
 This distinction explains why some constants appear in `source-atlas/surface-index.json` even when they are not consumed by `TWe()`: the bundle still needs to know their names for redaction, filtering, or propagation.
 
 ## Hosted-agent MCP bootstrap

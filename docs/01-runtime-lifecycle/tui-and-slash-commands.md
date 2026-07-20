@@ -10,19 +10,19 @@ This page explains the human-facing branch of [Runtime lifecycle](README.md). It
 
 | Area | Semantic alias | Minified anchor | Approx. line | Role |
 |---|---|---:|---:|---|
-| TUI launcher | `InteractiveTuiFlow` | `j$o(...)` | 7000-7445 | Creates the interactive runtime, starts optional embedded services, mounts the terminal UI, and registers shutdown cleanup. |
-| TUI component tree | `InteractiveTuiRoot` | `jQa(...)` and nearby React/Ink-style components | 7000-7445 | Hosts input, transcript, dialogs, task/session widgets, model/status UI, and event subscriptions. |
-| Embedded server | `EmbeddedServer` | `p1t` | 7441 | Registers the foreground session and supports JSON-RPC/extension integration while the TUI is active. |
-| Slash commands | `slashCommandRegistry` | `Z6o(...)` usage plus command definitions | 7000-7445, 1300-1340 | Normalizes typed slash commands into session actions, prompts, mode changes, or dialogs. |
+| TUI launcher | `InteractiveTuiFlow` | `NIn(...)` | 4446 | Creates the interactive runtime, starts optional embedded services, mounts the terminal UI, and registers shutdown cleanup. |
+| TUI component tree | `InteractiveTuiRoot` | TUI React/session bindings | 4373-4435 | Hosts input, transcript, dialogs, task/session widgets, model/status UI, and event subscriptions. |
+| Embedded server | `TuiEmbeddedServer` | `gRe`, `embeddedServer.registerSession` | 4427, 4435 | Registers the foreground session and supports JSON-RPC/extension integration while the TUI is active. |
+| Slash commands | `slashCommandRegistry` | command constants, `pSe(...)`, TUI dispatcher | 2064, 2438-2559, 4400 | Normalizes typed slash commands into session actions, prompts, mode changes, or dialogs. |
 | Current command constants | Slash-command surface | `/move`, `/worktree`, `/refine`, `/plugins`, `/settings`, `/voice`, `/diagnose` | 2064 | Confirms the expanded `1.0.71` interactive command set. |
 | Current handlers | Command implementations | `uFt(...)`, `diagnoseCommand`, `voice-devices` | 2438-2479 | Routes worktree, diagnostics, and voice-device operations. |
 | Agent slash commands | `researchCommand`, `reviewCommand`, `subconsciousCommand`, `fleetCommand`, `autopilotCommand` | `Yps`, `eLn`, `Wps`, `Lps`, `Rps` | 1300-1340 | Implements commands that steer the main agent toward `task`, fleet, or mode changes. |
 | Compaction slash command | `compactCommand` | `kps(...)` | 1300, 1340 | Calls session-history compaction to summarize old conversation history and reduce context-window usage. |
 | Sandbox slash command | `SandboxSlashCommand` | `jps(...)` | 1331 | Implements `/sandbox enable`, `/sandbox disable`, and status output when the `SANDBOX` gate exposes the command. |
-| Permission UI | `PermissionDialogFlow` | TUI permission handlers | 7000-7445 | Handles tool/path/URL/hook/user-input/sampling approvals when the session can ask a human. |
-| Model UI | `ModelPickerFlow` | model picker handlers | 7000-7445 | Allows model and reasoning effort selection in interactive sessions. |
-| Extension UI | `ExtensionManagerFlow` | extension loader/dialog handlers | 7000-7445 | Loads/reloads extensions and exposes extension-provided tools in the foreground session. |
-| Shutdown | `ShutdownService` | `eke` | 7420 | Unmounts the renderer, restores terminal state, ends the session, and flushes logs/telemetry. |
+| Permission UI | `PermissionDialogFlow` | TUI permission handlers | 3628, 4426-4434 | Handles tool/path/URL/hook/user-input/sampling approvals when the session can ask a human. |
+| Model UI | `ModelPickerFlow` | model picker handlers | 4172, 4426-4434 | Allows model and reasoning effort selection in interactive sessions. |
+| Extension UI | `ExtensionManagerFlow` | extension loader/dialog handlers | 4172, 4426-4434 | Loads/reloads extensions and exposes extension-provided tools in the foreground session. |
+| Shutdown | `ShutdownService` | `aW` | 3385 | Unmounts the renderer, restores terminal state, ends the session, and flushes logs/telemetry. |
 
 ## High-level TUI launch
 

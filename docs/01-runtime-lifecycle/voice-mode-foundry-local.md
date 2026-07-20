@@ -55,7 +55,7 @@ flowchart TD
 
 The static feature table includes `VOICE:"staff"`. The slash-command list is then filtered by feature flags and staff state before being exposed to the TUI. Around the interactive setup area, the bundle constructs built-in slash commands with a `voiceEnabled:e.VOICE` option and removes staff-only commands for non-staff users.
 
-The `/voice` command itself is marked `staffOnly: true` in the analyzed bundle. That means the command implementation can exist in the binary even when it is not visible to most users.
+The `/voice` command is not marked staff-only in the analyzed `1.0.71` bundle. It is registered as a normal slash command when the surrounding TUI command set is assembled, although actual activation can still fail when the voice engine is unavailable for the build or platform.
 
 ## /voice command behavior
 
@@ -117,7 +117,7 @@ When a selected model is deleted or unavailable, the voice controller clears `se
 
 `kxn(...)` implements connect-or-spawn behavior. It tries a live PID first, removes or works around stale endpoint state, and otherwise calls `Txn(...)` to launch a detached CLI child with `COPILOT_VOICE_SERVER_MODE=1`. The sanitized `voice` boot object is serialized through `COPILOT_VOICE_SERVER_BOOT`; it includes only `enabled`, `selectedModel`, and normalized `selectedDevice` fields.
 
-The client uses framed JSON-RPC over the local socket. `Fxn(...)` owns start, snapshot subscription, fatal-error handling, and shutdown. This keeps microphone/native model work outside the TUI process and lets multiple interactive restarts reconnect to the same version-scoped engine.
+The client uses framed JSON-RPC over the local socket. Each message has a `Content-Length: <bytes>\r\n\r\n` header followed by the JSON payload; a missing, invalid, or non-positive content length is rejected by the message reader. `Fxn(...)` owns start, snapshot subscription, fatal-error handling, and shutdown. This keeps microphone/native model work outside the TUI process and lets multiple interactive restarts reconnect to the same version-scoped engine.
 
 ## Foundry runtime version audit
 

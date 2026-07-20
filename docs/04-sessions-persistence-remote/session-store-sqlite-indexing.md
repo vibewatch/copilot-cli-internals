@@ -22,7 +22,7 @@ Because `app.js` is bundled/minified, symbol names are unstable. Line references
 | Read-only SQL | `SQLITE_READ`, `SQLITE_SELECT`, `SQLITE_FUNCTION`, `SQLITE_RECURSIVE`, `executeReadOnly` | 4518 | Query surface restricts SQLite operations to read-only statements. |
 | Chronicle prompts | `/chronicle`, `standup`, `tips`, `improve`, `session_store` | 4643, 4690, 4738 | Chronicle reads indexed session history to build standup/tips/improvement prompts. |
 | Cloud sync | `Starting cloud session sync`, `eventsUploaded`, `backfillQueued`, `analytics/backfill` | 4516, 4643-4644 | Reindex can create/upload cloud sessions and queue analytics backfill. |
-| State migration | `.copilot`, `session-state`, `session-store.db`, `command-history-state` | 7449 | State artifacts are migrated/copied together under `.copilot`. |
+| State migration | `.copilot`, `session-state`, `session-store.db`, `command-history-state` | 4446 | State artifacts are migrated/copied together under `.copilot`. |
 
 ## Architecture map
 

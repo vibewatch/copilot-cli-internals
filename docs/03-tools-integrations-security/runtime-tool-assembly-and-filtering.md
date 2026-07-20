@@ -19,18 +19,18 @@ The short version: tool assembly is a two-stage pipeline. First, model/provider 
 
 | Area | Semantic alias | Minified anchor | Approx. line | What it does |
 |---|---|---:|---:|---|
-| RPC create/resume options | `session.create`, `session.resume` tool options | `availableTools`, `excludedTools`, `defaultAgent.excludedTools` | 6100 | Accepts user/client tool filters, custom agents, MCP config, external tools, and model/provider settings. |
-| TUI/prompt-mode options | TUI session options, prompt-mode session options | `l1(...)`, `U4a(...)` | 7340, 7416 | Passes CLI allow/exclude-tool state into the session. |
+| RPC create/resume options | `session.create`, `session.resume` tool options | `availableTools`, `excludedTools`, `defaultAgent.excludedTools` | 2797-2799 | Accepts user/client tool filters, custom agents, MCP config, external tools, and model/provider settings. |
+| TUI/prompt-mode options | TUI session options, prompt-mode session options | root/TUI/prompt session options | 3327-3374, 4373, 5774-5823 | Passes CLI allow/exclude-tool state into the session. |
 | Session option storage | `Session.updateOptions(...)` | `updateOptions(...)` | 4471 | Stores filters, external tool definitions, requested tools, selected shell config, MCP config, and invalidates cached tool metadata. |
-| Built-in tool assembly | `assembleRuntimeTools(...)`, `assembleToolSet(...)` | `$Cr(...)`, `HCr(...)` | 5734 | Collects shell, file/edit, validation, memory, skills, ask-user, workspace, task/subagent, schedule, and model/provider-specific tools. |
-| Subagent tool assembly | `assembleSubagentTools(...)` | `Gjs(...)` | 5734 | Recursively builds subagent tool lists and injects `task`, agent, sidekick, and peer-agent tools. |
+| Built-in tool assembly | `buildSettingsAndTools(...)` and tool initialization context | preserved session method plus native descriptors | 2755-2759 | Collects shell, file/edit, validation, memory, skills, ask-user, workspace, task/subagent, schedule, and model/provider-specific tools. |
+| Subagent tool assembly | Task tool provider and session-agent executor | `S.toolTaskPrepareInput(...)`, `lR` | 374-515 | Builds subagent dispatch surfaces and child-session tool lists for task, sidekick, and peer-agent workflows. |
 | Shell assembly | Shell context/tool factory | `Qpe`, `getShellTool`, `getOtherTools` | 206, 608 | Adds execute/read/stop/list tools backed by the native shell manager. |
-| Memory assembly | `assembleMemoryTools(...)` | `Yjs(...)` | 5734 | Adds cloud/local memory tools when memory is enabled. |
-| Final session merge | `initializeAndValidateTools(...)` | same name | 4481 | Merges built-ins, MCP tools, and external tools; handles overrides; validates filters; builds prompt metadata and executable tool callbacks. |
-| Filtering helpers | `isToolEnabled`, `filterToolsForSelectedAgent`, `composeCurrentToolMetadata` | `Fyr(...)`, `_Jn(...)`, `Gq(...)`, `cwe(...)` | 4471 | Implements allow/exclude/default-agent/custom-agent filtering and metadata stripping. |
-| Deferred tool search | `tool_search` injection | `m0e(...)`, `P3e(...)`, `Smt(...)` | 3454 | Marks large toolsets for deferred loading and adds a regex-based tool discovery tool when supported. |
-| External tool updates | SDK/extension-host external tools | `updateSessionExternalTools(...)` | 6100 | Deduplicates host/connection/extension tools, signs definitions, updates the session, and triggers tool refresh. |
-| Request-time refresh | External tool refresh during a turn | `refreshTools` callback | 4483 | Recomputes executable tools and metadata when external definitions change during an active model request. |
+| Memory assembly | Memory/tool factories in `buildSettingsAndTools(...)` | memory cache/context plus native descriptors | 2755-2759 | Adds cloud/local memory tools when memory is enabled. |
+| Final session merge | `initializeAndValidateTools(...)` | preserved method name | 2755 | Merges built-ins, MCP tools, and external tools; handles overrides; validates filters; builds prompt metadata and executable tool callbacks. |
+| Filtering helpers | `isToolEnabled`, selected-agent filtering, `composeCurrentToolMetadata` | `Pwe(...)` and preserved session methods | 2710, 2755-2759 | Implements allow/exclude/default-agent/custom-agent filtering and metadata stripping. |
+| Deferred tool search | `deferLoading`, tool-search injection | request/tool preparation path | 2755-2761 | Marks large toolsets for deferred loading and adds a discovery tool when supported. |
+| External tool updates | SDK/extension-host external tools | `updateSessionExternalTools(...)` | 2797-2799 | Deduplicates host/connection/extension tools, signs definitions, updates the session, and triggers tool refresh. |
+| Request-time refresh | External tool refresh during a turn | `refreshTools` callback | 2761 | Recomputes executable tools and metadata when external definitions change during an active model request. |
 
 ## End-to-end flow
 
@@ -44,7 +44,7 @@ flowchart TD
     Session["initializeAndValidateTools"] --> Build["buildSettingsAndTools"]
     Build --> ModelCfg["model/provider config\ntoolConfigOverrides"]
     Build --> Mcp["MCP host reload\nMCP tools"]
-    Build --> ToolInit["toolInit: $Cr / HCr"]
+    Build --> ToolInit["built-in tool factories / native descriptors"]
 
     ToolInit --> Builtins["built-in tools"]
     Mcp --> McpTools["MCP tools"]
@@ -89,7 +89,7 @@ Tool filtering starts before any model call.
 
 ## Built-in candidate assembly
 
-The default CLI model config points to `$Cr(...)`, which calls `HCr(...)` with CLI documentation helpers and selected feature-gated subagent hints. `HCr(...)` builds the built-in candidate list in layers:
+The current session path builds candidates inside `buildSettingsAndTools(...)`. It combines model-specific tool configuration with JavaScript factories and native `toolGetBuiltinDescriptor(...)`-style descriptors, then returns built-in callbacks/metadata for `initializeAndValidateTools()`. The candidate list is assembled in layers:
 
 1. Shell tools from `Wjs(...)`: shell execution plus read/write/stop/list controls.
 2. Memory tools from `Yjs(...)` when cloud or local memory is enabled.
@@ -101,14 +101,14 @@ The default CLI model config points to `$Cr(...)`, which calls `HCr(...)` with C
 8. Workspace/session-state tools when a workspace path exists.
 9. `task_complete` when autopilot is active.
 10. Exit-plan tools when plan-mode exit handling is enabled.
-11. Agent/subagent tools from `Gjs(...)`, including `task`, background agents, sidekick helpers, and peer-agent messaging.
+11. Agent/subagent tools from the task provider and session-agent layer, including `task`, background agents, sidekick helpers, and peer-agent messaging.
 12. Schedule management when `enableManageScheduleTool` is active.
 
-Model-specific configuration can override the assembly behavior. The `eb(...)` model-config resolver can set `toolConfigOverrides`, which are merged into the tool config before `HCr(...)` runs. This is why the same high-level session can expose different editing tools, tool-search behavior, or prompt instructions for different model families.
+Model-specific configuration can override the assembly behavior. The model-config resolver supplies `toolConfigOverrides`, which are merged before candidate factories run. This is why the same high-level session can expose different editing tools, tool-search behavior, or prompt instructions for different model families.
 
 ## MCP and external tool candidates
 
-MCP tools are loaded outside `HCr(...)` by the session's MCP host path, then merged beside built-ins in `initializeAndValidateTools()`. MCP-specific allowlists, server-level `tools` filters, GitHub MCP toolset headers, and selected-agent MCP servers are covered in [MCP host, transports, and tools](mcp-host-transport-and-tools.md).
+MCP tools are loaded by the session's MCP host path outside the built-in candidate factories, then merged beside built-ins in `initializeAndValidateTools()`. MCP-specific allowlists, server-level `tools` filters, GitHub MCP toolset headers, and selected-agent MCP servers are covered in [MCP host, transports, and tools](mcp-host-transport-and-tools.md).
 
 External tools enter through two paths:
 
@@ -128,17 +128,21 @@ Invalid external schemas are ignored unless `parameters` is absent or has JSON-s
 
 ## Final filtering rules
 
-The core include/exclude helper is deliberately small:
+The core include/exclude helper, `Pwe(...)`, is deliberately small. `toolFilterPrecedence` defaults to `"available"`:
 
 | State | Result |
 |---|---|
-| `availableTools` is set | Only names listed in `availableTools` are enabled. |
-| no allowlist, `excludedTools` is set | Names in `excludedTools` are disabled. |
-| neither is set | The tool is enabled. |
+| `availableTools` is set, default `"available"` precedence | Only names matching `availableTools` are enabled; `excludedTools` does not override that explicit allowlist. |
+| no allowlist, `excludedTools` is set | Names matching `excludedTools` are disabled. |
+| both lists are set with `"excluded"` precedence | A tool must match `availableTools` and must not match `excludedTools`; the denylist wins conflicts. |
+| only `excludedTools` is set with `"excluded"` precedence | All tools except denylist matches are enabled. |
+| neither list is set | The tool is enabled. |
+
+Matching uses the same parsed tool selectors as validation, so exact names, namespaces, server wildcards, and source-qualified forms follow one precedence decision rather than separate filtering passes.
 
 `initializeAndValidateTools()` applies this logic after candidate collection:
 
-1. Start with built-ins from `HCr(...)`, MCP tools from the MCP host, and external metadata/callbacks from SDK or extensions.
+1. Start with built-ins returned by `buildSettingsAndTools(...)`, MCP tools from the MCP host, and external metadata/callbacks from SDK or extensions.
 2. Remove built-in callbacks that are explicitly overridden by external tools.
 3. Build a universe of known names from non-overridden built-ins, MCP tools, and external metadata.
 4. Validate filters against that universe and emit `session.info` messages for disabled or unknown names.
@@ -192,7 +196,7 @@ If refresh fails, the session emits a warning-like `session.info` event and cont
 
 ## Subagent toolsets
 
-`Gjs(...)` constructs the subagent executor layer after the base tools are assembled. The recursive subagent tool provider calls `HCr(...)` again with subagent-specific config and then merges:
+The task/subagent provider constructs the subagent executor layer after the base tools are assembled. Child sessions build their own tools with subagent-specific config and then merge:
 
 1. the child tool list;
 2. parent MCP tools;

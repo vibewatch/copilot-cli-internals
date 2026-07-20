@@ -39,8 +39,8 @@ The key idea is that permissions are not a single yes/no switch. The runtime com
 | Location permission persistence | `LocationPermissionStore` | `Ldt(...)`, `s5e(...)`, `CJ(...)`, `OBn(...)` | 1299 | Loads, saves, keys, and resets per-location approvals and directories. |
 | Slash permission commands | `PermissionSlashCommands` | `wps(...)`, `vps(...)`, `Cps(...)`, `Nps(...)`, `jps(...)` | 1299 | Implements `/allow-all`, reset approvals, `/add-dir`, `/cwd`, plus the separate `/sandbox` settings toggle. |
 | Allowed-tools frontmatter parser | `AllowedToolsFrontmatterParser` | `T4n`, `Xar(...)`, `L0s(...)` | 3194 | Converts skill/command `allowed-tools` entries into permission rules. |
-| ACP permission setup | `AcpPermissionServiceFactory` | `createSessionPermissionService(...)` | 6103 | Builds permission service for Agent Client Protocol sessions from CLI flags and baseline rules. |
-| ACP allow-all toggle | `AcpAllowAllApplier` | `applyAllowAll(...)` | 6103 | Applies runtime allow-all by toggling tools, paths, and URLs together. |
+| ACP permission setup | `AcpPermissionServiceFactory` | `createSessionPermissionService(...)` | 3156 | Builds permission service for Agent Client Protocol sessions from CLI flags and baseline rules. |
+| ACP allow-all toggle | `AcpAllowAllApplier` | `applyAllowAll(...)` | 3156, 4369 | Applies runtime allow-all by toggling tools, paths, and URLs together. |
 | MCP permission gate | `McpPermissionGateResolver` | `O7n(...)`, `CUs`, `p5e(...)` | 4207, 1343 | Reads raw `COPILOT_FEATURE_FLAGS` to decide whether the default GitHub MCP URL is forced readonly. |
 
 ## Architecture overview
