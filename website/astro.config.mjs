@@ -137,6 +137,8 @@ export default defineConfig({
             { label: 'Start here', link: '/00-start-here/' },
             { label: 'What is app.js', link: '/00-start-here/what-is-app-js/' },
             { label: 'What changed in 1.0.71', link: '/00-start-here/copilot-cli-1.0.71-delta/' },
+            { label: 'Latest automated update', link: '/00-start-here/latest-package-update/' },
+            { label: 'Weekly update automation', link: '/00-start-here/weekly-update-automation/' },
             { label: 'Main feature map', link: '/00-start-here/main-feature-map/' },
             { label: 'Full table of contents', link: '/summary/' },
           ],

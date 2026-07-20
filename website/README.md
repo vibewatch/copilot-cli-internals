@@ -55,6 +55,16 @@ For other hosts (Cloudflare Pages, Netlify, Vercel) point the
 deploy at the `website/` directory with build command `npm run build`
 and output directory `dist`.
 
+## Weekly package and documentation updates
+
+`.github/workflows/update-copilot-cli-docs.yml` checks npm weekly, refreshes
+the extracted package and source atlas when a newer version exists, validates
+this site, and opens a pull request. With the optional
+`COPILOT_GITHUB_TOKEN` Actions secret, it also runs a source-confirmed
+Copilot CLI documentation pass. See
+[`../docs/00-start-here/weekly-update-automation.md`](../docs/00-start-here/weekly-update-automation.md)
+for setup, permissions, trust boundaries, and local commands.
+
 ## Layout
 
 | Path | Purpose |

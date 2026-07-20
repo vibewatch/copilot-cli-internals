@@ -1,0 +1,194 @@
+name: Weekly Copilot CLI documentation update
+
+on:
+  schedule:
+    # Mondays at 06:17 UTC. Avoid the top of the hour, when scheduled runs queue heavily.
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Re-extract and regenerate the report even when the version is unchanged
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: weekly-copilot-cli-documentation-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    name: Check package, update docs, and open PR
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: website/package-lock.json
+
+      - name: Check npm for a newer Copilot CLI
+        id: version
+        run: node scripts/update-copilot-cli-docs.mjs --check-only
+
+      - name: Decide whether to update
+        id: decision
+        env:
+          UPDATE_AVAILABLE: ${{ steps.version.outputs.update_available }}
+          FORCE_UPDATE: ${{ github.event_name == 'workflow_dispatch' && inputs.force || false }}
+        run: |
+          should_update=false
+          if [[ "$UPDATE_AVAILABLE" == "true" || "$FORCE_UPDATE" == "true" ]]; then
+            should_update=true
+          fi
+          echo "should_update=$should_update" >> "$GITHUB_OUTPUT"
+
+      - name: Record no-op result
+        if: steps.decision.outputs.should_update != 'true'
+        run: |
+          echo "Copilot CLI ${{ steps.version.outputs.current_version }} is already current." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Install native Copilot CLI
+        if: steps.decision.outputs.should_update == 'true'
+        env:
+          LATEST_VERSION: ${{ steps.version.outputs.latest_version }}
+          COPILOT_AUTO_UPDATE: 'false'
+          COPILOT_CACHE_HOME: ${{ runner.temp }}/copilot-cli-cache
+        run: |
+          npm install --global "@github/copilot@${LATEST_VERSION}"
+          version_output=$(copilot --no-auto-update --version)
+          printf '%s\n' "$version_output"
+          reported_version=$(sed -n 's/^GitHub Copilot CLI \([^[:space:]]*\)\.$/\1/p' <<< "$version_output")
+          if [[ "$reported_version" != "$LATEST_VERSION" ]]; then
+            echo "Installed Copilot CLI reports ${reported_version:-unknown}; expected ${LATEST_VERSION}." >&2
+            exit 1
+          fi
+
+      - name: Refresh extracted analysis evidence
+        id: package
+        if: steps.decision.outputs.should_update == 'true'
+        env:
+          LATEST_VERSION: ${{ steps.version.outputs.latest_version }}
+          FORCE_UPDATE: ${{ github.event_name == 'workflow_dispatch' && inputs.force || false }}
+        run: |
+          args=(--latest-version "$LATEST_VERSION")
+          if [[ "$FORCE_UPDATE" == "true" ]]; then
+            args+=(--force)
+          fi
+          node scripts/update-copilot-cli-docs.mjs "${args[@]}"
+
+      - name: Install website dependencies
+        if: steps.decision.outputs.should_update == 'true'
+        working-directory: website
+        run: npm ci
+
+      - name: Update hand-written docs with Copilot CLI
+        id: doc_agent
+        if: steps.decision.outputs.should_update == 'true'
+        env:
+          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+          COPILOT_AUTO_UPDATE: 'false'
+          COPILOT_CACHE_HOME: ${{ runner.temp }}/copilot-cli-cache
+        run: |
+          if [[ -z "${COPILOT_GITHUB_TOKEN:-}" ]]; then
+            echo "ran=false" >> "$GITHUB_OUTPUT"
+            echo "COPILOT_GITHUB_TOKEN is not configured; continuing with the deterministic report-only update." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          copilot \
+            --prompt "$(cat .github/prompts/weekly-copilot-cli-docs.md)" \
+            --allow-all-tools \
+            --disable-builtin-mcps \
+            --no-ask-user \
+            --no-auto-update \
+            --no-remote \
+            --no-remote-export \
+            --max-autopilot-continues 10 \
+            --silent
+          echo "ran=true" >> "$GITHUB_OUTPUT"
+
+      - name: Validate package, atlas, docs, and website
+        if: steps.decision.outputs.should_update == 'true'
+        run: |
+          node --check scripts/extract-copilot-cli-pkg.mjs
+          node --check scripts/index-app-js.mjs
+          node --check scripts/update-copilot-cli-docs.mjs
+          node --check scripts/check-docs.mjs
+          node --check copilot-cli-pkg/app.js
+          test "$(node -p "require('./copilot-cli-pkg/package.json').version")" = "${{ steps.package.outputs.latest_version }}"
+          npm run build --prefix website
+          node scripts/check-docs.mjs
+          git diff --check -- README.md docs help website source-atlas scripts .github
+
+      - name: Ensure the update produced repository changes
+        if: steps.decision.outputs.should_update == 'true'
+        run: |
+          if git diff --quiet && [[ -z "$(git ls-files --others --exclude-standard)" ]]; then
+            echo "The updater reported a change but the worktree is clean." >&2
+            exit 1
+          fi
+
+      - name: Check for an existing automated update PR
+        id: existing_pr
+        if: steps.decision.outputs.should_update == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          url=$(gh pr list \
+            --state open \
+            --json headRefName,url \
+            --jq '[.[] | select(.headRefName | startswith("automation/copilot-cli-"))][0].url // ""')
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          if [[ -n "$url" ]]; then
+            echo "An automated Copilot CLI update PR is already open: $url" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Commit update and open pull request
+        if: steps.decision.outputs.should_update == 'true' && steps.existing_pr.outputs.url == ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LATEST_VERSION: ${{ steps.package.outputs.latest_version }}
+          PREVIOUS_VERSION: ${{ steps.package.outputs.previous_version }}
+          REPORT_PATH: ${{ steps.package.outputs.report_path }}
+          DOC_AGENT_RAN: ${{ steps.doc_agent.outputs.ran }}
+        run: |
+          branch="automation/copilot-cli-${LATEST_VERSION}-${GITHUB_RUN_ID}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          git add -A -- copilot-cli-pkg source-atlas docs website README.md help
+          git commit -m "chore: update Copilot CLI to ${LATEST_VERSION}"
+          git push origin "$branch"
+
+          body=$(printf '%s\n\n%s\n%s\n%s\n\n%s\n%s\n%s\n%s\n' \
+            "Automated weekly Copilot CLI package and documentation refresh." \
+            "- Package: \`${PREVIOUS_VERSION}\` -> \`${LATEST_VERSION}\`" \
+            "- Rolling report: \`${REPORT_PATH}\`" \
+            "- Optional documentation agent ran: \`${DOC_AGENT_RAN:-false}\`" \
+            "Validation completed before this PR was opened:" \
+            "- native Copilot CLI install plus package/script syntax and version checks" \
+            "- Astro build plus Markdown link, navigation, route, H1, and atlas-count checks" \
+            "- extracted package artifacts are excluded from diff --check because upstream generated declarations may contain trailing spaces")
+
+          gh pr create \
+            --base main \
+            --head "$branch" \
+            --title "chore: update Copilot CLI to ${LATEST_VERSION}" \
+            --body "$body"
+
+      - name: Summarize update
+        if: steps.decision.outputs.should_update == 'true'
+        run: |
+          echo "Updated Copilot CLI ${{ steps.package.outputs.previous_version }} -> ${{ steps.package.outputs.latest_version }}." >> "$GITHUB_STEP_SUMMARY"
+          echo "Report: ${{ steps.package.outputs.report_path }}" >> "$GITHUB_STEP_SUMMARY"

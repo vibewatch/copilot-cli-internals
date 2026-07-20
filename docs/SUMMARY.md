@@ -15,6 +15,8 @@ This file is a table-of-contents document, not a direct `app.js` implementation 
 - [Start here](00-start-here/README.md)
   - [`app.js` overview](00-start-here/what-is-app-js.md)
   - [Copilot CLI 1.0.71 package delta](00-start-here/copilot-cli-1.0.71-delta.md)
+  - [Latest automated package update](00-start-here/latest-package-update.md)
+  - [Weekly documentation update automation](00-start-here/weekly-update-automation.md)
   - [Main feature map for Copilot CLI](00-start-here/main-feature-map.md)
 - [Runtime lifecycle](01-runtime-lifecycle/README.md)
   - [Loader and bootstrap workflows](01-runtime-lifecycle/loader-bootstrap.md)

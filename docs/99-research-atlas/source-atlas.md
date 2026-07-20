@@ -174,6 +174,8 @@ After regeneration, inspect:
 - `source-atlas/declarations.json` for new or moved symbols;
 - the generated `README.md` for resolved main path and semantic anchor seed shifts.
 
+For the scheduled extraction, atlas diff, rolling report, optional documentation-agent pass, validation, and pull-request workflow, see [Weekly documentation update automation](../00-start-here/weekly-update-automation.md).
+
 ## Caveats
 
 - Generated “first line” values are raw first hits for a string or minified name. A short minified symbol such as `B3` or `dZ` can appear earlier as an unrelated substring; confirm by reading context.

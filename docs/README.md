@@ -4,7 +4,7 @@ This wiki documents the extracted `@github/copilot` CLI bundle with source-ancho
 
 `copilot-cli-pkg/app.js`
 
-The current package is `@github/copilot` `1.0.71`. Start with the [`1.0.54 → 1.0.71` package delta](00-start-here/copilot-cli-1.0.71-delta.md) for newly confirmed features and architecture migrations.
+The current package is `@github/copilot` `1.0.71`. Start with the [latest automated package report](00-start-here/latest-package-update.md), then use the versioned [`1.0.54 → 1.0.71` package delta](00-start-here/copilot-cli-1.0.71-delta.md) for the analysis that established this baseline.
 
 The wiki is organized around source-anchored internals questions: how the bundled CLI starts, shapes model context, exposes tools, persists sessions, runs hosted jobs, delegates work, and supports future source-atlas research. The canonical sections below are both the physical layout and the reader path.
 
@@ -67,6 +67,7 @@ flowchart TD
 |---|---|
 | Get oriented quickly | [Start here](00-start-here/README.md) → [Runtime lifecycle](01-runtime-lifecycle/README.md) → [Context and model loop](02-context-model-loop/README.md) |
 | Review what changed in the current package | [Copilot CLI 1.0.71 package delta](00-start-here/copilot-cli-1.0.71-delta.md) → follow the domain links in its documentation map |
+| Review the newest scheduled package check | [Latest automated package update](00-start-here/latest-package-update.md) → [Weekly update automation](00-start-here/weekly-update-automation.md) |
 | Understand one complete agent turn | [Runtime lifecycle](01-runtime-lifecycle/README.md) → [Context and model loop](02-context-model-loop/README.md) → [Tools, integrations, and security](03-tools-integrations-security/README.md) |
 | Understand durable sessions | [Sessions, persistence, and remote](04-sessions-persistence-remote/README.md) → [Conversation session end-to-end](04-sessions-persistence-remote/conversation-session-end-to-end.md) → [Session persistence, replay, and indexing](04-sessions-persistence-remote/session-persistence-replay-and-indexing.md) |
 | Understand hosted/cloud coding-agent behavior | [Hosted agent ops](05-hosted-agent-ops/README.md) → [Hosted agent environment](05-hosted-agent-ops/hosted-agent-environment.md) → [Remote control protocol and steering](04-sessions-persistence-remote/remote-control-protocol-and-steering.md) |
