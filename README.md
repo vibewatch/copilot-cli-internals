@@ -1,6 +1,6 @@
 # Copilot CLI Internals
 
-Reverse-engineering wiki for the [`@github/copilot`](https://www.npmjs.com/package/@github/copilot) CLI, based on static analysis of the extracted bundle in [`copilot-cli-pkg/app.js`](copilot-cli-pkg/app.js). The current baseline is `1.0.71`; repository maintainers can consult the [latest automated package report](maintenance/copilot-cli/latest-package-update.md), the versioned [1.0.71 delta](maintenance/copilot-cli/copilot-cli-1.0.71-delta.md), and [`package.json`](copilot-cli-pkg/package.json) for identity and build metadata.
+Reverse-engineering wiki for the [`@github/copilot`](https://www.npmjs.com/package/@github/copilot) CLI, based on static analysis of the extracted bundle in [`copilot-cli-pkg/app.js`](copilot-cli-pkg/app.js). The current baseline is `1.0.82`; repository maintainers can consult the [latest automated package report](maintenance/copilot-cli/latest-package-update.md), the versioned [1.0.71 delta](maintenance/copilot-cli/copilot-cli-1.0.71-delta.md), and [`package.json`](copilot-cli-pkg/package.json) for identity and build metadata.
 
 The notes are organised into eight reader-oriented sections (runtime, context, sessions, tools, security, models, agents, operations) rather than mirroring the bundle's file layout. Because `app.js` is minified, symbol names are unstable — source anchors are pointers for grepping the analysed bundle, not public API.
 

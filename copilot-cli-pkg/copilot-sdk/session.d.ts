@@ -1,6 +1,7 @@
 import { createSessionRpc } from "./generated/rpc.js";
 import type { OpenCanvasInstance } from "./generated/rpc.js";
 import type { MessageOptions, ContextTier, ReasoningEffort, ReasoningSummary, ModelCapabilitiesOverride, SessionCapabilities, SessionEvent, SessionEventHandler, SessionEventType, SessionUiApi, TypedSessionEventHandler } from "./types.js";
+import { type SessionFactoryApi } from "./factory.js";
 /** Assistant message event - the final response from the assistant. */
 export type AssistantMessageEvent = Extract<SessionEvent, {
     type: "assistant.message";
@@ -30,6 +31,11 @@ export type AssistantMessageEvent = Extract<SessionEvent, {
  * await session.disconnect();
  * ```
  */
+/**
+ * Fixed name of the runtime's built-in tool-search tool. A client can replace
+ * its behavior by registering a {@link Tool} with this exact name and
+ * `overridesBuiltInTool: true`.
+ */
 export declare class CopilotSession {
     readonly sessionId: string;
     private connection;
@@ -38,8 +44,12 @@ export declare class CopilotSession {
     private typedEventHandlers;
     private toolHandlers;
     private canvases;
+    private bearerTokenProviders;
     private commandHandlers;
+    private factories;
+    private factoryAbortControllers;
     private permissionHandler?;
+    private mcpAuthHandler?;
     private userInputHandler?;
     private elicitationHandler?;
     private exitPlanModeHandler?;
@@ -50,6 +60,25 @@ export declare class CopilotSession {
     private traceContextProvider?;
     private _capabilities;
     private openCanvasInstances;
+    private disconnected;
+    /**
+     * Friendly factory API for running registered factories by name or handle.
+     *
+     * @experimental Part of the experimental Agent Factories surface and may
+     * change or be removed in future SDK or CLI releases.
+     */
+    readonly factory: SessionFactoryApi;
+    /**
+     * Resolve when a factory run reaches a terminal status.
+     *
+     * The subscription is installed *before* the first read so a transition
+     * landing between the two cannot be missed, and re-reads are serialized so
+     * overlapping invalidation events cannot interleave — the run's revision
+     * advances once per operation, so a burst of events is common and must
+     * collapse into a single in-flight read. A bounded periodic re-read keeps a
+     * dropped invalidation from leaving the wait pending forever.
+     */
+    private waitForFactoryRun;
     /**
      * Typed session-scoped RPC methods.
      */
@@ -259,7 +288,7 @@ export declare class CopilotSession {
      *
      * @example
      * ```typescript
-     * await session.setModel("gpt-4.1");
+     * await session.setModel("gpt-5.4");
      * await session.setModel("claude-sonnet-4.6", { reasoningEffort: "high" });
      * ```
      */

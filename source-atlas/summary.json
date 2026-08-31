@@ -1,28 +1,28 @@
 {
-  "generatedAt": "2026-07-20T23:34:31.380Z",
+  "generatedAt": "2026-08-31T06:52:42.714Z",
   "source": {
-    "path": "/home/ythuang/workspace/copilot-cli-internals/copilot-cli-pkg/app.js",
+    "path": "/home/runner/work/copilot-cli-internals/copilot-cli-internals/copilot-cli-pkg/app.js",
     "relativePath": "copilot-cli-pkg/app.js",
-    "sha256": "1466298c97677da25f484259e49c450e059f7b426498de8bbbcf007233a488b9",
-    "bytes": 9089681,
-    "lines": 6017
+    "sha256": "3083f2482d294ab79355920ec4c2b619173660f668d493e7a32c030fb8432a24",
+    "bytes": 7483179,
+    "lines": 5358
   },
   "output": {
-    "path": "/home/ythuang/workspace/copilot-cli-internals/source-atlas",
+    "path": "/home/runner/work/copilot-cli-internals/copilot-cli-internals/source-atlas",
     "relativePath": "source-atlas"
   },
   "counts": {
-    "functions": 7473,
-    "classes": 612,
-    "declarationBlocks": 22656,
-    "envVars": 163,
-    "featureKeys": 716,
-    "experimentFlagStrings": 40,
-    "eventStrings": 283,
-    "jsonRpcMethods": 273,
+    "functions": 6447,
+    "classes": 499,
+    "declarationBlocks": 19885,
+    "envVars": 145,
+    "featureKeys": 921,
+    "experimentFlagStrings": 4,
+    "eventStrings": 114,
+    "jsonRpcMethods": 85,
     "confirmedSlashCommands": 21,
-    "slashCommandCandidates": 115,
-    "knownToolNameHits": 22,
+    "slashCommandCandidates": 116,
+    "knownToolNameHits": 19,
     "packagedAgentDefinitions": 7,
     "knownSemanticAnchors": 24,
     "mainPathSeeds": 16,
@@ -65,13 +65,7 @@
       ],
       "role": "Builds the root copilot command, global options, help topics, and subcommands.",
       "docs": "docs/00-start-here/main-feature-map.md",
-      "resolved": [
-        {
-          "anchor": "var y1=new _s().name(\"copilot\")",
-          "line": 5687
-        }
-      ],
-      "firstLine": 5687
+      "resolved": []
     },
     {
       "semanticAlias": "mainCliAction(...) / runtime dispatcher",
@@ -86,27 +80,15 @@
       "docs": "docs/01-runtime-lifecycle/mode-dispatch-and-runtime-startup.md",
       "resolved": [
         {
-          "anchor": ".action(async t=>{if(t.printDebugInfo",
-          "line": 5774
-        },
-        {
-          "anchor": "NIn({",
-          "line": 5823
-        },
-        {
-          "anchor": "oCe({",
-          "line": 3387
-        },
-        {
           "anchor": "--server",
-          "line": 2797
+          "line": 1660
         },
         {
           "anchor": "--headless",
-          "line": 3163
+          "line": 1847
         }
       ],
-      "firstLine": 2797
+      "firstLine": 1660
     },
     {
       "semanticAlias": "Out-of-process native runtime bridge",
@@ -118,21 +100,7 @@
       ],
       "role": "Selects a parent-provided native runtime, validates its manifest, and reconstructs functions/classes/constants over local IPC.",
       "docs": "docs/01-runtime-lifecycle/out-of-process-native-runtime.md",
-      "resolved": [
-        {
-          "anchor": "COPILOT_RUNTIME_OOP",
-          "line": 63
-        },
-        {
-          "anchor": "connectFromEnvSync",
-          "line": 63
-        },
-        {
-          "anchor": "createSyncBinding",
-          "line": 63
-        }
-      ],
-      "firstLine": 63
+      "resolved": []
     },
     {
       "semanticAlias": "CLI native Unicode and desktop helper",
@@ -148,26 +116,26 @@
       "resolved": [
         {
           "anchor": "cli-native",
-          "line": 634
+          "line": 217
         },
         {
           "anchor": "graphemeBoundaries",
-          "line": 634
+          "line": 217
         },
         {
           "anchor": "lineBreakPositions",
-          "line": 634
+          "line": 217
         },
         {
           "anchor": "startColorSchemeListener",
-          "line": 3239
+          "line": 1902
         },
         {
           "anchor": "showDesktopNotification",
-          "line": 3602
+          "line": 2278
         }
       ],
-      "firstLine": 634
+      "firstLine": 217
     },
     {
       "semanticAlias": "InteractiveTuiFlow",
@@ -179,15 +147,11 @@
       "docs": "docs/01-runtime-lifecycle/tui-and-slash-commands.md",
       "resolved": [
         {
-          "anchor": "async function NIn(",
-          "line": 4446
-        },
-        {
           "anchor": "embeddedServer.registerSession",
-          "line": 4427
+          "line": 3175
         }
       ],
-      "firstLine": 4427
+      "firstLine": 3175
     },
     {
       "semanticAlias": "runPromptMode(...)",
@@ -200,19 +164,11 @@
       "docs": "docs/01-runtime-lifecycle/mode-dispatch-and-runtime-startup.md",
       "resolved": [
         {
-          "anchor": "async function oCe(",
-          "line": 3327
-        },
-        {
-          "anchor": "async function u9r(",
-          "line": 3364
-        },
-        {
           "anchor": "session.task_complete",
-          "line": 2594
+          "line": 1654
         }
       ],
-      "firstLine": 2594
+      "firstLine": 1654
     },
     {
       "semanticAlias": "buildSystemPrompt(...) / createGeneralPurposeSystemPrompt(...)",
@@ -223,21 +179,7 @@
       ],
       "role": "Assembles identity, tools, instructions, skills, memory, runtime state, and provider-visible system context.",
       "docs": "docs/02-context-model-loop/prompt-sources.md",
-      "resolved": [
-        {
-          "anchor": "S.promptsCliEnvironmentContext(",
-          "line": 505
-        },
-        {
-          "anchor": "this.setCurrentSystemMessageContent(Nn)",
-          "line": 2759
-        },
-        {
-          "anchor": "this.emit(\"system.message\",{role:\"system\"",
-          "line": 2759
-        }
-      ],
-      "firstLine": 505
+      "resolved": []
     },
     {
       "semanticAlias": "Session runtime / runAgenticLoop",
@@ -250,19 +192,11 @@
       "docs": "docs/04-sessions-persistence-remote/session-manager-and-event-replay.md",
       "resolved": [
         {
-          "anchor": "async runAgenticLoop(",
-          "line": 2757
-        },
-        {
-          "anchor": "async processQueue(){this.isProcessing",
-          "line": 2755
-        },
-        {
           "anchor": "tool.execution_complete",
-          "line": 90
+          "line": 1493
         }
       ],
-      "firstLine": 90
+      "firstLine": 1493
     },
     {
       "semanticAlias": "Conversation session end-to-end",
@@ -277,27 +211,23 @@
       "docs": "docs/04-sessions-persistence-remote/conversation-session-end-to-end.md",
       "resolved": [
         {
-          "anchor": ".addOption(new mi(\"-r, --resume [value]\"",
-          "line": 5696
-        },
-        {
           "anchor": ".option(\"--continue\"",
-          "line": 5696
+          "line": 4931
         },
         {
           "anchor": "session.start",
-          "line": 90
+          "line": 1493
         },
         {
           "anchor": "session.resume",
-          "line": 90
+          "line": 1489
         },
         {
           "anchor": "session.tools_updated",
-          "line": 2039
+          "line": 1654
         }
       ],
-      "firstLine": 90
+      "firstLine": 1489
     },
     {
       "semanticAlias": "Session persistence pipeline",
@@ -313,26 +243,26 @@
       "resolved": [
         {
           "anchor": "events.jsonl",
-          "line": 109
+          "line": 1433
         },
         {
           "anchor": "workspace.yaml",
-          "line": 2768
+          "line": 1656
         },
         {
           "anchor": "session-store.db",
-          "line": 4446
+          "line": 3215
         },
         {
           "anchor": "session.snapshot_rewind",
-          "line": 90
+          "line": 1488
         },
         {
           "anchor": "session_store_sql",
-          "line": 604
+          "line": 323
         }
       ],
-      "firstLine": 90
+      "firstLine": 323
     },
     {
       "semanticAlias": "assembleRuntimeTools(...)",
@@ -345,19 +275,11 @@
       "docs": "docs/03-tools-integrations-security/runtime-tool-assembly-and-filtering.md",
       "resolved": [
         {
-          "anchor": "async initializeAndValidateTools(){try{let e=await this.buildSettingsAndTools()",
-          "line": 2755
-        },
-        {
-          "anchor": "buildSettingsAndTools(",
-          "line": 2755
-        },
-        {
           "anchor": "session.tools_updated",
-          "line": 2039
+          "line": 1654
         }
       ],
-      "firstLine": 2039
+      "firstLine": 1654
     },
     {
       "semanticAlias": "Built-in tools, execution events, and results",
@@ -371,18 +293,18 @@
       "resolved": [
         {
           "anchor": "tool.execution_start",
-          "line": 90
+          "line": 214
         },
         {
           "anchor": "tool.execution_partial_result",
-          "line": 2710
+          "line": 1824
         },
         {
           "anchor": "tool.execution_complete",
-          "line": 90
+          "line": 1493
         }
       ],
-      "firstLine": 90
+      "firstLine": 214
     },
     {
       "semanticAlias": "Indexed repository search backend",
@@ -396,23 +318,19 @@
       "docs": "docs/03-tools-integrations-security/indexed-search-tgrep-and-ripgrep.md",
       "resolved": [
         {
-          "anchor": "copilot_cli_tgrep",
-          "line": 124
-        },
-        {
           "anchor": "USE_TGREP",
-          "line": 122
+          "line": 4295
         },
         {
           "anchor": "tgrep_startup",
-          "line": 5040
+          "line": 3953
         },
         {
           "anchor": "tgrep serve",
-          "line": 122
+          "line": 5017
         }
       ],
-      "firstLine": 122
+      "firstLine": 3953
     },
     {
       "semanticAlias": "PermissionService",
@@ -427,22 +345,22 @@
       "resolved": [
         {
           "anchor": "requestPermissionWithHooks(",
-          "line": 2710
+          "line": 1654
         },
         {
           "anchor": "permission.requested",
-          "line": 2603
+          "line": 1493
         },
         {
           "anchor": "allow-tool",
-          "line": 5488
+          "line": 4523
         },
         {
           "anchor": "deny-tool",
-          "line": 5488
+          "line": 4523
         }
       ],
-      "firstLine": 2603
+      "firstLine": 1493
     },
     {
       "semanticAlias": "McpHost and MCP task bridge",
@@ -456,19 +374,11 @@
       "docs": "docs/03-tools-integrations-security/mcp-host-transport-and-tools.md",
       "resolved": [
         {
-          "anchor": "mcpHostStateCreate()",
-          "line": 2578
-        },
-        {
-          "anchor": "doInvokeToolWithTask(",
-          "line": 2583
-        },
-        {
           "anchor": "taskSupport",
-          "line": 2577
+          "line": 1787
         }
       ],
-      "firstLine": 2577
+      "firstLine": 1787
     },
     {
       "semanticAlias": "Plugin and SDK extension loading",
@@ -482,23 +392,19 @@
       "docs": "docs/03-tools-integrations-security/plugins-extensions-and-capabilities.md",
       "resolved": [
         {
-          "anchor": "async function VM(",
-          "line": 624
-        },
-        {
           "anchor": "setupExtensionsForSession",
-          "line": 2799
+          "line": 1662
         },
         {
           "anchor": "session.extensions_loaded",
-          "line": 2742
+          "line": 1824
         },
         {
           "anchor": "EXTENSIONS",
-          "line": 2799
+          "line": 1654
         }
       ],
-      "firstLine": 624
+      "firstLine": 1654
     },
     {
       "semanticAlias": "TaskRegistry",
@@ -512,23 +418,11 @@
       "docs": "docs/06-agents-automation/agent-task-orchestration.md",
       "resolved": [
         {
-          "anchor": "nR=class{tasks=new Map",
-          "line": 204
-        },
-        {
           "anchor": "promoteAgentToBackground(",
-          "line": 204
-        },
-        {
-          "anchor": "waitForAgents()",
-          "line": 204
-        },
-        {
-          "anchor": "cancelRecursive(",
-          "line": 204
+          "line": 1654
         }
       ],
-      "firstLine": 204
+      "firstLine": 1654
     },
     {
       "semanticAlias": "createTaskTool(...)",
@@ -541,19 +435,11 @@
       "docs": "docs/06-agents-automation/agent-task-orchestration.md",
       "resolved": [
         {
-          "anchor": "S.toolTaskPrepareInput(",
-          "line": 477
-        },
-        {
-          "anchor": "Unknown agent_type:",
-          "line": 374
-        },
-        {
           "anchor": "agent_type",
-          "line": 374
+          "line": 214
         }
       ],
-      "firstLine": 374
+      "firstLine": 214
     },
     {
       "semanticAlias": "BUILT_IN_AGENTS",
@@ -564,21 +450,7 @@
       ],
       "role": "Catalogs built-in agent types and their runtime availability filters.",
       "docs": "docs/06-agents-automation/built-in-agents.md",
-      "resolved": [
-        {
-          "anchor": "$_t=[\"explore\",\"task\",\"code-review\",\"rubber-duck\"]",
-          "line": 324
-        },
-        {
-          "anchor": "ozn=[\"research\",\"rem-agent\",\"security-review\"]",
-          "line": 324
-        },
-        {
-          "anchor": "qLe=[...H_t,\"general-purpose\"]",
-          "line": 324
-        }
-      ],
-      "firstLine": 324
+      "resolved": []
     },
     {
       "semanticAlias": "SessionAgentExecutor",
@@ -589,21 +461,7 @@
       ],
       "role": "Runs built-in/custom session-based subagents, hook loops, multi-turn waits, and teardown.",
       "docs": "docs/06-agents-automation/agent-task-orchestration.md",
-      "resolved": [
-        {
-          "anchor": "SessionAgentExecutor.execute() called",
-          "line": 513
-        },
-        {
-          "anchor": "s?.multiTurnConfig",
-          "line": 513
-        },
-        {
-          "anchor": "this.notifySubagentComplete()",
-          "line": 515
-        }
-      ],
-      "firstLine": 513
+      "resolved": []
     },
     {
       "semanticAlias": "Feature gates",
@@ -617,23 +475,15 @@
       "docs": "docs/05-hosted-agent-ops/feature-gates.md",
       "resolved": [
         {
-          "anchor": "S.featureFlagsAvailabilityJson()",
-          "line": 124
-        },
-        {
           "anchor": "COPILOT_CLI_ENABLED_FEATURE_FLAGS",
-          "line": 124
+          "line": 5018
         },
         {
           "anchor": "getFlagWithExpOverride(",
-          "line": 124
-        },
-        {
-          "anchor": "persistenceResolvePath(AT(),\"exp-cache\"",
-          "line": 3387
+          "line": 1654
         }
       ],
-      "firstLine": 124
+      "firstLine": 1654
     },
     {
       "semanticAlias": "Telemetry and shutdown",
@@ -647,23 +497,15 @@
       "docs": "docs/05-hosted-agent-ops/telemetry-update-and-shutdown.md",
       "resolved": [
         {
-          "anchor": "var aW=class{disposables=[]",
-          "line": 3385
-        },
-        {
-          "anchor": "S.otelResolveConfig",
-          "line": 2764
-        },
-        {
           "anchor": "COLLECT_DEBUG_LOGS",
-          "line": 2481
+          "line": 1571
         },
         {
           "anchor": "/collect-debug-logs",
-          "line": 2064
+          "line": 1438
         }
       ],
-      "firstLine": 2064
+      "firstLine": 1438
     },
     {
       "semanticAlias": "Debug bundle redaction boundary",
@@ -679,22 +521,22 @@
       "resolved": [
         {
           "anchor": "/collect-debug-logs",
-          "line": 2064
+          "line": 1438
         },
         {
           "anchor": "feedback-manifest.json",
-          "line": 2064
+          "line": 1435
         },
         {
           "anchor": "additional-logs",
-          "line": 2062
+          "line": 1433
         },
         {
           "anchor": "--secret-env-vars",
-          "line": 5696
+          "line": 4931
         }
       ],
-      "firstLine": 2062
+      "firstLine": 1433
     },
     {
       "semanticAlias": "HostedAgentEnvironmentEnvelope",
@@ -709,19 +551,11 @@
       "docs": "docs/05-hosted-agent-ops/hosted-agent-environment.md",
       "resolved": [
         {
-          "anchor": "S.mcpRegistryPropagatableEnvironmentVariables(",
-          "line": 2577
-        },
-        {
-          "anchor": "GITHUB_COPILOT_MCP_JSON",
-          "line": 2603
-        },
-        {
           "anchor": "COPILOT_OTEL_ENABLED",
-          "line": 2764
+          "line": 4301
         }
       ],
-      "firstLine": 2577
+      "firstLine": 4301
     }
   ],
   "mainPaths": [
@@ -740,40 +574,7 @@
       ],
       "output": "Interactive TUI, prompt mode, server/headless JSON-RPC, or ACP mode.",
       "docs": "docs/00-start-here/main-feature-map.md",
-      "resolvedSeeds": [
-        {
-          "anchor": "var y1=new _s().name(\"copilot\")",
-          "line": 5687
-        },
-        {
-          "anchor": ".action(async t=>{if(t.printDebugInfo",
-          "line": 5774
-        },
-        {
-          "anchor": "async function NIn(",
-          "line": 4446
-        },
-        {
-          "anchor": "async function oCe(",
-          "line": 3327
-        },
-        {
-          "anchor": "async function u9r(",
-          "line": 3364
-        },
-        {
-          "anchor": ".addOption(new mi(\"--server\"",
-          "line": 5696
-        },
-        {
-          "anchor": ".addOption(new mi(\"--headless\"",
-          "line": 5696
-        },
-        {
-          "anchor": ".addOption(new mi(\"--acp\"",
-          "line": 5696
-        }
-      ]
+      "resolvedSeeds": []
     },
     {
       "path": "Native runtime bridge selection",
@@ -784,16 +585,7 @@
       ],
       "output": "In-process NAPI addon or manifest-driven out-of-process native-call proxy.",
       "docs": "docs/01-runtime-lifecycle/out-of-process-native-runtime.md",
-      "resolvedSeeds": [
-        {
-          "anchor": "COPILOT_RUNTIME_OOP",
-          "line": 63
-        },
-        {
-          "anchor": "connectFromEnvSync",
-          "line": 63
-        }
-      ]
+      "resolvedSeeds": []
     },
     {
       "path": "Native terminal layout and desktop integration",
@@ -810,23 +602,23 @@
       "resolvedSeeds": [
         {
           "anchor": "cli-native",
-          "line": 634
+          "line": 217
         },
         {
           "anchor": "graphemeBoundaries",
-          "line": 634
+          "line": 217
         },
         {
           "anchor": "lineBreakPositions",
-          "line": 634
+          "line": 217
         },
         {
           "anchor": "startColorSchemeListener",
-          "line": 3239
+          "line": 1902
         },
         {
           "anchor": "showDesktopNotification",
-          "line": 3602
+          "line": 2278
         }
       ]
     },
@@ -844,19 +636,19 @@
       "resolvedSeeds": [
         {
           "anchor": "session.start",
-          "line": 90
+          "line": 1493
         },
         {
           "anchor": "tool.execution_complete",
-          "line": 90
+          "line": 1493
         },
         {
           "anchor": "session.task_complete",
-          "line": 2594
+          "line": 1654
         },
         {
           "anchor": "session.idle",
-          "line": 90
+          "line": 1489
         }
       ]
     },
@@ -874,19 +666,19 @@
       "resolvedSeeds": [
         {
           "anchor": "events.jsonl",
-          "line": 109
+          "line": 1433
         },
         {
           "anchor": "workspace.yaml",
-          "line": 2768
+          "line": 1656
         },
         {
           "anchor": "session-store.db",
-          "line": 4446
+          "line": 3215
         },
         {
           "anchor": "session.snapshot_rewind",
-          "line": 90
+          "line": 1488
         }
       ]
     },
@@ -903,20 +695,8 @@
       "docs": "docs/02-context-model-loop/prompt-sources.md",
       "resolvedSeeds": [
         {
-          "anchor": "S.promptsCliEnvironmentContext(",
-          "line": 505
-        },
-        {
-          "anchor": "this.setCurrentSystemMessageContent(Nn)",
-          "line": 2759
-        },
-        {
-          "anchor": "this.emit(\"system.message\",{role:\"system\"",
-          "line": 2759
-        },
-        {
           "anchor": "loadSkills",
-          "line": 2496
+          "line": 1587
         }
       ]
     },
@@ -935,28 +715,8 @@
       "docs": "docs/02-context-model-loop/resilience-rate-limits-concurrency.md",
       "resolvedSeeds": [
         {
-          "anchor": "async runAgenticLoop(",
-          "line": 2757
-        },
-        {
-          "anchor": "getCompletionWithTools",
-          "line": 121
-        },
-        {
-          "anchor": "preRequest",
-          "line": 121
-        },
-        {
-          "anchor": "history_truncated",
-          "line": 2583
-        },
-        {
-          "anchor": "compaction_started",
-          "line": 2644
-        },
-        {
           "anchor": "rate limit",
-          "line": 167
+          "line": 2273
         }
       ]
     },
@@ -972,16 +732,8 @@
       "docs": "docs/03-tools-integrations-security/runtime-tool-assembly-and-filtering.md",
       "resolvedSeeds": [
         {
-          "anchor": "async initializeAndValidateTools(){try{let e=await this.buildSettingsAndTools()",
-          "line": 2755
-        },
-        {
-          "anchor": "buildSettingsAndTools(",
-          "line": 2755
-        },
-        {
           "anchor": "session.tools_updated",
-          "line": 2039
+          "line": 1654
         }
       ]
     },
@@ -999,24 +751,16 @@
       "docs": "docs/03-tools-integrations-security/indexed-search-tgrep-and-ripgrep.md",
       "resolvedSeeds": [
         {
-          "anchor": "copilot_cli_tgrep",
-          "line": 124
-        },
-        {
           "anchor": "USE_TGREP",
-          "line": 122
+          "line": 4295
         },
         {
           "anchor": "tgrep serve",
-          "line": 122
+          "line": 5017
         },
         {
           "anchor": "tgrep_startup",
-          "line": 5040
-        },
-        {
-          "anchor": "--index-path",
-          "line": 122
+          "line": 3953
         }
       ]
     },
@@ -1034,19 +778,15 @@
       "resolvedSeeds": [
         {
           "anchor": "tool.execution_start",
-          "line": 90
-        },
-        {
-          "anchor": "preToolUse",
-          "line": 2764
+          "line": 214
         },
         {
           "anchor": "requestPermissionWithHooks(",
-          "line": 2710
+          "line": 1654
         },
         {
           "anchor": "tool.execution_complete",
-          "line": 90
+          "line": 1493
         }
       ]
     },
@@ -1061,24 +801,7 @@
       ],
       "output": "Sync/background/multi-turn agent state, result handoff, and subagent lifecycle events.",
       "docs": "docs/06-agents-automation/agent-task-orchestration.md",
-      "resolvedSeeds": [
-        {
-          "anchor": "nR=class{tasks=new Map",
-          "line": 204
-        },
-        {
-          "anchor": "S.toolTaskPrepareInput(",
-          "line": 477
-        },
-        {
-          "anchor": "SessionAgentExecutor.execute() called",
-          "line": 513
-        },
-        {
-          "anchor": "this.emit(\"subagent.completed\"",
-          "line": 2742
-        }
-      ]
+      "resolvedSeeds": []
     },
     {
       "path": "Integrations and extension loading",
@@ -1094,24 +817,16 @@
       "docs": "docs/03-tools-integrations-security/plugins-extensions-and-capabilities.md",
       "resolvedSeeds": [
         {
-          "anchor": "mcpHostStateCreate()",
-          "line": 2578
-        },
-        {
-          "anchor": "async function VM(",
-          "line": 624
-        },
-        {
           "anchor": "setupExtensionsForSession",
-          "line": 2799
+          "line": 1662
         },
         {
           "anchor": "session.extensions_loaded",
-          "line": 2742
+          "line": 1824
         },
         {
           "anchor": "callIdeTool(",
-          "line": 3079
+          "line": 1791
         }
       ]
     },
@@ -1131,27 +846,19 @@
       "resolvedSeeds": [
         {
           "anchor": "requestPermissionWithHooks(",
-          "line": 2710
+          "line": 1654
         },
         {
           "anchor": "allow-tool",
-          "line": 5488
+          "line": 4523
         },
         {
           "anchor": "deny-tool",
-          "line": 5488
+          "line": 4523
         },
         {
           "anchor": "content exclusion",
-          "line": 128
-        },
-        {
-          "anchor": "sandboxCheckFilesystemAccess",
-          "line": 135
-        },
-        {
-          "anchor": "sandboxCheckNetworkAccess",
-          "line": 135
+          "line": 3953
         }
       ]
     },
@@ -1170,23 +877,11 @@
       "resolvedSeeds": [
         {
           "anchor": "/diagnose",
-          "line": 2064
+          "line": 1438
         },
         {
           "anchor": "/collect-debug-logs",
-          "line": 2064
-        },
-        {
-          "anchor": "var aW=class{disposables=[]",
-          "line": 3385
-        },
-        {
-          "anchor": "S.otelResolveConfig",
-          "line": 2764
-        },
-        {
-          "anchor": "new _s(\"update\").summary(\"Download the latest version\")",
-          "line": 5861
+          "line": 1438
         }
       ]
     },
@@ -1202,16 +897,8 @@
       "docs": "docs/05-hosted-agent-ops/hosted-agent-environment.md",
       "resolvedSeeds": [
         {
-          "anchor": "S.mcpRegistryPropagatableEnvironmentVariables(",
-          "line": 2577
-        },
-        {
-          "anchor": "GITHUB_COPILOT_MCP_JSON",
-          "line": 2603
-        },
-        {
           "anchor": "COPILOT_OTEL_ENABLED",
-          "line": 2764
+          "line": 4301
         }
       ]
     },
@@ -1230,23 +917,23 @@
       "resolvedSeeds": [
         {
           "anchor": "/collect-debug-logs",
-          "line": 2064
+          "line": 1438
         },
         {
           "anchor": "debugLogPaths",
-          "line": 2479
+          "line": 1563
         },
         {
           "anchor": "feedback-manifest.json",
-          "line": 2064
+          "line": 1435
         },
         {
           "anchor": "additional-logs",
-          "line": 2062
+          "line": 1433
         },
         {
           "anchor": "--secret-env-vars",
-          "line": 5696
+          "line": 4931
         }
       ]
     }

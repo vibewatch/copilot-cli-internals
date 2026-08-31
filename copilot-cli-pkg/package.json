@@ -1,7 +1,7 @@
 {
   "name": "@github/copilot",
   "description": "GitHub Copilot CLI brings the power of Copilot coding agent directly to your terminal.",
-  "version": "1.0.71",
+  "version": "1.0.82",
   "license": "SEE LICENSE IN LICENSE.md",
   "type": "module",
   "repository": {
@@ -46,37 +46,37 @@
     "tree-sitter-php.wasm",
     "tree-sitter-scala.wasm",
     "assets/copilot.png",
+    "animations/*.json.gz",
     "queries/**/*",
     "prebuilds/**/*",
-    "sdk/**/*",
-    "clipboard/**/*",
     "foundry-local-sdk/**/*",
     "pvrecorder/**/*",
     "webview/**/*",
-    "napi-oop-runtime/**/*",
     "ripgrep/**/*",
     "tgrep/**/*",
     "schemas/**/*",
     "definitions/**/*",
     "builtin/**/*",
     "builtin-skills/**/*",
+    "plugins/**/*",
     "preloads/**/*",
     "copilot-sdk/**/*",
+    "sdk/**/*",
     "voice-installer.worker.js",
     "voice-engine.worker.js",
     "!**/*.map"
   ],
   "buildMetadata": {
-    "gitCommit": "3286dc4"
+    "gitCommit": "123e53c"
   },
   "optionalDependencies": {
-    "@github/copilot-linux-x64": "1.0.71",
-    "@github/copilot-linux-arm64": "1.0.71",
-    "@github/copilot-linuxmusl-x64": "1.0.71",
-    "@github/copilot-linuxmusl-arm64": "1.0.71",
-    "@github/copilot-darwin-x64": "1.0.71",
-    "@github/copilot-darwin-arm64": "1.0.71",
-    "@github/copilot-win32-x64": "1.0.71",
-    "@github/copilot-win32-arm64": "1.0.71"
+    "@github/copilot-linux-x64": "1.0.82",
+    "@github/copilot-linux-arm64": "1.0.82",
+    "@github/copilot-linuxmusl-x64": "1.0.82",
+    "@github/copilot-linuxmusl-arm64": "1.0.82",
+    "@github/copilot-darwin-x64": "1.0.82",
+    "@github/copilot-darwin-arm64": "1.0.82",
+    "@github/copilot-win32-x64": "1.0.82",
+    "@github/copilot-win32-arm64": "1.0.82"
   }
 }

@@ -6,26 +6,7 @@ description: >
   with citations. Designed to work autonomously within a research workflow.
 model: claude-sonnet-4.6
 tools:
-  # GitHub MCP tools (using short 'github/' prefix which maps to 'github-mcp-server/')
-  - github/get_me # USE THIS FIRST to understand org/repo context
-  - github/get_file_contents
-  - github/search_code
-  - github/search_repositories
-  - github/list_branches
-  - github/list_commits
-  - github/get_commit
-  - github/search_issues
-  - github/list_issues
-  - github/issue_read
-  - github/search_pull_requests
-  - github/list_pull_requests
-  - github/pull_request_read
-  # Web and local tools
-  - web_fetch
-  - web_search
-  - grep
-  - glob
-  - view
+  - "*"
 promptParts:
   includeAISafety: true
   includeToolInstructions: true

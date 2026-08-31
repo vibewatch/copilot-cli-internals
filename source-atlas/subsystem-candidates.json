@@ -1,57 +1,56 @@
 {
-  "generatedAt": "2026-07-20T01:29:40.359Z",
-  "previousVersion": "1.0.54",
-  "currentVersion": "1.0.71",
+  "generatedAt": "2026-08-31T06:52:42.714Z",
+  "previousVersion": "1.0.71",
+  "currentVersion": "1.0.82",
   "candidates": [
     {
-      "id": "package-root:assets",
-      "kind": "package-root",
-      "evidence": ["New top-level package asset directory containing the Copilot window icon."]
-    },
-    {
-      "id": "package-root:builtin",
-      "kind": "package-root",
-      "evidence": ["New package root containing the customize-cloud-agent packaged skill content."]
-    },
-    {
-      "id": "package-root:napi-oop-runtime",
-      "kind": "package-root",
-      "evidence": ["New Node-side transport for a Rust-parent out-of-process native runtime surface."]
-    },
-    {
-      "id": "package-root:sea-loader.js",
-      "kind": "package-root",
-      "evidence": ["Recovered SEA loader source now preserved by package extraction."]
-    },
-    {
-      "id": "package-root:tgrep",
-      "kind": "package-root",
-      "evidence": ["New packaged indexed grep binary and app.js startup/readiness/fallback manager."]
-    },
-    {
-      "id": "package-root:voice-engine.worker.js",
-      "kind": "package-root",
-      "evidence": ["New voice engine worker entrypoint behind the dedicated voice server/client boundary."]
-    },
-    {
-      "id": "package-root:voice-server.js",
-      "kind": "package-root",
-      "evidence": ["New dedicated local voice server entrypoint and socket RPC lifecycle."]
-    },
-    {
-      "id": "package-root:webview",
-      "kind": "package-root",
-      "evidence": ["New package-local resolver and native @webviewjs/webview renderer used for canvas windows."]
-    },
-    {
-      "id": "package-module:copilot-sdk/toolSet.d.ts",
+      "id": "package-module:builtin-skills/github-pr-media/",
       "kind": "package-module",
-      "evidence": ["New public SDK ToolSet and BuiltInTools.Isolated filter-builder contract."]
+      "evidence": [
+        "New package directory: `copilot-cli-pkg/builtin-skills/github-pr-media/`."
+      ]
+    },
+    {
+      "id": "package-module:builtin/github-pr-media/",
+      "kind": "package-module",
+      "evidence": [
+        "New package directory: `copilot-cli-pkg/builtin/github-pr-media/`."
+      ]
+    },
+    {
+      "id": "package-module:copilot-sdk/copilotRequestHandler.d.ts",
+      "kind": "package-module",
+      "evidence": [
+        "New module/entrypoint files: `copilot-sdk/copilotRequestHandler.d.ts`."
+      ]
+    },
+    {
+      "id": "package-module:copilot-sdk/factory.d.ts",
+      "kind": "package-module",
+      "evidence": [
+        "New module/entrypoint files: `copilot-sdk/factory.d.ts`."
+      ]
+    },
+    {
+      "id": "package-module:copilot-sdk/ffiRuntimeHost.d.ts",
+      "kind": "package-module",
+      "evidence": [
+        "New module/entrypoint files: `copilot-sdk/ffiRuntimeHost.d.ts`."
+      ]
     },
     {
       "id": "package-module:definitions/sidekick/",
       "kind": "package-module",
-      "evidence": ["New cloud-session-search, session-search, and github-context-memory sidekick definitions."]
+      "evidence": [
+        "New module/entrypoint files: `definitions/sidekick/test-sidekick-context-changed.yaml`."
+      ]
+    },
+    {
+      "id": "package-root:animations",
+      "kind": "package-root",
+      "evidence": [
+        "New top-level directory: `copilot-cli-pkg/animations/`."
+      ]
     }
   ]
 }

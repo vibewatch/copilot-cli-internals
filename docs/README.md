@@ -4,7 +4,7 @@ This wiki documents the extracted `@github/copilot` CLI bundle with source-ancho
 
 `copilot-cli-pkg/app.js`
 
-The current package is `@github/copilot` `1.0.71`; see `copilot-cli-pkg/package.json` for exact build metadata.
+The current package is `@github/copilot` `1.0.82`; see `copilot-cli-pkg/package.json` for exact build metadata.
 
 The wiki is organized around source-anchored internals questions: how the bundled CLI starts, shapes model context, exposes tools, persists sessions, runs hosted jobs, delegates work, and supports future source-atlas research. The canonical sections below are both the physical layout and the reader path.
 

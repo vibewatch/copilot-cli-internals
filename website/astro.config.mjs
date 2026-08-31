@@ -94,7 +94,7 @@ export default defineConfig({
     starlight({
       title: 'Copilot CLI Internal Analysis',
       description:
-        'Reverse-engineering wiki for the @github/copilot CLI 1.0.71 bundle and SDK.',
+        'Reverse-engineering wiki for the @github/copilot CLI 1.0.82 bundle and SDK.',
       logo: {
         src: './src/assets/cat.svg',
         replacesTitle: false,

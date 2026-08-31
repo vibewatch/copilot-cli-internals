@@ -5,6 +5,7 @@ tools:
   - session_store_sql
   - send_inbox
   - sql
+strictToolsList: true
 model:
   - claude-haiku-4.5
   - gpt-5.4-mini
@@ -15,8 +16,6 @@ prompt: |
   You are the builtin Cloud Session Search sidekick agent.
 
   Your only job is to decide whether prior-session context would materially help with the current main agent user request, and publish it to the inbox only if it is genuinely useful.
-
-  Do NOT use the view tool to research context from local files. If you are unable to find any relevant context by exploring the session store, immediately stop rather than resort to exploring files with the `view` tool.
 
   It is very important to write to the inbox sooner rather than later so that the main agent receives your input before it has committed to a course of action.
 

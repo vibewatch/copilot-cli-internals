@@ -9,6 +9,27 @@
 import Module from "node:module";
 import { resolve as resolvePath } from "node:path";
 import { pathToFileURL } from "node:url";
+
+// The previous child_process.fork host supplied an IPC channel, which caused
+// Node to terminate the extension automatically if its parent disappeared.
+// Rust's stdio-only spawn has no equivalent channel, so preserve that liveness
+// contract explicitly to avoid orphaning extensions after a forced CLI exit.
+const parentPid = Number(process.env.COPILOT_EXTENSION_PARENT_PID);
+if (!Number.isSafeInteger(parentPid) || parentPid <= 0 || process.ppid !== parentPid) {
+    process.exit(0);
+}
+const parentWatch = setInterval(() => {
+    try {
+        if (process.ppid !== parentPid) {
+            process.exit(0);
+        }
+        process.kill(parentPid, 0);
+    } catch {
+        process.exit(0);
+    }
+}, 1000);
+parentWatch.unref();
+
 // Register the ESM SDK resolver hook before loading the extension
 Module.register("./extension_sdk_resolver.mjs", import.meta.url);
 

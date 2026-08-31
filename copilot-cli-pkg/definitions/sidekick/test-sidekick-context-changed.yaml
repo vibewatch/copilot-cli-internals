@@ -1,0 +1,24 @@
+name: test-sidekick-context-changed
+displayName: Test Sidekick (Context Changed)
+description: Test-only sidekick agent used by the E2E and integration test suites to exercise the session.context_changed trigger (e.g. after a working-directory change). Not for production use.
+model:
+  - claude-haiku-4.5
+  - gpt-5.4-mini
+tools:
+  - send_inbox
+strictToolsList: true
+promptParts:
+  includeOutputChannelInstructions: inbox
+prompt: |
+  You are a test-only sidekick agent. Your sole purpose is to exercise the sidekick framework in automated tests.
+
+  You are launched by the session.context_changed event (for example, after the working directory changes). There is no accompanying user request. When you run, call send_inbox exactly once with summary 'context changed' and content 'context changed'. After the send_inbox tool returns, reply with exactly the word Done.
+
+sidekick:
+  triggers:
+    - event: session.context_changed
+      limit: 1
+  contextEvents:
+    - session.context_changed
+  behavior: restart
+  maxSendsPerTurn: 1

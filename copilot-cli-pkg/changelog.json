@@ -1,6 +1,2522 @@
 {
   "$schema": "./changelog-schema.json",
   "unpublished": [],
+  "1.0.82": [
+    {
+      "type": "fixed",
+      "description": "A message typed while /worktree or /move is preparing the worktree no longer breaks the switch into it",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/17497"]
+    },
+    {
+      "type": "fixed",
+      "description": "Ctrl+E expands the plan approval card to show the full plan again",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/17079"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/17118"]
+    },
+    {
+      "type": "fixed",
+      "description": "Show the specific authentication failure (such as 401 Bad credentials) instead of only the /login prompt",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/17547"]
+    }
+  ],
+  "1.0.82-1": [
+    {
+      "type": "fixed",
+      "description": "Show the specific authentication failure (such as 401 Bad credentials) instead of only the /login prompt",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/17547"]
+    }
+  ],
+  "1.0.82-0": [],
+  "1.0.81": [
+    {
+      "type": "new",
+      "description": "The plugins dashboard is available to everyone: run `/plugin`, `/mcp`, or `/skills`. Set `PLUGINS_DASHBOARD=false` to opt out of it and the `copilot plugins` command.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16683"]
+    },
+    {
+      "type": "added",
+      "description": "Ship MCP 2026-07-28 support to CLI, SDK, IDE, and in-memory clients",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16348"],
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/16374"]
+    },
+    {
+      "type": "added",
+      "description": "Hooks can now receive the current OpenTelemetry trace context and emit correlated spans: inputs gain `traceparent` (plus `tracestate` when the span has vendor state); command hooks also get env vars.",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/15971"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16705"]
+    },
+    {
+      "type": "added",
+      "description": "Windows: remote MCP servers protected by Microsoft Entra ID can now sign in through the OS authentication broker (WAM), usually with no prompt at all. Other platforms, `--device-code`, and machines without the broker library keep the existing browser flow.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16485"]
+    },
+    {
+      "type": "added",
+      "description": "Add xhigh reasoning effort support for Grok 4.6",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16716"]
+    },
+    {
+      "type": "added",
+      "description": "Startup now offers to restore sessions that were still open when their CLI went away, so a crash or a machine restart no longer means reopening each terminal by hand",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15830"]
+    },
+    {
+      "type": "added",
+      "description": "models.list now includes service-published infoMessages and warningMessages per model",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16406"]
+    },
+    {
+      "type": "added",
+      "description": "Add `copilot app` to open the GitHub Copilot app in the current directory",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/16490"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16499"]
+    },
+    {
+      "type": "added",
+      "description": "Add defaultMode and defaultPermissionMode settings to choose startup mode and approval behavior for new interactive sessions",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16141"]
+    },
+    {
+      "type": "added",
+      "description": "Add --with-token to copilot login to read an auth token from stdin",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16305"]
+    },
+    {
+      "type": "added",
+      "description": "Add support for Gemini 3.7 Flash",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15788"]
+    },
+    {
+      "type": "added",
+      "description": "Add Ctrl+E in /sandbox to open settings.json in your editor",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/15508"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15509"]
+    },
+    {
+      "type": "added",
+      "description": "Add per-agent usage metrics to --usage-output-file JSON output",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16062"]
+    },
+    {
+      "type": "fixed",
+      "description": "Repeated read_agent calls now consistently return the full turn history unless since_turn is provided",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/7731"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16967"]
+    },
+    {
+      "type": "fixed",
+      "description": "Hook lifecycle events (`hook.start`/`hook.end`) from hooks inside a subagent are now recorded on that subagent's session and re-emitted on its parent, instead of being dropped on an internal session.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16705"]
+    },
+    {
+      "type": "fixed",
+      "description": "Repeatedly resuming the same session no longer crashes while telemetry is being replaced",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/17015"],
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/16982"]
+    },
+    {
+      "type": "fixed",
+      "description": "An MCP server blocked by an enterprise policy now shows as blocked in /mcp instead of spinning as pending forever",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15485"]
+    },
+    {
+      "type": "fixed",
+      "description": "Fixed an indefinite \"Loading…/Resuming…\" hang at startup when a repository plugin activates a contributed extension (or another extension reload races the initial load), which previously left the environment stuck on \"still waiting on extensions\"",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13494"]
+    },
+    {
+      "type": "fixed",
+      "description": "Vim mode badge stays visible beside the activity indicator during turns",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16994"]
+    },
+    {
+      "type": "fixed",
+      "description": "The startup status finishes after extension configuration during plugin reconciliation",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16874"]
+    },
+    {
+      "type": "fixed",
+      "description": "Signing out of an account now clears its cached enterprise managed settings, so signing back in generally re-fetches the policy rather than re-applying the one cached before sign-out",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15131"]
+    },
+    {
+      "type": "fixed",
+      "description": "An enterprise managed-settings policy is no longer rejected when `permissions.disableBypassPermissionsMode` carries an unrecognized value; it is now logged and enforced as `disable`.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15557"]
+    },
+    {
+      "type": "fixed",
+      "description": "Sandboxed builds on Windows create their scratch caches on first run, so cargo, go, Gradle, and ccache work without a warm cache",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/14885"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16202"]
+    },
+    {
+      "type": "fixed",
+      "description": "On macOS and Linux, shell commands resolve the same tools a bash login shell does, including project environments activated from a profile",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/15878"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15879"]
+    },
+    {
+      "type": "fixed",
+      "description": "Canvas windows open and refresh in the background instead of stealing focus from your terminal",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15602"]
+    },
+    {
+      "type": "fixed",
+      "description": "A prompt sent while the agent is working no longer leaves a second copy of itself stuck as `(pending)` at the bottom of the transcript after it has been answered",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16234"]
+    },
+    {
+      "type": "fixed",
+      "description": "Turning allow-all off from an ACP client now reaches the permission engine whenever there is a runtime override or auto-approval to revoke, so the setting can no longer report success while permissions stay enabled (a baseline granted by --allow-all-* launch flags is still deliberately left intact)",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14283"]
+    },
+    {
+      "type": "fixed",
+      "description": "A failed tool call no longer stacks its `(MCP: server)` label one character per line down the timeline — the label and the error now share the row, with the longer side truncating",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15645"]
+    },
+    {
+      "type": "fixed",
+      "description": "Agents, skills and MCP servers contributed by installed plugins are no longer dropped in non-interactive (-p) runs, so --agent <plugin>:<agent> works headlessly without --plugin-dir",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15846"]
+    },
+    {
+      "type": "fixed",
+      "description": "Typing `$` and pressing Enter opens the interactive shell again, instead of clearing the prompt and doing nothing",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16131"]
+    },
+    {
+      "type": "fixed",
+      "description": "The prompt frame now renders in terminals it previously skipped, such as foot and alacritty, instead of a fixed list",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15917"]
+    },
+    {
+      "type": "fixed",
+      "description": "A prompt queued while the agent is working stays visible instead of vanishing when you send another one",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16102"]
+    },
+    {
+      "type": "fixed",
+      "description": "The sessions sidebar's keyboard cursor is visible again, and selected rows in the Select family, the diff viewer and custom picker rows now pair the selection fill with the text color derived for it.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15589"]
+    },
+    {
+      "type": "fixed",
+      "description": "Keys sent to an unfocused terminal pane are no longer dropped: Enter and other keystrokes are handled even after a terminal focus-out report, so tmux and agent multiplexers can drive a background pane",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15776"]
+    },
+    {
+      "type": "improved",
+      "description": "Compact the autopilot goal panel to its identity row on a short terminal (a paused goal keeps its resume note), with ctrl+x → g to expand or collapse it by hand",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16855"]
+    },
+    {
+      "type": "improved",
+      "description": "Render the autopilot goal panel as a pinned prompt frame, drop its progress bar for the exact todo count, fold the subagent hint into the row it toggles, and keep its metrics on a narrow pane",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16855"]
+    },
+    {
+      "type": "improved",
+      "description": "Resume large sessions faster by showing recent history first while older messages load.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/17244"]
+    },
+    {
+      "type": "improved",
+      "description": "`x` is now the delete key everywhere: /sandbox config, /settings, /mcp, the sessions dialog and the diff comments summary move off `d`",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15910"]
+    },
+    {
+      "type": "improved",
+      "description": "Auto mode now adapts model selection as your task evolves during a conversation",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16696"]
+    },
+    {
+      "type": "improved",
+      "description": "/plugin now flags installed plugins and marketplaces that have a newer version upstream, and offers an Update action to pull it",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16706"]
+    },
+    {
+      "type": "improved",
+      "description": "Show your last prompt as the inferred objective in the Autopilot status panel",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16589"]
+    },
+    {
+      "type": "improved",
+      "description": "When --no-sandbox is ignored because enterprise policy could not be determined, the notice now says so, and no longer points at an administrator, instead of claiming a policy requires the sandbox. The unsupported-host warning says the same rather than contradicting it.",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/15373"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15650"]
+    },
+    {
+      "type": "improved",
+      "description": "Show model data retention warnings with links in the /model picker",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16610"]
+    },
+    {
+      "type": "improved",
+      "description": "Path-sourced plugins in a local (directory-source) marketplace now load live from their real directory, so editing one takes effect on `/restart` or a new session — no `/plugin update`",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15684"]
+    },
+    {
+      "type": "improved",
+      "description": "Skills and custom agents are discovered from directories added with --add-dir",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15198"]
+    },
+    {
+      "type": "improved",
+      "description": "Use Ctrl+Space to toggle voice dictation.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16487"]
+    },
+    {
+      "type": "improved",
+      "description": "A session sandboxed by an enterprise managed policy now says so on the timeline, including when the policy arrives mid-session, instead of leaving the footer's sandbox chip as the only hint that commands are being restricted",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16219"]
+    },
+    {
+      "type": "improved",
+      "description": "forceRemoteSettingsRefresh now fails closed: when set, the cached managed-settings policy is never served or used as a fetch-failure fallback (skipping both the 1h fast path and the 24h stale fallback), so a failed startup fetch blocks on the unconfirmed policy instead of reverting to a possibly-stale cached one. Concretely, until a fresh policy is fetched the session applies the restrictive undetermined-policy posture: non-default MCP servers are blocked, bypass-permissions mode cannot be enabled, and policy-gated plugin install/update mutations are blocked",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16384"]
+    },
+    {
+      "type": "improved",
+      "description": "ACP clients receive subagent IDs, raw event subscriptions, and live title, mode, command, and plan updates",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15463"]
+    },
+    {
+      "type": "improved",
+      "description": "Show each user instruction file separately in /instructions",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15421"]
+    },
+    {
+      "type": "improved",
+      "description": "Managed settings now win per entry for enabledPlugins and extraKnownMarketplaces, so a plugin or marketplace your organization pins can't be overridden locally",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16169"]
+    },
+    {
+      "type": "improved",
+      "description": "Use x to remove scheduled /every and /after prompts in Schedule Manager",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16106"]
+    },
+    {
+      "type": "improved",
+      "description": "Update model configurations",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15837"]
+    },
+    {
+      "type": "removed",
+      "description": "Removed the `PLUGINS_DASHBOARD` opt-out and the legacy skills picker it kept alive. `/skills`, bare `/mcp`, and `/mcp show` (with no server name) always open the dashboard; `/mcp config` still opens the dedicated MCP wizard.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16912"]
+    },
+    {
+      "type": "removed",
+      "description": "Removed `/plugins`; its resources moved to `/plugin`, `/mcp` and `/skills`, with `/subagents` and `/instructions` for agents and instructions.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16683"]
+    },
+    {
+      "type": "removed",
+      "description": "Enabling and disabling hooks and LSP servers is temporarily unavailable: those toggles existed only in the `/plugins` dashboard that this release removes.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16683"]
+    }
+  ],
+  "1.0.81-14": [
+    {
+      "type": "fixed",
+      "description": "Repeated read_agent calls now consistently return the full turn history unless since_turn is provided",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/7731"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16967"]
+    },
+    {
+      "type": "improved",
+      "description": "Resume large sessions faster by showing recent history first while older messages load.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/17244"]
+    }
+  ],
+  "1.0.81-13": [
+    {
+      "type": "added",
+      "description": "Hooks can now receive the current OpenTelemetry trace context and emit correlated spans: inputs gain `traceparent` (plus `tracestate` when the span has vendor state); command hooks also get env vars.",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/15971"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16705"]
+    },
+    {
+      "type": "fixed",
+      "description": "Hook lifecycle events (`hook.start`/`hook.end`) from hooks inside a subagent are now recorded on that subagent's session and re-emitted on its parent, instead of being dropped on an internal session.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16705"]
+    },
+    {
+      "type": "removed",
+      "description": "Removed the `PLUGINS_DASHBOARD` opt-out and the legacy skills picker it kept alive. `/skills`, bare `/mcp`, and `/mcp show` (with no server name) always open the dashboard; `/mcp config` still opens the dedicated MCP wizard.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16912"]
+    }
+  ],
+  "1.0.81-12": [
+    {
+      "type": "added",
+      "description": "Windows: remote MCP servers protected by Microsoft Entra ID can now sign in through the OS authentication broker (WAM), usually with no prompt at all. Other platforms, `--device-code`, and machines without the broker library keep the existing browser flow.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16485"]
+    },
+    {
+      "type": "fixed",
+      "description": "Repeatedly resuming the same session no longer crashes while telemetry is being replaced",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/17015"],
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/16982"]
+    }
+  ],
+  "1.0.81-11": [
+    {
+      "type": "fixed",
+      "description": "An MCP server blocked by an enterprise policy now shows as blocked in /mcp instead of spinning as pending forever",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15485"]
+    }
+  ],
+  "1.0.81-10": [
+    {
+      "type": "new",
+      "description": "The plugins dashboard is available to everyone: run `/plugin`, `/mcp`, or `/skills`. Set `PLUGINS_DASHBOARD=false` to opt out of it and the `copilot plugins` command.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16683"]
+    },
+    {
+      "type": "fixed",
+      "description": "Fixed an indefinite \"Loading…/Resuming…\" hang at startup when a repository plugin activates a contributed extension (or another extension reload races the initial load), which previously left the environment stuck on \"still waiting on extensions\"",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13494"]
+    },
+    {
+      "type": "fixed",
+      "description": "Vim mode badge stays visible beside the activity indicator during turns",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16994"]
+    },
+    {
+      "type": "fixed",
+      "description": "The startup status finishes after extension configuration during plugin reconciliation",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16874"]
+    },
+    {
+      "type": "improved",
+      "description": "`x` is now the delete key everywhere: /sandbox config, /settings, /mcp, the sessions dialog and the diff comments summary move off `d`",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15910"]
+    },
+    {
+      "type": "improved",
+      "description": "Auto mode now adapts model selection as your task evolves during a conversation",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16696"]
+    },
+    {
+      "type": "improved",
+      "description": "/plugin now flags installed plugins and marketplaces that have a newer version upstream, and offers an Update action to pull it",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16706"]
+    },
+    {
+      "type": "improved",
+      "description": "Show your last prompt as the inferred objective in the Autopilot status panel",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16589"]
+    },
+    {
+      "type": "improved",
+      "description": "When --no-sandbox is ignored because enterprise policy could not be determined, the notice now says so, and no longer points at an administrator, instead of claiming a policy requires the sandbox. The unsupported-host warning says the same rather than contradicting it.",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/15373"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15650"]
+    },
+    {
+      "type": "removed",
+      "description": "Removed `/plugins`; its resources moved to `/plugin`, `/mcp` and `/skills`, with `/subagents` and `/instructions` for agents and instructions.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16683"]
+    },
+    {
+      "type": "removed",
+      "description": "Enabling and disabling hooks and LSP servers is temporarily unavailable: those toggles existed only in the `/plugins` dashboard that this release removes.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16683"]
+    }
+  ],
+  "1.0.81-9": [
+    {
+      "type": "improved",
+      "description": "Show model data retention warnings with links in the /model picker",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16610"]
+    }
+  ],
+  "1.0.81-8": [
+    {
+      "type": "added",
+      "description": "Add xhigh reasoning effort support for Grok 4.6",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16716"]
+    },
+    {
+      "type": "fixed",
+      "description": "Signing out of an account now clears its cached enterprise managed settings, so signing back in generally re-fetches the policy rather than re-applying the one cached before sign-out",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15131"]
+    },
+    {
+      "type": "improved",
+      "description": "Path-sourced plugins in a local (directory-source) marketplace now load live from their real directory, so editing one takes effect on `/restart` or a new session — no `/plugin update`",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15684"]
+    },
+    {
+      "type": "improved",
+      "description": "Skills and custom agents are discovered from directories added with --add-dir",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15198"]
+    }
+  ],
+  "1.0.81-7": [
+    {
+      "type": "added",
+      "description": "Startup now offers to restore sessions that were still open when their CLI went away, so a crash or a machine restart no longer means reopening each terminal by hand",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15830"]
+    },
+    {
+      "type": "added",
+      "description": "models.list now includes service-published infoMessages and warningMessages per model",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16406"]
+    },
+    {
+      "type": "added",
+      "description": "Add `copilot app` to open the GitHub Copilot app in the current directory",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/16490"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16499"]
+    },
+    {
+      "type": "fixed",
+      "description": "An enterprise managed-settings policy is no longer rejected when `permissions.disableBypassPermissionsMode` carries an unrecognized value; it is now logged and enforced as `disable`.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15557"]
+    },
+    {
+      "type": "fixed",
+      "description": "Sandboxed builds on Windows create their scratch caches on first run, so cargo, go, Gradle, and ccache work without a warm cache",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/14885"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16202"]
+    },
+    {
+      "type": "fixed",
+      "description": "On macOS and Linux, shell commands resolve the same tools a bash login shell does, including project environments activated from a profile",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/15878"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15879"]
+    },
+    {
+      "type": "improved",
+      "description": "Use Ctrl+Space to toggle voice dictation.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16487"]
+    },
+    {
+      "type": "improved",
+      "description": "A session sandboxed by an enterprise managed policy now says so on the timeline, including when the policy arrives mid-session, instead of leaving the footer's sandbox chip as the only hint that commands are being restricted",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16219"]
+    },
+    {
+      "type": "improved",
+      "description": "forceRemoteSettingsRefresh now fails closed: when set, the cached managed-settings policy is never served or used as a fetch-failure fallback (skipping both the 1h fast path and the 24h stale fallback), so a failed startup fetch blocks on the unconfirmed policy instead of reverting to a possibly-stale cached one. Concretely, until a fresh policy is fetched the session applies the restrictive undetermined-policy posture: non-default MCP servers are blocked, bypass-permissions mode cannot be enabled, and policy-gated plugin install/update mutations are blocked",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16384"]
+    }
+  ],
+  "1.0.81-6": [
+    {
+      "type": "added",
+      "description": "Add defaultMode and defaultPermissionMode settings to choose startup mode and approval behavior for new interactive sessions",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16141"]
+    },
+    {
+      "type": "added",
+      "description": "Add --with-token to copilot login to read an auth token from stdin",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16305"]
+    },
+    {
+      "type": "fixed",
+      "description": "Canvas windows open and refresh in the background instead of stealing focus from your terminal",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15602"]
+    },
+    {
+      "type": "improved",
+      "description": "ACP clients receive subagent IDs, raw event subscriptions, and live title, mode, command, and plan updates",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15463"]
+    },
+    {
+      "type": "improved",
+      "description": "Show each user instruction file separately in /instructions",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15421"]
+    },
+    {
+      "type": "improved",
+      "description": "Managed settings now win per entry for enabledPlugins and extraKnownMarketplaces, so a plugin or marketplace your organization pins can't be overridden locally",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16169"]
+    }
+  ],
+  "1.0.81-5": [
+    {
+      "type": "fixed",
+      "description": "A prompt sent while the agent is working no longer leaves a second copy of itself stuck as `(pending)` at the bottom of the transcript after it has been answered",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16234"]
+    }
+  ],
+  "1.0.81-4": [],
+  "1.0.81-3": [],
+  "1.0.81-2": [],
+  "1.0.81-1": [
+    {
+      "type": "added",
+      "description": "Add support for Gemini 3.7 Flash",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15788"]
+    },
+    {
+      "type": "added",
+      "description": "Add Ctrl+E in /sandbox to open settings.json in your editor",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/15508"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15509"]
+    },
+    {
+      "type": "added",
+      "description": "Add per-agent usage metrics to --usage-output-file JSON output",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16062"]
+    },
+    {
+      "type": "fixed",
+      "description": "Turning allow-all off from an ACP client now reaches the permission engine whenever there is a runtime override or auto-approval to revoke, so the setting can no longer report success while permissions stay enabled (a baseline granted by --allow-all-* launch flags is still deliberately left intact)",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14283"]
+    },
+    {
+      "type": "fixed",
+      "description": "A failed tool call no longer stacks its `(MCP: server)` label one character per line down the timeline — the label and the error now share the row, with the longer side truncating",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15645"]
+    },
+    {
+      "type": "fixed",
+      "description": "Agents, skills and MCP servers contributed by installed plugins are no longer dropped in non-interactive (-p) runs, so --agent <plugin>:<agent> works headlessly without --plugin-dir",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15846"]
+    },
+    {
+      "type": "fixed",
+      "description": "Typing `$` and pressing Enter opens the interactive shell again, instead of clearing the prompt and doing nothing",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16131"]
+    },
+    {
+      "type": "fixed",
+      "description": "The prompt frame now renders in terminals it previously skipped, such as foot and alacritty, instead of a fixed list",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15917"]
+    },
+    {
+      "type": "fixed",
+      "description": "A prompt queued while the agent is working stays visible instead of vanishing when you send another one",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16102"]
+    },
+    {
+      "type": "fixed",
+      "description": "The sessions sidebar's keyboard cursor is visible again, and selected rows in the Select family, the diff viewer and custom picker rows now pair the selection fill with the text color derived for it.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15589"]
+    },
+    {
+      "type": "fixed",
+      "description": "Keys sent to an unfocused terminal pane are no longer dropped: Enter and other keystrokes are handled even after a terminal focus-out report, so tmux and agent multiplexers can drive a background pane",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15776"]
+    },
+    {
+      "type": "improved",
+      "description": "Use x to remove scheduled /every and /after prompts in Schedule Manager",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/16106"]
+    }
+  ],
+  "1.0.81-0": [
+    {
+      "type": "improved",
+      "description": "Update model configurations",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15837"]
+    }
+  ],
+  "1.0.80": [
+    {
+      "type": "improved",
+      "description": "Update model configurations",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15837"]
+    }
+  ],
+  "1.0.80-1": [],
+  "1.0.80-0": [
+    {
+      "type": "added",
+      "description": "Add --enable-mcp-server to re-enable MCP servers disabled in settings for the current run",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15133"]
+    },
+    {
+      "type": "added",
+      "description": "A session shared with another CLI now says so: in `--ahp` mode a row for a session you have joined leads with `2 clients` (or more) when somebody else is attached to it, in both the Sessions tab and the sidebar, and `/ahp status` reports the same number. Presence is announced on attach and refreshed on a heartbeat, so a client that joins shows up at once and one that goes away stops being counted",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15354"]
+    },
+    {
+      "type": "added",
+      "description": "`/ahp cloud <environment-id>` puts a Mission Control environment in the Sessions tab's source picker alongside your local daemons, so the compute `--cloud` runs on is somewhere you can switch to with `h` and create sessions on — marked `CLOUD`, because Mission Control wakes it on connect and this CLI cannot start or stop it",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15354"]
+    },
+    {
+      "type": "added",
+      "description": "`/ahp codespace <name>` forwards a Codespace's `copilotd` port to your machine with `gh` and puts it in the Sessions tab's source picker, so a session running in a Codespace is one `h` away. It is named after the Codespace and marked `CS`, the tunnel closes when you exit or with `/ahp stop <name>`, and a missing `codespace` scope tells you the `gh auth refresh` line to run",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15354"]
+    },
+    {
+      "type": "added",
+      "description": "`--ahp` now finds the AHP daemons already running on your machine and puts them in the Sessions tab's source picker, so a host you started in another terminal is there without being named again -- including one you start while the CLI is open. Turn it off with `COPILOT_AHP_DISCOVER=0`",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15354"]
+    },
+    {
+      "type": "added",
+      "description": "In `--ahp` mode the Sessions tab and the sidebar now list the host's sessions — including ones started by another CLI — so `enter` joins a session running elsewhere, `n` creates the new session on the host, and closing a row disposes it there for every attached CLI; each host row shows whether that session is running, waiting on input, or idle right now, and the busy ones sort to the top of the host's list; every row that lives on the host is marked with it, including the sessions you have already joined, so a shared session no longer reads like a private local one, and a host session is listed once instead of reappearing lower down as a stale local copy of itself",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15354"]
+    },
+    {
+      "type": "added",
+      "description": "In `--ahp` mode the Sessions tab and the sidebar now show the host itself above the list — which daemon these sessions come from, what it is running (`copilotd 0.6.5`), and whether it is still answering — so a host that stops responding is visible instead of leaving every host row on screen as a photograph; losing the host is also announced once in the timeline, since that is rarely the screen you are looking at, and `/ahp status` now reports the same identity and health plus whether this CLI started the daemon or attached to one that was already running",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15354"]
+    },
+    {
+      "type": "added",
+      "description": "`/ahp start [port]`, `/ahp stop <host>` and `/ahp restart <host>` manage the AHP daemons themselves from inside the CLI. `start` serves the current directory, so it is the fix for a healthy host refusing a new session with `permission denied`; `stop` only ever signals a process it can see is an AHP host on this machine, waits for the socket to close, and asks for `--force` before disconnecting the session you are in; `restart` relaunches on the workspace the daemon was already serving (staff-only for now: `--ahp` and `/ahp` are gated on the `AHP_CLIENT` feature flag)",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15354"]
+    },
+    {
+      "type": "added",
+      "description": "The Sessions tab now shows where its sessions come from -- this CLI process first, then every AHP daemon you named -- with each host's health beside it, and `h` switches between them. `--ahp` and `COPILOT_AHP_URL` take a comma-separated list of hosts, `/ahp connect <url>` adds one live, `/ahp hosts` lists them and `/ahp use <host>` switches from the timeline. The list shows only the selected source's sessions and `n` creates there, so attaching to a host is no longer a one-way door away from your local sessions",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15354"]
+    },
+    {
+      "type": "added",
+      "description": "`copilot --ahp` attaches the CLI to an Agent Host Protocol host, so sessions live on the host instead of in the CLI: several terminals can attach to the same session and watch its turns stream live, `/ahp sessions|attach|new` reaches the host's session list, and a bare `--ahp` starts a local host when none is running; typing while a turn is streaming — including a turn another terminal started — behaves as it does locally: enter steers the prompt into the running turn, ctrl+q queues it for the next one, ctrl+c takes it back, and every attached terminal sees it either way (staff-only for now: `--ahp` and `/ahp` are gated on the `AHP_CLIENT` feature flag)",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15354"]
+    },
+    {
+      "type": "added",
+      "description": "Add `/plugin marketplace update [name]` to refresh marketplace catalogs",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15108"]
+    },
+    {
+      "type": "added",
+      "description": "Add support for MAI Code 1.1 Flash",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15482"]
+    },
+    {
+      "type": "added",
+      "description": "Add --usage-output-file to write final usage metrics to a JSON file",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15271"]
+    },
+    {
+      "type": "added",
+      "description": "Set explicit objectives with /autopilot <objective> without experimental mode",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15490"]
+    },
+    {
+      "type": "fixed",
+      "description": "`copilot --ahp` no longer fails with \"no AHP host is listening\" when daemons are running — it attaches to one already on this machine (preferring one whose workspace covers your directory) instead of insisting on the default address, and only reports a failure when there is genuinely nothing to attach to and none can be started",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15354"]
+    },
+    {
+      "type": "fixed",
+      "description": "`/clear` and `/new` are available again on a session that lives on an AHP host, and they now replace it **on that host**. Previously they were hidden because they built the replacement session locally: the timeline looked cleared, but every prompt after it ran in this process instead of on the host, and no other attached CLI could join it",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15354"]
+    },
+    {
+      "type": "fixed",
+      "description": "A `--ahp` host reached with a connection token (`--ahp \"wss://host:8765?tkn=…\"`, how a Codespace or LAN host is protected) no longer prints that token back: `/ahp status`, the `/ahp` session lists, the connection errors and the host-status notices all redact the query string, so a transcript can be shared without leaking it. A host that refuses the upgrade with `401` now says the connection token is what it wants",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15354"]
+    },
+    {
+      "type": "fixed",
+      "description": "An `--ahp` session now runs in the directory you started the CLI from, when the host's workspace covers it, instead of always at the host's workspace root — so a daemon serving a parent directory no longer puts your agent in the wrong project",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15354"]
+    },
+    {
+      "type": "fixed",
+      "description": "Host skills no longer vanish from an `--ahp` session moments after it opens: a relay reconnect snapshot that omits customizations is no longer read as \"the host has none\"",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15567"]
+    },
+    {
+      "type": "fixed",
+      "description": "The status line no longer sits on `Loading: … — still waiting on extensions` for the whole life of a session that runs in another process — every `--ahp` session, and Mission Control remote sessions too. The CLI cannot load its extensions into a session it does not own, and now reports that instead of waiting forever",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15354"]
+    },
+    {
+      "type": "fixed",
+      "description": "`copilot init` no longer silently drops `--sandbox` / `--no-sandbox`. The flag now applies to the init session, subject to the same feature gating and enterprise sandbox floor as other entry points.",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/15363"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15601"]
+    },
+    {
+      "type": "fixed",
+      "description": "Sandboxed MCP servers launched with npx or uvx now get a writable Copilot-owned package cache, plus the Windows toolchain and Playwright browser grants they were missing (needs dev-tool access)",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/15092"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15206"]
+    },
+    {
+      "type": "fixed",
+      "description": "A sandbox `readonlyPaths` entry nested inside your working directory now blocks writes from the built-in file tools",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/15051"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15667"]
+    },
+    {
+      "type": "fixed",
+      "description": "Turning off sandbox.allowDevToolAccess now also withholds the tool directories discovered on PATH and in toolchain environment variables, such as a relocated CARGO_HOME.",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/14898"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15365"]
+    },
+    {
+      "type": "fixed",
+      "description": "Footer AI credit total updates as background subagents spend, instead of waiting for the next turn",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15694"]
+    },
+    {
+      "type": "fixed",
+      "description": "Moved unknown and ineffective settings into an actionable /settings Problems tab and cleaned up retired CLI-owned keys",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14670"]
+    },
+    {
+      "type": "fixed",
+      "description": "Pressing Enter now always acts on your message instead of sometimes leaving it in the queue",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14959"]
+    },
+    {
+      "type": "fixed",
+      "description": "Very large sessions no longer fail to load their history after a rewind or a compaction",
+      "related_issues": ["https://github.com/github/copilot-cli/issues/4325"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15039"]
+    },
+    {
+      "type": "improved",
+      "description": "`--cloud` now puts the environment it provisions in the Sessions tab's source picker, so the compute your cloud session runs on is somewhere you can switch back to, create more sessions on, and inspect with `/ahp`",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15354"]
+    },
+    {
+      "type": "improved",
+      "description": "`/ahp codespace` now accepts the display name you gave a Codespace, not just the auto-generated one `gh` prints — and when the name matches nothing it lists the Codespaces you do have, or says the account has none, instead of reporting a 404 URL",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15354"]
+    },
+    {
+      "type": "improved",
+      "description": "The Sessions tab's source strip is now drawn as the same chip the `filter:` scope selector uses -- the source in force is a bold value on a filled badge, in the same fonts, foregrounds and backgrounds -- instead of a hand-rolled line of ASCII brackets and glyphs in a visual language of its own. It keeps its own line directly above `filter:` and still names every source -- each daemon marked `AHP` so it is clear the sessions are not this process's -- separated by the same `·` a session card uses, with `h` moving the highlight along it. Every entry reserves the badge's padding whether or not it is selected, so the line never re-flows as the highlight moves. Each host's health rides on the colour of its own entry, and where the line cannot hold every source -- the docked sidebar is around 42 columns -- it collapses to the source in force and counts what it could not draw, instead of silently truncating the selected host's address mid-number",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15354"]
+    },
+    {
+      "type": "improved",
+      "description": "Show LSP progress percentages in all service states and clear them when progress ends",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13913"]
+    },
+    {
+      "type": "improved",
+      "description": "Spec plugins that leave commands, agents, rules, hooks, LSP or MCP config at the plugin root now report the file and where to move it, instead of losing the component silently",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15077"]
+    },
+    {
+      "type": "improved",
+      "description": "MCP server timeout settings now apply to tool discovery, with a 30-second default so slow servers can load their tools reliably.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15213"]
+    },
+    {
+      "type": "improved",
+      "description": "Improve CLI rendering performance for streaming assistant output",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15256"]
+    },
+    {
+      "type": "improved",
+      "description": "Show per-file headers when viewing expanded multi-file apply_patch diffs",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15442"]
+    },
+    {
+      "type": "improved",
+      "description": "Show /autopilot and /goal objective hints in slash-command autocomplete",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15652"]
+    },
+    {
+      "type": "improved",
+      "description": "Show structured ask_user forms by default in interactive CLI sessions",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15446"]
+    },
+    {
+      "type": "improved",
+      "description": "When an enterprise policy requires the sandbox, --no-sandbox now explains that it was ignored instead of silently having no effect.",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/14650"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15364"]
+    },
+    {
+      "type": "improved",
+      "description": "extraKnownMarketplaces \"autoUpdate\" is now honored from managed (MDM/server) settings too, not just user settings",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14665"]
+    },
+    {
+      "type": "removed",
+      "description": "Breaking: Agent Plugins spec plugins now read commands/, agents/, rules/, hooks/hooks.json, lsp.json, and extensions/ only under com.github.copilot/ — no longer from the plugin root",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15077"]
+    }
+  ],
+  "1.0.79": [
+    {
+      "type": "added",
+      "description": "Add support for enterprise allow-auto-only policy so /allow-all auto works while full allow-all remains blocked.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14158"]
+    },
+    {
+      "type": "added",
+      "description": "Allow enterprise-managed sandbox policy to enforce a proxy URL while credentials remain user-controlled",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/14659"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14994"]
+    },
+    {
+      "type": "added",
+      "description": "Agent Plugins spec plugins can now ship extensions under a com.github.copilot/extensions/ directory",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14865"]
+    },
+    {
+      "type": "added",
+      "description": "Add support for the kimi-k3 model",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15018"]
+    },
+    {
+      "type": "added",
+      "description": "Combine `--plan` with `--mode autopilot` to plan first and then implement without waiting for approval",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14992"]
+    },
+    {
+      "type": "added",
+      "description": "Manage multiple concurrent sessions from the Sessions tab and sidebar",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14867"]
+    },
+    {
+      "type": "added",
+      "description": "Add /sandbox policy to show effective sandbox paths, denials, and network access",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14609"]
+    },
+    {
+      "type": "added",
+      "description": "Queue prompts, shell commands, and supported slash commands in local sessions to run in order after the current task finishes",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14621"]
+    },
+    {
+      "type": "added",
+      "description": "Set \"autoUpdate\": true on an extraKnownMarketplaces entry in your user settings to auto-update its plugins at session start",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14603"]
+    },
+    {
+      "type": "fixed",
+      "description": "A tool directory inside your workspace that is on PATH (.venv/bin, node_modules/.bin, an in-repo GOPATH) no longer turns that part of the workspace read-only in the sandbox",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15062"]
+    },
+    {
+      "type": "fixed",
+      "description": "The `/app` command now opens the current session in the GitHub Copilot desktop app instead of landing on Home with the wrong folder (requires GitHub Copilot app 1.1.3 or later)",
+      "related_issues": ["https://github.com/github/copilot-cli/issues/4118"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13768"]
+    },
+    {
+      "type": "fixed",
+      "description": "On macOS, a sandbox read-only path nested inside a writable one now stays read-only instead of inheriting the write permission from the wider path",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15057"]
+    },
+    {
+      "type": "fixed",
+      "description": "On macOS, sandboxed commands can use UNIX-domain sockets again, so tools that talk over a local IPC pipe (tsx, vite, esbuild, jest workers) no longer fail with `listen EPERM`",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15057"]
+    },
+    {
+      "type": "fixed",
+      "description": "Sandboxed commands work when the working directory lives on a Windows Dev Drive",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15057"],
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/15046"]
+    },
+    {
+      "type": "fixed",
+      "description": "`/theme` now only shows its deprecation notice for a valid color mode, so a mistyped mode no longer suggests an invalid command or hides the notice from your next valid `/theme`.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13151"]
+    },
+    {
+      "type": "fixed",
+      "description": "Sandboxed git now authenticates to Azure DevOps, GitHub Enterprise Server, GitLab, and other non-GitHub remotes you have stored HTTPS credentials for",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/14143"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14226"]
+    },
+    {
+      "type": "fixed",
+      "description": "A rare internal delay no longer prints a diagnostic warning on top of the interactive UI",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14949"]
+    },
+    {
+      "type": "fixed",
+      "description": "A failed session-history load no longer leaves the timeline permanently empty: the failure was silently discarded, so the transcript stayed blank for the rest of the session with nothing logged. It is now retried, and reported in the transcript and the log if it still fails",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15026"]
+    },
+    {
+      "type": "fixed",
+      "description": "Resuming a long session no longer collapses the timeline's scroll range while history renders in the background: entries that had not finished rendering were published as if they did not exist, so the scrollbar and scroll position jumped until the background render caught up",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15026"]
+    },
+    {
+      "type": "fixed",
+      "description": "Sandboxed wrapper builds (make and friends) get the dev tool caches their recipes need, based on the build manifests in the working directory",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14663"]
+    },
+    {
+      "type": "fixed",
+      "description": "Sandboxed commands can reach the network again on recent Windows builds, where every outbound connection was blocked even with outbound access enabled and no proxy configured",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14844"],
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/14762"]
+    },
+    {
+      "type": "fixed",
+      "description": "Plugin custom agents honor deferred-tool-loading frontmatter",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14785"]
+    },
+    {
+      "type": "fixed",
+      "description": "A sandbox that cannot start an MCP server now fails in seconds instead of stalling the session, and sandbox startup failures for both MCP and language servers now say the sandbox was at fault and how to fix or opt out of it",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14575"]
+    },
+    {
+      "type": "fixed",
+      "description": "Login links are clickable during web and device-code sign-in",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14651"]
+    },
+    {
+      "type": "fixed",
+      "description": "Compute /context attribution against the Auto-resolved model so token totals are accurate for Free/Student users",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12253"],
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/12204"]
+    },
+    {
+      "type": "fixed",
+      "description": "Disabling an extension no longer breaks elicitation, canvases, or tool permission prompts for other extensions",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14612"]
+    },
+    {
+      "type": "fixed",
+      "description": "A prompt stashed with ctrl+s now stays with the session it was typed for, so switching away and back and pressing ctrl+s restores it instead of finding it gone",
+      "related_issues": ["https://github.com/github/copilot-cli/issues/4334"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14510"]
+    },
+    {
+      "type": "fixed",
+      "description": "On Linux, searches and most shell commands blocked by the sandbox now offer to re-run outside it",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/14647"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14671"]
+    },
+    {
+      "type": "improved",
+      "description": "The /sandbox configuration dialog shows where sandbox settings are stored in settings.json",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15104"],
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/15081"]
+    },
+    {
+      "type": "improved",
+      "description": "The /sandbox configuration dialog groups the git, gh, and (on macOS) keychain settings under a new Auth tab, and the settings keys moved from `sandbox.gitAuth`/`sandbox.ghAuth` to `sandbox.auth.git`/`sandbox.auth.gh`. There is no migration: the old keys are ignored in settings files, and SDK requests that still send them are rejected as invalid rather than ignored",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14956"]
+    },
+    {
+      "type": "improved",
+      "description": "Added a `worktreeBaseRef` setting that controls whether `/worktree`, `/worktree new`, and `--worktree` start from HEAD or the remote default branch. All three now default to HEAD; previously `--worktree` started from the remote default branch.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14775"]
+    },
+    {
+      "type": "improved",
+      "description": "Model picker groups models into Recent, Recommended, New, and other sections, and Shift+Tab switches grouping views.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13565"]
+    },
+    {
+      "type": "improved",
+      "description": "Large monorepos now use tgrep ([trigram-indexed grep for fast regex search in large codebases](https://github.com/microsoft/tgrep)) instead of ripgrep",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15022"]
+    },
+    {
+      "type": "improved",
+      "description": "Ask user multi-select prompts include an Other option for free-text answers",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/14608"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14616"]
+    },
+    {
+      "type": "improved",
+      "description": "Improve teleported subagent /tasks navigation with nested tree browsing, current/all and finished-task filters, and a live timeline you can steer",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13428"]
+    },
+    {
+      "type": "improved",
+      "description": "Prompt pinning is off by default; set pinnedPrompts to true to enable it.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14841"]
+    },
+    {
+      "type": "improved",
+      "description": "Use `/worktree new` to start a new session in a new worktree",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14582"]
+    },
+    {
+      "type": "improved",
+      "description": "Pin the current prompt one row higher, in the row the tab bar already reserves, so it keeps the shape of the prompt it copies while costing the timeline one row less",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14668"]
+    },
+    {
+      "type": "improved",
+      "description": "BREAKING: the sandbox setting `allowDevToolCaches` is renamed `allowDevToolAccess`, since it grants dev-tool config and registries too, not just caches. The old key is no longer read and is ignored silently, so an existing `false` opt-out reverts to the default (on). Rename it in settings.json and in any managed/MDM policy.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14673"]
+    },
+    {
+      "type": "improved",
+      "description": "/sandbox tags inactive settings as (disabled) and explains why they are locked, and documents dev tool caches in copilot help sandbox",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14561"]
+    },
+    {
+      "type": "improved",
+      "description": "Show \"pending · ctrl+c to cancel\" for in-flight steering prompts",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14463"]
+    },
+    {
+      "type": "improved",
+      "description": "Make /model session-scoped by default, and use /config model to set defaults for future sessions.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14327"]
+    },
+    {
+      "type": "improved",
+      "description": "Pin the current prompt as a single line instead of a three-row framed block, so it reads as chrome and returns rows to the timeline; with the tab bar on it sits directly below the tabs and costs the timeline nothing",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14573"]
+    }
+  ],
+  "1.0.79-9": [
+    {
+      "type": "improved",
+      "description": "The /sandbox configuration dialog shows where sandbox settings are stored in settings.json",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15104"],
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/15081"]
+    }
+  ],
+  "1.0.79-8": [
+    {
+      "type": "added",
+      "description": "Add support for enterprise allow-auto-only policy so /allow-all auto works while full allow-all remains blocked.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14158"]
+    },
+    {
+      "type": "added",
+      "description": "Allow enterprise-managed sandbox policy to enforce a proxy URL while credentials remain user-controlled",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/14659"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14994"]
+    },
+    {
+      "type": "fixed",
+      "description": "A tool directory inside your workspace that is on PATH (.venv/bin, node_modules/.bin, an in-repo GOPATH) no longer turns that part of the workspace read-only in the sandbox",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15062"]
+    },
+    {
+      "type": "improved",
+      "description": "The /sandbox configuration dialog groups the git, gh, and (on macOS) keychain settings under a new Auth tab, and the settings keys moved from `sandbox.gitAuth`/`sandbox.ghAuth` to `sandbox.auth.git`/`sandbox.auth.gh`. There is no migration: the old keys are ignored in settings files, and SDK requests that still send them are rejected as invalid rather than ignored",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14956"]
+    },
+    {
+      "type": "improved",
+      "description": "Added a `worktreeBaseRef` setting that controls whether `/worktree`, `/worktree new`, and `--worktree` start from HEAD or the remote default branch. All three now default to HEAD; previously `--worktree` started from the remote default branch.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14775"]
+    },
+    {
+      "type": "improved",
+      "description": "Model picker groups models into Recent, Recommended, New, and other sections, and Shift+Tab switches grouping views.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13565"]
+    },
+    {
+      "type": "improved",
+      "description": "Large monorepos now use tgrep ([trigram-indexed grep for fast regex search in large codebases](https://github.com/microsoft/tgrep)) instead of ripgrep",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15022"]
+    }
+  ],
+  "1.0.79-7": [
+    {
+      "type": "added",
+      "description": "Agent Plugins spec plugins can now ship extensions under a com.github.copilot/extensions/ directory",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14865"]
+    },
+    {
+      "type": "added",
+      "description": "Add support for the kimi-k3 model",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15018"]
+    },
+    {
+      "type": "added",
+      "description": "Combine `--plan` with `--mode autopilot` to plan first and then implement without waiting for approval",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14992"]
+    },
+    {
+      "type": "fixed",
+      "description": "The `/app` command now opens the current session in the GitHub Copilot desktop app instead of landing on Home with the wrong folder (requires GitHub Copilot app 1.1.3 or later)",
+      "related_issues": ["https://github.com/github/copilot-cli/issues/4118"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13768"]
+    },
+    {
+      "type": "fixed",
+      "description": "On macOS, a sandbox read-only path nested inside a writable one now stays read-only instead of inheriting the write permission from the wider path",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15057"]
+    },
+    {
+      "type": "fixed",
+      "description": "On macOS, sandboxed commands can use UNIX-domain sockets again, so tools that talk over a local IPC pipe (tsx, vite, esbuild, jest workers) no longer fail with `listen EPERM`",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15057"]
+    },
+    {
+      "type": "fixed",
+      "description": "Sandboxed commands work when the working directory lives on a Windows Dev Drive",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15057"],
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/15046"]
+    },
+    {
+      "type": "fixed",
+      "description": "`/theme` now only shows its deprecation notice for a valid color mode, so a mistyped mode no longer suggests an invalid command or hides the notice from your next valid `/theme`.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13151"]
+    },
+    {
+      "type": "fixed",
+      "description": "Sandboxed git now authenticates to Azure DevOps, GitHub Enterprise Server, GitLab, and other non-GitHub remotes you have stored HTTPS credentials for",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/14143"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14226"]
+    },
+    {
+      "type": "improved",
+      "description": "Ask user multi-select prompts include an Other option for free-text answers",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/14608"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14616"]
+    },
+    {
+      "type": "improved",
+      "description": "Improve teleported subagent /tasks navigation with nested tree browsing, current/all and finished-task filters, and a live timeline you can steer",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13428"]
+    }
+  ],
+  "1.0.79-6": [
+    {
+      "type": "fixed",
+      "description": "A rare internal delay no longer prints a diagnostic warning on top of the interactive UI",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14949"]
+    },
+    {
+      "type": "fixed",
+      "description": "A failed session-history load no longer leaves the timeline permanently empty: the failure was silently discarded, so the transcript stayed blank for the rest of the session with nothing logged. It is now retried, and reported in the transcript and the log if it still fails",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15026"]
+    },
+    {
+      "type": "fixed",
+      "description": "Resuming a long session no longer collapses the timeline's scroll range while history renders in the background: entries that had not finished rendering were published as if they did not exist, so the scrollbar and scroll position jumped until the background render caught up",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/15026"]
+    }
+  ],
+  "1.0.79-5": [
+    {
+      "type": "added",
+      "description": "Manage multiple concurrent sessions from the Sessions tab and sidebar",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14867"]
+    },
+    {
+      "type": "fixed",
+      "description": "Sandboxed wrapper builds (make and friends) get the dev tool caches their recipes need, based on the build manifests in the working directory",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14663"]
+    },
+    {
+      "type": "improved",
+      "description": "Prompt pinning is off by default; set pinnedPrompts to true to enable it.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14841"]
+    }
+  ],
+  "1.0.79-4": [
+    {
+      "type": "fixed",
+      "description": "Sandboxed commands can reach the network again on recent Windows builds, where every outbound connection was blocked even with outbound access enabled and no proxy configured",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14844"],
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/14762"]
+    },
+    {
+      "type": "fixed",
+      "description": "Plugin custom agents honor deferred-tool-loading frontmatter",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14785"]
+    }
+  ],
+  "1.0.79-3": [
+    {
+      "type": "improved",
+      "description": "Use `/worktree new` to start a new session in a new worktree",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14582"]
+    }
+  ],
+  "1.0.79-2": [
+    {
+      "type": "fixed",
+      "description": "A sandbox that cannot start an MCP server now fails in seconds instead of stalling the session, and sandbox startup failures for both MCP and language servers now say the sandbox was at fault and how to fix or opt out of it",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14575"]
+    },
+    {
+      "type": "fixed",
+      "description": "Login links are clickable during web and device-code sign-in",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14651"]
+    },
+    {
+      "type": "improved",
+      "description": "Pin the current prompt one row higher, in the row the tab bar already reserves, so it keeps the shape of the prompt it copies while costing the timeline one row less",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14668"]
+    },
+    {
+      "type": "improved",
+      "description": "Leave the pinned prompt off by default on terminals under 30 rows, where it would crowd the output; set pinnedPrompts explicitly to override at any size",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14668"]
+    }
+  ],
+  "1.0.79-1": [
+    {
+      "type": "fixed",
+      "description": "Compute /context attribution against the Auto-resolved model so token totals are accurate for Free/Student users",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12253"],
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/12204"]
+    },
+    {
+      "type": "fixed",
+      "description": "Disabling an extension no longer breaks elicitation, canvases, or tool permission prompts for other extensions",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14612"]
+    },
+    {
+      "type": "fixed",
+      "description": "A prompt stashed with ctrl+s now stays with the session it was typed for, so switching away and back and pressing ctrl+s restores it instead of finding it gone",
+      "related_issues": ["https://github.com/github/copilot-cli/issues/4334"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14510"]
+    },
+    {
+      "type": "fixed",
+      "description": "On Linux, searches and most shell commands blocked by the sandbox now offer to re-run outside it",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/14647"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14671"]
+    },
+    {
+      "type": "improved",
+      "description": "BREAKING: the sandbox setting `allowDevToolCaches` is renamed `allowDevToolAccess`, since it grants dev-tool config and registries too, not just caches. The old key is no longer read and is ignored silently, so an existing `false` opt-out reverts to the default (on). Rename it in settings.json and in any managed/MDM policy.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14673"]
+    }
+  ],
+  "1.0.79-0": [
+    {
+      "type": "added",
+      "description": "Add /sandbox policy to show effective sandbox paths, denials, and network access",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14609"]
+    },
+    {
+      "type": "added",
+      "description": "Queue prompts, shell commands, and supported slash commands in local sessions to run in order after the current task finishes",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14621"]
+    },
+    {
+      "type": "added",
+      "description": "Set \"autoUpdate\": true on an extraKnownMarketplaces entry in your user settings to auto-update its plugins at session start",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14603"]
+    },
+    {
+      "type": "improved",
+      "description": "/sandbox tags inactive settings as (disabled) and explains why they are locked, and documents dev tool caches in copilot help sandbox",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14561"]
+    },
+    {
+      "type": "improved",
+      "description": "Show \"pending · ctrl+c to cancel\" for in-flight steering prompts",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14463"]
+    },
+    {
+      "type": "improved",
+      "description": "Make /model session-scoped by default, and use /config model to set defaults for future sessions.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14327"]
+    },
+    {
+      "type": "improved",
+      "description": "Pin the current prompt as a single line instead of a three-row framed block, so it reads as chrome and returns rows to the timeline; with the tab bar on it sits directly below the tabs and costs the timeline nothing",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14573"]
+    }
+  ],
+  "1.0.78": [
+    {
+      "type": "added",
+      "description": "Add the experimental /new-worktree command to create a new worktree and start a new conversation in it",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14466"]
+    },
+    {
+      "type": "added",
+      "description": "Expose token usage in ACP prompt results and live usage_update notifications",
+      "related_issues": ["https://github.com/github/copilot-cli/issues/4174"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13827"]
+    },
+    {
+      "type": "added",
+      "description": "Added a forceRemoteSettingsRefresh managed setting that requires a fresh managed-settings fetch on startup",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14218"]
+    },
+    {
+      "type": "added",
+      "description": "Add /permissions to switch between approval modes.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13480"]
+    },
+    {
+      "type": "added",
+      "description": "ACP mode supports closing sessions with the closeSession request.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14224"]
+    },
+    {
+      "type": "fixed",
+      "description": "Copilot login now defaults to the browser flow for local desktop subprocesses without a TTY, including IDE integrations, while remote and headless environments continue using device code",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14281"]
+    },
+    {
+      "type": "fixed",
+      "description": "Extension slash commands run their handler exactly once per invocation when several extensions are loaded",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13716"],
+      "related_issues": ["https://github.com/github/copilot-cli/issues/4264"]
+    },
+    {
+      "type": "fixed",
+      "description": "Inline images no longer render with their first row repeated down the whole picture after the timeline scrolls",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14293"]
+    },
+    {
+      "type": "fixed",
+      "description": "A run whose prompt is piped over stdin now treats its `sessionEnd` hook the same way `-p` does: the hook fires once per completed agent turn with `reason` `complete` (or `error` if the turn failed), instead of once at shutdown with `user_exit`. As with `-p`, a piped run that exits before completing a turn fires no `sessionEnd` hook",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14246"]
+    },
+    {
+      "type": "fixed",
+      "description": "Disabling the sandbox from a bypass prompt applies only to that session; new sessions start sandboxed again",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14270"]
+    },
+    {
+      "type": "fixed",
+      "description": "Managed settings now fall back to the persistent cache whenever a server-managed settings fetch fails for any reason (network error, a non-success HTTP status, or a malformed/unparseable response), and fail open — starting without the unconfirmed server restriction rather than the prior fail-closed behavior — when no usable cached policy is available",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14218"]
+    },
+    {
+      "type": "fixed",
+      "description": "Ctrl+Q now enqueues the highlighted mid-text skill completion instead of the partial token",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14234"]
+    },
+    {
+      "type": "fixed",
+      "description": "Switching sessions no longer restarts MCP servers or rebuilds hook state, so a turn running in another session is never halted with a stale-hook error",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/14153"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14181"]
+    },
+    {
+      "type": "fixed",
+      "description": "Refresh deferred MCP tools after OAuth authentication",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12728"]
+    },
+    {
+      "type": "improved",
+      "description": "Timeline headers show how long each tool call took, right-aligned and ticking live while it runs (for calls of at least 5 seconds). On by default — disable with `/settings showToolDurations`.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13215"]
+    },
+    {
+      "type": "improved",
+      "description": "First-party plugins automatically update to the latest version at session start",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/5163"]
+    },
+    {
+      "type": "improved",
+      "description": "Interactive shell shortcut now launches on Enter and shows an inline hint when \"$\" is armed",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13933"]
+    },
+    {
+      "type": "improved",
+      "description": "Split-view sidebar: the red close confirmation now reads `x again to close` (or `x again to exit CLI` on the last session) instead of `x close`, so a second press is clearly what closes",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14245"]
+    },
+    {
+      "type": "improved",
+      "description": "When the sandbox blocks a shell command and bypass is allowed, CLI offers to re-run it outside the sandbox without asking the model",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13452"]
+    },
+    {
+      "type": "improved",
+      "description": "/rewind no longer requires git and restores only the files Copilot changed, skipping any file whose contents no longer match what Copilot last wrote, with a conversation-only or conversation + files choice",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/9398"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14008"]
+    },
+    {
+      "type": "improved",
+      "description": "New sandbox setting `allowDevToolCaches` (on by default): grants sandboxed builds access to toolchain caches, registries, and installs so builds work without extra setup. Set false to opt out.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13305"]
+    },
+    {
+      "type": "improved",
+      "description": "Honor explicit GitHub MCP toolset/tool config: keep gh-overlap tools and stop steering to the gh CLI when you opt in",
+      "related_issues": [
+        "https://github.com/github/copilot-mcp-core/issues/1895",
+        "https://github.com/github/copilot-mcp-core/issues/1907"
+      ],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12057"]
+    },
+    {
+      "type": "improved",
+      "description": "Warn on startup about unknown top-level keys in user settings.json (e.g. a misspelled setting) instead of silently ignoring them",
+      "related_issues": [
+        "https://github.com/github/copilot-mcp-core/issues/1895",
+        "https://github.com/github/copilot-mcp-core/issues/1908"
+      ],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12129"]
+    },
+    {
+      "type": "improved",
+      "description": "Shell completion for --model now suggests auto and supported model names",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14133"]
+    },
+    {
+      "type": "improved",
+      "description": "Render long session transcripts progressively to keep scrolling responsive",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14135"]
+    },
+    {
+      "type": "improved",
+      "description": "Resuming a long session is dramatically faster and far lighter on memory, because its history is now read once at startup (in parallel, across CPU cores) instead of being re-read in full for every check the CLI runs before it can paint. In our benchmark a 230MB, 74k-event transcript came back in well under a second instead of about ten, at roughly a quarter of the peak memory; the exact gain depends on your machine's core count and disk",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14140"]
+    },
+    {
+      "type": "removed",
+      "description": "The /allow-all auto safety-judge model is no longer user-configurable; the judge model is now selected automatically.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13480"]
+    }
+  ],
+  "1.0.78-3": [
+    {
+      "type": "added",
+      "description": "Add the experimental /new-worktree command to create a new worktree and start a new conversation in it",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14466"]
+    },
+    {
+      "type": "fixed",
+      "description": "Copilot login now defaults to the browser flow for local desktop subprocesses without a TTY, including IDE integrations, while remote and headless environments continue using device code",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14281"]
+    },
+    {
+      "type": "improved",
+      "description": "Interactive shell shortcut now launches on Enter and shows an inline hint when \"$\" is armed",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13933"]
+    }
+  ],
+  "1.0.78-2": [
+    {
+      "type": "fixed",
+      "description": "Extension slash commands run their handler exactly once per invocation when several extensions are loaded",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13716"],
+      "related_issues": ["https://github.com/github/copilot-cli/issues/4264"]
+    },
+    {
+      "type": "fixed",
+      "description": "Inline images no longer render with their first row repeated down the whole picture after the timeline scrolls",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14293"]
+    },
+    {
+      "type": "fixed",
+      "description": "A run whose prompt is piped over stdin now treats its `sessionEnd` hook the same way `-p` does: the hook fires once per completed agent turn with `reason` `complete` (or `error` if the turn failed), instead of once at shutdown with `user_exit`. As with `-p`, a piped run that exits before completing a turn fires no `sessionEnd` hook",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14246"]
+    },
+    {
+      "type": "improved",
+      "description": "Split-view sidebar: the red close confirmation now reads `x again to close` (or `x again to exit CLI` on the last session) instead of `x close`, so a second press is clearly what closes",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14245"]
+    }
+  ],
+  "1.0.78-1": [
+    {
+      "type": "added",
+      "description": "Expose token usage in ACP prompt results and live usage_update notifications",
+      "related_issues": ["https://github.com/github/copilot-cli/issues/4174"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13827"]
+    },
+    {
+      "type": "added",
+      "description": "Added a forceRemoteSettingsRefresh managed setting that requires a fresh managed-settings fetch on startup",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14218"]
+    },
+    {
+      "type": "fixed",
+      "description": "Disabling the sandbox from a bypass prompt applies only to that session; new sessions start sandboxed again",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14270"]
+    },
+    {
+      "type": "fixed",
+      "description": "Managed settings now fall back to the persistent cache whenever a server-managed settings fetch fails for any reason (network error, a non-success HTTP status, or a malformed/unparseable response), and fail open — starting without the unconfirmed server restriction rather than the prior fail-closed behavior — when no usable cached policy is available",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14218"]
+    },
+    {
+      "type": "improved",
+      "description": "When the sandbox blocks a shell command and bypass is allowed, CLI offers to re-run it outside the sandbox without asking the model",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13452"]
+    },
+    {
+      "type": "improved",
+      "description": "/rewind no longer requires git and restores only the files Copilot changed, skipping any file whose contents no longer match what Copilot last wrote, with a conversation-only or conversation + files choice",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/9398"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14008"]
+    }
+  ],
+  "1.0.78-0": [
+    {
+      "type": "added",
+      "description": "Add /permissions to switch between approval modes.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13480"]
+    },
+    {
+      "type": "added",
+      "description": "ACP mode supports closing sessions with the closeSession request.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14224"]
+    },
+    {
+      "type": "fixed",
+      "description": "Ctrl+Q now enqueues the highlighted mid-text skill completion instead of the partial token",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14234"]
+    },
+    {
+      "type": "fixed",
+      "description": "Switching sessions no longer restarts MCP servers or rebuilds hook state, so a turn running in another session is never halted with a stale-hook error",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/14153"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14181"]
+    },
+    {
+      "type": "fixed",
+      "description": "Refresh deferred MCP tools after OAuth authentication",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12728"]
+    },
+    {
+      "type": "improved",
+      "description": "New sandbox setting `allowDevToolCaches` (on by default): grants sandboxed builds access to toolchain caches, registries, and installs so builds work without extra setup. Set false to opt out.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13305"]
+    },
+    {
+      "type": "improved",
+      "description": "Honor explicit GitHub MCP toolset/tool config: keep gh-overlap tools and stop steering to the gh CLI when you opt in",
+      "related_issues": [
+        "https://github.com/github/copilot-mcp-core/issues/1895",
+        "https://github.com/github/copilot-mcp-core/issues/1907"
+      ],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12057"]
+    },
+    {
+      "type": "improved",
+      "description": "Warn on startup about unknown top-level keys in user settings.json (e.g. a misspelled setting) instead of silently ignoring them",
+      "related_issues": [
+        "https://github.com/github/copilot-mcp-core/issues/1895",
+        "https://github.com/github/copilot-mcp-core/issues/1908"
+      ],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12129"]
+    },
+    {
+      "type": "improved",
+      "description": "Shell completion for --model now suggests auto and supported model names",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14133"]
+    },
+    {
+      "type": "improved",
+      "description": "Render long session transcripts progressively to keep scrolling responsive",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14135"]
+    },
+    {
+      "type": "improved",
+      "description": "Resuming a long session is dramatically faster and far lighter on memory, because its history is now read once at startup (in parallel, across CPU cores) instead of being re-read in full for every check the CLI runs before it can paint. In our benchmark a 230MB, 74k-event transcript came back in well under a second instead of about ten, at roughly a quarter of the peak memory; the exact gain depends on your machine's core count and disk",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14140"]
+    },
+    {
+      "type": "removed",
+      "description": "The /allow-all auto safety-judge model is no longer user-configurable; the judge model is now selected automatically.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13480"]
+    }
+  ],
+  "1.0.77": [
+    {
+      "type": "added",
+      "description": "Add a browser-based (web) OAuth login flow, now the default for `copilot login` on local interactive terminals (device code remains the default on remote/headless terminals). Use `--web-flow`/`--device-code` to force a mode, or pick one in the interactive `/login` command",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13051"]
+    },
+    {
+      "type": "added",
+      "description": "Support enforcing managed sandbox policy via macOS and Windows native MDM settings",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/13862"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13955"]
+    },
+    {
+      "type": "fixed",
+      "description": "Unconditional autopilot approval now disables sandbox for the current session when bypass is allowed",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13994"]
+    },
+    {
+      "type": "improved",
+      "description": "Ctrl+G opens your editor to edit ask_user freeform answers without closing the prompt",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/14077"]
+    },
+    {
+      "type": "improved",
+      "description": "Allow reasoning effort to be omitted so the server can select the default",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12016"]
+    }
+  ],
+  "1.0.77-0": [
+    {
+      "type": "added",
+      "description": "Add a browser-based (web) OAuth login flow, now the default for `copilot login` on local interactive terminals (device code remains the default on remote/headless terminals). Use `--web-flow`/`--device-code` to force a mode, or pick one in the interactive `/login` command",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13051"]
+    },
+    {
+      "type": "added",
+      "description": "Support enforcing managed sandbox policy via macOS and Windows native MDM settings",
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/13862"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13955"]
+    },
+    {
+      "type": "improved",
+      "description": "Allow reasoning effort to be omitted so the server can select the default",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12016"]
+    }
+  ],
+  "1.0.76": [
+    {
+      "type": "added",
+      "description": "Add enable/disable controls in /plugins for plugins, instructions, agents, LSP servers, and hooks",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13755"]
+    },
+    {
+      "type": "added",
+      "description": "Add support for the grok-4.5 model",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13818"]
+    },
+    {
+      "type": "added",
+      "description": "Add a directable queue manager (staff) to reorder, edit, remove, repeat, and immediately send queued messages",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13792"]
+    },
+    {
+      "type": "added",
+      "description": "New Sessions sidebar for managing multiple concurrent sessions: switch between them, spawn new ones, and see their status at a glance. Turn it on with experimental mode (`/experimental on`).",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13295"]
+    },
+    {
+      "type": "added",
+      "description": "Enterprise administrators can enforce a restrictive sandbox floor: managed settings tighten (but never loosen) the user's sandbox policy, and the `/sandbox` dialog surfaces the org-configured managed values with locked fields and managed filesystem paths so admins can confirm what is enforced.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13782"]
+    },
+    {
+      "type": "added",
+      "description": "Voice mode pauses playing media before recording and resumes it afterward, where supported (macOS and Windows)",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13556"]
+    },
+    {
+      "type": "added",
+      "description": "Show the number of active scheduled prompts in the footer",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12916"]
+    },
+    {
+      "type": "added",
+      "description": "Add /limits predict to suggest a session AI-credit limit from similar sessions.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13346"]
+    },
+    {
+      "type": "added",
+      "description": "Add configurable timed refreshes for custom status-line commands",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13375"]
+    },
+    {
+      "type": "fixed",
+      "description": "Sandbox denied paths are enforced for relative and symlinked entries on macOS and Linux (Windows cannot deny per path)",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13829"]
+    },
+    {
+      "type": "fixed",
+      "description": "Unsent prompt text now stays with the session it was typed for (for the rest of the CLI session) instead of following you to the session you switch to",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13902"]
+    },
+    {
+      "type": "fixed",
+      "description": "Resuming a session now restores its autopilot or plan mode instead of reverting to interactive, so the autopilot-only `task_complete` tool stays available and the mode matches the session you left",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13901"]
+    },
+    {
+      "type": "fixed",
+      "description": "URL permission prompts now keep their sandbox-bypass warning and the model's reason when a host integration rebuilds the prompt, so an elevated fetch is no longer shown as an ordinary one",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13880"]
+    },
+    {
+      "type": "fixed",
+      "description": "Sessions no longer fail every turn with \"Holder terminated during creation\" after a subagent finishes",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13859"]
+    },
+    {
+      "type": "fixed",
+      "description": "Startup tips only suggest /init in repositories that don't already have Copilot instructions",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13816"]
+    },
+    {
+      "type": "fixed",
+      "description": "A `userPromptSubmitted` hook returning a non-string value for `modifiedPrompt`, `modifiedTransformedPrompt`, or a handled `responseContent` no longer corrupts the session; the value is ignored, a type-only warning naming the field is logged, an empty-string replacement is rejected instead of blanking the model-facing content, a hook that sets `handled` without a usable `responseContent` is now diagnosed instead of silently falling through to the model, and a `null` `additionalContext` is treated as absent instead of being injected as the literal text `null`; hook output is also bounded at 10 MiB per invocation, so an HTTP or command hook returning an unbounded response can no longer exhaust memory or leave an oversized session behind",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13630"]
+    },
+    {
+      "type": "fixed",
+      "description": "Show recent shell output for large commands that write to a file",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/11921"]
+    },
+    {
+      "type": "fixed",
+      "description": "The /instructions picker now respects --no-custom-instructions.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13592"]
+    },
+    {
+      "type": "fixed",
+      "description": "Render inline images in Rio terminals that support Kitty graphics",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13600"]
+    },
+    {
+      "type": "fixed",
+      "description": "Queued messages list no longer shows a blank row or inflated count, and Ctrl+C removes your own newest queued message",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13769"],
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/13745"]
+    },
+    {
+      "type": "fixed",
+      "description": "Changing the `mouse` setting mid-session now takes effect immediately, from both `/settings mouse on|off` and the `/settings` dialog, instead of being saved but ignored until the CLI restarted",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13732"]
+    },
+    {
+      "type": "fixed",
+      "description": "Restore the early warning when unreclaimable system and tool context nears the limit, before automatic compaction is blocked",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13506"]
+    },
+    {
+      "type": "fixed",
+      "description": "Session working directory no longer reverts to the original checkout shortly after `/worktree` switches into a new worktree",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13550"]
+    },
+    {
+      "type": "improved",
+      "description": "When an update is auto-downloaded, the notification suggests /restart and drops the warning color",
+      "related_issues": ["https://github.com/github/copilot-cli/issues/4284"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13922"]
+    },
+    {
+      "type": "improved",
+      "description": "/diff scrolls and syntax-highlights large multi-file diffs faster",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13774"]
+    },
+    {
+      "type": "improved",
+      "description": "Split-view sidebar: hover-to-focus is now off by default (opt in with `sidebar.hoverFocus`), the active session card is accented by default (opt out with `sidebar.accentActiveSession`), and the closed-state `open sidebar` hint always renders in the neutral hint color",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13935"]
+    },
+    {
+      "type": "improved",
+      "description": "`web_fetch` now follows HTTP redirects instead of failing, asking permission for the redirect target when it is on a different origin and showing where the redirect came from",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13880"]
+    },
+    {
+      "type": "improved",
+      "description": "Sandboxed searches now offer an immediate bypass prompt and avoid duplicate bypass prompts.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13437"]
+    },
+    {
+      "type": "improved",
+      "description": "web_fetch routes through the configured sandbox proxy when outbound is allowed, and denies egress when network.allowOutbound is false (a proxy no longer overrides the user's outbound policy); when a proxied fetch fails it warns that curl/wget share the same proxy, and suggests requestSandboxBypass only when the sandbox proxy itself is unreachable",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13470"]
+    },
+    {
+      "type": "improved",
+      "description": "Improve subagent delegation for small tasks and parallel work",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12104"]
+    },
+    {
+      "type": "improved",
+      "description": "Queue mid-turn /model changes and apply them after the current response finishes",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13680"]
+    },
+    {
+      "type": "improved",
+      "description": "MCP tools load faster from definition-scoped snapshots, with process-wide and per-server cache opt-outs.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13208"]
+    },
+    {
+      "type": "improved",
+      "description": "Autopilot stays selected after task_complete by default; set stayInAutopilot to false to return to interactive mode after each task",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13713"]
+    }
+  ],
+  "1.0.76-5": [
+    {
+      "type": "added",
+      "description": "Add enable/disable controls in /plugins for plugins, instructions, agents, LSP servers, and hooks",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13755"]
+    },
+    {
+      "type": "added",
+      "description": "Add support for the grok-4.5 model",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13818"]
+    }
+  ],
+  "1.0.76-4": [
+    {
+      "type": "fixed",
+      "description": "Sandbox denied paths are enforced for relative and symlinked entries on macOS and Linux (Windows cannot deny per path)",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13829"]
+    }
+  ],
+  "1.0.76-3": [
+    {
+      "type": "fixed",
+      "description": "Unsent prompt text now stays with the session it was typed for (for the rest of the CLI session) instead of following you to the session you switch to",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13902"]
+    },
+    {
+      "type": "fixed",
+      "description": "Resuming a session now restores its autopilot or plan mode instead of reverting to interactive, so the autopilot-only `task_complete` tool stays available and the mode matches the session you left",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13901"]
+    },
+    {
+      "type": "fixed",
+      "description": "URL permission prompts now keep their sandbox-bypass warning and the model's reason when a host integration rebuilds the prompt, so an elevated fetch is no longer shown as an ordinary one",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13880"]
+    },
+    {
+      "type": "improved",
+      "description": "When an update is auto-downloaded, the notification suggests /restart and drops the warning color",
+      "related_issues": ["https://github.com/github/copilot-cli/issues/4284"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13922"]
+    },
+    {
+      "type": "improved",
+      "description": "/diff scrolls and syntax-highlights large multi-file diffs faster",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13774"]
+    },
+    {
+      "type": "improved",
+      "description": "Split-view sidebar: hover-to-focus is now off by default (opt in with `sidebar.hoverFocus`), the active session card is accented by default (opt out with `sidebar.accentActiveSession`), and the closed-state `open sidebar` hint always renders in the neutral hint color",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13935"]
+    },
+    {
+      "type": "improved",
+      "description": "`web_fetch` now follows HTTP redirects instead of failing, asking permission for the redirect target when it is on a different origin and showing where the redirect came from",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13880"]
+    }
+  ],
+  "1.0.76-2": [
+    {
+      "type": "added",
+      "description": "Add a directable queue manager (staff) to reorder, edit, remove, repeat, and immediately send queued messages",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13792"]
+    },
+    {
+      "type": "added",
+      "description": "New Sessions sidebar for managing multiple concurrent sessions: switch between them, spawn new ones, and see their status at a glance. Turn it on with experimental mode (`/experimental on`).",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13295"]
+    },
+    {
+      "type": "added",
+      "description": "Enterprise administrators can enforce a restrictive sandbox floor: managed settings tighten (but never loosen) the user's sandbox policy, and the `/sandbox` dialog surfaces the org-configured managed values with locked fields and managed filesystem paths so admins can confirm what is enforced.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13782"]
+    },
+    {
+      "type": "fixed",
+      "description": "Sessions no longer fail every turn with \"Holder terminated during creation\" after a subagent finishes",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13859"]
+    },
+    {
+      "type": "fixed",
+      "description": "Startup tips only suggest /init in repositories that don't already have Copilot instructions",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13816"]
+    },
+    {
+      "type": "fixed",
+      "description": "A `userPromptSubmitted` hook returning a non-string value for `modifiedPrompt`, `modifiedTransformedPrompt`, or a handled `responseContent` no longer corrupts the session; the value is ignored, a type-only warning naming the field is logged, an empty-string replacement is rejected instead of blanking the model-facing content, a hook that sets `handled` without a usable `responseContent` is now diagnosed instead of silently falling through to the model, and a `null` `additionalContext` is treated as absent instead of being injected as the literal text `null`; hook output is also bounded at 10 MiB per invocation, so an HTTP or command hook returning an unbounded response can no longer exhaust memory or leave an oversized session behind",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13630"]
+    },
+    {
+      "type": "fixed",
+      "description": "Show recent shell output for large commands that write to a file",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/11921"]
+    },
+    {
+      "type": "fixed",
+      "description": "The /instructions picker now respects --no-custom-instructions.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13592"]
+    },
+    {
+      "type": "fixed",
+      "description": "Render inline images in Rio terminals that support Kitty graphics",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13600"]
+    },
+    {
+      "type": "improved",
+      "description": "Sandboxed searches now offer an immediate bypass prompt and avoid duplicate bypass prompts.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13437"]
+    }
+  ],
+  "1.0.76-1": [
+    {
+      "type": "added",
+      "description": "Voice mode pauses playing media before recording and resumes it afterward, where supported (macOS and Windows)",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13556"]
+    },
+    {
+      "type": "added",
+      "description": "Show the number of active scheduled prompts in the footer",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12916"]
+    },
+    {
+      "type": "added",
+      "description": "Add /limits predict to suggest a session AI-credit limit from similar sessions.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13346"]
+    },
+    {
+      "type": "added",
+      "description": "Add configurable timed refreshes for custom status-line commands",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13375"]
+    },
+    {
+      "type": "fixed",
+      "description": "Queued messages list no longer shows a blank row or inflated count, and Ctrl+C removes your own newest queued message",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13769"],
+      "related_issues": ["https://github.com/github/copilot-agent-runtime/issues/13745"]
+    },
+    {
+      "type": "fixed",
+      "description": "Changing the `mouse` setting mid-session now takes effect immediately, from both `/settings mouse on|off` and the `/settings` dialog, instead of being saved but ignored until the CLI restarted",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13732"]
+    },
+    {
+      "type": "improved",
+      "description": "web_fetch routes through the configured sandbox proxy when outbound is allowed, and denies egress when network.allowOutbound is false (a proxy no longer overrides the user's outbound policy); when a proxied fetch fails it warns that curl/wget share the same proxy, and suggests requestSandboxBypass only when the sandbox proxy itself is unreachable",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13470"]
+    },
+    {
+      "type": "improved",
+      "description": "Improve subagent delegation for small tasks and parallel work",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12104"]
+    },
+    {
+      "type": "improved",
+      "description": "Queue mid-turn /model changes and apply them after the current response finishes",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13680"]
+    }
+  ],
+  "1.0.76-0": [
+    {
+      "type": "fixed",
+      "description": "Restore the early warning when unreclaimable system and tool context nears the limit, before automatic compaction is blocked",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13506"]
+    },
+    {
+      "type": "fixed",
+      "description": "Session working directory no longer reverts to the original checkout shortly after `/worktree` switches into a new worktree",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13550"]
+    },
+    {
+      "type": "improved",
+      "description": "MCP tools load faster from definition-scoped snapshots, with process-wide and per-server cache opt-outs.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13208"]
+    },
+    {
+      "type": "improved",
+      "description": "Autopilot stays selected after task_complete by default; set stayInAutopilot to false to return to interactive mode after each task",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13713"]
+    }
+  ],
+  "1.0.75": [
+    {
+      "type": "added",
+      "description": "Add support for Claude Opus 5",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13422"]
+    }
+  ],
+  "1.0.75-0": [],
+  "1.0.74": [
+    {
+      "type": "added",
+      "description": "Add support for Open Plugin Spec v1 plugin manifests and mcp.json configuration",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13190"]
+    },
+    {
+      "type": "added",
+      "description": "Show a first-run splash to opt into the default sandbox",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12921"]
+    },
+    {
+      "type": "added",
+      "description": "Adding support for gemini-3.6-flash",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13185"]
+    },
+    {
+      "type": "added",
+      "description": "Add `/model plan` (or `/model --plan`) to pick a model used while in plan mode; pass a model id, `off` to clear, or no id to open the picker. Reverts to the session model when you leave plan mode.",
+      "related_issues": ["https://github.com/github/copilot-cli/issues/2792"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12407"]
+    },
+    {
+      "type": "fixed",
+      "description": "Typing `?` while the /search bar is open enters it as text instead of opening quick help",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13238"]
+    },
+    {
+      "type": "fixed",
+      "description": "IDE integration reconnects reliably when the CLI reloads MCP servers or changes directory",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13321"]
+    },
+    {
+      "type": "fixed",
+      "description": "Multi-turn subagent timelines show every prompt and response in the correct order after reopening /tasks",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13105"]
+    },
+    {
+      "type": "fixed",
+      "description": "The `/mcp add` and `/mcp edit` wizard now preserves `=` characters in environment variable values (such as base64 padding), so secrets and tokens are stored correctly.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13141"]
+    },
+    {
+      "type": "fixed",
+      "description": "Remote session uploads stop retrying permanent Mission Control 400/404 responses",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/10610"]
+    },
+    {
+      "type": "fixed",
+      "description": "Show Tab in /settings footer to switch scope tabs",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13175"]
+    },
+    {
+      "type": "fixed",
+      "description": "Downscale oversized tool-result images so CAPI Responses requests continue",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12920"]
+    },
+    {
+      "type": "improved",
+      "description": "Subagent timelines identify whether prompts came from the main agent or another subagent",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13105"]
+    },
+    {
+      "type": "improved",
+      "description": "When multiplexing sessions, a session's open dialog no longer leaks into another session; eligible pickers reopen when you switch back",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13147"]
+    },
+    {
+      "type": "improved",
+      "description": "The `$` interactive shell shortcut now opens a shell even while the agent is working",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13158"]
+    },
+    {
+      "type": "improved",
+      "description": "Fully honor the skill disable-model-invocation flag",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12952"]
+    },
+    {
+      "type": "improved",
+      "description": "Warn when a participating language server reports a different symbol than the one requested",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12810"]
+    },
+    {
+      "type": "improved",
+      "description": "Steering interrupts shell output waits without stopping the running command",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13162"]
+    },
+    {
+      "type": "improved",
+      "description": "Increase the Responses request size limit",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13205"]
+    },
+    {
+      "type": "improved",
+      "description": "Plan mode now allows session-folder planning artifacts while still blocking clear file mutations outside the session folder.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13121"]
+    },
+    {
+      "type": "improved",
+      "description": "Resume search matches session titles even when whitespace differs",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13136"]
+    }
+  ],
+  "1.0.74-4": [
+    {
+      "type": "added",
+      "description": "Add support for Open Plugin Spec v1 plugin manifests and mcp.json configuration",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13190"]
+    },
+    {
+      "type": "fixed",
+      "description": "IDE integration reconnects reliably when the CLI reloads MCP servers or changes directory",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13321"]
+    },
+    {
+      "type": "fixed",
+      "description": "Multi-turn subagent timelines show every prompt and response in the correct order after reopening /tasks",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13105"]
+    },
+    {
+      "type": "improved",
+      "description": "Subagent timelines identify whether prompts came from the main agent or another subagent",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13105"]
+    }
+  ],
+  "1.0.74-3": [],
+  "1.0.74-2": [],
+  "1.0.74-1": [
+    {
+      "type": "added",
+      "description": "Show a first-run splash to opt into the default sandbox",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12921"]
+    },
+    {
+      "type": "added",
+      "description": "Adding support for gemini-3.6-flash",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13185"]
+    },
+    {
+      "type": "fixed",
+      "description": "The `/mcp add` and `/mcp edit` wizard now preserves `=` characters in environment variable values (such as base64 padding), so secrets and tokens are stored correctly.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13141"]
+    },
+    {
+      "type": "fixed",
+      "description": "Remote session uploads stop retrying permanent Mission Control 400/404 responses",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/10610"]
+    },
+    {
+      "type": "fixed",
+      "description": "Show Tab in /settings footer to switch scope tabs",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13175"]
+    },
+    {
+      "type": "fixed",
+      "description": "Downscale oversized tool-result images so CAPI Responses requests continue",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12920"]
+    },
+    {
+      "type": "improved",
+      "description": "When multiplexing sessions, a session's open dialog no longer leaks into another session; eligible pickers reopen when you switch back",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13147"]
+    },
+    {
+      "type": "improved",
+      "description": "The `$` interactive shell shortcut now opens a shell even while the agent is working",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13158"]
+    },
+    {
+      "type": "improved",
+      "description": "Fully honor the skill disable-model-invocation flag",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12952"]
+    },
+    {
+      "type": "improved",
+      "description": "Warn when a participating language server reports a different symbol than the one requested",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12810"]
+    },
+    {
+      "type": "improved",
+      "description": "Steering interrupts shell output waits without stopping the running command",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13162"]
+    },
+    {
+      "type": "improved",
+      "description": "Increase the Responses request size limit",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13205"]
+    },
+    {
+      "type": "improved",
+      "description": "Plan mode now allows session-folder planning artifacts while still blocking clear file mutations outside the session folder.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13121"]
+    }
+  ],
+  "1.0.74-0": [
+    {
+      "type": "added",
+      "description": "Add `/model plan` (or `/model --plan`) to pick a model used while in plan mode; pass a model id, `off` to clear, or no id to open the picker. Reverts to the session model when you leave plan mode.",
+      "related_issues": ["https://github.com/github/copilot-cli/issues/2792"],
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12407"]
+    },
+    {
+      "type": "improved",
+      "description": "Resume search matches session titles even when whitespace differs",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13136"]
+    }
+  ],
+  "1.0.73": [
+    {
+      "type": "fixed",
+      "description": "Anthropic subagents continue working when additional directories are configured",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13124"]
+    },
+    {
+      "type": "improved",
+      "description": "Resolve relative links in custom agent instructions from the agent file location",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12967"]
+    }
+  ],
+  "1.0.72": [
+    {
+      "type": "added",
+      "description": "Add opt-in git and gh authentication inside the OS sandbox",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12823"]
+    },
+    {
+      "type": "added",
+      "description": "Add `update`/`uninstall` verbs to `/plugins`, let `enable`/`disable`/`remove` target plugins, MCP servers, or skills via `--plugin`/`--mcp`/`--skill` flags or a positional kind, and support installing skills with `/plugins install --skill`",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12622"]
+    },
+    {
+      "type": "added",
+      "description": "Add a /plugins help command plus skill, MCP, and marketplace management for full /plugin parity",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12623"]
+    },
+    {
+      "type": "added",
+      "description": "Type $ at the prompt to open an interactive shell in the current session directory (enable it with `/settings shellShortcut on`; off by default)",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12819"]
+    },
+    {
+      "type": "added",
+      "description": "Install skills from the CLI with `copilot plugins install --skill <file, URL, or directory>` (add `--scope project` to a file or URL install to install into the repository)",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12620"]
+    },
+    {
+      "type": "added",
+      "description": "Show hex color codes written as inline code (e.g. `#FF0000`) as color swatches, and add a renderHexColors setting (on by default) to toggle hex-color swatches",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13032"]
+    },
+    {
+      "type": "added",
+      "description": "Add --plugin, --mcp, and --skill flags for plugin mutations",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12618"]
+    },
+    {
+      "type": "added",
+      "description": "Add skill removal support to `copilot plugins remove --skill`",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12619"]
+    },
+    {
+      "type": "added",
+      "description": "Multi-turn subagents are always enabled, so you can send follow-up messages to running agents",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12697"]
+    },
+    {
+      "type": "added",
+      "description": "Enable tool search for Claude Haiku 4.5+",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12740"]
+    },
+    {
+      "type": "fixed",
+      "description": "An `agentStop` hook that always blocks no longer loops indefinitely: the CLI now ends the turn after 8 consecutive blocks, and `agentStop` hooks receive a `stop_hook_active` flag so they can detect a forced continuation and self-limit",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12798"]
+    },
+    {
+      "type": "fixed",
+      "description": "Lifecycle and subagent hook commands run in the current session directory after /cd",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12876"]
+    },
+    {
+      "type": "fixed",
+      "description": "Deleting an MCP server with /mcp delete stops its running background process",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12871"]
+    },
+    {
+      "type": "fixed",
+      "description": "Toggling /sandbox restarts only local MCP servers and leaves remote servers connected",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12899"]
+    },
+    {
+      "type": "fixed",
+      "description": "Command approvals no longer carry over to another repository after you switch with /cd",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12859"]
+    },
+    {
+      "type": "fixed",
+      "description": "The GitHub tab's Open in web action now reliably launches your browser on Windows",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12858"]
+    },
+    {
+      "type": "fixed",
+      "description": "Preserve pasted prompt content when changing models through Ctrl+X /model",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13050"]
+    },
+    {
+      "type": "fixed",
+      "description": "Corrected the added-line count shown when creating a file so files ending in a trailing newline no longer report one extra line",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12877"]
+    },
+    {
+      "type": "fixed",
+      "description": "/worktree and /move no longer fail to create a worktree for an auto-generated branch name when many similarly-named branches or a leftover worktree directory already exist: the numeric-suffix search is no longer capped at 5 and now skips stale unregistered worktree directories (an explicitly supplied branch name still errors on a collision)",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12896"]
+    },
+    {
+      "type": "fixed",
+      "description": "/worktree <task> no longer intermittently runs the kickoff task in the main repo instead of the new worktree",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12896"]
+    },
+    {
+      "type": "fixed",
+      "description": "/worktree and /move now propagate folder trust to the new worktree before switching when the source is already trusted (avoiding a spurious folder-trust prompt in that case), /move addresses its git stash precisely so a concurrent stash can't misplace changes, and worktree creation skips a leftover directory instead of failing",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12896"]
+    },
+    {
+      "type": "fixed",
+      "description": "Show the exit resume hint for a renamed session with no messages when its workspace is only available as a cached snapshot",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12149"]
+    },
+    {
+      "type": "fixed",
+      "description": "Session exports keep angle brackets intact in inline code and top-level fenced code blocks",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12643"]
+    },
+    {
+      "type": "fixed",
+      "description": "Show MCP server status correctly for names like constructor and __proto__",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12681"]
+    },
+    {
+      "type": "fixed",
+      "description": "Keep the session highlight on the nearest live row when closing a session, in both the Sessions split view and the standalone Sessions tab",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12711"]
+    },
+    {
+      "type": "fixed",
+      "description": "Pad inline hex color swatches once inside Markdown lists",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12750"]
+    },
+    {
+      "type": "fixed",
+      "description": "Nested markdown lists render correctly in buffered output (`-p --stream off` and detail screens): sub-bullets are no longer glued onto the parent item's line or flattened, and are indented under their parent",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12834"]
+    },
+    {
+      "type": "fixed",
+      "description": "`copilot skill list` now strips terminal control characters from skill names and descriptions, so a crafted skill can no longer inject ANSI escape sequences into the listing output.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12873"]
+    },
+    {
+      "type": "fixed",
+      "description": "Mask secret values in /settings show output",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13011"]
+    },
+    {
+      "type": "fixed",
+      "description": "Detect VS Code, Cursor, and Windsurf through parent processes in /terminal-setup",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12280"]
+    },
+    {
+      "type": "fixed",
+      "description": "Wrap ask-user and elicitation inputs in the split-pane chat view",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12887"]
+    },
+    {
+      "type": "fixed",
+      "description": "Modified vim keys (Ctrl+K, uppercase J/K) no longer move the selection in tool-permission prompts and other text-input select menus; only unmodified j/k, the arrow keys, and Ctrl+P/Ctrl+N navigate.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12906"]
+    },
+    {
+      "type": "fixed",
+      "description": "`/terminal-setup` now refuses to modify a VS Code keybindings.json that contains a JSON syntax error (instead of rewriting it and reporting success), matching its documented invalid-JSON handling.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12893"]
+    },
+    {
+      "type": "fixed",
+      "description": "Emoji shortcodes like :tada: no longer render with a spurious trailing space in printed and PR/issue/gist output",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12862"]
+    },
+    {
+      "type": "improved",
+      "description": "Sandbox macOS keychain access now defaults off for tighter isolation; re-enable it in /sandbox if a command needs it",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12823"]
+    },
+    {
+      "type": "improved",
+      "description": "Show a connected message after a slow MCP server eventually connects",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12394"]
+    },
+    {
+      "type": "improved",
+      "description": "Show default values in /settings and let booleans cycle back to default",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12938"]
+    },
+    {
+      "type": "improved",
+      "description": "Require SSO for remote control when managed settings demand it",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12957"]
+    },
+    {
+      "type": "improved",
+      "description": "Add /model --session (-s) to change the model, reasoning effort, or context window for just the current session, leaving global settings unchanged.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12013"]
+    },
+    {
+      "type": "improved",
+      "description": "The Sessions sidebar is now navigable with the keyboard and mouse (arrows open and focus it and move the selection, and Enter or a click switches to a session; press n to spawn a session or x twice to close one from the keyboard); /settings can disable it or stop restoring remembered sessions",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/13028"]
+    },
+    {
+      "type": "improved",
+      "description": "Reveal full file paths when expanding compact editing rows",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12894"]
+    },
+    {
+      "type": "improved",
+      "description": "Make the plan-approval menu deterministic across models",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12937"]
+    },
+    {
+      "type": "improved",
+      "description": "Keep /add-dir directories visible in the agent context across turns",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12837"]
+    },
+    {
+      "type": "improved",
+      "description": "Deliver scheduled prompts as steering messages when the agent is busy",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12708"]
+    }
+  ],
+  "1.0.72-1": [
+    {
+      "type": "added",
+      "description": "Add --plugin, --mcp, and --skill flags for plugin mutations",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12618"]
+    },
+    {
+      "type": "added",
+      "description": "Add skill removal support to `copilot plugins remove --skill`",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12619"]
+    },
+    {
+      "type": "fixed",
+      "description": "Wrap ask-user and elicitation inputs in the split-pane chat view",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12887"]
+    },
+    {
+      "type": "fixed",
+      "description": "Modified vim keys (Ctrl+K, uppercase J/K) no longer move the selection in tool-permission prompts and other text-input select menus; only unmodified j/k, the arrow keys, and Ctrl+P/Ctrl+N navigate.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12906"]
+    },
+    {
+      "type": "fixed",
+      "description": "`/terminal-setup` now refuses to modify a VS Code keybindings.json that contains a JSON syntax error (instead of rewriting it and reporting success), matching its documented invalid-JSON handling.",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12893"]
+    },
+    {
+      "type": "improved",
+      "description": "Reveal full file paths when expanding compact editing rows",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12894"]
+    },
+    {
+      "type": "improved",
+      "description": "Make the plan-approval menu deterministic across models",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12937"]
+    },
+    {
+      "type": "improved",
+      "description": "Keep /add-dir directories visible in the agent context across turns",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12837"]
+    }
+  ],
+  "1.0.72-0": [
+    {
+      "type": "added",
+      "description": "Multi-turn subagents are always enabled, so you can send follow-up messages to running agents",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12697"]
+    },
+    {
+      "type": "added",
+      "description": "Enable tool search for Claude Haiku 4.5+",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12740"]
+    },
+    {
+      "type": "fixed",
+      "description": "Emoji shortcodes like :tada: no longer render with a spurious trailing space in printed and PR/issue/gist output",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12862"]
+    },
+    {
+      "type": "improved",
+      "description": "Deliver scheduled prompts as steering messages when the agent is busy",
+      "related_pull_requests": ["https://github.com/github/copilot-agent-runtime/pull/12708"]
+    }
+  ],
   "1.0.71": [
     {
       "type": "added",
