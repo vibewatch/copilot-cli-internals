@@ -1,43 +1,12 @@
 import { createServerRpc } from "./generated/rpc.js";
 import { CopilotSession } from "./session.js";
 import type { CopilotClientOptions, GetAuthStatusResponse, GetStatusResponse, ModelInfo, ResumeSessionConfig, SessionConfig, SessionLifecycleEventType, SessionLifecycleHandler, SessionListFilter, SessionMetadata, TypedSessionLifecycleHandler } from "./types.js";
-/**
- * Main client for interacting with the Copilot CLI.
- *
- * The CopilotClient manages the connection to the Copilot CLI server and provides
- * methods to create and manage conversation sessions. It can either spawn a CLI
- * server process or connect to an existing server.
- *
- * @example
- * ```typescript
- * import { CopilotClient } from "@github/copilot-sdk";
- *
- * // Create a client with default options (spawns CLI server)
- * const client = new CopilotClient();
- *
- * // Or connect to an existing server
- * const client = new CopilotClient({ connection: RuntimeConnection.forUri("localhost:3000") });
- *
- * // Create a session
- * const session = await client.createSession({ onPermissionRequest: approveAll, model: "gpt-4" });
- *
- * // Send messages and handle responses
- * session.on((event) => {
- *   if (event.type === "assistant.message") {
- *     console.log(event.data.content);
- *   }
- * });
- * await session.send({ prompt: "Hello!" });
- *
- * // Clean up
- * await session.disconnect();
- * await client.stop();
- * ```
- */
 export declare class CopilotClient {
     private cliStartTimeout;
     private cliProcess;
+    private ffiHost;
     private connection;
+    private messageWriter;
     private socket;
     private runtimePort;
     private actualHost;
@@ -67,12 +36,28 @@ export declare class CopilotClient {
     private negotiatedProtocolVersion;
     /** Connection-level session filesystem config, set via constructor option. */
     private sessionFsConfig;
+    private requestHandler;
+    private onGitHubTelemetry?;
+    private clientGlobalHandlers;
     /**
      * Typed server-scoped RPC methods.
      * @throws Error if the client is not connected
      */
     get rpc(): ReturnType<typeof createServerRpc>;
     private logDebugTiming;
+    private logDebug;
+    /**
+     * Environment variable that overrides the transport when the caller does not set
+     * {@link CopilotClientOptions.connection}. Accepts `"inprocess"` or `"stdio"`
+     * (case-insensitive); unset preserves the default stdio transport. Any other value
+     * is an error.
+     */
+    private static readonly DEFAULT_CONNECTION_ENV_VAR;
+    /**
+     * Resolves the default {@link RuntimeConnection} for the no-connection case,
+     * honoring {@link CopilotClient.DEFAULT_CONNECTION_ENV_VAR}.
+     */
+    private static resolveDefaultConnection;
     /**
      * Creates a new CopilotClient instance.
      *
@@ -109,6 +94,7 @@ export declare class CopilotClient {
     private parseCliUrl;
     private validateSessionFsConfig;
     private setupSessionFs;
+    private setupClientGlobalHandlers;
     /**
      * Starts the CLI server and establishes a connection.
      *
@@ -238,6 +224,7 @@ export declare class CopilotClient {
      * ```
      */
     resumeSession(sessionId: string, config: ResumeSessionConfig): Promise<CopilotSession>;
+    private resumeSessionInternal;
     /**
      * Sends a ping request to the server to verify connectivity.
      *
@@ -434,6 +421,14 @@ export declare class CopilotClient {
      */
     onLifecycle(handler: SessionLifecycleHandler): () => void;
     /**
+     * Builds the environment for the spawned runtime child process (stdio/TCP): applies
+     * the auth token, connection token, `COPILOT_HOME`, keychain setting, and telemetry
+     * variables on top of the effective env. Not used by the in-process (FFI) transport,
+     * whose worker inherits the host process's ambient environment
+     * (see {@link CopilotClient.startInProcessFfi}).
+     */
+    private buildRuntimeEnv;
+    /**
      * Start the CLI server process
      */
     private startCLIServer;
@@ -441,6 +436,26 @@ export declare class CopilotClient {
      * Connect to the CLI server (via socket or stdio)
      */
     private connectToServer;
+    /** Starts the in-process FFI runtime with SDK-managed typed options. */
+    private startInProcessFfi;
+    /**
+     * Connect to the in-process FFI runtime host over its receive/send streams,
+     * reusing the same `vscode-jsonrpc` framing as the stdio transport.
+     */
+    private connectViaFfi;
+    /**
+     * Resolves the CLI entrypoint used for in-process FFI hosting: `COPILOT_CLI_PATH`
+     * when set, otherwise the bundled platform-package entrypoint.
+     */
+    private resolveCliPathForFfi;
+    /**
+     * Returns the napi prebuilds folder name for the current host — the
+     * `<node-platform>-<arch>` convention (e.g. `win32-x64`, `darwin-arm64`,
+     * `linux-x64`, `linuxmusl-x64`) under which the runtime ships
+     * `prebuilds/<folder>/runtime.node`.
+     */
+    private static getNapiPrebuildsFolder;
+    private static isMusl;
     /**
      * Connect to child via stdio pipes
      */

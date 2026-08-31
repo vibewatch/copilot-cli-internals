@@ -17,12 +17,24 @@ var __require = /* @__PURE__ */ ((x) => typeof require !== "undefined" ? require
   if (typeof require !== "undefined") return require.apply(this, arguments);
   throw Error('Dynamic require of "' + x + '" is not supported');
 });
+var __esm = (fn, res, err) => function __init() {
+  if (err) throw err[0];
+  try {
+    return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
+  } catch (e) {
+    throw err = [e], e;
+  }
+};
 var __commonJS = (cb, mod) => function __require2() {
   try {
     return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
   } catch (e) {
     throw mod = 0, e;
   }
+};
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, { get: all[name], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
   if (from && typeof from === "object" || typeof from === "function") {
@@ -1042,8 +1054,8 @@ var require_semaphore = __commonJS({
         this._waiting = [];
       }
       lock(thunk) {
-        return new Promise((resolve, reject) => {
-          this._waiting.push({ thunk, resolve, reject });
+        return new Promise((resolve2, reject) => {
+          this._waiting.push({ thunk, resolve: resolve2, reject });
           this.runNext();
         });
       }
@@ -2533,9 +2545,9 @@ ${JSON.stringify(message, null, 4)}`);
           if (typeof cancellationStrategy.sender.enableCancellation === "function") {
             cancellationStrategy.sender.enableCancellation(requestMessage);
           }
-          return new Promise(async (resolve, reject) => {
+          return new Promise(async (resolve2, reject) => {
             const resolveWithCleanup = (r) => {
-              resolve(r);
+              resolve2(r);
               cancellationStrategy.sender.cleanup(id);
               disposable?.dispose();
             };
@@ -2947,10 +2959,10 @@ var require_ril = __commonJS({
         return api_1.Disposable.create(() => this.stream.off("end", listener));
       }
       write(data, encoding) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve2, reject) => {
           const callback = (error) => {
             if (error === void 0 || error === null) {
-              resolve();
+              resolve2();
             } else {
               reject(error);
             }
@@ -3202,10 +3214,10 @@ var require_main = __commonJS({
     exports.generateRandomPipeName = generateRandomPipeName;
     function createClientPipeTransport(pipeName, encoding = "utf-8") {
       let connectResolve;
-      const connected = new Promise((resolve, _reject) => {
-        connectResolve = resolve;
+      const connected = new Promise((resolve2, _reject) => {
+        connectResolve = resolve2;
       });
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve2, reject) => {
         let server = (0, net_1.createServer)((socket) => {
           server.close();
           connectResolve([
@@ -3216,7 +3228,7 @@ var require_main = __commonJS({
         server.on("error", reject);
         server.listen(pipeName, () => {
           server.removeListener("error", reject);
-          resolve({
+          resolve2({
             onConnected: () => {
               return connected;
             }
@@ -3235,10 +3247,10 @@ var require_main = __commonJS({
     exports.createServerPipeTransport = createServerPipeTransport;
     function createClientSocketTransport(port, encoding = "utf-8") {
       let connectResolve;
-      const connected = new Promise((resolve, _reject) => {
-        connectResolve = resolve;
+      const connected = new Promise((resolve2, _reject) => {
+        connectResolve = resolve2;
       });
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve2, reject) => {
         const server = (0, net_1.createServer)((socket) => {
           server.close();
           connectResolve([
@@ -3249,7 +3261,7 @@ var require_main = __commonJS({
         server.on("error", reject);
         server.listen(port, "127.0.0.1", () => {
           server.removeListener("error", reject);
-          resolve({
+          resolve2({
             onConnected: () => {
               return connected;
             }
@@ -3297,17 +3309,283 @@ var require_node = __commonJS({
   }
 });
 
-// node_modules/.pnpm/@github+copilot-sdk@1.0.3/node_modules/@github/copilot-sdk/dist/client.js
+// node_modules/.pnpm/empty-npm-package@1.0.0/node_modules/empty-npm-package/index.js
+var require_empty_npm_package = __commonJS({
+  "node_modules/.pnpm/empty-npm-package@1.0.0/node_modules/empty-npm-package/index.js"(exports) {
+    exports.printMsg = function() {
+      console.log("This is a message from the demo package");
+    };
+  }
+});
+
+// node_modules/.pnpm/@github+copilot-sdk@1.0.9-preview.2/node_modules/@github/copilot-sdk/dist/ffiRuntimeHost.js
+var ffiRuntimeHost_exports = {};
+__export(ffiRuntimeHost_exports, {
+  FfiRuntimeHost: () => FfiRuntimeHost
+});
+import { existsSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
+import { PassThrough, Writable } from "node:stream";
+function loadLibrary(libraryPath) {
+  if (loadedLibrary) {
+    if (loadedLibraryPath !== libraryPath) {
+      throw new Error(
+        `An in-process FFI runtime library is already loaded from '${loadedLibraryPath}'; loading a different library from '${libraryPath}' in the same process is not supported.`
+      );
+    }
+    return loadedLibrary;
+  }
+  const lib = import_koffi.default.load(libraryPath);
+  const outboundCallbackType = import_koffi.default.pointer(
+    import_koffi.default.proto(
+      `void ${SYMBOL_PREFIX}outbound(void *userData, uint8 *bytesPtr, size_t bytesLen)`
+    )
+  );
+  loadedLibrary = {
+    hostStart: lib.func(`${SYMBOL_PREFIX}host_start`, "uint32", [
+      "uint8*",
+      "size_t",
+      "uint8*",
+      "size_t"
+    ]),
+    hostShutdown: lib.func(`${SYMBOL_PREFIX}host_shutdown`, "bool", ["uint32"]),
+    connectionOpen: lib.func(`${SYMBOL_PREFIX}connection_open`, "uint32", [
+      "uint32",
+      outboundCallbackType,
+      "void*",
+      "uint8*",
+      "size_t",
+      "uint8*",
+      "size_t",
+      "uint8*",
+      "size_t"
+    ]),
+    connectionWrite: lib.func(`${SYMBOL_PREFIX}connection_write`, "bool", [
+      "uint32",
+      "uint8*",
+      "size_t"
+    ]),
+    connectionClose: lib.func(`${SYMBOL_PREFIX}connection_close`, "bool", ["uint32"]),
+    outboundCallbackType
+  };
+  loadedLibraryPath = libraryPath;
+  return loadedLibrary;
+}
+function buildArgvJson(cliEntrypoint, args) {
+  const argv = cliEntrypoint.toLowerCase().endsWith(".js") ? ["node", cliEntrypoint, "--embedded-host", "--no-auto-update"] : [cliEntrypoint, "--embedded-host", "--no-auto-update"];
+  argv.push(...args);
+  return Buffer.from(JSON.stringify(argv), "utf8");
+}
+function buildEnvJson(environment) {
+  if (!environment) {
+    return null;
+  }
+  const obj = {};
+  for (const [key, value] of Object.entries(environment)) {
+    if (value !== void 0) {
+      obj[key] = value;
+    }
+  }
+  if (Object.keys(obj).length === 0) {
+    return null;
+  }
+  return Buffer.from(JSON.stringify(obj), "utf8");
+}
+var import_koffi, SYMBOL_PREFIX, KEEP_ALIVE_INTERVAL_MS, loadedLibraryPath, loadedLibrary, FfiRuntimeHost;
+var init_ffiRuntimeHost = __esm({
+  "node_modules/.pnpm/@github+copilot-sdk@1.0.9-preview.2/node_modules/@github/copilot-sdk/dist/ffiRuntimeHost.js"() {
+    import_koffi = __toESM(require_empty_npm_package(), 1);
+    SYMBOL_PREFIX = "copilot_runtime_";
+    KEEP_ALIVE_INTERVAL_MS = 1 << 30;
+    FfiRuntimeHost = class _FfiRuntimeHost {
+      constructor(libraryPath, cliEntrypoint, environment, args) {
+        this.libraryPath = libraryPath;
+        this.cliEntrypoint = cliEntrypoint;
+        this.environment = environment;
+        this.args = args;
+        this.lib = loadLibrary(libraryPath);
+        this.receiveStream = new PassThrough();
+        this.sendStream = new Writable({
+          // connection_write enqueues the frame into the runtime's inbound channel and
+          // returns immediately, so a synchronous FFI call is sufficient here.
+          write: (chunk, _encoding, callback) => {
+            try {
+              this.writeFrame(chunk);
+              callback();
+            } catch (error) {
+              callback(error);
+            }
+          }
+        });
+      }
+      libraryPath;
+      cliEntrypoint;
+      environment;
+      args;
+      lib;
+      serverId = 0;
+      connectionId = 0;
+      disposed = false;
+      outboundCallback;
+      keepAliveTimer;
+      /** The stream JSON-RPC reads server→client frames from. */
+      receiveStream;
+      /** The stream JSON-RPC writes client→server frames to. */
+      sendStream;
+      /**
+       * Resolves the cdylib next to the given CLI entrypoint and prepares the FFI host.
+       * The cdylib is resolved as `prebuilds/<prebuildsFolder>/runtime.node` relative to
+       * the entrypoint directory (the napi-rs `<node-platform>-<arch>` layout, e.g.
+       * `linux-x64`). Throws if it cannot be found.
+       */
+      static create(cliEntrypoint, prebuildsFolder, environment, args) {
+        const fullEntrypoint = resolve(cliEntrypoint);
+        const distDir = dirname(fullEntrypoint);
+        const libraryPath = join(distDir, "prebuilds", prebuildsFolder, "runtime.node");
+        if (!existsSync(libraryPath)) {
+          throw new Error(`FFI runtime library not found. Looked for '${libraryPath}'.`);
+        }
+        return new _FfiRuntimeHost(libraryPath, fullEntrypoint, environment, args);
+      }
+      /**
+       * Starts the in-process runtime: spawns the CLI worker via the native host,
+       * waits for readiness, and opens the FFI JSON-RPC connection.
+       */
+      async start() {
+        const argvJson = buildArgvJson(this.cliEntrypoint, this.args);
+        const envJson = buildEnvJson(this.environment);
+        this.serverId = await new Promise((resolvePromise, rejectPromise) => {
+          this.lib.hostStart.async(
+            argvJson,
+            argvJson.length,
+            envJson,
+            envJson ? envJson.length : 0,
+            (error, result) => {
+              if (error) {
+                rejectPromise(error);
+              } else {
+                resolvePromise(result);
+              }
+            }
+          );
+        });
+        if (!this.serverId) {
+          throw new Error(
+            `copilot_runtime_host_start failed (library '${this.libraryPath}', entrypoint '${this.cliEntrypoint}').`
+          );
+        }
+        this.outboundCallback = import_koffi.default.register(
+          (_userData, bytesPtr, bytesLen) => this.feedInbound(bytesPtr, bytesLen),
+          this.lib.outboundCallbackType
+        );
+        this.connectionId = this.lib.connectionOpen(
+          this.serverId,
+          this.outboundCallback,
+          null,
+          null,
+          0,
+          null,
+          0,
+          null,
+          0
+        );
+        if (!this.connectionId) {
+          this.unregisterCallback();
+          this.lib.hostShutdown(this.serverId);
+          this.serverId = 0;
+          throw new Error("copilot_runtime_connection_open failed.");
+        }
+        this.keepAliveTimer = setInterval(() => {
+        }, KEEP_ALIVE_INTERVAL_MS);
+      }
+      writeFrame(frame) {
+        if (this.disposed || !this.connectionId) {
+          throw new Error("The in-process runtime connection is closed.");
+        }
+        const ok = this.lib.connectionWrite(this.connectionId, frame, frame.length);
+        if (!ok) {
+          throw new Error("Failed to write a frame to the in-process runtime connection.");
+        }
+      }
+      /**
+       * Native outbound (server→client) callback. koffi delivers it on the JS event loop
+       * via a threadsafe function, so the frame is decoded and written straight to
+       * {@link receiveStream}. The native pointer is only valid for this call, so the
+       * bytes are copied out before returning.
+       */
+      feedInbound(bytesPtr, bytesLen) {
+        try {
+          if (this.disposed || this.receiveStream.writableEnded) {
+            return;
+          }
+          const length = Number(bytesLen);
+          if (!bytesPtr || length <= 0) {
+            return;
+          }
+          const bytes = import_koffi.default.decode(
+            bytesPtr,
+            import_koffi.default.array("uint8", length, "Typed")
+          );
+          this.receiveStream.write(Buffer.from(bytes));
+        } catch (error) {
+          console.error(
+            `In-process FFI inbound callback failed: ${error instanceof Error ? error.stack ?? error.message : String(error)}`
+          );
+        }
+      }
+      unregisterCallback() {
+        if (this.outboundCallback === void 0) {
+          return;
+        }
+        const callback = this.outboundCallback;
+        this.outboundCallback = void 0;
+        try {
+          import_koffi.default.unregister(callback);
+        } catch {
+        }
+      }
+      /** Closes the FFI connection, shuts down the native host, and releases resources. */
+      dispose() {
+        if (this.disposed) {
+          return;
+        }
+        this.disposed = true;
+        if (this.keepAliveTimer !== void 0) {
+          clearInterval(this.keepAliveTimer);
+          this.keepAliveTimer = void 0;
+        }
+        try {
+          if (this.connectionId) {
+            this.lib.connectionClose(this.connectionId);
+            this.connectionId = 0;
+          }
+        } catch {
+        }
+        try {
+          if (this.serverId) {
+            this.lib.hostShutdown(this.serverId);
+            this.serverId = 0;
+          }
+        } catch {
+        }
+        this.receiveStream.end();
+        this.unregisterCallback();
+      }
+    };
+  }
+});
+
+// node_modules/.pnpm/@github+copilot-sdk@1.0.9-preview.2/node_modules/@github/copilot-sdk/dist/client.js
 var import_node2 = __toESM(require_node(), 1);
 import { spawn } from "node:child_process";
 import { randomUUID } from "node:crypto";
-import { existsSync } from "node:fs";
+import { existsSync as existsSync2 } from "node:fs";
 import { createRequire } from "node:module";
 import { Socket } from "node:net";
-import { dirname, join } from "node:path";
+import { dirname as dirname2, join as join2 } from "node:path";
 import { fileURLToPath } from "node:url";
 
-// node_modules/.pnpm/@github+copilot-sdk@1.0.3/node_modules/@github/copilot-sdk/dist/generated/rpc.js
+// node_modules/.pnpm/@github+copilot-sdk@1.0.9-preview.2/node_modules/@github/copilot-sdk/dist/generated/rpc.js
 function createServerRpc(connection) {
   return {
     /**
@@ -3316,8 +3594,11 @@ function createServerRpc(connection) {
      * @param params Optional message to echo back to the caller.
      *
      * @returns Server liveness response, including the echoed message, current server timestamp, and protocol version.
+     *
+     * @experimental
      */
     ping: async (params) => connection.sendRequest("ping", params),
+    /** @experimental */
     models: {
       /**
        * Lists Copilot models available to the authenticated user.
@@ -3326,8 +3607,15 @@ function createServerRpc(connection) {
        *
        * @returns List of Copilot models available to the resolved user, including capabilities and billing metadata.
        */
-      list: async (params) => connection.sendRequest("models.list", params)
+      list: async (params) => connection.sendRequest("models.list", params),
+      /**
+       * Returns the running runtime's complete catalog of well-known built-in model IDs without authentication or network access.
+       *
+       * @returns The running runtime's complete catalog of well-known built-in model IDs, including supported models and additional IDs with built-in metadata.
+       */
+      getBuiltInCatalog: async () => connection.sendRequest("models.getBuiltInCatalog", {})
     },
+    /** @experimental */
     tools: {
       /**
        * Lists built-in tools available for a model.
@@ -3338,6 +3626,7 @@ function createServerRpc(connection) {
        */
       list: async (params) => connection.sendRequest("tools.list", params)
     },
+    /** @experimental */
     account: {
       /**
        * Gets Copilot quota usage for the authenticated user or supplied GitHub token.
@@ -3346,8 +3635,37 @@ function createServerRpc(connection) {
        *
        * @returns Quota usage snapshots for the resolved user, keyed by quota type.
        */
-      getQuota: async (params) => connection.sendRequest("account.getQuota", params)
+      getQuota: async (params) => connection.sendRequest("account.getQuota", params),
+      /**
+       * Gets the currently active authentication credentials from the global auth manager.
+       *
+       * @returns Current authentication state
+       */
+      getCurrentAuth: async () => connection.sendRequest("account.getCurrentAuth", {}),
+      /**
+       * Gets all authenticated users available for account switching.
+       *
+       * @returns List of all authenticated users
+       */
+      getAllUsers: async () => connection.sendRequest("account.getAllUsers", {}),
+      /**
+       * Stores authentication credentials after successful login (e.g., device code flow).
+       *
+       * @param params Credentials to store after successful authentication
+       *
+       * @returns Result of a successful login; throws on failure
+       */
+      login: async (params) => connection.sendRequest("account.login", params),
+      /**
+       * Removes user authentication from keychain and persisted state.
+       *
+       * @param params User to log out
+       *
+       * @returns Logout result indicating if more users remain
+       */
+      logout: async (params) => connection.sendRequest("account.logout", params)
     },
+    /** @experimental */
     secrets: {
       /**
        * Registers secret values for redaction in session logs and exports. The SDK calls this to inject dynamically generated secret values (e.g., OIDC tokens).
@@ -3358,7 +3676,9 @@ function createServerRpc(connection) {
        */
       addFilterValues: async (params) => connection.sendRequest("secrets.addFilterValues", params)
     },
+    /** @experimental */
     mcp: {
+      /** @experimental */
       config: {
         /**
          * Lists MCP servers from user configuration.
@@ -3469,7 +3789,7 @@ function createServerRpc(connection) {
         /**
          * Registers a new marketplace from a source (owner/repo, URL, or local path).
          *
-         * @param params Marketplace source to register.
+         * @param params Marketplace source and optional working directory for relative-path resolution.
          *
          * @returns Result of registering a new marketplace.
          */
@@ -3500,7 +3820,9 @@ function createServerRpc(connection) {
         refresh: async (params) => connection.sendRequest("plugins.marketplaces.refresh", params)
       }
     },
+    /** @experimental */
     skills: {
+      /** @experimental */
       config: {
         /**
          * Replaces the global list of disabled skills.
@@ -3523,8 +3845,6 @@ function createServerRpc(connection) {
        * @param params Optional project paths to enumerate.
        *
        * @returns Canonical locations where skills can be created so the runtime will recognize them.
-       *
-       * @experimental
        */
       getDiscoveryPaths: async (params) => connection.sendRequest("skills.getDiscoveryPaths", params)
     },
@@ -3566,20 +3886,47 @@ function createServerRpc(connection) {
        */
       getDiscoveryPaths: async (params) => connection.sendRequest("instructions.getDiscoveryPaths", params)
     },
+    /** @experimental */
+    commands: {
+      /**
+       * Lists the well-known built-in slash commands that work as the first message in a new session (e.g. /plan, /env), without requiring an active session. Commands that depend on session state, authentication, or a synced session are omitted.
+       *
+       * @returns Slash commands available in the session, after applying any include/exclude filters.
+       */
+      list: async () => connection.sendRequest("commands.list", {})
+    },
+    /** @experimental */
     user: {
+      /** @experimental */
       settings: {
         /**
          * Drops this runtime process's in-memory user settings cache so the next settings read observes disk.
          */
-        reload: async () => connection.sendRequest("user.settings.reload", {})
+        reload: async () => connection.sendRequest("user.settings.reload", {}),
+        /**
+         * Lists every known user setting (settings.json overlaid with the legacy config.json, config.json wins), each with its effective value, its default, and whether it is at the default — so settings the user has never set still appear with their default value. Does not include repository- or enterprise-managed overrides that the runtime layers on top at session time.
+         *
+         * @returns Per-key metadata for every known user setting (settings.json overlaid with the legacy config.json, config.json wins), including settings left at their default. Excludes repository- and enterprise-managed overrides.
+         */
+        get: async () => connection.sendRequest("user.settings.get", {}),
+        /**
+         * Writes one or more user settings to settings.json, replacing each provided top-level key. A key whose value is null is removed. Returns the keys whose new value is shadowed by a legacy config.json entry (config.json wins on read), which the runtime leaves in place — such writes do not take effect until the legacy value is removed.
+         *
+         * @param params Partial user settings to write to settings.json. Each top-level key is written individually, replacing the existing value; a key whose value is null is removed.
+         *
+         * @returns Outcome of writing user settings.
+         */
+        set: async (params) => connection.sendRequest("user.settings.set", params)
       }
     },
+    /** @experimental */
     runtime: {
       /**
        * Gracefully shuts down an SDK-owned runtime. The response is sent only after cleanup completes; callers may then terminate the owned runtime process.
        */
       shutdown: async () => connection.sendRequest("runtime.shutdown", {})
     },
+    /** @experimental */
     sessionFs: {
       /**
        * Registers an SDK client as the session filesystem provider.
@@ -3816,13 +4163,31 @@ function createInternalServerRpc(connection) {
     /**
      * Performs the SDK server connection handshake and validates the optional connection token. Marked internal because this is JSON-RPC transport plumbing invoked automatically by an SDK client's own `connect()` wrapper, not a user-facing method. Stays internal as long as the SDK client owns the handshake; would only become public if the SDK ever exposed the raw schema surface to consumers without a connection wrapper.
      *
-     * @param params Optional connection token presented by the SDK client during the handshake.
+     * @param params Parameters for the `server.connect` handshake: an optional connection token and optional connection-level opt-ins (e.g. GitHub telemetry forwarding).
      *
      * @returns Handshake result reporting the server's protocol version and package version on success.
+     *
+     * @experimental
      */
     connect: async (params) => connection.sendRequest("connect", params),
     /** @experimental */
     sessions: {
+      /**
+       * Reads lightweight persisted metadata for one local session without opening it.
+       *
+       * @param params Session ID whose persisted metadata should be read.
+       *
+       * @returns Persisted local session metadata when the session exists.
+       */
+      getMetadata: async (params) => connection.sendRequest("sessions.getMetadata", params),
+      /**
+       * Lists recent local session IDs that contain user-visible history, omitting housekeeping-only sessions.
+       *
+       * @param params Limit for non-empty local session IDs.
+       *
+       * @returns Recent local session IDs that contain user-visible history.
+       */
+      listNonEmptySessionIds: async (params) => connection.sendRequest("sessions.listNonEmptySessionIds", params),
       /**
        * Computes the absolute path to a session's persisted events.jsonl file. Internal: filesystem paths are only meaningful in-process (CLI and runtime share a filesystem). Currently used by the CLI's contribution-graph feature to read historical events directly. Remote SDK consumers must not depend on this; a proper event-query API would replace it if the contribution graph ever needed to work over the wire.
        *
@@ -3840,6 +4205,12 @@ function createInternalServerRpc(connection) {
        */
       getPersistedRemoteSteerable: async (params) => connection.sendRequest("sessions.getPersistedRemoteSteerable", params),
       /**
+       * Deletes one local session from disk after running the same lifecycle hooks as the session manager.
+       *
+       * @param params Session ID to delete from disk.
+       */
+      delete: async (params) => connection.sendRequest("sessions.delete", params),
+      /**
        * Gets the dynamic-context board entry count associated with a session, when available. Internal: this exists solely so CLI telemetry events (`rem_spawn_gate`, `rem_consolidation_complete`) can pair START / END board counts around the detached rem-agent spawn. "Dynamic context board" is a runtime-internal concept that is not part of the public SDK contract; the long-term plan is to relocate the telemetry emission into the runtime so this method can be deleted entirely.
        *
        * @param params Session ID whose board entry count should be returned.
@@ -3847,14 +4218,6 @@ function createInternalServerRpc(connection) {
        * @returns Dynamic-context board entry count, when available.
        */
       getBoardEntryCount: async (params) => connection.sendRequest("sessions.getBoardEntryCount", params),
-      /**
-       * Cursor-based long-poll for sessions spawned by the runtime (e.g. in response to a Mission Control `start_session` command). The cursor is an opaque token; pass it back to receive only spawn events that occurred AFTER the cursor was issued. Omit the cursor on the first call to receive any events buffered since the runtime started. Internal: this is a CLI background-daemon plumbing primitive. SDK consumers that need to react to runtime-spawned sessions should subscribe to a higher-level event stream rather than driving a long-poll loop.
-       *
-       * @param params Cursor and optional long-poll wait for polling runtime-spawned sessions.
-       *
-       * @returns Batch of spawn events plus a cursor for follow-up polls.
-       */
-      pollSpawnedSessions: async (params) => connection.sendRequest("sessions.pollSpawnedSessions", params),
       /**
        * Registers extension-provided tools on the given session, gated by an optional `enabled` callback. Returns an opaque unsubscribe function the caller must invoke to deregister the tools when the extension is torn down. Marked internal because `loader`, `enabled`, and the returned `unsubscribe` are in-process handles that cannot cross the JSON-RPC boundary. Disappears once extension discovery / launch / tool registration are owned by the runtime: SDK consumers will pass pure config (search paths, disabled ids) via `SessionOptions` and the runtime will resolve, launch, register, and tear down extensions itself.
        *
@@ -3891,6 +4254,16 @@ function createSessionRpc(connection, sessionId) {
      */
     send: async (params) => connection.sendRequest("session.send", { sessionId, ...params }),
     /**
+     * Sends zero or more user messages to the session in a single turn and returns their message IDs. All provided messages are appended to the conversation in order, then exactly one agent turn runs over the resulting history. When the list is empty, one turn runs over the existing history with no new user message. Remote-backed (Mission Control) sessions do not support this method and will return an error.
+     *
+     * @param params Parameters for sending zero or more user messages to the session in a single turn. Remote-backed (Mission Control) sessions do not support this method and will return an error.
+     *
+     * @returns Result of sending zero or more user messages
+     *
+     * @experimental
+     */
+    sendMessages: async (params) => connection.sendRequest("session.sendMessages", { sessionId, ...params }),
+    /**
      * Aborts the current agent turn.
      *
      * @param params Parameters for aborting the current turn
@@ -3901,6 +4274,24 @@ function createSessionRpc(connection, sessionId) {
      */
     abort: async (params) => connection.sendRequest("session.abort", { sessionId, ...params }),
     /**
+     * Interrupts the current main agent turn while leaving running background work (subagents, sidekicks, and promoted attached shells) alive. No-op when the main loop is not processing.
+     *
+     * @param params Parameters for interrupting the main agent turn.
+     *
+     * @returns Result of interrupting the main agent turn.
+     *
+     * @experimental
+     */
+    interruptMainTurn: async (params) => connection.sendRequest("session.interruptMainTurn", { sessionId, ...params }),
+    /**
+     * Cancels every running background agent (task-registry subagents plus sidekick agents) without interrupting the main agent loop. Promoted attached shells are left running.
+     *
+     * @returns The number of running background agents (task-registry agents) that were cancelled.
+     *
+     * @experimental
+     */
+    cancelAllBackgroundAgents: async () => connection.sendRequest("session.cancelAllBackgroundAgents", { sessionId }),
+    /**
      * Shuts down the session and persists its final state. Awaits any deferred sessionEnd hooks before resolving so user-supplied hook scripts complete before the runtime tears down.
      *
      * @param params Parameters for shutting down the session
@@ -3909,13 +4300,13 @@ function createSessionRpc(connection, sessionId) {
      */
     shutdown: async (params) => connection.sendRequest("session.shutdown", { sessionId, ...params }),
     /** @experimental */
-    auth: {
+    gitHubAuth: {
       /**
        * Gets authentication status and account metadata for the session.
        *
        * @returns Authentication status and account metadata for the session.
        */
-      getStatus: async () => connection.sendRequest("session.auth.getStatus", { sessionId }),
+      getStatus: async () => connection.sendRequest("session.gitHubAuth.getStatus", { sessionId }),
       /**
        * Updates the session's auth credentials used for outbound model and API requests.
        *
@@ -3923,7 +4314,18 @@ function createSessionRpc(connection, sessionId) {
        *
        * @returns Indicates whether the credential update succeeded.
        */
-      setCredentials: async (params) => connection.sendRequest("session.auth.setCredentials", { sessionId, ...params })
+      setCredentials: async (params) => connection.sendRequest("session.gitHubAuth.setCredentials", { sessionId, ...params })
+    },
+    /** @experimental */
+    debug: {
+      /**
+       * Collects a redacted session debug log bundle into a local archive or staging directory. The runtime includes session-owned logs by default and accepts caller-provided diagnostic entries so host applications can add their own files without changing this API shape.
+       *
+       * @param params Options for collecting a redacted session debug bundle.
+       *
+       * @returns Result of collecting a redacted debug bundle.
+       */
+      collectLogs: async (params) => connection.sendRequest("session.debug.collectLogs", { sessionId, ...params })
     },
     /** @experimental */
     canvas: {
@@ -3963,6 +4365,98 @@ function createSessionRpc(connection, sessionId) {
          * @returns Canvas action invocation result.
          */
         invoke: async (params) => connection.sendRequest("session.canvas.action.invoke", { sessionId, ...params })
+      }
+    },
+    /** @experimental */
+    factory: {
+      /**
+       * Runs a registered factory by name at the top level.
+       *
+       * @param params Parameters for invoking a registered factory.
+       *
+       * @returns Complete current or terminal factory run envelope.
+       */
+      run: async (params) => connection.sendRequest("session.factory.run", { sessionId, ...params }),
+      /**
+       * Resumes a factory run using its persisted name, arguments, journal, and accounting.
+       *
+       * @param params Parameters for resuming a factory run from its persisted identity.
+       *
+       * @returns Resolved persisted factory identity and resumed run envelope.
+       */
+      resume: async (params) => connection.sendRequest("session.factory.resume", { sessionId, ...params }),
+      /**
+       * Gets the current or settled envelope for a factory run.
+       *
+       * @param params Parameters for retrieving a factory run.
+       *
+       * @returns Complete current or terminal factory run envelope.
+       */
+      getRun: async (params) => connection.sendRequest("session.factory.getRun", { sessionId, ...params }),
+      /**
+       * Lists durable factory runs for this session in creation order.
+       *
+       * @returns Factory runs in durable creation order.
+       */
+      listRuns: async () => connection.sendRequest("session.factory.listRuns", { sessionId }),
+      /**
+       * Gets durable and live observability detail for one factory run.
+       *
+       * @param params Parameters for retrieving a factory run.
+       *
+       * @returns Full factory run observability detail.
+       */
+      getRunDetail: async (params) => connection.sendRequest("session.factory.getRunDetail", { sessionId, ...params }),
+      /**
+       * Pages durable progress for one factory run.
+       *
+       * @param params Parameters for paging factory progress.
+       *
+       * @returns A bidirectional page of factory progress.
+       */
+      getRunProgress: async (params) => connection.sendRequest("session.factory.getRunProgress", { sessionId, ...params }),
+      /**
+       * Requests cancellation of a factory run and returns its run envelope.
+       *
+       * @param params Parameters for cancelling a factory run.
+       *
+       * @returns Complete current or terminal factory run envelope.
+       */
+      cancel: async (params) => connection.sendRequest("session.factory.cancel", { sessionId, ...params }),
+      /**
+       * Records a batch of ordered factory progress lines.
+       *
+       * @param params Parameters for recording factory progress.
+       *
+       * @returns Acknowledgement that a factory request was accepted.
+       */
+      log: async (params) => connection.sendRequest("session.factory.log", { sessionId, ...params }),
+      /**
+       * Runs one factory-scoped subagent and returns its result.
+       *
+       * @param params Parameters for one factory-scoped subagent call.
+       *
+       * @returns Result of one factory-scoped subagent call.
+       */
+      agent: async (params) => connection.sendRequest("session.factory.agent", { sessionId, ...params }),
+      /** @experimental */
+      journal: {
+        /**
+         * Reads a memoized factory journal entry.
+         *
+         * @param params Parameters for reading a factory journal entry.
+         *
+         * @returns Result of reading a factory journal entry.
+         */
+        get: async (params) => connection.sendRequest("session.factory.journal.get", { sessionId, ...params }),
+        /**
+         * Stores a memoized factory journal entry.
+         *
+         * @param params Parameters for storing a factory journal entry.
+         *
+         * @returns Acknowledgement that a factory request was accepted.
+         */
+        put: async (params) => connection.sendRequest("session.factory.journal.put", { sessionId, ...params })
       }
     },
     /** @experimental */
@@ -4076,6 +4570,22 @@ function createSessionRpc(connection, sessionId) {
        */
       getWorkspace: async () => connection.sendRequest("session.workspaces.getWorkspace", { sessionId }),
       /**
+       * Updates workspace metadata for a local session and returns the refreshed workspace.
+       *
+       * @param params Workspace metadata fields to update.
+       *
+       * @returns Current workspace metadata for the session, including its absolute filesystem path when available.
+       */
+      updateMetadata: async (params) => connection.sendRequest("session.workspaces.updateMetadata", { sessionId, ...params }),
+      /**
+       * Ensures a local session workspace exists and returns it.
+       *
+       * @param params Optional session context used when creating a local workspace.
+       *
+       * @returns Current workspace metadata for the session, including its absolute filesystem path when available.
+       */
+      ensure: async (params) => connection.sendRequest("session.workspaces.ensure", { sessionId, ...params }),
+      /**
        * Lists files stored in the session workspace files directory.
        *
        * @returns Relative paths of files stored in the session workspace files directory.
@@ -4110,6 +4620,48 @@ function createSessionRpc(connection, sessionId) {
        */
       readCheckpoint: async (params) => connection.sendRequest("session.workspaces.readCheckpoint", { sessionId, ...params }),
       /**
+       * Adds a compaction summary checkpoint to the local session workspace.
+       *
+       * @param params Compaction summary checkpoint to persist.
+       *
+       * @returns Persisted summary metadata and refreshed workspace metadata.
+       */
+      addSummary: async (params) => connection.sendRequest("session.workspaces.addSummary", { sessionId, ...params }),
+      /**
+       * Truncates local workspace compaction summaries after a rollback.
+       *
+       * @param params Rollback point for local workspace summaries.
+       *
+       * @returns Current workspace metadata for the session, including its absolute filesystem path when available.
+       */
+      truncateSummaries: async (params) => connection.sendRequest("session.workspaces.truncateSummaries", { sessionId, ...params }),
+      /**
+       * Reads the autopilot objective state file from the local session workspace.
+       *
+       * @returns Autopilot objective file content, or null when missing.
+       */
+      readAutopilotObjective: async () => connection.sendRequest("session.workspaces.readAutopilotObjective", { sessionId }),
+      /**
+       * Writes the autopilot objective state file in the local session workspace.
+       *
+       * @param params Autopilot objective file content to persist.
+       *
+       * @returns Result of writing the autopilot objective file.
+       */
+      writeAutopilotObjective: async (params) => connection.sendRequest("session.workspaces.writeAutopilotObjective", { sessionId, ...params }),
+      /**
+       * Deletes the autopilot objective state file from the local session workspace.
+       *
+       * @returns Result of deleting the autopilot objective file.
+       */
+      deleteAutopilotObjective: async () => connection.sendRequest("session.workspaces.deleteAutopilotObjective", { sessionId }),
+      /**
+       * Checks whether the local session workspace has an autopilot objective state file.
+       *
+       * @returns Whether the autopilot objective file exists.
+       */
+      autopilotObjectiveExists: async () => connection.sendRequest("session.workspaces.autopilotObjectiveExists", { sessionId }),
+      /**
        * Saves pasted content as a UTF-8 file in the session workspace.
        *
        * @param params Pasted content to save as a UTF-8 file in the session workspace.
@@ -4118,13 +4670,30 @@ function createSessionRpc(connection, sessionId) {
        */
       saveLargePaste: async (params) => connection.sendRequest("session.workspaces.saveLargePaste", { sessionId, ...params }),
       /**
-       * Computes a diff for the session workspace.
+       * Computes a diff for the session workspace. Never rejects for a busy session: a `session`-mode diff that cannot read the session's file-change captures falls back to an unstaged git diff with `isFallback: true` and reports why in `unavailableReason`.
        *
        * @param params Parameters for computing a workspace diff.
        *
        * @returns Workspace diff result for the requested mode.
        */
       diff: async (params) => connection.sendRequest("session.workspaces.diff", { sessionId, ...params })
+    },
+    /** @experimental */
+    completions: {
+      /**
+       * Gets the characters that should trigger host-driven completions for the session. Empty disables host-driven completions (e.g. local sessions, or a relay host that does not advertise them).
+       *
+       * @returns Characters that, when typed in the composer, should trigger a `completions.request`. Empty when the session has no host-driven completions (e.g. local sessions, or a relay host that does not advertise `completionTriggerCharacters`).
+       */
+      getTriggerCharacters: async () => connection.sendRequest("session.completions.getTriggerCharacters", { sessionId }),
+      /**
+       * Requests host-driven completion items for the current composer input. Returns an empty list when the host has no items or does not support completions.
+       *
+       * @param params Request host-driven completions for the current composer input.
+       *
+       * @returns Host-driven completion items for the current composer input. Empty when the host returns no items or does not support completions.
+       */
+      request: async (params) => connection.sendRequest("session.completions.request", { sessionId, ...params })
     },
     /** @experimental */
     instructions: {
@@ -4149,11 +4718,13 @@ function createSessionRpc(connection, sessionId) {
     /** @experimental */
     agent: {
       /**
-       * Lists custom agents available to the session.
+       * Lists agents available to the session. Defaults to custom agents only; pass includeBuiltInAgents to include the effective built-in agents.
        *
-       * @returns Custom agents available to the session.
+       * @param params Controls whether built-in agents and authored prompt text are included.
+       *
+       * @returns Agents available to the session.
        */
-      list: async () => connection.sendRequest("session.agent.list", { sessionId }),
+      list: async (params) => connection.sendRequest("session.agent.list", { sessionId, ...params }),
       /**
        * Gets the currently selected custom agent for the session.
        *
@@ -4306,7 +4877,7 @@ function createSessionRpc(connection, sessionId) {
        */
       list: async () => connection.sendRequest("session.mcp.list", { sessionId }),
       /**
-       * Lists the tools exposed by a connected MCP server on this session's host.
+       * Lists the tools exposed by a connected MCP server on this session's host. This performs a live `tools/list` request. Tool UI metadata is returned independently of whether MCP Apps rendering is enabled for the session.
        *
        * @param params Server name whose tool list should be returned.
        *
@@ -4360,6 +4931,18 @@ function createSessionRpc(connection, sessionId) {
        */
       removeGitHub: async () => connection.sendRequest("session.mcp.removeGitHub", { sessionId }),
       /**
+       * Starts an individual MCP server on the live session. Omit `config` for a config-free start-by-name of an already-configured server (reuses the server's already-registered configuration); supply `config` to start from a caller-supplied configuration. Session-scoped and ephemeral: the server is added to this session's running set only and is reaped when the session ends. Does NOT modify persistent user configuration (`mcp.config.*`), so it does not affect future sessions. The server surfaces through `session.mcp.list` and the `session.mcp_servers_loaded` / `session.mcp_server_status_changed` events like any other server.
+       *
+       * @param params Server name and optional configuration for an individual MCP server start. Omit `config` for a config-free start-by-name of an already-configured server.
+       */
+      startServer: async (params) => connection.sendRequest("session.mcp.startServer", { sessionId, ...params }),
+      /**
+       * Restarts an individual MCP server on the live session (stops then starts). Omit `config` for a config-free restart-by-name of an already-configured server; supply `config` to restart with a replacement configuration. Session-scoped and ephemeral: does NOT modify persistent user configuration (`mcp.config.*`).
+       *
+       * @param params Server name and optional replacement configuration for an individual MCP server restart. Omit `config` for a config-free restart-by-name of an already-configured server.
+       */
+      restartServer: async (params) => connection.sendRequest("session.mcp.restartServer", { sessionId, ...params }),
+      /**
        * Stops an individual MCP server on the session's host.
        *
        * @param params Server name for an individual MCP server stop.
@@ -4386,11 +4969,30 @@ function createSessionRpc(connection, sessionId) {
         /**
          * Starts OAuth authentication for a remote MCP server.
          *
-         * @param params Remote MCP server name and optional overrides controlling reauthentication, OAuth client display name, and the callback success-page copy.
+         * @param params Remote MCP server name and optional overrides controlling reauthentication, OAuth client display name, callback success-page copy, and static OAuth client selection.
          *
          * @returns OAuth authorization URL the caller should open, or empty when cached tokens already authenticated the server.
          */
-        login: async (params) => connection.sendRequest("session.mcp.oauth.login", { sessionId, ...params })
+        login: async (params) => connection.sendRequest("session.mcp.oauth.login", { sessionId, ...params }),
+        /**
+         * Responds to a pending MCP OAuth authorization request by its request id.
+         *
+         * @param params Pending MCP OAuth request id to respond to.
+         *
+         * @returns Indicates whether the pending MCP OAuth response was accepted.
+         */
+        respond: async (params) => connection.sendRequest("session.mcp.oauth.respond", { sessionId, ...params })
+      },
+      /** @experimental */
+      headers: {
+        /**
+         * Responds to a pending MCP dynamic headers refresh request. Hosts that subscribe to `mcp.headers_refresh_required` use this to provide short-lived per-server headers or to indicate that no dynamic headers are available for this refresh.
+         *
+         * @param params MCP headers refresh request id and the host response.
+         *
+         * @returns Indicates whether the pending MCP headers refresh response was accepted.
+         */
+        handlePendingHeadersRefreshRequest: async (params) => connection.sendRequest("session.mcp.headers.handlePendingHeadersRefreshRequest", { sessionId, ...params })
       },
       /** @experimental */
       apps: {
@@ -4438,6 +5040,33 @@ function createSessionRpc(connection, sessionId) {
          * @returns Diagnostic snapshot of MCP Apps wiring for the named server.
          */
         diagnose: async (params) => connection.sendRequest("session.mcp.apps.diagnose", { sessionId, ...params })
+      },
+      /** @experimental */
+      resources: {
+        /**
+         * Fetch an MCP resource from a connected server by URI (proxies MCP `resources/read`).
+         *
+         * @param params MCP server and resource URI to fetch.
+         *
+         * @returns Resource contents returned by the MCP server.
+         */
+        read: async (params) => connection.sendRequest("session.mcp.resources.read", { sessionId, ...params }),
+        /**
+         * Enumerate one page of resources a connected MCP server exposes (proxies MCP `resources/list`). Pass `cursor` to continue from a prior result's `nextCursor`.
+         *
+         * @param params MCP server whose resources to enumerate.
+         *
+         * @returns One page of resources advertised by the named MCP server.
+         */
+        list: async (params) => connection.sendRequest("session.mcp.resources.list", { sessionId, ...params }),
+        /**
+         * Enumerate one page of resource templates a connected MCP server exposes (proxies MCP `resources/templates/list`). Pass `cursor` to continue from a prior result's `nextCursor`.
+         *
+         * @param params MCP server whose resource templates to enumerate.
+         *
+         * @returns One page of resource templates advertised by the named MCP server.
+         */
+        listTemplates: async (params) => connection.sendRequest("session.mcp.resources.listTemplates", { sessionId, ...params })
       }
     },
     /** @experimental */
@@ -4464,7 +5093,15 @@ function createSessionRpc(connection, sessionId) {
        *
        * @returns A snapshot of the provider endpoint the session is currently configured to talk to.
        */
-      getEndpoint: async (params) => connection.sendRequest("session.provider.getEndpoint", { sessionId, ...params })
+      getEndpoint: async (params) => connection.sendRequest("session.provider.getEndpoint", { sessionId, ...params }),
+      /**
+       * Adds BYOK providers and/or models to the session's registry at runtime, extending the additive registry built from the session's `providers`/`models` options. Both fields are optional, so a call may add providers only, models only, or both. Within a single call providers are registered before models, so a model may reference a provider added in the same call; across calls a model may reference any provider already registered (from session creation or a prior add). A model whose referenced provider is not registered by the end of the call is rejected. Newly added models become selectable via `model.list` / `model.switchTo` and are inherited by sub-agents spawned afterwards.
+       *
+       * @param params BYOK providers and/or models to add to the session's registry at runtime. Both fields are optional; provide providers, models, or both.
+       *
+       * @returns The selectable model entries synthesized for the models added by this call.
+       */
+      add: async (params) => connection.sendRequest("session.provider.add", { sessionId, ...params })
     },
     /** @experimental */
     options: {
@@ -4563,7 +5200,7 @@ function createSessionRpc(connection, sessionId) {
        *
        * @param params Slash command name and optional raw input string to invoke.
        *
-       * @returns Result of invoking the slash command (text output, prompt to send to the agent, or completion).
+       * @returns Result of invoking the slash command (text output, prompt to send to the agent, completion, or subcommand selection).
        */
       invoke: async (params) => connection.sendRequest("session.commands.invoke", { sessionId, ...params }),
       /**
@@ -4665,6 +5302,14 @@ function createSessionRpc(connection, sessionId) {
        */
       handlePendingAutoModeSwitch: async (params) => connection.sendRequest("session.ui.handlePendingAutoModeSwitch", { sessionId, ...params }),
       /**
+       * Resolves a pending `session_limits_exhausted.requested` event with the user's selected limit action.
+       *
+       * @param params Request ID of a pending `session_limits_exhausted.requested` event and the user's selected limit action.
+       *
+       * @returns Indicates whether the pending UI request was resolved by this call.
+       */
+      handlePendingSessionLimitsExhausted: async (params) => connection.sendRequest("session.ui.handlePendingSessionLimitsExhausted", { sessionId, ...params }),
+      /**
        * Resolves a pending `exit_plan_mode.requested` event with the user's response.
        *
        * @param params Request ID of a pending `exit_plan_mode.requested` event and the user's response.
@@ -4720,17 +5365,17 @@ function createSessionRpc(connection, sessionId) {
        */
       setApproveAll: async (params) => connection.sendRequest("session.permissions.setApproveAll", { sessionId, ...params }),
       /**
-       * Enables or disables full allow-all permissions (tools, paths, and URLs) for the session. Used by attach-mode clients (e.g. LocalRpcSession's `/allow-all` forwarder) to flip the target session's permission state. Unlike `setApproveAll`, this swaps in the unrestricted path and URL managers and emits `session.permissions_changed` on transition. The result returns the authoritative post-mutation state so callers can update their local mirrors without racing the `session.permissions_changed` notification on the same wire.
+       * Sets the allow-all permission mode for the session. Used by attach-mode clients (e.g. LocalRpcSession's `/allow-all` forwarder) to flip the target session's permission state. The `on` mode swaps in unrestricted path and URL managers and emits `session.permissions_changed` on transition; the `auto` mode keeps normal prompt paths active while attaching LLM safety recommendations. The result returns the authoritative post-mutation state so callers can update their local mirrors without racing the `session.permissions_changed` notification on the same wire.
        *
-       * @param params Whether to enable full allow-all permissions for the session.
+       * @param params Allow-all mode to apply for the session.
        *
        * @returns Indicates whether the operation succeeded and reports the post-mutation state.
        */
       setAllowAll: async (params) => connection.sendRequest("session.permissions.setAllowAll", { sessionId, ...params }),
       /**
-       * Returns whether full allow-all permissions are currently active for the session.
+       * Returns the current allow-all permission mode for the session.
        *
-       * @returns Current full allow-all permission state.
+       * @returns Current allow-all permission mode.
        */
       getAllowAll: async () => connection.sendRequest("session.permissions.getAllowAll", { sessionId }),
       /**
@@ -4752,9 +5397,11 @@ function createSessionRpc(connection, sessionId) {
       /**
        * Clears session-scoped tool permission approvals.
        *
+       * @param params Clears session-scoped tool permission approvals, and optionally the location-scoped ones.
+       *
        * @returns Indicates whether the operation succeeded.
        */
-      resetSessionApprovals: async () => connection.sendRequest("session.permissions.resetSessionApprovals", { sessionId }),
+      resetSessionApprovals: async (params) => connection.sendRequest("session.permissions.resetSessionApprovals", { sessionId, ...params }),
       /**
        * Notifies the runtime that a permission prompt UI has been shown to the user.
        *
@@ -4901,19 +5548,33 @@ function createSessionRpc(connection, sessionId) {
        */
       contextInfo: async (params) => connection.sendRequest("session.metadata.contextInfo", { sessionId, ...params }),
       /**
-       * Records a working-directory/git context change and emits a `session.context_changed` event.
+       * Returns the experimental per-source attribution breakdown of the session's current context window as a flat list of entries (skills, subagents, MCP servers, built-in tools, plugin rollups, system/tool-definition costs, with nesting via parentId), plus the successful compaction count. The heaviest individual messages are available separately via `metadata.getContextHeaviestMessages`. Returns null until the session has initialized its system prompt and tool metadata.
+       *
+       * @returns Per-source attribution breakdown for the session's current context window, or null if uninitialized.
+       */
+      getContextAttribution: async () => connection.sendRequest("session.metadata.getContextAttribution", { sessionId }),
+      /**
+       * Returns the largest individual messages currently in the session's context window, most-expensive first. Companion to `metadata.getContextAttribution`. Returns an empty list until the session has initialized.
+       *
+       * @param params Parameters for the heaviest-messages query.
+       *
+       * @returns The heaviest individual messages in the session's context window, most-expensive first.
+       */
+      getContextHeaviestMessages: async (params) => connection.sendRequest("session.metadata.getContextHeaviestMessages", { sessionId, ...params }),
+      /**
+       * Records a working-directory/git context change and emits a `session.context_changed` event. For a local session, a report whose `cwd` diverges from the session's current working directory is ignored (the call still succeeds but records nothing and emits no event): a local session's working directory is authoritative and is moved via `metadata.setWorkingDirectory` (or an SDK `session.resume` that supplies a `workingDirectory`), not by this method.
        *
        * @param params Updated working-directory/git context to record on the session.
        *
-       * @returns Notify the session that its working directory context has changed. Emits a `session.context_changed` event so consumers (telemetry, OTel tracker, ACP, the timeline UI) can react. Use this when the host has detected a cwd/branch/repo change outside the session's normal lifecycle (e.g., after a shell command in interactive mode).
+       * @returns Notify the session that its working directory context has changed. Emits a `session.context_changed` event so consumers (telemetry, OTel tracker, ACP, the timeline UI) can react. Use this when the host has detected a cwd/branch/repo change outside the session's normal lifecycle (e.g., after a shell command in interactive mode). For a local session, a report whose `cwd` diverges from the session's current working directory is ignored (the call still succeeds but records nothing and emits no event); move a local session's working directory via `metadata.setWorkingDirectory` instead.
        */
       recordContextChange: async (params) => connection.sendRequest("session.metadata.recordContextChange", { sessionId, ...params }),
       /**
-       * Updates the session's recorded working directory.
+       * Updates the session's working directory. For local sessions the target is validated first (an absolute path that exists on disk) and the permission primary directory is re-based; a rejected validation fails the call before any session state changes.
        *
-       * @param params Absolute path to set as the session's new working directory.
+       * @param params Absolute path to set as the session's new working directory. For local sessions the path must be absolute and exist on disk: it is validated before any session state changes, and a failing validation rejects the call with nothing mutated, persisted, or emitted. Remote sessions record the path as-is.
        *
-       * @returns Update the session's working directory. Used by the host when the user explicitly changes cwd (e.g., the `/cd` slash command). The host is responsible for `process.chdir` and any related side-effects (file index, etc.); this method only updates the session's own recorded path.
+       * @returns Update the session's working directory. Used by the host when the user explicitly changes cwd (e.g., the `/cd` slash command). The host is responsible for any related side-effects (file index, etc.); it does NOT change the process working directory (a session's cwd is per-session, not process-global). For local sessions the runtime validates the target first (an absolute path that exists on disk) and re-bases the permission primary directory; a rejected validation fails the call before anything is mutated, persisted, or emitted. Location-scoped permission rules are then re-keyed to the new directory (best-effort). Remote sessions only record the path.
        */
       setWorkingDirectory: async (params) => connection.sendRequest("session.metadata.setWorkingDirectory", { sessionId, ...params }),
       /**
@@ -4926,9 +5587,20 @@ function createSessionRpc(connection, sessionId) {
       recomputeContextTokens: async (params) => connection.sendRequest("session.metadata.recomputeContextTokens", { sessionId, ...params })
     },
     /** @experimental */
+    contentExclusion: {
+      /**
+       * Checks local file system absolute paths within the session working directory against its content-exclusion policy. Results preserve input order. Unsupported paths/filesystems and unavailable policy evaluation return available false, and callers must treat every requested path as excluded.
+       *
+       * @param params Local file system absolute paths within the session working directory to check against its content-exclusion policy.
+       *
+       * @returns Batch content-exclusion result. Callers must fail closed when policy evaluation is unavailable.
+       */
+      checkPaths: async (params) => connection.sendRequest("session.contentExclusion.checkPaths", { sessionId, ...params })
+    },
+    /** @experimental */
     shell: {
       /**
-       * Starts a shell command and streams output through session notifications.
+       * Starts a shell command and streams output through session notifications. The command runs as the leader of its own process group (POSIX) or in a dedicated job object (Windows), so a forced termination — via "shell.kill", the request timeout, or session disposal — signals that whole group/job rather than only the direct child. Two gaps are worth planning for: a command that exits on its own does not trigger that teardown, and on POSIX a descendant that moves itself into a new session or process group (for example via "setsid") leaves the signalled group, so either can leave a background process running.
        *
        * @param params Shell command to run, with optional working directory and timeout in milliseconds.
        *
@@ -4936,7 +5608,7 @@ function createSessionRpc(connection, sessionId) {
        */
       exec: async (params) => connection.sendRequest("session.shell.exec", { sessionId, ...params }),
       /**
-       * Sends a signal to a shell process previously started via "shell.exec".
+       * Sends a signal to a shell process previously started via "shell.exec". The signal targets the command's whole process group (POSIX) or job object (Windows), so descendants still in that group are signalled too, not just the direct child. On POSIX a descendant that moved itself into a new session or process group (for example via "setsid") is no longer in the signalled group and survives.
        *
        * @param params Identifier of a process previously returned by "shell.exec" and the signal to send.
        *
@@ -4979,6 +5651,28 @@ function createSessionRpc(connection, sessionId) {
        */
       truncate: async (params) => connection.sendRequest("session.history.truncate", { sessionId, ...params }),
       /**
+       * Lists the user turns that the session can rewind to. Never rejects for a busy session: rewind reads need the session's file-change captures to be settled, so a session that still holds active work answers with `unavailableReason: "session-busy"` and no points, which the caller can retry.
+       *
+       * @returns Rewind points and file-change-tracking availability for the session.
+       */
+      listRewindPoints: async () => connection.sendRequest("session.history.listRewindPoints", { sessionId }),
+      /**
+       * Previews the files that a conversation-and-files rewind would restore.
+       *
+       * @param params Event boundary to preview for conversation-and-files rewind.
+       *
+       * @returns Files and aggregate changes for a prospective rewind.
+       */
+      previewRewind: async (params) => connection.sendRequest("session.history.previewRewind", { sessionId, ...params }),
+      /**
+       * Rewinds the session conversation, optionally restoring files changed by the discarded turns. Not crash-atomic: file restore and conversation truncation are separate stores, applied in that order, so a process crash between them can leave the workspace rewound while the conversation still contains the discarded turns. There is no recovery journal; re-running the same rewind is the recovery path for a crash before truncation lands, since file restore is idempotent (already-restored files are reported as skipped) and truncation is re-derived from the still-retained boundary event. After truncation lands that boundary no longer exists, so the same request is rejected; the only stage that can still be outstanding is snapshot pruning, whose failure leaves orphan snapshots the capture store tolerates. The reverse inconsistency cannot occur, because truncation is never applied before file restore succeeds.
+       *
+       * @param params Boundary and mode for rewinding session history.
+       *
+       * @returns Structured outcome of a rewind request.
+       */
+      rewind: async (params) => connection.sendRequest("session.history.rewind", { sessionId, ...params }),
+      /**
        * Cancels any in-progress background compaction on a local session.
        *
        * @returns Indicates whether an in-progress background compaction was cancelled.
@@ -5005,6 +5699,60 @@ function createSessionRpc(connection, sessionId) {
        * @returns Snapshot of the session's pending queued items and immediate-steering messages.
        */
       pendingItems: async () => connection.sendRequest("session.queue.pendingItems", { sessionId }),
+      /**
+       * Moves an addressable queued item to a public visible position.
+       *
+       * @param params Parameters for moving a queued item by stable id.
+       *
+       * @returns Result of moving a queued item.
+       */
+      moveItem: async (params) => connection.sendRequest("session.queue.moveItem", { sessionId, ...params }),
+      /**
+       * Inserts a new queued message at a public visible position.
+       *
+       * @param params Parameters for inserting a queued message at a public visible position.
+       *
+       * @returns Result of inserting a queued message.
+       */
+      insertAt: async (params) => connection.sendRequest("session.queue.insertAt", { sessionId, ...params }),
+      /**
+       * Removes an addressable queued item by its stable id.
+       *
+       * @param params Parameters for removing a queued item by stable id.
+       *
+       * @returns Result of removing a queued item.
+       */
+      removeAt: async (params) => connection.sendRequest("session.queue.removeAt", { sessionId, ...params }),
+      /**
+       * Updates the text of an addressable single-message queue item.
+       *
+       * @param params Parameters for editing a single queued message.
+       *
+       * @returns Result of editing a queued message.
+       */
+      updateText: async (params) => connection.sendRequest("session.queue.updateText", { sessionId, ...params }),
+      /**
+       * Duplicates an addressable queued item immediately after its source.
+       *
+       * @param params Parameters for duplicating a queued item.
+       *
+       * @returns Result of duplicating a queued item.
+       */
+      duplicateAt: async (params) => connection.sendRequest("session.queue.duplicateAt", { sessionId, ...params }),
+      /**
+       * Acquires or releases the queued-lane drain pause.
+       *
+       * @param params Parameters for acquiring or releasing the queued-lane drain pause. Acquisition is exclusive and non-idempotent: `paused: true` against an already-paused session fails with `queue_already_paused`. The pause is never released automatically — it is not tied to the caller's lifetime, so a client that exits without sending `paused: false` leaves the lane frozen. Release is unowned: `paused: false` clears the pause for any caller, including one that never acquired it.
+       */
+      setDrainPaused: async (params) => connection.sendRequest("session.queue.setDrainPaused", { sessionId, ...params }),
+      /**
+       * Moves an addressable queued message into the live turn's steering lane.
+       *
+       * @param params Parameters for steering a queued message into a live turn.
+       *
+       * @returns Result of trying to steer a queued message into a live turn.
+       */
+      sendNow: async (params) => connection.sendRequest("session.queue.sendNow", { sessionId, ...params }),
       /**
        * Removes the most recently queued user-facing item (LIFO).
        *
@@ -5059,6 +5807,17 @@ function createSessionRpc(connection, sessionId) {
       getMetrics: async () => connection.sendRequest("session.usage.getMetrics", { sessionId })
     },
     /** @experimental */
+    limitPrediction: {
+      /**
+       * Predicts an AI-credit session limit for the session's resolved model. Returns an unavailable result instead of falling back when the current model is unresolved auto.
+       *
+       * @param params Parameters for predicting an AI-credit session limit. Omitting `modelId` uses the session's currently selected model.
+       *
+       * @returns Prediction result. Available results include prediction details; unavailable results include an explicit reason.
+       */
+      predict: async (params) => connection.sendRequest("session.limitPrediction.predict", { sessionId, ...params })
+    },
+    /** @experimental */
     remote: {
       /**
        * Enables remote session export or steering.
@@ -5082,6 +5841,23 @@ function createSessionRpc(connection, sessionId) {
       notifySteerableChanged: async (params) => connection.sendRequest("session.remote.notifySteerableChanged", { sessionId, ...params })
     },
     /** @experimental */
+    visibility: {
+      /**
+       * Returns the session's current Mission Control sharing status and shareable GitHub URL. Reflects whether the synced session is visible to repository readers ("repo") or restricted to its creator and collaborators ("unshared").
+       *
+       * @returns Current sharing status and shareable GitHub URL for a session.
+       */
+      get: async () => connection.sendRequest("session.visibility.get", { sessionId }),
+      /**
+       * Sets the session's Mission Control sharing status, controlling whether the synced session is visible to repository readers. Returns the effective status and shareable GitHub URL after the change.
+       *
+       * @param params Desired sharing status for the session.
+       *
+       * @returns Effective sharing status and shareable GitHub URL after updating session visibility.
+       */
+      set: async (params) => connection.sendRequest("session.visibility.set", { sessionId, ...params })
+    },
+    /** @experimental */
     schedule: {
       /**
        * Lists the session's currently active scheduled prompts.
@@ -5101,6 +5877,21 @@ function createSessionRpc(connection, sessionId) {
   };
 }
 function registerClientSessionApiHandlers(connection, getHandlers) {
+  connection.onRequest("providerToken.getToken", async (params) => {
+    const handler = getHandlers(params.sessionId).providerToken;
+    if (!handler) throw new Error(`No providerToken handler registered for session: ${params.sessionId}`);
+    return handler.getToken(params);
+  });
+  connection.onRequest("factory.execute", async (params) => {
+    const handler = getHandlers(params.sessionId).factory;
+    if (!handler) throw new Error(`No factory handler registered for session: ${params.sessionId}`);
+    return handler.execute(params);
+  });
+  connection.onRequest("factory.abort", async (params) => {
+    const handler = getHandlers(params.sessionId).factory;
+    if (!handler) throw new Error(`No factory handler registered for session: ${params.sessionId}`);
+    return handler.abort(params);
+  });
   connection.onRequest("sessionFs.readFile", async (params) => {
     const handler = getHandlers(params.sessionId).sessionFs;
     if (!handler) throw new Error(`No sessionFs handler registered for session: ${params.sessionId}`);
@@ -5156,6 +5947,11 @@ function registerClientSessionApiHandlers(connection, getHandlers) {
     if (!handler) throw new Error(`No sessionFs handler registered for session: ${params.sessionId}`);
     return handler.sqliteQuery(params);
   });
+  connection.onRequest("sessionFs.sqliteTransaction", async (params) => {
+    const handler = getHandlers(params.sessionId).sessionFs;
+    if (!handler) throw new Error(`No sessionFs handler registered for session: ${params.sessionId}`);
+    return handler.sqliteTransaction(params);
+  });
   connection.onRequest("sessionFs.sqliteExists", async (params) => {
     const handler = getHandlers(params.sessionId).sessionFs;
     if (!handler) throw new Error(`No sessionFs handler registered for session: ${params.sessionId}`);
@@ -5177,17 +5973,34 @@ function registerClientSessionApiHandlers(connection, getHandlers) {
     return handler.invoke(params);
   });
 }
+function registerClientGlobalApiHandlers(connection, handlers) {
+  connection.onRequest("llmInference.httpRequestStart", async (params) => {
+    const handler = handlers.llmInference;
+    if (!handler) throw new Error("No llmInference client-global handler registered");
+    return handler.httpRequestStart(params);
+  });
+  connection.onRequest("llmInference.httpRequestChunk", async (params) => {
+    const handler = handlers.llmInference;
+    if (!handler) throw new Error("No llmInference client-global handler registered");
+    return handler.httpRequestChunk(params);
+  });
+  connection.onNotification("gitHubTelemetry.event", async (params) => {
+    const handler = handlers.gitHubTelemetry;
+    if (!handler) return;
+    await handler.event(params);
+  });
+}
 
-// node_modules/.pnpm/@github+copilot-sdk@1.0.3/node_modules/@github/copilot-sdk/dist/sdkProtocolVersion.js
+// node_modules/.pnpm/@github+copilot-sdk@1.0.9-preview.2/node_modules/@github/copilot-sdk/dist/sdkProtocolVersion.js
 var SDK_PROTOCOL_VERSION = 3;
 function getSdkProtocolVersion() {
   return SDK_PROTOCOL_VERSION;
 }
 
-// node_modules/.pnpm/@github+copilot-sdk@1.0.3/node_modules/@github/copilot-sdk/dist/session.js
+// node_modules/.pnpm/@github+copilot-sdk@1.0.9-preview.2/node_modules/@github/copilot-sdk/dist/session.js
 var import_node = __toESM(require_node(), 1);
 
-// node_modules/.pnpm/@github+copilot-sdk@1.0.3/node_modules/@github/copilot-sdk/dist/canvas.js
+// node_modules/.pnpm/@github+copilot-sdk@1.0.9-preview.2/node_modules/@github/copilot-sdk/dist/canvas.js
 var CanvasError = class _CanvasError extends Error {
   constructor(code, message) {
     super(message);
@@ -5234,7 +6047,7 @@ function createCanvas(options) {
   return new Canvas(options);
 }
 
-// node_modules/.pnpm/@github+copilot-sdk@1.0.3/node_modules/@github/copilot-sdk/dist/telemetry.js
+// node_modules/.pnpm/@github+copilot-sdk@1.0.9-preview.2/node_modules/@github/copilot-sdk/dist/telemetry.js
 async function getTraceContext(provider) {
   if (!provider) return {};
   try {
@@ -5244,22 +6057,281 @@ async function getTraceContext(provider) {
   }
 }
 
-// node_modules/.pnpm/@github+copilot-sdk@1.0.3/node_modules/@github/copilot-sdk/dist/session.js
+// node_modules/.pnpm/@github+copilot-sdk@1.0.9-preview.2/node_modules/@github/copilot-sdk/dist/factory.js
+var FACTORY_TERMINAL_STATUSES = /* @__PURE__ */ new Set([
+  "completed",
+  "halted",
+  "cancelled",
+  "error"
+]);
+function isFactoryRunTerminal(status) {
+  return FACTORY_TERMINAL_STATUSES.has(status);
+}
+var FactoryResumeError = class extends Error {
+  constructor(code, message) {
+    super(message);
+    this.code = code;
+    this.name = "FactoryResumeError";
+  }
+  code;
+};
+var factoryHandles = /* @__PURE__ */ new WeakMap();
+var MAX_FACTORY_TIMEOUT_SECONDS = 2147483647e-3;
+var NANO_AIU_PER_AIU = 1e9;
+function deepFreeze(value) {
+  if (value !== null && typeof value === "object" && !Object.isFrozen(value)) {
+    Object.freeze(value);
+    for (const nested of Object.values(value)) {
+      deepFreeze(nested);
+    }
+  }
+  return value;
+}
+function validateLimits(meta) {
+  const limits = meta.limits;
+  if (!limits) {
+    return;
+  }
+  for (const field of ["maxConcurrentSubagents", "maxTotalSubagents"]) {
+    const value = limits[field];
+    if (value !== void 0 && (!Number.isInteger(value) || value <= 0)) {
+      throw new Error(`Factory limit "${field}" must be a positive integer`);
+    }
+  }
+  if (limits.timeoutSeconds !== void 0 && (!Number.isFinite(limits.timeoutSeconds) || limits.timeoutSeconds <= 0)) {
+    throw new Error(
+      'Factory limit "timeoutSeconds" must be a positive, finite number of seconds'
+    );
+  }
+  if (limits.timeoutSeconds !== void 0 && limits.timeoutSeconds > MAX_FACTORY_TIMEOUT_SECONDS) {
+    throw new Error(
+      `Factory limit "timeoutSeconds" must not exceed ${MAX_FACTORY_TIMEOUT_SECONDS} seconds`
+    );
+  }
+  if (limits.maxAiCredits !== void 0) {
+    const maxNanoAiu = Math.round(limits.maxAiCredits * NANO_AIU_PER_AIU);
+    if (!Number.isFinite(limits.maxAiCredits) || limits.maxAiCredits <= 0 || !Number.isSafeInteger(maxNanoAiu) || maxNanoAiu < 1) {
+      throw new Error(
+        'Factory limit "maxAiCredits" must be a positive, finite number that rounds to a safe positive integer nano-AIU ceiling'
+      );
+    }
+  }
+}
+function validatePhases(meta) {
+  const titles = /* @__PURE__ */ new Set();
+  for (const phase of meta.phases) {
+    if (phase.title.trim().length === 0) {
+      throw new Error("Factory phase titles must not be empty");
+    }
+    if (titles.has(phase.title)) {
+      throw new Error(`Factory phase title "${phase.title}" is declared more than once`);
+    }
+    titles.add(phase.title);
+  }
+}
+function defineFactory(definition) {
+  const meta = deepFreeze(structuredClone(definition.meta));
+  validateLimits(meta);
+  validatePhases(meta);
+  const stored = {
+    meta,
+    run: definition.run
+  };
+  const handle = Object.freeze({ meta });
+  factoryHandles.set(handle, stored);
+  return handle;
+}
+function getFactoryDefinition(handle) {
+  const definition = factoryHandles.get(handle);
+  if (!definition) {
+    throw new Error("Invalid factory handle");
+  }
+  return definition;
+}
+
+// node_modules/.pnpm/@github+copilot-sdk@1.0.9-preview.2/node_modules/@github/copilot-sdk/dist/session.js
+function isFactoryResumeErrorCode(value) {
+  return value === "not_found" || value === "non_resumable" || value === "already_active" || value === "reapproval_declined" || value === "no_approval_provider";
+}
 function deserializeHookInput(raw) {
   if (!raw || typeof raw !== "object" || typeof raw.timestamp !== "number") {
     return raw;
   }
   const obj = raw;
-  const { cwd, ...rest } = obj;
-  return { ...rest, timestamp: new Date(obj.timestamp), workingDirectory: cwd };
+  const { cwd, stop_hook_active, ...rest } = obj;
+  return {
+    ...rest,
+    timestamp: new Date(obj.timestamp),
+    workingDirectory: cwd,
+    ...stop_hook_active === void 0 ? {} : { stopHookActive: stop_hook_active }
+  };
 }
 function isOpenCanvasInstance(value) {
   if (!value || typeof value !== "object") {
     return false;
   }
   const instance = value;
-  return typeof instance.instanceId === "string" && instance.instanceId.length > 0 && typeof instance.extensionId === "string" && instance.extensionId.length > 0 && typeof instance.canvasId === "string" && instance.canvasId.length > 0 && typeof instance.reopen === "boolean" && (instance.availability === "ready" || instance.availability === "stale");
+  return typeof instance.instanceId === "string" && instance.instanceId.length > 0 && typeof instance.extensionId === "string" && instance.extensionId.length > 0 && typeof instance.canvasId === "string" && instance.canvasId.length > 0;
 }
+var FACTORY_LOG_FLUSH_DELAY_MS = 10;
+var MAX_FACTORY_FANOUT_ITEMS = 4096;
+function assertFactoryFanoutSize(kind, size) {
+  if (size > MAX_FACTORY_FANOUT_ITEMS) {
+    throw new Error(
+      `${kind}() accepts at most ${MAX_FACTORY_FANOUT_ITEMS} items; got ${size}.`
+    );
+  }
+}
+async function runFactoryParallel(thunks) {
+  if (!Array.isArray(thunks)) {
+    throw new Error(
+      "parallel() expects an array of functions, not promises. Wrap each call: () => agent(...)"
+    );
+  }
+  assertFactoryFanoutSize("parallel", thunks.length);
+  if (thunks.some((thunk) => typeof thunk !== "function")) {
+    throw new Error(
+      "parallel() expects an array of functions, not promises. Wrap each call: () => agent(...)"
+    );
+  }
+  return Promise.all(
+    thunks.map(
+      (thunk) => Promise.resolve().then(() => thunk()).catch((error) => {
+        if (isFactoryFatalError(error)) {
+          throw error;
+        }
+        return null;
+      })
+    )
+  );
+}
+async function runFactoryPipeline(items, ...stages) {
+  if (!Array.isArray(items)) {
+    throw new Error("pipeline(items, ...stages): items must be an array");
+  }
+  assertFactoryFanoutSize("pipeline", items.length);
+  return Promise.all(
+    items.map(async (item, index) => {
+      let previous = item;
+      for (const stage of stages) {
+        try {
+          previous = await stage(previous, item, index);
+        } catch (error) {
+          if (isFactoryFatalError(error)) {
+            throw error;
+          }
+          return null;
+        }
+      }
+      return previous;
+    })
+  );
+}
+var FactoryProgressBuffer = class {
+  constructor(send) {
+    this.send = send;
+  }
+  send;
+  nextSeq = 0;
+  pending = [];
+  flushTimer;
+  flushTail = Promise.resolve();
+  flushError;
+  flushFailed = false;
+  closed = false;
+  enqueue(kind, text) {
+    if (this.closed) {
+      throw new Error("Cannot log after the factory run has settled");
+    }
+    this.pending.push({ seq: this.nextSeq++, kind, text });
+    this.scheduleFlush();
+  }
+  async flush() {
+    this.clearFlushTimer();
+    const lines = this.pending.splice(0);
+    if (lines.length > 0) {
+      this.flushTail = this.flushTail.then(async () => {
+        try {
+          await this.send(lines);
+        } catch (error) {
+          if (!this.flushFailed) {
+            this.flushFailed = true;
+            this.flushError = error;
+          }
+        }
+      });
+    }
+    await this.flushTail;
+    if (this.flushFailed) {
+      throw this.flushError;
+    }
+  }
+  async close() {
+    this.closed = true;
+    this.clearFlushTimer();
+    const lines = this.pending.splice(0);
+    await this.flushTail;
+    if (this.flushFailed) {
+      throw this.flushError;
+    }
+    if (lines.length > 0) {
+      try {
+        await this.send(lines);
+      } catch (error) {
+        console.warn(
+          "Failed to flush final factory progress after the factory body settled",
+          error
+        );
+      }
+    }
+  }
+  scheduleFlush() {
+    if (this.flushTimer !== void 0) {
+      return;
+    }
+    this.flushTimer = setTimeout(() => {
+      this.flushTimer = void 0;
+      void this.flush().catch(() => {
+      });
+    }, FACTORY_LOG_FLUSH_DELAY_MS);
+    this.flushTimer.unref?.();
+  }
+  clearFlushTimer() {
+    if (this.flushTimer !== void 0) {
+      clearTimeout(this.flushTimer);
+      this.flushTimer = void 0;
+    }
+  }
+};
+function toPublicFactoryRunResult(envelope) {
+  return envelope;
+}
+async function awaitFactoryOperation(operation, signal) {
+  let rejectAbort;
+  const abortPromise = new Promise((_resolve, reject) => {
+    rejectAbort = reject;
+  });
+  const onAbort = () => rejectAbort?.(signal.reason ?? new DOMException("Factory run was aborted", "AbortError"));
+  signal.addEventListener("abort", onAbort, { once: true });
+  try {
+    throwIfFactoryAborted(signal);
+    return await Promise.race([operation(), abortPromise]);
+  } finally {
+    signal.removeEventListener("abort", onAbort);
+  }
+}
+function throwIfFactoryAborted(signal) {
+  if (signal.aborted) {
+    throw signal.reason ?? new DOMException("Factory run was aborted", "AbortError");
+  }
+}
+function isFactoryAbortError(error) {
+  return typeof error === "object" && error !== null && "name" in error && error.name === "AbortError";
+}
+function isFactoryFatalError(error) {
+  return isFactoryAbortError(error) || error instanceof import_node.ResponseError || error instanceof import_node.ConnectionError;
+}
+var TOOL_SEARCH_TOOL_NAME = "tool_search_tool";
 var CopilotSession = class {
   /**
    * Creates a new CopilotSession instance.
@@ -5270,11 +6342,12 @@ var CopilotSession = class {
    * @param traceContextProvider - Optional callback to get W3C Trace Context for outbound RPCs
    * @internal This constructor is internal. Use {@link CopilotClient.createSession} to create sessions.
    */
-  constructor(sessionId, connection, _workspacePath, traceContextProvider) {
+  constructor(sessionId, connection, _workspacePath, traceContextProvider, options) {
     this.sessionId = sessionId;
     this.connection = connection;
     this._workspacePath = _workspacePath;
     this.traceContextProvider = traceContextProvider;
+    this.mcpAuthHandler = options?.mcpAuthHandler;
   }
   sessionId;
   connection;
@@ -5283,8 +6356,12 @@ var CopilotSession = class {
   typedEventHandlers = /* @__PURE__ */ new Map();
   toolHandlers = /* @__PURE__ */ new Map();
   canvases = /* @__PURE__ */ new Map();
+  bearerTokenProviders = /* @__PURE__ */ new Map();
   commandHandlers = /* @__PURE__ */ new Map();
+  factories = /* @__PURE__ */ new Map();
+  factoryAbortControllers = /* @__PURE__ */ new Map();
   permissionHandler;
+  mcpAuthHandler;
   userInputHandler;
   elicitationHandler;
   exitPlanModeHandler;
@@ -5295,8 +6372,131 @@ var CopilotSession = class {
   traceContextProvider;
   _capabilities = {};
   openCanvasInstances = [];
+  disconnected = false;
   /** @internal Client session API handlers, populated by CopilotClient during create/resume. */
   clientSessionApis = {};
+  /**
+   * Friendly factory API for running registered factories by name or handle.
+   *
+   * @experimental Part of the experimental Agent Factories surface and may
+   * change or be removed in future SDK or CLI releases.
+   */
+  factory = {
+    run: (async (nameOrHandle, options) => {
+      const name = typeof nameOrHandle === "string" ? nameOrHandle : getFactoryDefinition(nameOrHandle).meta.name;
+      if (options?.resumeFromRunId !== void 0) {
+        return this.factory.resume(options.resumeFromRunId, {
+          limits: options.limits
+        });
+      }
+      const envelope = await this.rpc.factory.run({
+        name,
+        args: options?.args === void 0 ? {} : options.args,
+        options: {
+          limits: options?.limits
+        }
+      });
+      return toPublicFactoryRunResult(envelope);
+    }),
+    resume: (async (runId, options) => {
+      let response;
+      try {
+        response = await this.rpc.factory.resume({
+          runId,
+          limits: options?.limits
+        });
+      } catch (error) {
+        if (error instanceof import_node.ResponseError && typeof error.data === "object" && error.data !== null) {
+          const code = error.data.code;
+          if (isFactoryResumeErrorCode(code)) {
+            throw new FactoryResumeError(code, error.message);
+          }
+        }
+        throw error;
+      }
+      return toPublicFactoryRunResult(response.run);
+    }),
+    getRun: async (runId) => toPublicFactoryRunResult(await this.rpc.factory.getRun({ runId })),
+    waitForRun: (runId, options) => this.waitForFactoryRun(runId, options?.signal),
+    listRuns: async () => (await this.rpc.factory.listRuns()).runs,
+    getRunDetail: (runId) => this.rpc.factory.getRunDetail({ runId }),
+    getRunProgress: (runId, options = {}) => this.rpc.factory.getRunProgress({ runId, ...options }),
+    cancel: async (runId) => toPublicFactoryRunResult(await this.rpc.factory.cancel({ runId }))
+  };
+  /**
+   * Resolve when a factory run reaches a terminal status.
+   *
+   * The subscription is installed *before* the first read so a transition
+   * landing between the two cannot be missed, and re-reads are serialized so
+   * overlapping invalidation events cannot interleave — the run's revision
+   * advances once per operation, so a burst of events is common and must
+   * collapse into a single in-flight read. A bounded periodic re-read keeps a
+   * dropped invalidation from leaving the wait pending forever.
+   */
+  waitForFactoryRun(runId, signal) {
+    const abortError = () => signal?.reason ?? new DOMException("Factory run wait was aborted", "AbortError");
+    if (signal?.aborted === true) {
+      return Promise.reject(abortError());
+    }
+    return new Promise((resolve2, reject) => {
+      let settled = false;
+      let reading = false;
+      let rereadRequested = false;
+      let pollHandle;
+      let unsubscribe;
+      let onAbort;
+      const finish = (complete) => {
+        if (settled) {
+          return;
+        }
+        settled = true;
+        if (pollHandle !== void 0) {
+          clearInterval(pollHandle);
+        }
+        unsubscribe?.();
+        if (onAbort !== void 0) {
+          signal?.removeEventListener("abort", onAbort);
+        }
+        complete();
+      };
+      const read = async () => {
+        if (settled) {
+          return;
+        }
+        if (reading) {
+          rereadRequested = true;
+          return;
+        }
+        reading = true;
+        try {
+          do {
+            rereadRequested = false;
+            const envelope = await this.rpc.factory.getRun({ runId });
+            if (isFactoryRunTerminal(envelope.status)) {
+              finish(() => resolve2(toPublicFactoryRunResult(envelope)));
+              return;
+            }
+          } while (rereadRequested && !settled);
+        } catch (error) {
+          finish(() => reject(error));
+        } finally {
+          reading = false;
+        }
+      };
+      if (signal !== void 0) {
+        onAbort = () => finish(() => reject(abortError()));
+        signal.addEventListener("abort", onAbort, { once: true });
+      }
+      unsubscribe = this.on("factory.run_updated", (event) => {
+        if (event.data.runId === runId) {
+          void read();
+        }
+      });
+      pollHandle = setInterval(() => void read(), 5e3);
+      pollHandle.unref?.();
+      void read();
+    });
+  }
   /**
    * Typed session-scoped RPC methods.
    */
@@ -5360,8 +6560,8 @@ var CopilotSession = class {
     const effectiveTimeout = timeout ?? 6e4;
     let resolveIdle;
     let rejectWithError;
-    const idlePromise = new Promise((resolve, reject) => {
-      resolveIdle = resolve;
+    const idlePromise = new Promise((resolve2, reject) => {
+      resolveIdle = resolve2;
       rejectWithError = reject;
     });
     let lastAssistantMessage;
@@ -5397,6 +6597,28 @@ var CopilotSession = class {
       }
       unsubscribe();
     }
+  }
+  /** @internal */
+  _markDisconnected() {
+    this.disconnected = true;
+    this.eventHandlers.clear();
+    this.typedEventHandlers.clear();
+    this.toolHandlers.clear();
+    this.permissionHandler = void 0;
+    this.userInputHandler = void 0;
+    this.elicitationHandler = void 0;
+    this.exitPlanModeHandler = void 0;
+    this.autoModeSwitchHandler = void 0;
+    this.commandHandlers.clear();
+    this.canvases.clear();
+    this.factories.clear();
+    for (const controllersForRun of this.factoryAbortControllers.values()) {
+      for (const controller of controllersForRun.values()) {
+        controller.abort();
+      }
+    }
+    this.factoryAbortControllers.clear();
+    this.transformCallbacks?.clear();
   }
   on(eventTypeOrHandler, handler) {
     if (typeof eventTypeOrHandler === "string" && handler) {
@@ -5451,6 +6673,9 @@ var CopilotSession = class {
    * @internal
    */
   _handleBroadcastEvent(event) {
+    if (this.disconnected) {
+      return;
+    }
     if (event.type === "external_tool.requested") {
       const { requestId, toolName } = event.data;
       const args = event.data.arguments;
@@ -5477,6 +6702,18 @@ var CopilotSession = class {
       if (this.permissionHandler) {
         void this._executePermissionAndRespond(requestId, permissionRequest);
       }
+    } else if (event.type === "mcp.oauth_required") {
+      const data = event.data;
+      if (!data?.requestId) {
+        return;
+      }
+      if (!this.mcpAuthHandler) {
+        console.warn(
+          `Received MCP OAuth request without a registered MCP auth handler. SessionId=${this.sessionId}, RequestId=${data.requestId}`
+        );
+        return;
+      }
+      void this._executeMcpAuthAndRespond(data);
     } else if (event.type === "command.execute") {
       const { requestId, commandName, command, args } = event.data;
       void this._executeCommandAndRespond(requestId, commandName, command, args);
@@ -5538,11 +6775,21 @@ var CopilotSession = class {
    */
   async _executeToolAndRespond(requestId, toolName, toolCallId, args, handler, traceparent, tracestate) {
     try {
+      let availableTools;
+      if (toolName === TOOL_SEARCH_TOOL_NAME) {
+        try {
+          const metadata = await this.rpc.tools.getCurrentMetadata();
+          availableTools = metadata.tools ?? void 0;
+        } catch {
+          availableTools = void 0;
+        }
+      }
       const rawResult = await handler(args, {
         sessionId: this.sessionId,
         toolCallId,
         toolName,
         arguments: args,
+        availableTools,
         traceparent,
         tracestate
       });
@@ -5556,8 +6803,14 @@ var CopilotSession = class {
       } else {
         result = JSON.stringify(rawResult);
       }
+      if (this.disconnected) {
+        return;
+      }
       await this.rpc.tools.handlePendingToolCall({ requestId, result });
     } catch (error) {
+      if (this.disconnected) {
+        return;
+      }
       const message = error instanceof Error ? error.message : String(error);
       try {
         await this.rpc.tools.handlePendingToolCall({ requestId, error: message });
@@ -5580,14 +6833,45 @@ var CopilotSession = class {
       if (result.kind === "no-result") {
         return;
       }
+      if (this.disconnected) {
+        return;
+      }
       await this.rpc.permissions.handlePendingPermissionRequest({ requestId, result });
     } catch (_error) {
+      if (this.disconnected) {
+        return;
+      }
       try {
         await this.rpc.permissions.handlePendingPermissionRequest({
           requestId,
           result: {
             kind: "user-not-available"
           }
+        });
+      } catch (rpcError) {
+        if (!(rpcError instanceof import_node.ConnectionError || rpcError instanceof import_node.ResponseError)) {
+          throw rpcError;
+        }
+      }
+    }
+  }
+  /**
+   * Executes an MCP auth handler and sends the result back via RPC.
+   * @internal
+   */
+  async _executeMcpAuthAndRespond(request) {
+    try {
+      const result = await this.mcpAuthHandler(request, { sessionId: this.sessionId });
+      const response = result && "accessToken" in result ? { kind: "token", ...result } : { kind: "cancelled" };
+      await this.rpc.mcp.oauth.handlePendingRequest({
+        requestId: request.requestId,
+        result: response
+      });
+    } catch (_error) {
+      try {
+        await this.rpc.mcp.oauth.handlePendingRequest({
+          requestId: request.requestId,
+          result: { kind: "cancelled" }
         });
       } catch (rpcError) {
         if (!(rpcError instanceof import_node.ConnectionError || rpcError instanceof import_node.ResponseError)) {
@@ -5617,8 +6901,14 @@ var CopilotSession = class {
     }
     try {
       await handler({ sessionId: this.sessionId, command, commandName, args });
+      if (this.disconnected) {
+        return;
+      }
       await this.rpc.commands.handlePendingCommand({ requestId });
     } catch (error) {
+      if (this.disconnected) {
+        return;
+      }
       const message = error instanceof Error ? error.message : String(error);
       try {
         await this.rpc.commands.handlePendingCommand({ requestId, error: message });
@@ -5711,6 +7001,195 @@ var CopilotSession = class {
         } catch (error) {
           throw toCanvasRpcError(error);
         }
+      }
+    };
+  }
+  /**
+   * Registers factory closures and reverse-RPC handlers for this session.
+   *
+   * @param factories - Factory handles declared by the joining extension.
+   * @internal Called by the SDK when an extension joins a session.
+   */
+  registerFactories(factories) {
+    this.factories.clear();
+    if (!factories || factories.length === 0) {
+      delete this.clientSessionApis.factory;
+      return;
+    }
+    for (const handle of factories) {
+      const definition = getFactoryDefinition(handle);
+      if (this.factories.has(definition.meta.name)) {
+        throw new Error(
+          `Duplicate factory name "${definition.meta.name}". Factory names must be unique within a joinSession call.`
+        );
+      }
+      this.factories.set(definition.meta.name, definition);
+    }
+    const self = this;
+    this.clientSessionApis.factory = {
+      async execute(params) {
+        const definition = self.factories.get(params.name);
+        if (!definition) {
+          const message = `No factory registered with name "${params.name}"`;
+          throw new import_node.ResponseError(import_node.ErrorCodes.InvalidParams, message, {
+            code: "factory_not_found",
+            name: params.name
+          });
+        }
+        const controller = new AbortController();
+        let controllersForRun = self.factoryAbortControllers.get(params.runId);
+        if (controllersForRun === void 0) {
+          controllersForRun = /* @__PURE__ */ new Map();
+          self.factoryAbortControllers.set(params.runId, controllersForRun);
+        }
+        controllersForRun.set(params.executionToken, controller);
+        const progress = new FactoryProgressBuffer(async (lines) => {
+          await self.rpc.factory.log({
+            runId: params.runId,
+            executionToken: params.executionToken,
+            lines
+          });
+        });
+        try {
+          const context = {
+            runId: params.runId,
+            args: params.args,
+            session: self,
+            signal: controller.signal,
+            phase: (title) => {
+              throwIfFactoryAborted(controller.signal);
+              progress.enqueue("phase", title);
+            },
+            log: (message) => {
+              throwIfFactoryAborted(controller.signal);
+              progress.enqueue("log", message);
+            },
+            agent: async (prompt, options = {}) => {
+              await progress.flush();
+              const response = await awaitFactoryOperation(
+                () => self.rpc.factory.agent({
+                  factoryRunId: params.runId,
+                  executionToken: params.executionToken,
+                  prompt,
+                  opts: {
+                    label: options.label,
+                    schema: options.schema,
+                    model: options.model
+                  }
+                }),
+                controller.signal
+              );
+              return response.result ?? null;
+            },
+            step: async (key, producer, options = {}) => {
+              await progress.flush();
+              if (options.volatile) {
+                throwIfFactoryAborted(controller.signal);
+                return producer();
+              }
+              const cached = await awaitFactoryOperation(
+                () => self.rpc.factory.journal.get({
+                  runId: params.runId,
+                  executionToken: params.executionToken,
+                  key
+                }),
+                controller.signal
+              );
+              if (cached.hit) {
+                if (cached.resultJson === void 0) {
+                  throw new Error(
+                    `step("${key}") journal returned a hit without a result`
+                  );
+                }
+                assertFactoryStepResult(cached.resultJson, key);
+                return cached.resultJson;
+              }
+              const result2 = await producer();
+              assertFactoryStepResult(result2, key);
+              await awaitFactoryOperation(
+                () => self.rpc.factory.journal.put({
+                  runId: params.runId,
+                  executionToken: params.executionToken,
+                  key,
+                  resultJson: result2
+                }),
+                controller.signal
+              );
+              return result2;
+            },
+            parallel: runFactoryParallel,
+            pipeline: runFactoryPipeline,
+            factory: async () => {
+              throw new Error("nested factories are not supported");
+            }
+          };
+          const result = await definition.run(context);
+          if (result === void 0) {
+            return {};
+          }
+          assertFactoryResult(result);
+          return { result };
+        } finally {
+          try {
+            await progress.close();
+          } finally {
+            const controllersForRun2 = self.factoryAbortControllers.get(params.runId);
+            if (controllersForRun2?.get(params.executionToken) === controller) {
+              controllersForRun2.delete(params.executionToken);
+              if (controllersForRun2.size === 0) {
+                self.factoryAbortControllers.delete(params.runId);
+              }
+            }
+          }
+        }
+      },
+      async abort(params) {
+        const controllersForRun = self.factoryAbortControllers.get(params.runId);
+        if (controllersForRun !== void 0) {
+          const reason = new DOMException("Factory run was aborted", "AbortError");
+          for (const controller of controllersForRun.values()) {
+            controller.abort(reason);
+          }
+        }
+        return {};
+      }
+    };
+  }
+  /**
+   * Registers per-provider {@link BearerTokenProvider} callbacks for BYOK providers
+   * configured with managed-identity / on-demand bearer-token auth.
+   *
+   * The runtime never receives the callback itself; the SDK strips it from the
+   * provider config and instead sends `hasBearerTokenProvider: true`. When the
+   * runtime needs a token it issues a session-scoped `providerToken.getToken`
+   * request, which this handler routes to the matching per-provider callback.
+   *
+   * @param providers - Map of provider name → callback, or undefined/empty to clear.
+   * @internal This method is called internally when creating/resuming a session.
+   */
+  registerBearerTokenProviders(providers) {
+    this.bearerTokenProviders.clear();
+    if (!providers || providers.size === 0) {
+      delete this.clientSessionApis.providerToken;
+      return;
+    }
+    for (const [name, callback] of providers) {
+      this.bearerTokenProviders.set(name, callback);
+    }
+    const self = this;
+    this.clientSessionApis.providerToken = {
+      async getToken(params) {
+        const callback = self.bearerTokenProviders.get(params.providerName);
+        if (!callback) {
+          throw new Error(
+            `No bearer-token provider registered for provider "${params.providerName}"`
+          );
+        }
+        const token = await callback({
+          providerName: params.providerName,
+          sessionId: params.sessionId
+        });
+        return { token };
       }
     };
   }
@@ -6008,7 +7487,8 @@ var CopilotSession = class {
       userPromptSubmitted: this.hooks.onUserPromptSubmitted,
       sessionStart: this.hooks.onSessionStart,
       sessionEnd: this.hooks.onSessionEnd,
-      errorOccurred: this.hooks.onErrorOccurred
+      errorOccurred: this.hooks.onErrorOccurred,
+      agentStop: this.hooks.onAgentStop
     };
     const handler = handlerMap[hookType];
     if (!handler) {
@@ -6068,17 +7548,13 @@ var CopilotSession = class {
    * ```
    */
   async disconnect() {
+    if (this.disconnected) {
+      return;
+    }
     await this.connection.sendRequest("session.destroy", {
       sessionId: this.sessionId
     });
-    this.eventHandlers.clear();
-    this.typedEventHandlers.clear();
-    this.toolHandlers.clear();
-    this.permissionHandler = void 0;
-    this.userInputHandler = void 0;
-    this.elicitationHandler = void 0;
-    this.exitPlanModeHandler = void 0;
-    this.autoModeSwitchHandler = void 0;
+    this._markDisconnected();
   }
   /** Enables `await using session = ...` syntax for automatic cleanup. */
   async [Symbol.asyncDispose]() {
@@ -6118,7 +7594,7 @@ var CopilotSession = class {
    *
    * @example
    * ```typescript
-   * await session.setModel("gpt-4.1");
+   * await session.setModel("gpt-5.4");
    * await session.setModel("claude-sonnet-4.6", { reasoningEffort: "high" });
    * ```
    */
@@ -6170,8 +7646,162 @@ function toCanvasRpcError(error) {
   const message = error instanceof Error ? error.message : String(error);
   return new import_node.ResponseError(import_node.ErrorCodes.InternalError, message, { code, message });
 }
+function strictJsonValidationError(context, category, message, path) {
+  return new import_node.ResponseError(import_node.ErrorCodes.InternalError, message, {
+    code: context.code,
+    category,
+    path
+  });
+}
+function assertStrictJson(value, context) {
+  const ancestors = /* @__PURE__ */ new Set();
+  const visit = (current, path, allowUndefined) => {
+    if (current === void 0) {
+      if (allowUndefined) {
+        return;
+      }
+      throw strictJsonValidationError(
+        context,
+        "nested_undefined",
+        `${context.label} contains nested undefined at ${path}`,
+        path
+      );
+    }
+    if (current === null || typeof current === "boolean" || typeof current === "string") {
+      return;
+    }
+    if (typeof current === "number") {
+      if (!Number.isFinite(current)) {
+        throw strictJsonValidationError(
+          context,
+          "non_finite_number",
+          `${context.label} contains a non-finite number at ${path}`,
+          path
+        );
+      }
+      if (Object.is(current, -0)) {
+        throw strictJsonValidationError(
+          context,
+          "negative_zero",
+          `${context.label} contains negative zero at ${path}; normalize it to 0`,
+          path
+        );
+      }
+      return;
+    }
+    if (typeof current === "function" || typeof current === "symbol" || typeof current === "bigint") {
+      throw strictJsonValidationError(
+        context,
+        "unsupported_type",
+        `${context.label} contains a function, symbol, or BigInt at ${path}`,
+        path
+      );
+    }
+    if (typeof current !== "object") {
+      throw strictJsonValidationError(
+        context,
+        "unsupported_type",
+        `${context.label} contains a function, symbol, or BigInt at ${path}`,
+        path
+      );
+    }
+    if (ancestors.has(current)) {
+      throw strictJsonValidationError(
+        context,
+        "cyclic_value",
+        `${context.label} contains a cyclic reference at ${path}`,
+        path
+      );
+    }
+    ancestors.add(current);
+    try {
+      if (Array.isArray(current)) {
+        const keys = Reflect.ownKeys(current);
+        if (keys.length !== current.length + 1 || keys.some(
+          (key) => key !== "length" && (typeof key !== "string" || !/^(0|[1-9]\d*)$/.test(key) || Number(key) >= current.length)
+        )) {
+          throw strictJsonValidationError(
+            context,
+            "unsupported_object",
+            `${context.label} contains a non-JSON array property at ${path}`,
+            path
+          );
+        }
+        for (let index = 0; index < current.length; index++) {
+          const descriptor = Object.getOwnPropertyDescriptor(current, String(index));
+          if (descriptor === void 0 || !descriptor.enumerable || !("value" in descriptor)) {
+            throw strictJsonValidationError(
+              context,
+              "unsupported_object",
+              `${context.label} contains a non-JSON array property at ${path}[${index}]`,
+              `${path}[${index}]`
+            );
+          }
+          visit(descriptor.value, `${path}[${index}]`, false);
+        }
+        return;
+      }
+      const prototype = Object.getPrototypeOf(current);
+      if (prototype !== Object.prototype && prototype !== null) {
+        throw strictJsonValidationError(
+          context,
+          "unsupported_object",
+          `${context.label} contains a non-JSON object at ${path}`,
+          path
+        );
+      }
+      for (const key of Reflect.ownKeys(current)) {
+        if (typeof key === "symbol") {
+          throw strictJsonValidationError(
+            context,
+            "unsupported_type",
+            `${context.label} contains a function, symbol, or BigInt at ${path}`,
+            path
+          );
+        }
+        const propertyPath = /^[A-Za-z_$][\w$]*$/.test(key) ? `${path}.${key}` : `${path}[${JSON.stringify(key)}]`;
+        const descriptor = Object.getOwnPropertyDescriptor(current, key);
+        if (descriptor === void 0 || !descriptor.enumerable || !("value" in descriptor)) {
+          throw strictJsonValidationError(
+            context,
+            "unsupported_object",
+            `${context.label} contains a non-JSON property at ${propertyPath}`,
+            propertyPath
+          );
+        }
+        visit(descriptor.value, propertyPath, false);
+      }
+    } finally {
+      ancestors.delete(current);
+    }
+  };
+  visit(value, "$", context.allowTopLevelUndefined);
+}
+function assertFactoryResult(value) {
+  assertStrictJson(value, {
+    code: "factory_result_not_json",
+    label: "Factory result",
+    allowTopLevelUndefined: true
+  });
+}
+function assertFactoryStepResult(value, key) {
+  assertStrictJson(value, {
+    code: "factory_step_not_json",
+    label: `Factory step "${key}" result`,
+    allowTopLevelUndefined: false
+  });
+}
 
-// node_modules/.pnpm/@github+copilot-sdk@1.0.3/node_modules/@github/copilot-sdk/dist/sessionFsProvider.js
+// node_modules/.pnpm/@github+copilot-sdk@1.0.9-preview.2/node_modules/@github/copilot-sdk/dist/sessionFsProvider.js
+var SessionFsSqliteTransactionFailure = class extends Error {
+  /** Failure classification reported to the runtime. */
+  errorClass;
+  constructor(message, errorClass = "fatal") {
+    super(message);
+    this.name = "SessionFsSqliteTransactionFailure";
+    this.errorClass = errorClass;
+  }
+};
 function normalizeSqliteParams(params) {
   if (!params) {
     return void 0;
@@ -6287,6 +7917,29 @@ function createSessionFsAdapter(provider) {
       );
       return result ?? { rows: [], columns: [], rowsAffected: 0 };
     },
+    sqliteTransaction: async ({ statements }) => {
+      if (!provider.sqlite?.transaction) {
+        return {
+          results: [],
+          error: {
+            errorClass: "fatal",
+            message: "SQLite transactions are not supported by this provider"
+          }
+        };
+      }
+      try {
+        const results = await provider.sqlite.transaction(
+          statements.map((statement) => ({
+            queryType: statement.queryType,
+            query: statement.query,
+            params: normalizeSqliteParams(statement.params)
+          }))
+        );
+        return { results: results.map((result) => ({ ...result })) };
+      } catch (err) {
+        return { results: [], error: toSqliteTransactionError(err) };
+      }
+    },
     sqliteExists: async () => {
       if (!provider.sqlite) {
         throw new Error("SQLite is not supported by this provider");
@@ -6300,8 +7953,622 @@ function toSessionFsError(err) {
   const code = e.code === "ENOENT" ? "ENOENT" : "UNKNOWN";
   return { code, message: e.message ?? String(err) };
 }
+function toSqliteTransactionError(err) {
+  if (err instanceof SessionFsSqliteTransactionFailure) {
+    return { errorClass: err.errorClass, message: err.message };
+  }
+  return {
+    errorClass: "fatal",
+    message: err instanceof Error ? err.message : String(err)
+  };
+}
 
-// node_modules/.pnpm/@github+copilot-sdk@1.0.3/node_modules/@github/copilot-sdk/dist/toolSet.js
+// node_modules/.pnpm/@github+copilot-sdk@1.0.9-preview.2/node_modules/@github/copilot-sdk/dist/copilotRequestHandler.js
+var sharedTextDecoder = new TextDecoder("utf-8", { fatal: false });
+var sharedTextEncoder = new TextEncoder();
+var kBridge = /* @__PURE__ */ Symbol("copilotWebSocketResponseBridge");
+var kCompletion = /* @__PURE__ */ Symbol("copilotWebSocketCompletion");
+var kOpen = /* @__PURE__ */ Symbol("copilotWebSocketOpen");
+var kSuppressCloseOnDispose = /* @__PURE__ */ Symbol("copilotWebSocketSuppressCloseOnDispose");
+var kHandle = /* @__PURE__ */ Symbol("copilotRequestHandle");
+var CopilotWebSocketCloseStatus = class _CopilotWebSocketCloseStatus {
+  constructor(description, errorCode, error) {
+    this.description = description;
+    this.errorCode = errorCode;
+    this.error = error;
+  }
+  description;
+  errorCode;
+  error;
+  static normalClosure = new _CopilotWebSocketCloseStatus();
+};
+var CopilotWebSocketHandler = class {
+  #response;
+  #completion;
+  #resolveCompletion;
+  #closed = false;
+  [kSuppressCloseOnDispose] = false;
+  context;
+  constructor(context) {
+    this.context = context;
+    const bridge = context[kBridge];
+    if (!bridge) {
+      throw new Error("WebSocket response bridge is not attached");
+    }
+    this.#response = bridge;
+    this.#completion = new Promise((resolve2) => {
+      this.#resolveCompletion = resolve2;
+    });
+  }
+  async sendResponseMessage(data) {
+    await this.#response.write(data);
+  }
+  async close(status = CopilotWebSocketCloseStatus.normalClosure) {
+    if (this.#closed) {
+      return;
+    }
+    this.#closed = true;
+    if (status.error) {
+      await this.#response.error({
+        message: status.description ?? status.error.message,
+        code: status.errorCode
+      });
+    } else {
+      await this.#response.end();
+    }
+    this.#resolveCompletion(status);
+  }
+  async [Symbol.asyncDispose]() {
+    if (!this[kSuppressCloseOnDispose] && !this.#closed) {
+      await this.close(CopilotWebSocketCloseStatus.normalClosure);
+    }
+  }
+  /** @internal */
+  get [kCompletion]() {
+    return this.#completion;
+  }
+  /** @internal */
+  async [kOpen]() {
+  }
+};
+var CopilotWebSocketForwarder = class extends CopilotWebSocketHandler {
+  #upstream = null;
+  constructor(context) {
+    super(context);
+  }
+  sendRequestMessage(data) {
+    if (this.#upstream?.readyState !== WebSocket.OPEN) {
+      return;
+    }
+    this.#upstream.send(data);
+  }
+  /** @internal */
+  async [kOpen]() {
+    if (this.#upstream) {
+      return;
+    }
+    const upstream = new WebSocket(this.context.url);
+    upstream.binaryType = "arraybuffer";
+    this.#upstream = upstream;
+    upstream.addEventListener("message", (event) => {
+      void this.sendResponseMessage(normalizeWsData(event.data)).catch(
+        async (err) => {
+          await this.close(
+            new CopilotWebSocketCloseStatus(
+              err instanceof Error ? err.message : String(err),
+              void 0,
+              err instanceof Error ? err : new Error(String(err))
+            )
+          );
+        }
+      );
+    });
+    upstream.addEventListener("close", () => {
+      void this.close(CopilotWebSocketCloseStatus.normalClosure);
+    });
+    upstream.addEventListener("error", () => {
+      void this.close(
+        new CopilotWebSocketCloseStatus(
+          "WebSocket error",
+          void 0,
+          new Error("WebSocket error")
+        )
+      );
+    });
+    await new Promise((resolve2, reject) => {
+      if (upstream.readyState === WebSocket.OPEN) {
+        resolve2();
+        return;
+      }
+      upstream.addEventListener("open", () => resolve2(), { once: true });
+      upstream.addEventListener("error", () => reject(new Error("WebSocket error")), {
+        once: true
+      });
+    });
+  }
+  async close(status = CopilotWebSocketCloseStatus.normalClosure) {
+    try {
+      if (this.#upstream?.readyState === WebSocket.OPEN || this.#upstream?.readyState === WebSocket.CONNECTING) {
+        this.#upstream?.close();
+      }
+    } catch {
+    }
+    await super.close(status);
+  }
+  async [Symbol.asyncDispose]() {
+    try {
+      await super[Symbol.asyncDispose]();
+    } finally {
+      try {
+        this.#upstream?.close();
+      } catch {
+      }
+    }
+  }
+};
+var CopilotRequestHandler = class {
+  sendRequest(request, ctx) {
+    return fetch(request, { signal: ctx.signal });
+  }
+  openWebSocket(ctx) {
+    return Promise.resolve(new CopilotWebSocketForwarder(ctx));
+  }
+  /** @internal */
+  async [kHandle](exchange) {
+    const bridge = new CopilotWebSocketResponseBridge(exchange);
+    const ctx = {
+      requestId: exchange.requestId,
+      sessionId: exchange.sessionId,
+      agentId: exchange.agentId,
+      parentAgentId: exchange.parentAgentId,
+      interactionType: exchange.interactionType,
+      transport: exchange.transport,
+      url: exchange.url,
+      headers: exchange.headers,
+      signal: exchange.signal,
+      [kBridge]: bridge
+    };
+    if (exchange.transport === "websocket") {
+      await this.#handleWebSocket(exchange, ctx);
+    } else {
+      await this.#handleHttp(exchange, ctx);
+    }
+  }
+  async #handleHttp(exchange, ctx) {
+    const request = await buildFetchRequest(exchange);
+    const response = await this.sendRequest(request, ctx);
+    await streamResponse(response, exchange);
+  }
+  async #handleWebSocket(exchange, ctx) {
+    const handler = await this.openWebSocket(ctx);
+    try {
+      await handler[kOpen]();
+      await ctx[kBridge].start();
+      let cancelled;
+      const clientSettled = (async () => {
+        for await (const chunk of exchange.requestBody) {
+          await handler.sendRequestMessage(decodeFrame(chunk));
+        }
+        return "client-complete";
+      })().catch((err) => {
+        cancelled = err;
+        return "client-error";
+      });
+      const first = await Promise.race([
+        clientSettled,
+        handler[kCompletion].then(() => "server-done")
+      ]);
+      if (first === "client-error") {
+        handler[kSuppressCloseOnDispose] = true;
+        throw cancelled instanceof Error ? cancelled : new Error(String(cancelled));
+      }
+      if (first === "client-complete") {
+        await handler.close(CopilotWebSocketCloseStatus.normalClosure);
+        await handler[kCompletion];
+        return;
+      }
+      const status = await handler[kCompletion];
+      if (status.error) {
+        throw status.error;
+      }
+    } finally {
+      await handler[Symbol.asyncDispose]();
+    }
+  }
+};
+function createCopilotRequestAdapter(handler, getServerRpc) {
+  const pending = /* @__PURE__ */ new Map();
+  function getOrCreate(requestId) {
+    let exchange = pending.get(requestId);
+    if (!exchange) {
+      exchange = new CopilotRequestExchange(requestId, getServerRpc);
+      pending.set(requestId, exchange);
+    }
+    return exchange;
+  }
+  async function run(exchange) {
+    try {
+      await handler[kHandle](exchange);
+      if (!exchange.finished) {
+        await finalize(
+          exchange,
+          502,
+          "Copilot request handler returned without finalising the response (call responseBody.end() or .error())."
+        );
+      }
+    } catch (err) {
+      if (exchange.cancelled || exchange.signal.aborted) {
+        await finalize(exchange, 499, "Request cancelled by runtime", "cancelled");
+        return;
+      }
+      const message = err instanceof Error ? err.message : String(err);
+      await finalize(exchange, 502, message);
+    } finally {
+      pending.delete(exchange.requestId);
+    }
+  }
+  return {
+    async httpRequestStart(params) {
+      const exchange = getOrCreate(params.requestId);
+      exchange.setContext(params);
+      void run(exchange);
+      return {};
+    },
+    async httpRequestChunk(params) {
+      routeChunk(getOrCreate(params.requestId), params);
+      return {};
+    }
+  };
+}
+async function finalize(exchange, status, message, code) {
+  if (exchange.finished) {
+    return;
+  }
+  try {
+    if (!exchange.started) {
+      await exchange.startResponse({ status, headers: {} });
+    }
+    await exchange.errorResponse({ message, code });
+  } catch {
+  }
+}
+function routeChunk(exchange, params) {
+  if (params.cancel) {
+    exchange.pushCancel(params.cancelReason);
+    return;
+  }
+  if (params.data && params.data.length > 0) {
+    exchange.pushChunk(decodeChunkData(params.data, !!params.binary));
+  }
+  if (params.end) {
+    exchange.pushEnd();
+  }
+}
+var CopilotRequestExchange = class {
+  requestId;
+  sessionId;
+  agentId;
+  parentAgentId;
+  interactionType;
+  method = "GET";
+  url = "";
+  headers = {};
+  transport = "http";
+  #getServerRpc;
+  #abort = new AbortController();
+  #buffer = [];
+  #waker = null;
+  #drained = false;
+  #started = false;
+  #finished = false;
+  #cancelled = false;
+  constructor(requestId, getServerRpc) {
+    this.requestId = requestId;
+    this.#getServerRpc = getServerRpc;
+  }
+  /** Fill in the request context once the matching start frame arrives. */
+  setContext(params) {
+    this.sessionId = params.sessionId;
+    this.agentId = params.agentId;
+    this.parentAgentId = params.parentAgentId;
+    this.interactionType = params.interactionType;
+    this.method = params.method;
+    this.url = params.url;
+    this.headers = params.headers;
+    this.transport = params.transport ?? "http";
+  }
+  get signal() {
+    return this.#abort.signal;
+  }
+  get started() {
+    return this.#started;
+  }
+  get finished() {
+    return this.#finished;
+  }
+  get cancelled() {
+    return this.#cancelled;
+  }
+  // --- Request body feed (driven by the adapter as chunk frames arrive) ---
+  pushChunk(chunk) {
+    this.#push({ chunk });
+  }
+  pushEnd() {
+    this.#push({ end: true });
+  }
+  pushCancel(reason) {
+    this.#cancelled = true;
+    this.#abort.abort();
+    this.#push({ cancel: { reason } });
+  }
+  #push(item) {
+    this.#buffer.push(item);
+    const w = this.#waker;
+    this.#waker = null;
+    w?.();
+  }
+  /**
+   * Request body bytes, yielded as they arrive. A cancel frame surfaces as a
+   * thrown error so the handler's upstream call is torn down.
+   */
+  get requestBody() {
+    return {
+      [Symbol.asyncIterator]: () => ({
+        next: async () => {
+          if (this.#drained) {
+            return { value: void 0, done: true };
+          }
+          while (this.#buffer.length === 0) {
+            await new Promise((resolve2) => {
+              this.#waker = resolve2;
+            });
+          }
+          const item = this.#buffer.shift();
+          if (item.cancel) {
+            this.#drained = true;
+            throw new Error(
+              item.cancel.reason ? `Request cancelled by runtime: ${item.cancel.reason}` : "Request cancelled by runtime"
+            );
+          }
+          if (item.end) {
+            this.#drained = true;
+            return { value: void 0, done: true };
+          }
+          return { value: item.chunk ?? new Uint8Array(), done: false };
+        }
+      })
+    };
+  }
+  // --- Response emit (driven by the handler). Strict state machine: ---
+  // startResponse once -> 0..N writeResponse -> exactly one of
+  // endResponse / errorResponse.
+  async startResponse(init) {
+    if (this.#started) {
+      throw new Error("Copilot request response start() called twice.");
+    }
+    if (this.#finished) {
+      throw new Error("Copilot request response already finished.");
+    }
+    this.#started = true;
+    await this.#rpc().llmInference.httpResponseStart({
+      requestId: this.requestId,
+      status: init.status,
+      statusText: init.statusText,
+      headers: init.headers ?? {}
+    });
+  }
+  async writeResponse(data) {
+    if (this.#cancelled) {
+      throw new Error("Copilot request was cancelled by the runtime.");
+    }
+    if (!this.#started) {
+      throw new Error("Copilot request response write() called before start().");
+    }
+    if (this.#finished) {
+      throw new Error("Copilot request response write() called after end()/error().");
+    }
+    const isString = typeof data === "string";
+    await this.#rpc().llmInference.httpResponseChunk({
+      requestId: this.requestId,
+      data: isString ? data : Buffer.from(data).toString("base64"),
+      binary: !isString,
+      end: false
+    });
+  }
+  async endResponse() {
+    if (this.#finished) {
+      return;
+    }
+    this.#finished = true;
+    await this.#rpc().llmInference.httpResponseChunk({
+      requestId: this.requestId,
+      data: "",
+      end: true
+    });
+  }
+  async errorResponse(error) {
+    if (this.#finished) {
+      return;
+    }
+    this.#finished = true;
+    await this.#rpc().llmInference.httpResponseChunk({
+      requestId: this.requestId,
+      data: "",
+      end: true,
+      error: { message: error.message, code: error.code }
+    });
+  }
+  #rpc() {
+    const r = this.#getServerRpc();
+    if (!r) {
+      throw new Error("Copilot request response used after RPC connection closed.");
+    }
+    return r;
+  }
+};
+var FORBIDDEN_REQUEST_HEADERS = /* @__PURE__ */ new Set([
+  "host",
+  "connection",
+  "content-length",
+  "transfer-encoding",
+  "keep-alive",
+  "upgrade",
+  "proxy-connection",
+  "te",
+  "trailer"
+]);
+async function buildFetchRequest(exchange) {
+  const headers = new Headers();
+  for (const [name, values] of Object.entries(exchange.headers)) {
+    if (!values) {
+      continue;
+    }
+    if (FORBIDDEN_REQUEST_HEADERS.has(name.toLowerCase())) {
+      continue;
+    }
+    for (const value of values) {
+      headers.append(name, value);
+    }
+  }
+  const method = exchange.method.toUpperCase();
+  const hasBody = method !== "GET" && method !== "HEAD";
+  let body;
+  if (hasBody) {
+    const buffered = await drainAsync(exchange.requestBody);
+    if (buffered.length > 0) {
+      body = buffered;
+    }
+  } else {
+    await drainAsync(exchange.requestBody);
+  }
+  return new Request(exchange.url, { method, headers, body });
+}
+async function drainAsync(stream) {
+  const parts = [];
+  let total = 0;
+  for await (const chunk of stream) {
+    parts.push(chunk);
+    total += chunk.byteLength;
+  }
+  if (parts.length === 0) {
+    return new Uint8Array(0);
+  }
+  if (parts.length === 1) {
+    return parts[0];
+  }
+  const out = new Uint8Array(total);
+  let off = 0;
+  for (const part of parts) {
+    out.set(part, off);
+    off += part.byteLength;
+  }
+  return out;
+}
+async function streamResponse(response, exchange) {
+  await exchange.startResponse({
+    status: response.status,
+    statusText: response.statusText || void 0,
+    headers: headersToMultiMap(response.headers)
+  });
+  const body = response.body;
+  if (!body) {
+    await exchange.endResponse();
+    return;
+  }
+  const reader = body.getReader();
+  try {
+    for (; ; ) {
+      const { value, done } = await reader.read();
+      if (done) {
+        break;
+      }
+      if (value && value.byteLength > 0) {
+        await exchange.writeResponse(value);
+      }
+    }
+    await exchange.endResponse();
+  } finally {
+    reader.releaseLock();
+  }
+}
+function headersToMultiMap(headers) {
+  const out = {};
+  headers.forEach((value, name) => {
+    if (name.toLowerCase() === "set-cookie") {
+      return;
+    }
+    const list = out[name] ?? (out[name] = []);
+    list.push(value);
+  });
+  const setCookies = headers.getSetCookie();
+  if (setCookies.length > 0) {
+    out["set-cookie"] = setCookies;
+  }
+  return out;
+}
+function decodeChunkData(data, binary) {
+  if (binary) {
+    return new Uint8Array(Buffer.from(data, "base64"));
+  }
+  return sharedTextEncoder.encode(data);
+}
+function decodeFrame(chunk) {
+  return sharedTextDecoder.decode(chunk);
+}
+function normalizeWsData(data) {
+  if (typeof data === "string") {
+    return data;
+  }
+  if (data instanceof Uint8Array) {
+    return data;
+  }
+  if (data instanceof ArrayBuffer) {
+    return new Uint8Array(data);
+  }
+  return new Uint8Array();
+}
+var CopilotWebSocketResponseBridge = class {
+  #exchange;
+  #started = false;
+  #completed = false;
+  #serial = Promise.resolve();
+  constructor(exchange) {
+    this.#exchange = exchange;
+  }
+  /** Emit the 101 upgrade head now, acknowledging the WebSocket connect. */
+  start() {
+    return this.#run(false, () => Promise.resolve());
+  }
+  write(data) {
+    return this.#run(false, () => this.#exchange.writeResponse(data));
+  }
+  end() {
+    return this.#run(true, () => this.#exchange.endResponse());
+  }
+  error(error) {
+    return this.#run(true, () => this.#exchange.errorResponse(error));
+  }
+  #run(terminal, action) {
+    const task = this.#serial.then(async () => {
+      if (this.#completed) {
+        return;
+      }
+      if (!this.#started) {
+        this.#started = true;
+        await this.#exchange.startResponse({ status: 101, headers: {} });
+      }
+      if (terminal) {
+        this.#completed = true;
+      }
+      await action();
+    });
+    this.#serial = task.catch(() => {
+    });
+    return task;
+  }
+};
+
+// node_modules/.pnpm/@github+copilot-sdk@1.0.9-preview.2/node_modules/@github/copilot-sdk/dist/toolSet.js
 var VALID_TOOL_NAME = /^[a-zA-Z0-9_-]+$/;
 function validateName(kind, name) {
   if (name === "*") {
@@ -6356,12 +8623,12 @@ var ToolSet = class {
   }
 };
 
-// node_modules/.pnpm/@github+copilot-sdk@1.0.3/node_modules/@github/copilot-sdk/dist/types.js
+// node_modules/.pnpm/@github+copilot-sdk@1.0.9-preview.2/node_modules/@github/copilot-sdk/dist/types.js
 var defaultJoinSessionPermissionHandler = () => ({
   kind: "no-result"
 });
 
-// node_modules/.pnpm/@github+copilot-sdk@1.0.3/node_modules/@github/copilot-sdk/dist/client.js
+// node_modules/.pnpm/@github+copilot-sdk@1.0.9-preview.2/node_modules/@github/copilot-sdk/dist/client.js
 var MIN_PROTOCOL_VERSION = 3;
 var RUNTIME_SHUTDOWN_TIMEOUT_MS = 1e4;
 function isZodSchema(value) {
@@ -6386,7 +8653,7 @@ async function waitForChildExit(child, timeoutMs) {
   if (child.exitCode != null || child.signalCode != null) {
     return true;
   }
-  return new Promise((resolve) => {
+  return new Promise((resolve2) => {
     let timeout;
     let settled = false;
     const onExit = () => {
@@ -6395,7 +8662,7 @@ async function waitForChildExit(child, timeoutMs) {
       }
       settled = true;
       clearTimeout(timeout);
-      resolve(true);
+      resolve2(true);
     };
     timeout = setTimeout(() => {
       if (settled) {
@@ -6403,7 +8670,7 @@ async function waitForChildExit(child, timeoutMs) {
       }
       settled = true;
       child.off("exit", onExit);
-      resolve(false);
+      resolve2(false);
     }, timeoutMs);
     child.once("exit", onExit);
     if (child.exitCode != null || child.signalCode != null) {
@@ -6417,6 +8684,32 @@ function toJsonSchema(parameters) {
     return parameters.toJSONSchema();
   }
   return parameters;
+}
+var DEFAULT_PROVIDER_NAME = "default";
+function extractBearerTokenProviders(provider, providers) {
+  const callbacks = /* @__PURE__ */ new Map();
+  let wireProvider = provider;
+  if (provider?.bearerTokenProvider) {
+    const { bearerTokenProvider, ...rest } = provider;
+    callbacks.set(DEFAULT_PROVIDER_NAME, bearerTokenProvider);
+    wireProvider = {
+      ...rest,
+      hasBearerTokenProvider: true
+    };
+  }
+  let wireProviders = providers;
+  if (providers?.some((p) => p.bearerTokenProvider)) {
+    wireProviders = providers.map((p) => {
+      if (!p.bearerTokenProvider) return p;
+      const { bearerTokenProvider, ...rest } = p;
+      callbacks.set(p.name, bearerTokenProvider);
+      return {
+        ...rest,
+        hasBearerTokenProvider: true
+      };
+    });
+  }
+  return { wireProvider, wireProviders, callbacks };
 }
 function toWireMcpServers(mcpServers) {
   if (!mcpServers) return void 0;
@@ -6507,7 +8800,7 @@ function getBundledCliPath() {
       try {
         const sdkUrl = import.meta.resolve(`${packageName}/sdk`);
         const sdkPath = fileURLToPath(sdkUrl);
-        return join(dirname(dirname(sdkPath)), "index.js");
+        return join2(dirname2(dirname2(sdkPath)), "index.js");
       } catch {
       }
     }
@@ -6519,8 +8812,8 @@ function getBundledCliPath() {
   const searchPaths = req.resolve.paths("@github/copilot") ?? [];
   for (const base of searchPaths) {
     for (const packageName of packageNames) {
-      const candidate = join(base, ...packageName.split("/"), "index.js");
-      if (existsSync(candidate)) {
+      const candidate = join2(base, ...packageName.split("/"), "index.js");
+      if (existsSync2(candidate)) {
         return candidate;
       }
     }
@@ -6529,10 +8822,24 @@ function getBundledCliPath() {
     `Could not find a @github/copilot platform package (tried ${packageNames.join(", ")}). Searched ${searchPaths.length} paths. Ensure @github/copilot is installed, or pass cliPath/cliUrl to CopilotClient.`
   );
 }
+var TeardownResilientStreamMessageWriter = class extends import_node2.StreamMessageWriter {
+  suppressWriteErrors = false;
+  async write(msg) {
+    try {
+      await super.write(msg);
+    } catch (error) {
+      if (!this.suppressWriteErrors) {
+        throw error;
+      }
+    }
+  }
+};
 var CopilotClient = class _CopilotClient {
   cliStartTimeout = null;
   cliProcess = null;
+  ffiHost = null;
   connection = null;
+  messageWriter = null;
   socket = null;
   runtimePort = null;
   actualHost = "localhost";
@@ -6564,6 +8871,9 @@ var CopilotClient = class _CopilotClient {
   negotiatedProtocolVersion = null;
   /** Connection-level session filesystem config, set via constructor option. */
   sessionFsConfig = null;
+  requestHandler = null;
+  onGitHubTelemetry;
+  clientGlobalHandlers = {};
   /**
    * Typed server-scoped RPC methods.
    * @throws Error if the client is not connected
@@ -6597,6 +8907,36 @@ var CopilotClient = class _CopilotClient {
 `);
     }
   }
+  logDebug(message) {
+    const level = this.options.logLevel?.toLowerCase();
+    if (level === "debug" || level === "all") {
+      process.stderr.write(`[copilot-sdk] ${message}
+`);
+    }
+  }
+  /**
+   * Environment variable that overrides the transport when the caller does not set
+   * {@link CopilotClientOptions.connection}. Accepts `"inprocess"` or `"stdio"`
+   * (case-insensitive); unset preserves the default stdio transport. Any other value
+   * is an error.
+   */
+  static DEFAULT_CONNECTION_ENV_VAR = "COPILOT_SDK_DEFAULT_CONNECTION";
+  /**
+   * Resolves the default {@link RuntimeConnection} for the no-connection case,
+   * honoring {@link CopilotClient.DEFAULT_CONNECTION_ENV_VAR}.
+   */
+  static resolveDefaultConnection() {
+    const value = process.env[_CopilotClient.DEFAULT_CONNECTION_ENV_VAR];
+    if (!value || value.toLowerCase() === "stdio") {
+      return { kind: "stdio" };
+    }
+    if (value.toLowerCase() === "inprocess") {
+      return { kind: "inprocess" };
+    }
+    throw new Error(
+      `Invalid ${_CopilotClient.DEFAULT_CONNECTION_ENV_VAR} value '${value}'. Expected 'inprocess', 'stdio', or unset.`
+    );
+  }
   /**
    * Creates a new CopilotClient instance.
    *
@@ -6625,10 +8965,30 @@ var CopilotClient = class _CopilotClient {
    * ```
    */
   constructor(options = {}) {
-    const conn = options._internalConnection ?? options.connection ?? { kind: "stdio" };
+    const conn = options._internalConnection ?? options.connection ?? _CopilotClient.resolveDefaultConnection();
     if (conn.kind === "uri" && (options.gitHubToken !== void 0 || options.useLoggedInUser !== void 0)) {
       throw new Error(
         "gitHubToken and useLoggedInUser cannot be used with RuntimeConnection.forUri (external server manages its own auth)"
+      );
+    }
+    if (conn.kind === "inprocess" && options.workingDirectory !== void 0) {
+      throw new Error(
+        "workingDirectory is not supported with RuntimeConnection.forInProcess(): the in-process transport hosts the runtime in this process, so honoring it would require mutating the shared process-global cwd. Change the host process's working directory before constructing the client instead."
+      );
+    }
+    if (conn.kind === "inprocess" && options.env !== void 0) {
+      throw new Error(
+        "env is not supported with RuntimeConnection.forInProcess(): the in-process transport loads the native runtime into the shared host process, whose single environment block cannot carry per-client values. Set the variables on the host process environment instead."
+      );
+    }
+    if (conn.kind === "inprocess" && options.telemetry !== void 0) {
+      throw new Error(
+        "telemetry is not supported with RuntimeConnection.forInProcess(): telemetry configuration is lowered to environment variables read by native runtime code running in the shared host process, so per-client telemetry cannot be honored in-process. Configure telemetry via the host process environment, or use a child-process transport."
+      );
+    }
+    if ((conn.kind === "stdio" || conn.kind === "tcp") && conn.env !== void 0 && options.env !== void 0) {
+      throw new Error(
+        "Set environment variables via either the client-level env option or the connection's env (RuntimeConnection.forStdio/forTcp), not both. Prefer the connection-level env for child-process transports."
       );
     }
     if (conn.kind === "tcp" && conn.connectionToken !== void 0) {
@@ -6656,7 +9016,11 @@ var CopilotClient = class _CopilotClient {
     this.onListModels = options.onListModels;
     this.onGetTraceContext = options.onGetTraceContext;
     this.sessionFsConfig = options.sessionFs ?? null;
-    const effectiveEnv = options.env ?? process.env;
+    this.requestHandler = options.requestHandler ?? null;
+    this.onGitHubTelemetry = options.onGitHubTelemetry;
+    this.setupClientGlobalHandlers();
+    const connEnv = conn.kind === "stdio" || conn.kind === "tcp" ? conn.env : void 0;
+    const effectiveEnv = connEnv ?? options.env ?? process.env;
     this.resolvedEnv = effectiveEnv;
     this.resolvedCliPath = conn.kind === "stdio" || conn.kind === "tcp" ? conn.path ?? effectiveEnv.COPILOT_CLI_PATH ?? getBundledCliPath() : void 0;
     const connArgs = conn.kind === "stdio" || conn.kind === "tcp" ? conn.args ?? [] : [];
@@ -6735,6 +9099,30 @@ var CopilotClient = class _CopilotClient {
     }
     session.clientSessionApis.sessionFs = createSessionFsAdapter(provider);
   }
+  setupClientGlobalHandlers() {
+    const handlers = {};
+    if (this.requestHandler) {
+      handlers.llmInference = createCopilotRequestAdapter(this.requestHandler, () => {
+        if (!this.connection) {
+          return void 0;
+        }
+        this._rpc ??= createServerRpc(this.connection);
+        return this._rpc;
+      });
+    }
+    if (this.onGitHubTelemetry) {
+      const onGitHubTelemetry = this.onGitHubTelemetry;
+      handlers.gitHubTelemetry = {
+        event: async (notification) => {
+          try {
+            await onGitHubTelemetry(notification);
+          } catch {
+          }
+        }
+      };
+    }
+    this.clientGlobalHandlers = handlers;
+  }
   /**
    * Starts the CLI server and establishes a connection.
    *
@@ -6759,7 +9147,9 @@ var CopilotClient = class _CopilotClient {
     }
     this.state = "connecting";
     try {
-      if (!this.isExternalServer) {
+      if (this.connectionConfig.kind === "inprocess") {
+        await this.startInProcessFfi();
+      } else if (!this.isExternalServer) {
         await this.startCLIServer();
       }
       await this.connectToServer();
@@ -6771,6 +9161,9 @@ var CopilotClient = class _CopilotClient {
           conventions: this.sessionFsConfig.conventions,
           capabilities: this.sessionFsConfig.capabilities
         });
+      }
+      if (this.requestHandler) {
+        await this.connection.sendRequest("llmInference.setProvider", {});
       }
       this.state = "connected";
     } catch (error) {
@@ -6804,7 +9197,11 @@ var CopilotClient = class _CopilotClient {
    */
   async stop() {
     const errors = [];
-    for (const session of this.sessions.values()) {
+    const activeSessions = [...this.sessions.values()];
+    if (this.connectionConfig.kind === "inprocess") {
+      await Promise.allSettled(activeSessions.map((session) => session.abort()));
+    }
+    for (const session of activeSessions) {
       const sessionId = session.sessionId;
       let lastError = null;
       for (let attempt = 1; attempt <= 3; attempt++) {
@@ -6816,7 +9213,7 @@ var CopilotClient = class _CopilotClient {
           lastError = error instanceof Error ? error : new Error(String(error));
           if (attempt < 3) {
             const delay = 100 * Math.pow(2, attempt - 1);
-            await new Promise((resolve) => setTimeout(resolve, delay));
+            await new Promise((resolve2) => setTimeout(resolve2, delay));
           }
         }
       }
@@ -6828,9 +9225,11 @@ var CopilotClient = class _CopilotClient {
         );
       }
     }
+    for (const session of activeSessions) {
+      session._markDisconnected();
+    }
     this.sessions.clear();
-    let runtimeShutdownCompleted = false;
-    if (this.connection && this.cliProcess && !this.isExternalServer) {
+    if (this.connection && (this.cliProcess || this.ffiHost) && !this.isExternalServer) {
       const runtimeShutdownStart = Date.now();
       const shutdownPromise = this.rpc.runtime.shutdown();
       void shutdownPromise.catch(() => void 0);
@@ -6840,7 +9239,6 @@ var CopilotClient = class _CopilotClient {
           RUNTIME_SHUTDOWN_TIMEOUT_MS,
           `runtime.shutdown timed out after ${RUNTIME_SHUTDOWN_TIMEOUT_MS}ms`
         );
-        runtimeShutdownCompleted = true;
         this.logDebugTiming(
           "CopilotClient.stop runtime shutdown complete",
           runtimeShutdownStart
@@ -6857,6 +9255,9 @@ var CopilotClient = class _CopilotClient {
         );
       }
     }
+    if (this.messageWriter) {
+      this.messageWriter.suppressWriteErrors = true;
+    }
     if (this.connection) {
       try {
         this.connection.dispose();
@@ -6868,6 +9269,7 @@ var CopilotClient = class _CopilotClient {
         );
       }
       this.connection = null;
+      this.messageWriter = null;
       this._rpc = null;
       this._internalRpc = null;
     }
@@ -6877,8 +9279,8 @@ var CopilotClient = class _CopilotClient {
       this.socket = null;
       try {
         if (!socket.destroyed) {
-          await new Promise((resolve) => {
-            socket.once("close", () => resolve());
+          await new Promise((resolve2) => {
+            socket.once("close", () => resolve2());
             socket.end();
           });
         }
@@ -6895,22 +9297,32 @@ var CopilotClient = class _CopilotClient {
       this.cliProcess = null;
       try {
         if (child.exitCode == null && child.signalCode == null) {
-          const exitedGracefully = runtimeShutdownCompleted ? await waitForChildExit(child, RUNTIME_SHUTDOWN_TIMEOUT_MS) : false;
-          if (!exitedGracefully) {
-            child.kill();
-            if (!await waitForChildExit(child, RUNTIME_SHUTDOWN_TIMEOUT_MS)) {
-              errors.push(
-                new Error(
-                  `Timed out waiting for CLI process to exit after kill: ${RUNTIME_SHUTDOWN_TIMEOUT_MS}ms`
-                )
-              );
-            }
+          child.kill();
+          if (!await waitForChildExit(child, RUNTIME_SHUTDOWN_TIMEOUT_MS)) {
+            errors.push(
+              new Error(
+                `Timed out waiting for CLI process to exit after kill: ${RUNTIME_SHUTDOWN_TIMEOUT_MS}ms`
+              )
+            );
           }
         }
       } catch (error) {
         errors.push(
           new Error(
             `Failed to kill CLI process: ${error instanceof Error ? error.message : String(error)}`
+          )
+        );
+      }
+    }
+    if (this.ffiHost) {
+      const host = this.ffiHost;
+      this.ffiHost = null;
+      try {
+        host.dispose();
+      } catch (error) {
+        errors.push(
+          new Error(
+            `Failed to dispose in-process runtime host: ${error instanceof Error ? error.message : String(error)}`
           )
         );
       }
@@ -6967,13 +9379,20 @@ var CopilotClient = class _CopilotClient {
    */
   async forceStop() {
     this.forceStopping = true;
+    for (const session of this.sessions.values()) {
+      session._markDisconnected();
+    }
     this.sessions.clear();
+    if (this.messageWriter) {
+      this.messageWriter.suppressWriteErrors = true;
+    }
     if (this.connection) {
       try {
         this.connection.dispose();
       } catch {
       }
       this.connection = null;
+      this.messageWriter = null;
       this._rpc = null;
       this._internalRpc = null;
     }
@@ -6991,6 +9410,13 @@ var CopilotClient = class _CopilotClient {
       } catch {
       }
       this.cliProcess = null;
+    }
+    if (this.ffiHost) {
+      try {
+        this.ffiHost.dispose();
+      } catch {
+      }
+      this.ffiHost = null;
     }
     if (this.cliStartTimeout) {
       clearTimeout(this.cliStartTimeout);
@@ -7069,7 +9495,8 @@ var CopilotClient = class _CopilotClient {
         enableHostGitOperations: false,
         enableSessionStore: false,
         enableSkills: false,
-        memory: { enabled: false }
+        memory: { enabled: false },
+        customAgentsLocalOnly: true
       };
     }
     return {};
@@ -7154,11 +9581,18 @@ var CopilotClient = class _CopilotClient {
     if (!this.connection) {
       await this.start();
     }
-    config = { ...this.configDefaultsForMode(), ...config };
+    const modeDefaults = this.configDefaultsForMode();
+    config = { ...modeDefaults, ...config };
+    config.customAgentsLocalOnly ??= modeDefaults.customAgentsLocalOnly;
     config.systemMessage = this.getSystemMessageConfigForMode(config.systemMessage);
     const callerSessionId = config.sessionId;
     const useServerGeneratedId = config.cloud != null && callerSessionId == null;
     const localSessionId = useServerGeneratedId ? void 0 : callerSessionId ?? randomUUID();
+    const {
+      wireProvider: bearerWireProvider,
+      wireProviders: bearerWireProviders,
+      callbacks: bearerTokenCallbacks
+    } = extractBearerTokenProviders(config.provider, config.providers);
     const { wirePayload: wireSystemMessage, transformCallbacks } = extractTransformCallbacks(
       config.systemMessage
     );
@@ -7167,11 +9601,15 @@ var CopilotClient = class _CopilotClient {
         sessionId,
         this.connection,
         void 0,
-        this.onGetTraceContext
+        this.onGetTraceContext,
+        { mcpAuthHandler: config.onMcpAuthRequest }
       );
       s.registerTools(config.tools);
       s.registerCanvases(config.canvases);
       s.registerCommands(config.commands);
+      if (bearerTokenCallbacks.size > 0) {
+        s.registerBearerTokenProviders(bearerTokenCallbacks);
+      }
       s.registerPermissionHandler(config.onPermissionRequest);
       if (config.onUserInputRequest) {
         s.registerUserInputHandler(config.onUserInputRequest);
@@ -7220,13 +9658,16 @@ var CopilotClient = class _CopilotClient {
           parameters: toJsonSchema(tool.parameters),
           overridesBuiltInTool: tool.overridesBuiltInTool,
           skipPermission: tool.skipPermission,
-          defer: tool.defer
+          defer: tool.defer,
+          metadata: tool.metadata
         })),
+        toolSearch: config.toolSearch,
         canvases: config.canvases?.map((canvas) => canvas.declaration),
         requestCanvasRenderer: config.requestCanvasRenderer,
         requestExtensions: config.requestExtensions,
         extensionSdkPath: config.extensionSdkPath,
         extensionInfo: config.extensionInfo,
+        canvasProvider: config.canvasProvider,
         commands: config.commands?.map((cmd) => ({
           name: cmd.name,
           description: cmd.description
@@ -7235,10 +9676,14 @@ var CopilotClient = class _CopilotClient {
         availableTools: toolFilterOptions.availableTools,
         excludedTools: toolFilterOptions.excludedTools,
         toolFilterPrecedence: toolFilterOptions.toolFilterPrecedence,
-        provider: config.provider,
-        providers: config.providers,
+        excludedBuiltinAgents: config.excludedBuiltinAgents,
+        provider: bearerWireProvider,
+        capi: config.capi,
+        providers: bearerWireProviders,
         models: config.models,
         enableSessionTelemetry: config.enableSessionTelemetry,
+        enableCitations: config.enableCitations,
+        sessionLimits: config.sessionLimits,
         modelCapabilities: config.modelCapabilities,
         largeOutput: toWireLargeOutput(config.largeOutput),
         requestPermission: !!config.onPermissionRequest,
@@ -7251,10 +9696,12 @@ var CopilotClient = class _CopilotClient {
         workingDirectory: config.workingDirectory,
         streaming: config.streaming,
         includeSubAgentStreamingEvents: config.includeSubAgentStreamingEvents ?? true,
+        ...this.onGitHubTelemetry != null ? { enableGitHubTelemetryForwarding: true } : {},
         mcpServers: toWireMcpServers(config.mcpServers),
         mcpOAuthTokenStorage: config.mcpOAuthTokenStorage,
         envValueMode: "direct",
         customAgents: toWireCustomAgents(config.customAgents),
+        customAgentsLocalOnly: config.customAgentsLocalOnly,
         defaultAgent: config.defaultAgent,
         agent: config.agent,
         configDir: config.configDirectory,
@@ -7275,7 +9722,9 @@ var CopilotClient = class _CopilotClient {
         memory: config.memory,
         gitHubToken: config.gitHubToken,
         remoteSession: config.remoteSession,
-        cloud: config.cloud
+        cloud: config.cloud,
+        expAssignments: config.expAssignments,
+        enableManagedSettings: config.enableManagedSettings
       });
       const {
         sessionId: returnedSessionId,
@@ -7293,6 +9742,12 @@ var CopilotClient = class _CopilotClient {
       if (session === void 0) {
         session = initializeSession(returnedSessionId);
         registeredId = returnedSessionId;
+      }
+      if (config.onMcpAuthRequest) {
+        await this.connection.sendRequest("session.eventLog.registerInterest", {
+          sessionId: returnedSessionId,
+          eventType: "mcp.oauth_required"
+        });
       }
       session["_workspacePath"] = workspacePath;
       session.setCapabilities(capabilities);
@@ -7330,6 +9785,13 @@ var CopilotClient = class _CopilotClient {
    * ```
    */
   async resumeSession(sessionId, config) {
+    return this.resumeSessionInternal(sessionId, config);
+  }
+  /** @internal */
+  async resumeSessionForExtension(sessionId, config, factories) {
+    return this.resumeSessionInternal(sessionId, config, factories);
+  }
+  async resumeSessionInternal(sessionId, config, factories) {
     if (!this.connection) {
       await this.start();
     }
@@ -7337,11 +9799,21 @@ var CopilotClient = class _CopilotClient {
       sessionId,
       this.connection,
       void 0,
-      this.onGetTraceContext
+      this.onGetTraceContext,
+      { mcpAuthHandler: config.onMcpAuthRequest }
     );
     session.registerTools(config.tools);
     session.registerCanvases(config.canvases);
     session.registerCommands(config.commands);
+    session.registerFactories(factories);
+    const {
+      wireProvider: bearerWireProvider,
+      wireProviders: bearerWireProviders,
+      callbacks: bearerTokenCallbacks
+    } = extractBearerTokenProviders(config.provider, config.providers);
+    if (bearerTokenCallbacks.size > 0) {
+      session.registerBearerTokenProviders(bearerTokenCallbacks);
+    }
     session.registerPermissionHandler(config.onPermissionRequest);
     if (config.onUserInputRequest) {
       session.registerUserInputHandler(config.onUserInputRequest);
@@ -7358,7 +9830,9 @@ var CopilotClient = class _CopilotClient {
     if (config.hooks) {
       session.registerHooks(config.hooks);
     }
-    config = { ...this.configDefaultsForMode(), ...config };
+    const modeDefaults = this.configDefaultsForMode();
+    config = { ...modeDefaults, ...config };
+    config.customAgentsLocalOnly ??= modeDefaults.customAgentsLocalOnly;
     config.systemMessage = this.getSystemMessageConfigForMode(config.systemMessage);
     const { wirePayload: wireSystemMessage, transformCallbacks } = extractTransformCallbacks(
       config.systemMessage
@@ -7386,25 +9860,33 @@ var CopilotClient = class _CopilotClient {
         excludedTools: toolFilterOptions.excludedTools,
         toolFilterPrecedence: toolFilterOptions.toolFilterPrecedence,
         enableSessionTelemetry: config.enableSessionTelemetry,
+        excludedBuiltinAgents: config.excludedBuiltinAgents,
+        enableCitations: config.enableCitations,
+        sessionLimits: config.sessionLimits,
         tools: config.tools?.map((tool) => ({
           name: tool.name,
           description: tool.description,
           parameters: toJsonSchema(tool.parameters),
           overridesBuiltInTool: tool.overridesBuiltInTool,
           skipPermission: tool.skipPermission,
-          defer: tool.defer
+          defer: tool.defer,
+          metadata: tool.metadata
         })),
+        toolSearch: config.toolSearch,
         canvases: config.canvases?.map((canvas) => canvas.declaration),
+        factories: factories?.map((factory) => factory.meta),
         requestCanvasRenderer: config.requestCanvasRenderer,
         requestExtensions: config.requestExtensions,
         extensionSdkPath: config.extensionSdkPath,
         extensionInfo: config.extensionInfo,
+        canvasProvider: config.canvasProvider,
         commands: config.commands?.map((cmd) => ({
           name: cmd.name,
           description: cmd.description
         })),
-        provider: config.provider,
-        providers: config.providers,
+        provider: bearerWireProvider,
+        capi: config.capi,
+        providers: bearerWireProviders,
         models: config.models,
         modelCapabilities: config.modelCapabilities,
         largeOutput: toWireLargeOutput(config.largeOutput),
@@ -7428,10 +9910,12 @@ var CopilotClient = class _CopilotClient {
         enableSkills: config.enableSkills,
         streaming: config.streaming,
         includeSubAgentStreamingEvents: config.includeSubAgentStreamingEvents ?? true,
+        ...this.onGitHubTelemetry != null ? { enableGitHubTelemetryForwarding: true } : {},
         mcpServers: toWireMcpServers(config.mcpServers),
         mcpOAuthTokenStorage: config.mcpOAuthTokenStorage,
         envValueMode: "direct",
         customAgents: toWireCustomAgents(config.customAgents),
+        customAgentsLocalOnly: config.customAgentsLocalOnly,
         defaultAgent: config.defaultAgent,
         agent: config.agent,
         skillDirectories: config.skillDirectories,
@@ -7444,12 +9928,20 @@ var CopilotClient = class _CopilotClient {
         continuePendingWork: config.continuePendingWork,
         gitHubToken: config.gitHubToken,
         remoteSession: config.remoteSession,
-        openCanvases: config.openCanvases
+        openCanvases: config.openCanvases,
+        expAssignments: config.expAssignments,
+        enableManagedSettings: config.enableManagedSettings
       });
       const { workspacePath, capabilities, openCanvases } = response;
       session["_workspacePath"] = workspacePath;
       session.setCapabilities(capabilities);
       session.setOpenCanvases(openCanvases ?? []);
+      if (config.onMcpAuthRequest) {
+        await this.connection.sendRequest("session.eventLog.registerInterest", {
+          sessionId,
+          eventType: "mcp.oauth_required"
+        });
+      }
       await this.updateSessionOptionsForMode(session, config);
     } catch (e) {
       this.sessions.delete(sessionId);
@@ -7511,8 +10003,8 @@ var CopilotClient = class _CopilotClient {
   async listModels() {
     await this.modelsCacheLock;
     let resolveLock;
-    this.modelsCacheLock = new Promise((resolve) => {
-      resolveLock = resolve;
+    this.modelsCacheLock = new Promise((resolve2) => {
+      resolveLock = resolve2;
     });
     try {
       if (this.modelsCache !== null) {
@@ -7564,9 +10056,11 @@ var CopilotClient = class _CopilotClient {
     const raceAgainstExit = (p) => this.processExitPromise ? Promise.race([p, this.processExitPromise]) : p;
     let serverVersion;
     try {
-      const result = await raceAgainstExit(
-        this.internalRpc.connect({ token: this.effectiveConnectionToken })
-      );
+      const connectParams = { token: this.effectiveConnectionToken };
+      if (this.onGitHubTelemetry != null) {
+        connectParams.enableGitHubTelemetryForwarding = true;
+      }
+      const result = await raceAgainstExit(this.internalRpc.connect(connectParams));
       serverVersion = result.protocolVersion;
     } catch (err) {
       if (err instanceof import_node2.ResponseError && (err.code === import_node2.ErrorCodes.MethodNotFound || err.message === "Unhandled method connect")) {
@@ -7786,10 +10280,45 @@ var CopilotClient = class _CopilotClient {
     };
   }
   /**
+   * Builds the environment for the spawned runtime child process (stdio/TCP): applies
+   * the auth token, connection token, `COPILOT_HOME`, keychain setting, and telemetry
+   * variables on top of the effective env. Not used by the in-process (FFI) transport,
+   * whose worker inherits the host process's ambient environment
+   * (see {@link CopilotClient.startInProcessFfi}).
+   */
+  buildRuntimeEnv() {
+    const env = { ...this.resolvedEnv };
+    delete env.NODE_DEBUG;
+    if (this.options.gitHubToken) {
+      env.COPILOT_SDK_AUTH_TOKEN = this.options.gitHubToken;
+    }
+    if (this.effectiveConnectionToken) {
+      env.COPILOT_CONNECTION_TOKEN = this.effectiveConnectionToken;
+    }
+    if (this.options.baseDirectory) {
+      env.COPILOT_HOME = this.options.baseDirectory;
+    }
+    if (this.options.mode === "empty") {
+      env.COPILOT_DISABLE_KEYTAR = "1";
+    }
+    if (this.options.telemetry) {
+      const t = this.options.telemetry;
+      env.COPILOT_OTEL_ENABLED = "true";
+      if (t.otlpEndpoint !== void 0) env.OTEL_EXPORTER_OTLP_ENDPOINT = t.otlpEndpoint;
+      if (t.otlpProtocol !== void 0) env.OTEL_EXPORTER_OTLP_PROTOCOL = t.otlpProtocol;
+      if (t.filePath !== void 0) env.COPILOT_OTEL_FILE_EXPORTER_PATH = t.filePath;
+      if (t.exporterType !== void 0) env.COPILOT_OTEL_EXPORTER_TYPE = t.exporterType;
+      if (t.sourceName !== void 0) env.COPILOT_OTEL_SOURCE_NAME = t.sourceName;
+      if (t.captureContent !== void 0)
+        env.OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT = String(t.captureContent);
+    }
+    return env;
+  }
+  /**
    * Start the CLI server process
    */
   async startCLIServer() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve2, reject) => {
       this.stderrBuffer = "";
       const args = [...this.connectionExtraArgs, "--headless", "--no-auto-update"];
       if (this.options.logLevel) {
@@ -7818,44 +10347,13 @@ var CopilotClient = class _CopilotClient {
       if (this.options.enableRemoteSessions) {
         args.push("--remote");
       }
-      const envWithoutNodeDebug = { ...this.resolvedEnv };
-      delete envWithoutNodeDebug.NODE_DEBUG;
-      if (this.options.gitHubToken) {
-        envWithoutNodeDebug.COPILOT_SDK_AUTH_TOKEN = this.options.gitHubToken;
-      }
-      if (this.effectiveConnectionToken) {
-        envWithoutNodeDebug.COPILOT_CONNECTION_TOKEN = this.effectiveConnectionToken;
-      }
-      if (this.options.baseDirectory) {
-        envWithoutNodeDebug.COPILOT_HOME = this.options.baseDirectory;
-      }
-      if (this.options.mode === "empty") {
-        envWithoutNodeDebug.COPILOT_DISABLE_KEYTAR = "1";
-      }
+      const envWithoutNodeDebug = this.buildRuntimeEnv();
       if (!this.resolvedCliPath) {
         throw new Error(
           "Path to Copilot CLI is required. Please supply it via `RuntimeConnection.forStdio({ path })` or `RuntimeConnection.forTcp({ path })`, set the COPILOT_CLI_PATH environment variable, or use `RuntimeConnection.forUri(...)` to connect to an already-running runtime."
         );
       }
-      if (this.options.telemetry) {
-        const t = this.options.telemetry;
-        envWithoutNodeDebug.COPILOT_OTEL_ENABLED = "true";
-        if (t.otlpEndpoint !== void 0)
-          envWithoutNodeDebug.OTEL_EXPORTER_OTLP_ENDPOINT = t.otlpEndpoint;
-        if (t.otlpProtocol !== void 0)
-          envWithoutNodeDebug.OTEL_EXPORTER_OTLP_PROTOCOL = t.otlpProtocol;
-        if (t.filePath !== void 0)
-          envWithoutNodeDebug.COPILOT_OTEL_FILE_EXPORTER_PATH = t.filePath;
-        if (t.exporterType !== void 0)
-          envWithoutNodeDebug.COPILOT_OTEL_EXPORTER_TYPE = t.exporterType;
-        if (t.sourceName !== void 0)
-          envWithoutNodeDebug.COPILOT_OTEL_SOURCE_NAME = t.sourceName;
-        if (t.captureContent !== void 0)
-          envWithoutNodeDebug.OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT = String(
-            t.captureContent
-          );
-      }
-      if (!existsSync(this.resolvedCliPath)) {
+      if (!existsSync2(this.resolvedCliPath)) {
         throw new Error(
           `Copilot CLI not found at ${this.resolvedCliPath}. Ensure @github/copilot is installed.`
         );
@@ -7881,7 +10379,7 @@ var CopilotClient = class _CopilotClient {
       let resolved = false;
       if (this.connectionConfig.kind === "stdio") {
         resolved = true;
-        resolve();
+        resolve2();
       } else {
         this.cliProcess.stdout?.on("data", (data) => {
           stdout += data.toString();
@@ -7889,7 +10387,7 @@ var CopilotClient = class _CopilotClient {
           if (match && !resolved) {
             this.runtimePort = parseInt(match[1], 10);
             resolved = true;
-            resolve();
+            resolve2();
           }
         });
       }
@@ -7973,10 +10471,102 @@ stderr: ${stderrOutput}`
         return this.connectToParentProcessViaStdio();
       case "stdio":
         return this.connectToChildProcessViaStdio();
+      case "inprocess":
+        return this.connectViaFfi();
       case "tcp":
       case "uri":
         return this.connectViaTcp();
     }
+  }
+  /** Starts the in-process FFI runtime with SDK-managed typed options. */
+  async startInProcessFfi() {
+    const entrypoint = this.resolveCliPathForFfi();
+    const { FfiRuntimeHost: FfiRuntimeHost2 } = await Promise.resolve().then(() => (init_ffiRuntimeHost(), ffiRuntimeHost_exports));
+    const environment = {};
+    if (this.options.gitHubToken) {
+      environment.COPILOT_SDK_AUTH_TOKEN = this.options.gitHubToken;
+    }
+    if (this.options.baseDirectory) {
+      environment.COPILOT_HOME = this.options.baseDirectory;
+    }
+    if (this.options.mode === "empty") {
+      environment.COPILOT_DISABLE_KEYTAR = "1";
+    }
+    const args = [];
+    if (this.options.logLevel) {
+      args.push("--log-level", this.options.logLevel);
+    }
+    if (this.options.gitHubToken) {
+      args.push("--auth-token-env", "COPILOT_SDK_AUTH_TOKEN");
+    }
+    if (!this.options.useLoggedInUser) {
+      args.push("--no-auto-login");
+    }
+    if (this.options.sessionIdleTimeoutSeconds > 0) {
+      args.push("--session-idle-timeout", this.options.sessionIdleTimeoutSeconds.toString());
+    }
+    if (this.options.enableRemoteSessions) {
+      args.push("--remote");
+    }
+    const host = FfiRuntimeHost2.create(
+      entrypoint,
+      _CopilotClient.getNapiPrebuildsFolder(entrypoint),
+      environment,
+      args
+    );
+    this.ffiHost = host;
+    await host.start();
+  }
+  /**
+   * Connect to the in-process FFI runtime host over its receive/send streams,
+   * reusing the same `vscode-jsonrpc` framing as the stdio transport.
+   */
+  async connectViaFfi() {
+    if (!this.ffiHost) {
+      throw new Error("In-process FFI runtime host not started");
+    }
+    this.messageWriter = new TeardownResilientStreamMessageWriter(this.ffiHost.sendStream);
+    this.connection = (0, import_node2.createMessageConnection)(
+      new import_node2.StreamMessageReader(this.ffiHost.receiveStream),
+      this.messageWriter
+    );
+    this.attachConnectionHandlers();
+    this.connection.listen();
+  }
+  /**
+   * Resolves the CLI entrypoint used for in-process FFI hosting: `COPILOT_CLI_PATH`
+   * when set, otherwise the bundled platform-package entrypoint.
+   */
+  resolveCliPathForFfi() {
+    return this.resolvedEnv.COPILOT_CLI_PATH ?? getBundledCliPath();
+  }
+  /**
+   * Returns the napi prebuilds folder name for the current host — the
+   * `<node-platform>-<arch>` convention (e.g. `win32-x64`, `darwin-arm64`,
+   * `linux-x64`, `linuxmusl-x64`) under which the runtime ships
+   * `prebuilds/<folder>/runtime.node`.
+   */
+  static getNapiPrebuildsFolder(entrypoint) {
+    const arch = process.arch;
+    if (arch !== "x64" && arch !== "arm64") {
+      throw new Error(`Unsupported architecture '${arch}' for in-process FFI hosting.`);
+    }
+    let platform = process.platform;
+    if (platform === "linux" && _CopilotClient.isMusl(entrypoint)) {
+      platform = "linuxmusl";
+    }
+    return `${platform}-${arch}`;
+  }
+  static isMusl(entrypoint) {
+    if (entrypoint.includes(`copilot-linuxmusl-${process.arch}`)) {
+      return true;
+    }
+    if (entrypoint.includes(`copilot-linux-${process.arch}`)) {
+      return false;
+    }
+    const report = process.report?.getReport();
+    const header = report && "header" in report ? report.header : void 0;
+    return header !== void 0 && header.glibcVersionRuntime === void 0;
   }
   /**
    * Connect to child via stdio pipes
@@ -7986,13 +10576,21 @@ stderr: ${stderrOutput}`
       throw new Error("CLI process not started");
     }
     this.cliProcess.stdin?.on("error", (err) => {
-      if (!this.forceStopping) {
-        throw err;
+      if (this.forceStopping) {
+        return;
+      }
+      this.state = "error";
+      const reason = err instanceof Error ? err.stack ?? err.message : String(err);
+      this.logDebug(`stdin pipe error: ${reason}`);
+      try {
+        this.connection?.dispose();
+      } catch {
       }
     });
+    this.messageWriter = new TeardownResilientStreamMessageWriter(this.cliProcess.stdin);
     this.connection = (0, import_node2.createMessageConnection)(
       new import_node2.StreamMessageReader(this.cliProcess.stdout),
-      new import_node2.StreamMessageWriter(this.cliProcess.stdin)
+      this.messageWriter
     );
     this.attachConnectionHandlers();
     this.connection.listen();
@@ -8004,9 +10602,10 @@ stderr: ${stderrOutput}`
     if (this.cliProcess) {
       throw new Error("CLI child process was unexpectedly started in parent process mode");
     }
+    this.messageWriter = new TeardownResilientStreamMessageWriter(process.stdout);
     this.connection = (0, import_node2.createMessageConnection)(
       new import_node2.StreamMessageReader(process.stdin),
-      new import_node2.StreamMessageWriter(process.stdout)
+      this.messageWriter
     );
     this.attachConnectionHandlers();
     this.connection.listen();
@@ -8018,7 +10617,7 @@ stderr: ${stderrOutput}`
     if (!this.runtimePort) {
       throw new Error("Server port not available");
     }
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve2, reject) => {
       this.socket = new Socket();
       const connectionTimeout = setTimeout(() => {
         this.socket?.destroy();
@@ -8026,13 +10625,14 @@ stderr: ${stderrOutput}`
       }, 1e4);
       this.socket.connect(this.runtimePort, this.actualHost, () => {
         clearTimeout(connectionTimeout);
+        this.messageWriter = new TeardownResilientStreamMessageWriter(this.socket);
         this.connection = (0, import_node2.createMessageConnection)(
           new import_node2.StreamMessageReader(this.socket),
-          new import_node2.StreamMessageWriter(this.socket)
+          this.messageWriter
         );
         this.attachConnectionHandlers();
         this.connection.listen();
-        resolve();
+        resolve2();
       });
       this.socket.on("error", (error) => {
         clearTimeout(connectionTimeout);
@@ -8063,10 +10663,6 @@ stderr: ${stderrOutput}`
       async (params) => await this.handleAutoModeSwitchRequest(params)
     );
     this.connection.onRequest(
-      "hooks.invoke",
-      async (params) => await this.handleHooksInvoke(params)
-    );
-    this.connection.onRequest(
       "systemMessage.transform",
       async (params) => await this.handleSystemMessageTransform(params)
     );
@@ -8076,6 +10672,13 @@ stderr: ${stderrOutput}`
       if (!session) throw new Error(`No session found for sessionId: ${sessionId}`);
       return session.clientSessionApis;
     });
+    registerClientGlobalApiHandlers(this.connection, this.clientGlobalHandlers);
+    this.connection.onRequest(
+      "hooks.invoke",
+      async (params) => {
+        return await this.handleHooksInvoke(params);
+      }
+    );
     this.connection.onClose(() => {
       this.state = "disconnected";
     });
@@ -8088,8 +10691,9 @@ stderr: ${stderrOutput}`
       return;
     }
     const session = this.sessions.get(notification.sessionId);
+    const event = notification.event;
     if (session) {
-      session._dispatchEvent(notification.event);
+      session._dispatchEvent(event);
     }
   }
   handleSessionLifecycleNotification(notification) {
@@ -8193,7 +10797,7 @@ stderr: ${stderrOutput}`
   }
 };
 
-// node_modules/.pnpm/@github+copilot-sdk@1.0.3/node_modules/@github/copilot-sdk/dist/extension.js
+// node_modules/.pnpm/@github+copilot-sdk@1.0.9-preview.2/node_modules/@github/copilot-sdk/dist/extension.js
 async function joinSession(config = {}) {
   const sessionId = process.env.SESSION_ID;
   if (!sessionId) {
@@ -8202,17 +10806,28 @@ async function joinSession(config = {}) {
     );
   }
   const client = new CopilotClient({ _internalConnection: { kind: "parent-process" } });
-  const { extensionSdkPath: _stripped, ...rest } = config;
+  const {
+    extensionSdkPath: _stripped,
+    factories,
+    ...rest
+  } = config;
   void _stripped;
-  return client.resumeSession(sessionId, {
-    ...rest,
-    onPermissionRequest: config.onPermissionRequest ?? defaultJoinSessionPermissionHandler,
-    suppressResumeEvent: config.suppressResumeEvent ?? true
-  });
+  return client.resumeSessionForExtension(
+    sessionId,
+    {
+      ...rest,
+      onPermissionRequest: config.onPermissionRequest ?? defaultJoinSessionPermissionHandler,
+      suppressResumeEvent: config.suppressResumeEvent ?? true
+    },
+    factories
+  );
 }
 export {
   Canvas,
   CanvasError,
+  FactoryResumeError,
   createCanvas,
+  defineFactory,
+  isFactoryRunTerminal,
   joinSession
 };

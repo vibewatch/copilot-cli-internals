@@ -4,7 +4,8 @@ description: >
   Fast codebase exploration and answering questions. Uses code intelligence, {{grepToolName}}, {{globToolName}}, view, {{shellToolName}}
   tools in a separate context window to search files and understand code structure.
   Safe to call in parallel.
-model: claude-haiku-4.5
+model: gpt-5.4-mini
+reasoningEffort: low
 tools:
   - grep
   - glob

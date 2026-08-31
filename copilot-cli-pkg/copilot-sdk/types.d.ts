@@ -3,11 +3,14 @@
  */
 import type { Canvas } from "./canvas.js";
 import type { SessionFsProvider } from "./sessionFsProvider.js";
-import type { ReasoningSummary, SessionEvent as GeneratedSessionEvent } from "./generated/session-events.js";
+import type { CopilotRequestHandler } from "./copilotRequestHandler.js";
+import type { ReasoningSummary, SessionLimitsConfig, SessionEvent as GeneratedSessionEvent } from "./generated/session-events.js";
 import type { CopilotSession } from "./session.js";
-import type { ModelBillingTokenPrices, OpenCanvasInstance, RemoteSessionMode } from "./generated/rpc.js";
+import type { GitHubTelemetryNotification, ModelBillingTokenPrices, OpenCanvasInstance, RemoteSessionMode, CurrentToolMetadata } from "./generated/rpc.js";
 import type { ToolSet } from "./toolSet.js";
 export type { RemoteSessionMode } from "./generated/rpc.js";
+export type { CurrentToolMetadata } from "./generated/rpc.js";
+export type { GitHubTelemetryNotification, GitHubTelemetryEvent, GitHubTelemetryClientInfo, } from "./generated/rpc.js";
 export type { ModelBillingTokenPrices, ModelBillingTokenPricesLongContext, } from "./generated/rpc.js";
 export type SessionEvent = GeneratedSessionEvent;
 export type { ReasoningSummary } from "./generated/session-events.js";
@@ -17,6 +20,12 @@ export type { SessionFsFileInfo } from "./sessionFsProvider.js";
 export type { SessionFsSqliteQueryResult } from "./sessionFsProvider.js";
 export type { SessionFsSqliteQueryType } from "./sessionFsProvider.js";
 export type { SessionFsSqliteProvider } from "./sessionFsProvider.js";
+export type { SessionFsSqliteStatement } from "./sessionFsProvider.js";
+export type { SessionFsSqliteTransactionErrorClass } from "./sessionFsProvider.js";
+export { SessionFsSqliteTransactionFailure } from "./sessionFsProvider.js";
+export type { LlmInferenceHeaders } from "./generated/rpc.js";
+export type { CopilotRequestContext } from "./copilotRequestHandler.js";
+export { CopilotRequestHandler, CopilotWebSocketHandler, CopilotWebSocketCloseStatus, CopilotWebSocketForwarder, } from "./copilotRequestHandler.js";
 /**
  * Options for creating a CopilotClient
  */
@@ -58,22 +67,54 @@ export interface TelemetryConfig {
  * Configures how a {@link CopilotClient} connects to the Copilot runtime.
  * Construct via the factory functions on {@link RuntimeConnection}.
  */
-export type RuntimeConnection = StdioRuntimeConnection | TcpRuntimeConnection | UriRuntimeConnection;
+export type RuntimeConnection = StdioRuntimeConnection | InProcessRuntimeConnection | TcpRuntimeConnection | UriRuntimeConnection;
 /**
- * Spawns a runtime child process and communicates over its stdin/stdout.
- * This is the default if no {@link CopilotClientOptions.connection} is set.
+ * Shared shape for the transports that spawn a runtime **child process**
+ * ({@link StdioRuntimeConnection} and {@link TcpRuntimeConnection}).
  */
-export interface StdioRuntimeConnection {
-    readonly kind: "stdio";
+export interface ChildProcessRuntimeConnection {
     /** Path to the runtime executable. When omitted, the bundled runtime is used. */
     readonly path?: string;
     /** Extra command-line arguments to pass to the runtime process. */
     readonly args?: readonly string[];
+    /**
+     * Environment variables for the spawned runtime child process, replacing the
+     * inherited environment. Cannot be combined with
+     * {@link CopilotClientOptions.env}; setting both throws when the client is
+     * constructed. When omitted, the client-level env (or `process.env`) is used.
+     */
+    readonly env?: Record<string, string>;
+}
+/**
+ * Spawns a runtime child process and communicates over its stdin/stdout.
+ * This is the default if no {@link CopilotClientOptions.connection} is set.
+ */
+export interface StdioRuntimeConnection extends ChildProcessRuntimeConnection {
+    readonly kind: "stdio";
+}
+/**
+ * Hosts the runtime in-process by loading the native runtime library and speaking
+ * JSON-RPC over its C ABI (FFI), instead of spawning a runtime child process. The
+ * native host spawns the CLI worker itself. Construct via
+ * {@link RuntimeConnection.forInProcess}.
+ *
+ * @experimental The in-process (FFI) transport is experimental and its behavior may
+ * change. Per-client options that are lowered to environment variables — including
+ * {@link CopilotClientOptions.env}, {@link CopilotClientOptions.telemetry},
+ * {@link CopilotClientOptions.gitHubToken}, and
+ * {@link CopilotClientOptions.baseDirectory} — are **not** honored with this
+ * transport, because the native runtime loads into the shared host process and its
+ * worker inherits that process's ambient environment. To configure the in-process
+ * runtime, set the corresponding environment variables on the host process before
+ * constructing the client. See https://github.com/github/copilot-sdk/issues/1934.
+ */
+export interface InProcessRuntimeConnection {
+    readonly kind: "inprocess";
 }
 /**
  * Spawns a runtime child process that listens on a TCP socket and connects to it.
  */
-export interface TcpRuntimeConnection {
+export interface TcpRuntimeConnection extends ChildProcessRuntimeConnection {
     readonly kind: "tcp";
     /**
      * TCP port to listen on. `0` (the default) auto-allocates a free port.
@@ -86,10 +127,6 @@ export interface TcpRuntimeConnection {
      * loopback listener is safe by default.
      */
     readonly connectionToken?: string;
-    /** Path to the runtime executable. When omitted, the bundled runtime is used. */
-    readonly path?: string;
-    /** Extra command-line arguments to pass to the runtime process. */
-    readonly args?: readonly string[];
 }
 /**
  * Connects to an already-running runtime at the specified URL. The SDK does not
@@ -114,6 +151,7 @@ export declare const RuntimeConnection: {
     readonly forStdio: (opts?: {
         path?: string;
         args?: readonly string[];
+        env?: Record<string, string>;
     }) => StdioRuntimeConnection;
     /**
      * Spawn a runtime child process that listens on a TCP socket and connect to it.
@@ -123,6 +161,7 @@ export declare const RuntimeConnection: {
         connectionToken?: string;
         path?: string;
         args?: readonly string[];
+        env?: Record<string, string>;
     }) => TcpRuntimeConnection;
     /**
      * Connect to an already-running runtime at the given URL. The SDK does not
@@ -131,6 +170,16 @@ export declare const RuntimeConnection: {
     readonly forUri: (url: string, opts?: {
         connectionToken?: string;
     }) => UriRuntimeConnection;
+    /**
+     * Host the runtime in-process over the native runtime library's C ABI (FFI).
+     *
+     * @experimental Per-client options lowered to environment variables (`env`,
+     * `telemetry`, `gitHubToken`, `baseDirectory`) are **not** honored in-process;
+     * the worker inherits the host process's ambient environment. Set the
+     * corresponding environment variables on the host process instead. See
+     * https://github.com/github/copilot-sdk/issues/1934.
+     */
+    readonly forInProcess: () => InProcessRuntimeConnection;
 };
 /**
  * Controls SDK defaults for ambient features.
@@ -244,6 +293,40 @@ export interface CopilotClientOptions {
      */
     sessionFs?: SessionFsConfig;
     /**
+     * Custom handler for outbound model-layer requests (experimental).
+     *
+     * When provided, the client registers as the runtime's request handler
+     * on connection: every outbound model-layer request the runtime would
+     * otherwise have issued itself — plain HTTP, streaming SSE, and
+     * WebSocket — is dispatched back to the handler over JSON-RPC. The
+     * handler returns the response verbatim, exactly as if the runtime had
+     * issued the request itself.
+     *
+     * Subclass {@link CopilotRequestHandler} and override the hooks you need;
+     * an instance that overrides nothing is a transparent pass-through.
+     *
+     * v1 notes:
+     * - HTTP (buffered and streaming SSE) and WebSocket transports are all
+     *   intercepted. The handler receives a `transport` discriminator on the
+     *   {@link CopilotRequestContext} for both.
+     * - The handler is set process-globally on the runtime; the same
+     *   handler is invoked for every session created on this client.
+     *
+     * @experimental
+     */
+    requestHandler?: CopilotRequestHandler;
+    /**
+     * Experimental. Receives GitHub telemetry events the runtime forwards to
+     * this connection. When set, the client opts each session it creates or
+     * resumes into telemetry forwarding and dispatches each
+     * `gitHubTelemetry.event` notification to this connection-global handler;
+     * each {@link GitHubTelemetryNotification} carries its originating
+     * `sessionId`.
+     *
+     * @experimental
+     */
+    onGitHubTelemetry?: (notification: GitHubTelemetryNotification) => void | Promise<void>;
+    /**
      * Server-wide idle timeout for sessions in seconds.
      * Sessions without activity for this duration are automatically cleaned up.
      * Set to 0 or omit to disable (sessions live indefinitely).
@@ -278,6 +361,10 @@ export type ToolResultObject = {
     error?: string;
     sessionLog?: string;
     toolTelemetry?: ToolTelemetry;
+    /**
+     * Names of tools returned by a tool-search tool.
+     */
+    toolReferences?: string[];
 };
 export type ToolResult = string | ToolResultObject;
 /**
@@ -333,6 +420,14 @@ export interface ToolInvocation {
     toolCallId: string;
     toolName: string;
     arguments: unknown;
+    /**
+     * Snapshot of the session's currently initialized tools. Populated by the
+     * SDK only when this invocation targets the built-in tool-search tool
+     * (`tool_search_tool`), so a tool-search override can rank/filter the live
+     * catalog — including MCP tools configured in settings — without issuing its
+     * own RPC. `undefined` for every other tool invocation.
+     */
+    availableTools?: CurrentToolMetadata[];
     /** W3C Trace Context traceparent from the CLI's execute_tool span. */
     traceparent?: string;
     /** W3C Trace Context tracestate from the CLI's execute_tool span. */
@@ -379,6 +474,14 @@ export interface Tool<TArgs = unknown> {
      * Optional; defaults to `"auto"`.
      */
     defer?: "auto" | "never";
+    /**
+     * Opaque, host-defined metadata associated with the tool definition.
+     *
+     * Keys are namespaced and are not part of the stable public API. Values are
+     * not interpreted and may be recognized to inform host-specific behavior.
+     * Unknown keys are preserved and round-tripped untouched.
+     */
+    metadata?: Record<string, unknown>;
 }
 /**
  * Helper to define a tool with Zod schema and get type inference for the handler.
@@ -391,7 +494,35 @@ export declare function defineTool<T = unknown>(name: string, config: {
     overridesBuiltInTool?: boolean;
     skipPermission?: boolean;
     defer?: "auto" | "never";
+    metadata?: Record<string, unknown>;
 }): Tool<T>;
+/**
+ * SDK-supplied override for the runtime's built-in tool-search behavior.
+ *
+ * Tool search lets the model discover tools on demand instead of loading every
+ * tool definition up front. When the total tool count exceeds the deferral
+ * threshold, MCP and external tools are marked as deferred and surfaced through
+ * the built-in `tool_search_tool`.
+ *
+ * To override the tool-search tool's model-facing definition and/or its
+ * execution, register a {@link Tool} named `tool_search_tool` with
+ * `overridesBuiltInTool: true`. To customize the in-prompt tool-search
+ * guidance, use the `tool_instructions` section of {@link SystemMessageConfig}
+ * in `"customize"` mode.
+ */
+export interface ToolSearchConfig {
+    /**
+     * Toggle to enable/disable tool search. When disabled, all tools are pre-loaded
+     * and the model's active tool set is not deferred.
+     */
+    enabled?: boolean;
+    /**
+     * Overrides the total tool count at which MCP and external tools are
+     * automatically deferred behind tool search. Defaults to the built-in
+     * threshold (30) when omitted.
+     */
+    deferThreshold?: number;
+}
 /**
  * Context passed to a command handler when a command is executed.
  */
@@ -622,7 +753,7 @@ export interface ToolCallResponsePayload {
  * Known system message section identifiers for the "customize" mode.
  * Each section corresponds to a distinct part of the system prompt.
  */
-export type SystemMessageSection = "identity" | "tone" | "tool_efficiency" | "environment_context" | "code_change_rules" | "guidelines" | "safety" | "tool_instructions" | "custom_instructions" | "runtime_instructions" | "last_instructions";
+export type SystemMessageSection = "preamble" | "identity" | "tone" | "tool_efficiency" | "environment_context" | "code_change_rules" | "guidelines" | "safety" | "tool_instructions" | "custom_instructions" | "runtime_instructions" | "last_instructions";
 /** Section metadata for documentation and tooling. */
 export declare const SYSTEM_MESSAGE_SECTIONS: Record<SystemMessageSection, {
     description: string;
@@ -638,9 +769,11 @@ export type SectionTransformFn = (currentContent: string) => string | Promise<st
  * - `"remove"`: Remove the section
  * - `"append"`: Append to existing section content
  * - `"prepend"`: Prepend to existing section content
+ * - `"preserve"`: No-op marker that opts an individually-addressable section out of a
+ *   group-level `"remove"` (e.g. keep `tone` when removing the `identity` group)
  * - `function`: Transform callback — receives current section content, returns new content
  */
-export type SectionOverrideAction = "replace" | "remove" | "append" | "prepend" | SectionTransformFn;
+export type SectionOverrideAction = "replace" | "remove" | "append" | "prepend" | "preserve" | SectionTransformFn;
 /**
  * Override operation for a single system message section.
  */
@@ -1025,6 +1158,45 @@ export type ErrorOccurredHandler = (input: ErrorOccurredHookInput, invocation: {
     sessionId: string;
 }) => Promise<ErrorOccurredHookOutput | void> | ErrorOccurredHookOutput | void;
 /**
+ * Input for the agent-stop hook.
+ *
+ * Fires for the top-level (main) agent when it reaches a natural terminal stop
+ * — i.e. the agent has gone idle without a pending non-terminal tool call and
+ * was not aborted or blocked by a rejected tool. (For sub-agents, the runtime
+ * fires a separate sub-agent stop lifecycle.)
+ */
+export interface AgentStopHookInput extends BaseHookInput {
+    /** Why the agent stopped (for example, `"end_turn"`). */
+    stopReason?: string;
+    /** Path to the on-disk session transcript, when available. */
+    transcriptPath?: string;
+    /**
+     * True when this stop is a re-entry triggered by a previous agent-stop
+     * `block` decision (Claude-compatible `stop_hook_active` semantics). Lets a
+     * handler avoid blocking indefinitely.
+     */
+    stopHookActive?: boolean;
+}
+/**
+ * Output for the agent-stop hook.
+ *
+ * Return `{ decision: "block", reason }` to keep the agent running: the
+ * `reason` is enqueued as a follow-up user message so the agent continues
+ * working (for example, to remediate findings surfaced by the hook). The
+ * runtime caps consecutive blocks to prevent runaway loops. Returning nothing
+ * (or omitting `decision`) lets the agent stop normally.
+ */
+export interface AgentStopHookOutput {
+    decision?: "block";
+    reason?: string;
+}
+/**
+ * Handler for the agent-stop hook.
+ */
+export type AgentStopHandler = (input: AgentStopHookInput, invocation: {
+    sessionId: string;
+}) => Promise<AgentStopHookOutput | void> | AgentStopHookOutput | void;
+/**
  * Configuration for session hooks
  */
 export interface SessionHooks {
@@ -1067,6 +1239,15 @@ export interface SessionHooks {
      * Called when an error occurs
      */
     onErrorOccurred?: ErrorOccurredHandler;
+    /**
+     * Called when the top-level agent reaches a natural terminal stop (it went
+     * idle without pending work and was not aborted). Return
+     * `{ decision: "block", reason }` to keep the agent running with `reason`
+     * enqueued as a follow-up message — for example, to have the agent
+     * remediate findings the handler surfaced. Returning nothing lets the
+     * agent stop.
+     */
+    onAgentStop?: AgentStopHandler;
 }
 /**
  * Base interface for MCP server configuration.
@@ -1170,6 +1351,12 @@ export interface CustomAgentConfig {
      * falling back to the parent session model if unavailable.
      */
     model?: string;
+    /**
+     * Reasoning effort level for this agent's model.
+     * When omitted, the runtime resolves the effort from model configuration,
+     * then inherits the parent effort only if this agent uses the same model.
+     */
+    reasoningEffort?: ReasoningEffort;
 }
 /**
  * Configuration for the default agent (the built-in agent that handles
@@ -1251,6 +1438,68 @@ export type ReasoningEffort = "low" | "medium" | "high" | "xhigh";
  * long-context tier when the selected model supports it.
  */
 export type ContextTier = "default" | "long_context";
+/** Parsed parameters from an MCP server's WWW-Authenticate response. */
+export interface McpAuthWwwAuthenticateParams {
+    /** Parsed resource_metadata URL used for protected-resource metadata discovery, if present. */
+    resourceMetadataUrl?: string;
+    /** Parsed OAuth scope, if present. */
+    scope?: string;
+    /** Parsed OAuth error, if present. */
+    error?: string;
+}
+/** Static OAuth client configuration supplied by the MCP server, if available. */
+export interface McpAuthStaticClientConfig {
+    /** OAuth client ID for the server. */
+    clientId: string;
+    /** Optional OAuth client secret for confidential static clients. */
+    clientSecret?: string;
+    /** Optional non-default OAuth grant type. */
+    grantType?: "client_credentials";
+    /** Whether this is a public OAuth client. */
+    publicClient?: boolean;
+}
+/** MCP OAuth request that the SDK host can satisfy with a host-acquired token. */
+export interface McpAuthRequest {
+    /** Unique request identifier used by the SDK when responding. */
+    requestId: string;
+    /** Display name of the MCP server that requires OAuth. */
+    serverName: string;
+    /** URL of the MCP server that requires OAuth. */
+    serverUrl: string;
+    /** Why the runtime is requesting host-provided OAuth credentials. */
+    reason: "initial" | "refresh" | "reauth" | "upscope";
+    /** Parsed WWW-Authenticate parameters from the MCP server. */
+    wwwAuthenticateParams?: McpAuthWwwAuthenticateParams;
+    /** Raw RFC 9728 protected-resource metadata JSON fetched by the runtime, if available. */
+    resourceMetadata?: string;
+    /** Static OAuth client configuration, if the server specifies one. */
+    staticClientConfig?: McpAuthStaticClientConfig;
+}
+/** Host-provided OAuth token data for a pending MCP OAuth request. */
+export interface McpAuthToken {
+    /** Access token acquired by the SDK host. */
+    accessToken: string;
+    /** OAuth token type. Defaults to Bearer when omitted. */
+    tokenType?: string;
+    /** Token lifetime in seconds, if known. */
+    expiresIn?: number;
+}
+/**
+ * Result returned by an MCP auth request handler.
+ *
+ * Return `null`/`undefined` or `{ kind: "cancelled" }` to cancel the pending
+ * OAuth request. Return `{ kind: "token", ... }` to provide host-acquired
+ * OAuth token data.
+ */
+export type McpAuthResult = ({
+    kind: "token";
+} & McpAuthToken) | {
+    kind: "cancelled";
+};
+/** Callback invoked when an MCP server requires OAuth and the SDK host opted in. */
+export type McpAuthHandler = (request: McpAuthRequest, context: {
+    sessionId: string;
+}) => McpAuthResult | McpAuthToken | null | undefined | Promise<McpAuthResult | McpAuthToken | null | undefined>;
 /**
  * Stable extension identity for session participants that provide canvases.
  */
@@ -1259,6 +1508,121 @@ export interface ExtensionInfo {
     source: string;
     /** Stable provider name within the source namespace. */
     name: string;
+}
+/**
+ * Stable identity for a host/SDK connection that supplies built-in canvases.
+ *
+ * When set on session create or resume, the runtime uses {@link id} verbatim
+ * as the agent-facing canvas extension id, so canvases declared on a control
+ * connection survive stdio reconnect and CLI process restart instead of being
+ * re-keyed to a per-connection id. The id is opaque to the runtime; a
+ * per-window-stable value such as `app:builtin:<windowId>` is recommended. An
+ * id beginning with `connection:` is reserved and ignored by the runtime.
+ */
+export interface CanvasProviderIdentity {
+    /** Opaque, stable provider id used verbatim as the canvas extension id. */
+    id: string;
+    /** Optional display name surfaced as the canvas extension name. */
+    name?: string;
+}
+/**
+ * Static resource ceilings declared by a factory before it runs.
+ *
+ * @experimental Part of the experimental Agent Factories surface and may
+ * change or be removed in future SDK or CLI releases.
+ */
+export interface FactoryLimits {
+    /** Maximum number of factory subagents that may run concurrently. Must be positive when present. */
+    maxConcurrentSubagents?: number;
+    /** Maximum total number of factory subagents that may be spawned. Must be positive when present. */
+    maxTotalSubagents?: number;
+    /** Maximum AI credits consumed by factory subagents and descendants. This post-paid ceiling is soft. */
+    maxAiCredits?: number;
+    /**
+     * Maximum accumulated active-execution time, in seconds. Active execution includes the entire extension body,
+     * subprocess waits, queued-agent waits, and sleeps. The limit is armed from the remaining headroom when a run
+     * resumes; time between attempts is not counted. Must be finite and positive when present.
+     */
+    timeoutSeconds?: number;
+}
+/**
+ * Registration metadata for an extension-authored factory.
+ *
+ * @experimental Part of the experimental Agent Factories surface and may
+ * change or be removed in future SDK or CLI releases.
+ */
+export interface FactoryMeta {
+    /** Stable factory name used for invocation. */
+    name: string;
+    /** Human-readable factory description. */
+    description: string;
+    /** Display metadata for the progress phases the factory may report. */
+    phases: Array<{
+        title: string;
+        detail?: string;
+    }>;
+    /** Optional resource ceilings presented to the user before execution. */
+    limits?: FactoryLimits;
+}
+/**
+ * Provider-scoped options for the Copilot API (CAPI).
+ *
+ * These settings apply to the built-in Copilot API provider only. They live
+ * under their own namespace because a single session can host multiple
+ * providers (CAPI alongside BYOK via {@link ProviderConfig}), so transport and
+ * provider-level choices are conceptually per-provider rather than global.
+ */
+export interface CapiSessionOptions {
+    /**
+     * Whether to use the WebSocket transport for the CAPI Responses API.
+     *
+     * WebSocket transport is enabled by default whenever the selected model
+     * advertises the `ws:/responses` endpoint. Set this to `false` to fall back
+     * to the HTTP Responses transport instead — useful for users behind proxies
+     * where WebSocket connections fail.
+     *
+     * Setting this to `false` is equivalent to setting the
+     * `COPILOT_CLI_DISABLE_WEBSOCKET_RESPONSES` environment variable.
+     *
+     * @default true
+     */
+    enableWebSocketResponses?: boolean;
+}
+/**
+ * A single ExP (Experiment Platform) flag value. ExP assignments resolve to a
+ * string, number, boolean, or `null`.
+ */
+export type ExpFlagValue = string | number | boolean | null;
+/**
+ * A single configuration entry in a {@link CopilotExpAssignmentResponse}. Each
+ * entry carries an identifier and a bag of typed parameter values.
+ */
+export interface ExpConfigEntry {
+    /** Identifier of the configuration entry. */
+    Id: string;
+    /** Parameter values keyed by parameter name. */
+    Parameters: Record<string, ExpFlagValue>;
+}
+/**
+ * ExP ("flight") assignment data, in the same JSON shape the Copilot CLI
+ * fetches from the experimentation service. Field names are PascalCase to match
+ * the on-the-wire contract consumed by the runtime.
+ */
+export interface CopilotExpAssignmentResponse {
+    /** Enabled feature names. */
+    Features: string[];
+    /** Assigned flights keyed by flight name. */
+    Flights: Record<string, string>;
+    /** Configuration entries carrying typed parameter values. */
+    Configs: ExpConfigEntry[];
+    /** Opaque parameter-group payload passed through untouched. */
+    ParameterGroups?: unknown;
+    /** Version of the flighting configuration. */
+    FlightingVersion?: number;
+    /** Impression identifier for the assignment. */
+    ImpressionId?: string;
+    /** Assignment context string forwarded to CAPI and telemetry. */
+    AssignmentContext: string;
 }
 /**
  * Shared configuration fields used by both {@link SessionConfig} (for
@@ -1306,13 +1670,8 @@ export interface SessionConfigBase {
      */
     configDirectory?: string;
     /**
-     * When true, automatically discovers MCP server configurations (e.g. `.mcp.json`,
-     * `.vscode/mcp.json`) and skill directories from the working directory and merges
-     * them with any explicitly provided `mcpServers` and `skillDirectories`, with
-     * explicit values taking precedence on name collision.
-     *
-     * Note: custom instruction files (`.github/copilot-instructions.md`, `AGENTS.md`, etc.)
-     * are always loaded from the working directory regardless of this setting.
+     * Enables runtime discovery of supported configuration. Explicitly supplied
+     * configuration takes precedence over discovered values.
      *
      * @default false
      */
@@ -1364,6 +1723,13 @@ export interface SessionConfigBase {
      */
     extensionInfo?: ExtensionInfo;
     /**
+     * Stable identity for a host/SDK connection that supplies built-in
+     * canvases. When set, the runtime uses `id` verbatim as the agent-facing
+     * canvas extension id, so canvases declared on a control connection survive
+     * reconnect and CLI restart. Honored on session create and resume.
+     */
+    canvasProvider?: CanvasProviderIdentity;
+    /**
      * Slash commands registered for this session.
      * When the CLI has a TUI, each command appears as `/name` for the user to invoke.
      * The handler is called when the user executes the command.
@@ -1374,6 +1740,14 @@ export interface SessionConfigBase {
      * Controls how the system prompt is constructed
      */
     systemMessage?: SystemMessageConfig;
+    /**
+     * Override for the runtime's built-in tool-search behavior.
+     *
+     * To also override the tool-search tool's implementation, register a
+     * {@link Tool} named `tool_search_tool` with `overridesBuiltInTool: true` in
+     * {@link SessionConfigBase.tools}.
+     */
+    toolSearch?: ToolSearchConfig;
     /**
      * List of tool names to allow. When specified, only these tools will be available.
      *
@@ -1396,10 +1770,22 @@ export interface SessionConfigBase {
      */
     excludedTools?: string[] | ToolSet;
     /**
+     * Names of built-in agents to exclude from the session. Excluded built-in
+     * agents are hidden from discovery and cannot be selected or invoked unless
+     * a custom agent with the same name is configured.
+     */
+    excludedBuiltinAgents?: string[];
+    /**
      * Custom provider configuration (BYOK - Bring Your Own Key).
      * When specified, uses the provided API endpoint instead of the Copilot API.
      */
     provider?: ProviderConfig;
+    /**
+     * Provider-scoped options for the built-in Copilot API (CAPI), such as
+     * opting out of the WebSocket Responses transport. See
+     * {@link CapiSessionOptions}.
+     */
+    capi?: CapiSessionOptions;
     /**
      * Named BYOK provider connections (transport + credentials), referenced by
      * {@link models} entries via {@link NamedProviderConfig.name}.
@@ -1433,6 +1819,18 @@ export interface SessionConfigBase {
      * This is independent of the OpenTelemetry configuration in {@link CopilotClientOptions.telemetry}.
      */
     enableSessionTelemetry?: boolean;
+    /**
+     * Enables native model citations for supported providers.
+     *
+     * @experimental
+     */
+    enableCitations?: boolean;
+    /**
+     * Limits applied to this session's current accounting window.
+     *
+     * @experimental
+     */
+    sessionLimits?: SessionLimitsConfig;
     /**
      * When true, the runtime skips loading custom-instruction sources
      * (e.g. `.github/copilot-instructions.md`, `AGENTS.md`, `CLAUDE.md`).
@@ -1472,6 +1870,12 @@ export interface SessionConfigBase {
      * the consumer to resolve via the pending permission RPC.
      */
     onPermissionRequest?: PermissionHandler;
+    /**
+     * Optional handler for MCP OAuth requests from MCP servers.
+     * When provided, the SDK can satisfy MCP server OAuth requests with
+     * host-provided token data or cancellation.
+     */
+    onMcpAuthRequest?: McpAuthHandler;
     /**
      * Handler for user input requests from the agent.
      * When provided, enables the ask_user tool allowing the agent to ask questions.
@@ -1626,6 +2030,13 @@ export interface SessionConfigBase {
      */
     gitHubToken?: string;
     /**
+     * Opt-in: when true, the runtime self-fetches enterprise managed settings
+     * (bypass-permissions policy) at session bootstrap using the session's
+     * `gitHubToken`. Requires {@link SessionConfigBase.gitHubToken} to be set;
+     * if omitted, the runtime is expected to reject session creation (fail-closed).
+     */
+    enableManagedSettings?: boolean;
+    /**
      * When true, skips embedding-based retrieval for this session.
      * Use in multitenant deployments to prevent cross-session information leakage
      * through the shared embedding cache.
@@ -1740,6 +2151,44 @@ export interface ResumeSessionConfig extends SessionConfigBase {
     openCanvases?: OpenCanvasInstance[];
 }
 /**
+ * Arguments passed to a {@link BearerTokenProvider} callback when the runtime needs a
+ * fresh bearer token for a BYOK provider.
+ *
+ * @experimental Part of the experimental managed-identity / bearer-token-provider
+ * surface and may change or be removed in future SDK or CLI releases.
+ */
+export interface ProviderTokenArgs {
+    /**
+     * Name of the BYOK provider needing a token. For the singular, whole-session
+     * {@link ProviderConfig} this is the implicit provider name (`"default"`); for
+     * {@link NamedProviderConfig} entries it is {@link NamedProviderConfig.name}.
+     *
+     * The callback closes over its own token scope/audience; the runtime is
+     * provider-agnostic and forwards only the provider name.
+     */
+    readonly providerName: string;
+    /**
+     * Id of the session that triggered this token request. A client-level shared
+     * callback registered for many sessions can use this to resolve the owning
+     * session (e.g. via the client's session lookup) to scope token acquisition
+     * or caching per session.
+     */
+    readonly sessionId: string;
+}
+/**
+ * Per-provider callback that resolves a bearer token on demand, returning the
+ * raw token string (without the `Bearer ` prefix). The Copilot SDK itself takes
+ * no Azure dependency: the consumer supplies this callback backed by their own
+ * identity library (for example `@azure/identity`'s
+ * `DefaultAzureCredential.getToken(scope)`), and the runtime calls it once before
+ * each outbound model request. The runtime does no caching of its own, so the
+ * callback (or the identity library it wraps) owns token caching and refresh.
+ *
+ * @experimental Part of the experimental managed-identity / bearer-token-provider
+ * surface and may change or be removed in future SDK or CLI releases.
+ */
+export type BearerTokenProvider = (args: ProviderTokenArgs) => Promise<string>;
+/**
  * Configuration for a custom API provider.
  */
 export interface ProviderConfig {
@@ -1751,6 +2200,16 @@ export interface ProviderConfig {
      * API format (openai/azure only). Defaults to "completions".
      */
     wireApi?: "completions" | "responses";
+    /**
+     * Transport for OpenAI Responses requests. Defaults to "http".
+     *
+     * Set to "websockets" to deliver Responses API requests over a persistent
+     * WebSocket connection instead of HTTP. Useful for long-running,
+     * tool-call-heavy sessions that benefit from incremental
+     * `previous_response_id` continuations. Applies to OpenAI-compatible
+     * providers using `wireApi: "responses"`.
+     */
+    transport?: "http" | "websockets";
     /**
      * API endpoint URL
      */
@@ -1766,11 +2225,24 @@ export interface ProviderConfig {
      */
     bearerToken?: string;
     /**
+     * Per-request bearer-token provider for managed-identity / on-demand auth.
+     * When set, the SDK keeps this function client-side (it is never serialized)
+     * and the runtime calls back into this client to acquire a token before each
+     * outbound request. The runtime does no caching of its own, so the callback
+     * owns token caching and refresh. When set alongside {@link apiKey} /
+     * {@link bearerToken}, this callback takes precedence: the runtime applies
+     * the token it returns as the `Authorization: Bearer` header for each
+     * request and does not send the static credential.
+     *
+     * @experimental
+     */
+    bearerTokenProvider?: BearerTokenProvider;
+    /**
      * Azure-specific options
      */
     azure?: {
         /**
-         * API version. Defaults to "2024-10-21".
+         * API version. When omitted, the runtime uses the GA versionless v1 route.
          */
         apiVersion?: string;
     };
@@ -1844,6 +2316,19 @@ export interface NamedProviderConfig {
      * Takes precedence over {@link apiKey} when both are set.
      */
     bearerToken?: string;
+    /**
+     * Per-request bearer-token provider for managed-identity / on-demand auth.
+     * When set, the SDK keeps this function client-side (it is never serialized)
+     * and the runtime calls back into this client to acquire a token before each
+     * outbound request. The runtime does no caching of its own, so the callback
+     * owns token caching and refresh. When set alongside {@link apiKey} /
+     * {@link bearerToken}, this callback takes precedence: the runtime applies
+     * the token it returns as the `Authorization: Bearer` header for each
+     * request and does not send the static credential.
+     *
+     * @experimental
+     */
+    bearerTokenProvider?: BearerTokenProvider;
     /**
      * Azure-specific options.
      */

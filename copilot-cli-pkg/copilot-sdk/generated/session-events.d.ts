@@ -5,7 +5,7 @@
 /**
  * Union of all session event variants emitted by the Copilot CLI runtime.
  */
-export type SessionEvent = StartEvent | ResumeEvent | RemoteSteerableChangedEvent | ErrorEvent | IdleEvent | TitleChangedEvent | ScheduleCreatedEvent | ScheduleCancelledEvent | AutopilotObjectiveChangedEvent | InfoEvent | WarningEvent | ModelChangeEvent | ModeChangedEvent | PermissionsChangedEvent | PlanChangedEvent | TodosChangedEvent | WorkspaceFileChangedEvent | HandoffEvent | TruncationEvent | SnapshotRewindEvent | ShutdownEvent | ContextChangedEvent | UsageInfoEvent | CompactionStartEvent | CompactionCompleteEvent | TaskCompleteEvent | UserMessageEvent | PendingMessagesModifiedEvent | AssistantTurnStartEvent | AssistantIntentEvent | AssistantReasoningEvent | AssistantReasoningDeltaEvent | AssistantStreamingDeltaEvent | AssistantMessageEvent | AssistantMessageStartEvent | AssistantMessageDeltaEvent | AssistantTurnEndEvent | AssistantUsageEvent | ModelCallFailureEvent | AbortEvent | ToolUserRequestedEvent | ToolExecutionStartEvent | ToolExecutionPartialResultEvent | ToolExecutionProgressEvent | ToolExecutionCompleteEvent | SkillInvokedEvent | SubagentStartedEvent | SubagentCompletedEvent | SubagentFailedEvent | SubagentSelectedEvent | SubagentDeselectedEvent | HookStartEvent | HookEndEvent | HookProgressEvent | BinaryAssetEvent | SystemMessageEvent | SystemNotificationEvent | PermissionRequestedEvent | PermissionCompletedEvent | UserInputRequestedEvent | UserInputCompletedEvent | ElicitationRequestedEvent | ElicitationCompletedEvent | SamplingRequestedEvent | SamplingCompletedEvent | McpOauthRequiredEvent | McpOauthCompletedEvent | CustomNotificationEvent | ExternalToolRequestedEvent | ExternalToolCompletedEvent | CommandQueuedEvent | CommandExecuteEvent | CommandCompletedEvent | AutoModeSwitchRequestedEvent | AutoModeSwitchCompletedEvent | CommandsChangedEvent | CapabilitiesChangedEvent | ExitPlanModeRequestedEvent | ExitPlanModeCompletedEvent | ToolsUpdatedEvent | BackgroundTasksChangedEvent | SkillsLoadedEvent | CustomAgentsUpdatedEvent | McpServersLoadedEvent | McpServerStatusChangedEvent | ExtensionsLoadedEvent | CanvasOpenedEvent | CanvasRegistryChangedEvent | CanvasClosedEvent | ExtensionsAttachmentsPushedEvent | McpAppToolCallCompleteEvent;
+export type SessionEvent = StartEvent | ResumeEvent | RemoteSteerableChangedEvent | ErrorEvent | IdleEvent | TitleChangedEvent | ScheduleCreatedEvent | ScheduleCancelledEvent | ScheduleRearmedEvent | AutopilotObjectiveChangedEvent | InfoEvent | WarningEvent | ModelChangeEvent | ModeChangedEvent | SessionLimitsChangedEvent | PermissionsChangedEvent | PlanChangedEvent | TodosChangedEvent | WorkspaceFileChangedEvent | HandoffEvent | TruncationEvent | SnapshotRewindEvent | ShutdownEvent | UsageCheckpointEvent | ContextChangedEvent | UsageInfoEvent | CompactionStartEvent | CompactionCompleteEvent | TaskCompleteEvent | UserMessageEvent | PendingMessagesModifiedEvent | AssistantTurnStartEvent | AssistantIntentEvent | AssistantServerToolProgressEvent | AssistantReasoningEvent | AssistantReasoningDeltaEvent | AssistantToolCallDeltaEvent | AssistantStreamingDeltaEvent | AssistantMessageEvent | AssistantMessageStartEvent | AssistantMessageDeltaEvent | AssistantTurnEndEvent | AssistantIdleEvent | AssistantUsageEvent | ModelCallFailureEvent | AbortEvent | ToolUserRequestedEvent | ToolExecutionStartEvent | ToolExecutionPartialResultEvent | ToolExecutionProgressEvent | ToolExecutionCompleteEvent | ToolSearchActivatedEvent | SkillInvokedEvent | SubagentStartedEvent | SubagentCompletedEvent | SubagentFailedEvent | SubagentSelectedEvent | SubagentDeselectedEvent | HookStartEvent | HookEndEvent | HookProgressEvent | BinaryAssetEvent | SystemMessageEvent | SystemNotificationEvent | PermissionRequestedEvent | PermissionCompletedEvent | UserInputRequestedEvent | UserInputCompletedEvent | ElicitationRequestedEvent | ElicitationCompletedEvent | SamplingRequestedEvent | SamplingCompletedEvent | McpOauthRequiredEvent | McpOauthCompletedEvent | McpHeadersRefreshRequiredEvent | McpHeadersRefreshCompletedEvent | CustomNotificationEvent | ExternalToolRequestedEvent | ExternalToolCompletedEvent | CommandQueuedEvent | CommandExecuteEvent | CommandCompletedEvent | AutoModeSwitchRequestedEvent | AutoModeSwitchCompletedEvent | SessionLimitsExhaustedRequestedEvent | SessionLimitsExhaustedCompletedEvent | AutoModeResolvedEvent | ManagedSettingsResolvedEvent | ManagedSettingsEnforcedEvent | CommandsChangedEvent | CapabilitiesChangedEvent | ExitPlanModeRequestedEvent | ExitPlanModeCompletedEvent | ToolsUpdatedEvent | BackgroundTasksChangedEvent | FactoryRunUpdatedEvent | SkillsLoadedEvent | CustomAgentsUpdatedEvent | McpServersLoadedEvent | McpServerStatusChangedEvent | McpToolsListChangedEvent | McpResourcesListChangedEvent | McpPromptsListChangedEvent | ExtensionsLoadedEvent | CanvasOpenedEvent | CanvasRegistryChangedEvent | CanvasClosedEvent | CanvasUnavailableEvent | CanvasRecordedEvent | CanvasRemovedEvent | ExtensionsAttachmentsPushedEvent | McpAppToolCallCompleteEvent;
 /**
  * Hosting platform type of the repository (github or ado)
  */
@@ -32,6 +32,24 @@ export type ReasoningSummary =
  | "concise"
 /** Request a detailed summary of the model's reasoning. */
  | "detailed";
+/**
+ * Output verbosity level used for supported model calls (e.g. "low", "medium", "high")
+ */
+export type Verbosity = 
+/** A terse response was requested. */
+"low"
+/** A medium amount of response detail was requested. */
+ | "medium"
+/** A more detailed response was requested. */
+ | "high";
+/**
+ * Who created the schedule: `user` (an explicit user action such as `/every` or `/after`) or `model` (the agent via the `manage_schedule` tool). Gates whether a scheduled skill that opted out of model invocation may fire: only user-created schedules may.
+ */
+export type ScheduleOrigin = 
+/** The schedule was created by an explicit user action, such as `/every` or `/after`. */
+"user"
+/** The schedule was created by the agent via the `manage_schedule` tool. */
+ | "model";
 /**
  * The type of operation performed on the autopilot objective state file
  */
@@ -64,6 +82,17 @@ export type SessionMode =
  | "plan"
 /** The agent is working autonomously toward task completion. */
  | "autopilot";
+/**
+ * Allow-all mode for the session.
+ */
+/** @experimental */
+export type PermissionAllowAllMode = 
+/** Permission requests follow the normal approval flow. */
+"off"
+/** Tool, path, and URL permission requests are automatically approved. */
+ | "on"
+/** Permission requests follow the normal approval flow with an LLM advisory recommendation attached; clients may choose to auto-approve requests the judge evaluated as acceptable. */
+ | "auto";
 /**
  * The type of operation performed on the plan file
  */
@@ -99,6 +128,30 @@ export type ShutdownType =
 /** The session ended because of a crash or fatal error. */
  | "error";
 /**
+ * What initiated a conversation compaction
+ */
+export type CompactionTrigger = 
+/** Background compaction started automatically because context utilization crossed the background threshold. */
+"threshold"
+/** Compaction forced by a context-limit model response (e.g. HTTP 413) before retrying the request. */
+ | "context_limit_retry"
+/** User-requested compaction, e.g. the /compact command or the history.compact API. */
+ | "manual"
+/** Emergency compaction triggered by high process memory usage. */
+ | "memory_pressure"
+/** Compaction requested while switching to a model with a smaller context window. */
+ | "model_switch";
+/**
+ * Semantic result of evaluating a task completion request
+ */
+export type TaskCompletionOutcome = 
+/** The completion request was accepted and the objective is complete. */
+"completed"
+/** The completion request was rejected because more work or validation remains. */
+ | "continue"
+/** Completion cannot proceed without intervention; the active objective is paused when one is identified. */
+ | "blocked";
+/**
  * The agent mode that was active when this message was sent
  */
 export type UserMessageAgentMode = 
@@ -111,9 +164,9 @@ export type UserMessageAgentMode =
 /** The agent is in shell-focused UI mode. */
  | "shell";
 /**
- * A user message attachment — a file, directory, code selection, blob, GitHub reference, or extension-supplied context payload
+ * A user message attachment — a file, directory, code selection, blob, GitHub reference, GitHub-anchored pointer, or extension-supplied context payload
  */
-export type Attachment = AttachmentFile | AttachmentDirectory | AttachmentSelection | AttachmentGitHubReference | AttachmentBlob | AttachmentExtensionContext;
+export type Attachment = AttachmentFile | AttachmentDirectory | AttachmentSelection | AttachmentGitHubReference | AttachmentGitHubCommit | AttachmentGitHubRelease | AttachmentGitHubActionsJob | AttachmentGitHubRepository | AttachmentGitHubFileDiff | AttachmentGitHubTreeComparison | AttachmentGitHubUrl | AttachmentGitHubFile | AttachmentGitHubSnippet | AttachmentBlob | AttachmentExtensionContext;
 /**
  * Why the binary data is absent: it exceeded the inline size limit, or its asset was unavailable
  */
@@ -133,6 +186,24 @@ export type AttachmentGitHubReferenceType =
 /** GitHub discussion reference. */
  | "discussion";
 /**
+ * How this user message was delivered to the agentic loop, relative to whether the loop was already running. This is the timing axis only; the message's origin (human vs. system/command/schedule/skill/etc.) is carried separately by `source`. A system-injected message has a delivery too — e.g. a background-task notification waking an idle agent is `idle`, the same mechanism as a human starting a fresh turn.
+ */
+export type UserMessageDelivery = 
+/** Delivered while the loop was idle; starts its own run immediately (a human's fresh turn, or a system notification waking an idle agent). */
+"idle"
+/** Injected into the current in-flight run while the agent was busy (immediate mode). */
+ | "steering"
+/** Enqueued while the agent was busy; processed as its own run afterward. */
+ | "queued";
+/**
+ * Tool call type: "function" for standard tool calls, "custom" for grammar-based tool calls. Defaults to "function" when absent.
+ */
+export type AssistantMessageToolRequestType = 
+/** Standard function-style tool call. */
+"function"
+/** Custom grammar-based tool call. */
+ | "custom";
+/**
  * The system that produced a citation.
  */
 /** @experimental */
@@ -148,14 +219,6 @@ export type CitationProvider =
  */
 /** @experimental */
 export type CitationLocation = CitationLocationChar | CitationLocationPage | CitationLocationBlock;
-/**
- * Tool call type: "function" for standard tool calls, "custom" for grammar-based tool calls. Defaults to "function" when absent.
- */
-export type AssistantMessageToolRequestType = 
-/** Standard function-style tool call. */
-"function"
-/** Custom grammar-based tool call. */
- | "custom";
 /**
  * API endpoint used for this model call, matching CAPI supported_endpoints vocabulary
  */
@@ -177,6 +240,14 @@ export type ModelCallFailureBadRequestKind =
 /** The 400 response carried a structured CAPI error envelope (deterministic validation failure). */
  | "structured_error";
 /**
+ * Boundary that produced a model call failure
+ */
+export type ModelCallFailureKind = 
+/** The provider returned an API error response. */
+"api"
+/** The request transport failed before a usable API response completed. */
+ | "transport";
+/**
  * Where the failed model call originated
  */
 export type ModelCallFailureSource = 
@@ -186,6 +257,14 @@ export type ModelCallFailureSource =
  | "subagent"
 /** Model call from MCP sampling. */
  | "mcp_sampling";
+/**
+ * Transport used for a failed model call
+ */
+export type ModelCallFailureTransport = 
+/** HTTP transport, including SSE streams. */
+"http"
+/** WebSocket transport. */
+ | "websocket";
 /**
  * Finite reason code describing why the current turn was aborted
  */
@@ -236,7 +315,7 @@ export type BinaryAssetReferenceType =
 /**
  * A content block within a tool result, which may be text, terminal output, image, audio, or a resource
  */
-export type ToolExecutionCompleteContent = ToolExecutionCompleteContentText | ToolExecutionCompleteContentTerminal | ToolExecutionCompleteContentImage | ToolExecutionCompleteContentAudio | ToolExecutionCompleteContentResourceLink | ToolExecutionCompleteContentResource;
+export type ToolExecutionCompleteContent = ToolExecutionCompleteContentText | ToolExecutionCompleteContentTerminal | ToolExecutionCompleteContentShellExit | ToolExecutionCompleteContentImage | ToolExecutionCompleteContentAudio | ToolExecutionCompleteContentResourceLink | ToolExecutionCompleteContentResource;
 /**
  * Theme variant this icon is intended for
  */
@@ -286,7 +365,7 @@ export type SystemMessageRole =
 /**
  * Structured metadata identifying what triggered this notification
  */
-export type SystemNotification = SystemNotificationAgentCompleted | SystemNotificationAgentIdle | SystemNotificationNewInboxMessage | SystemNotificationShellCompleted | SystemNotificationShellDetachedCompleted | SystemNotificationInstructionDiscovered;
+export type SystemNotification = SystemNotificationAgentCompleted | SystemNotificationAgentIdle | SystemNotificationNewInboxMessage | SystemNotificationShellCompleted | SystemNotificationShellDetachedCompleted | SystemNotificationInstructionDiscovered | SystemNotificationUnclassified;
 /**
  * Whether the agent completed successfully or failed
  */
@@ -319,6 +398,34 @@ export type PermissionRequestMemoryDirection =
  * Derived user-facing permission prompt details for UI consumers
  */
 export type PermissionPromptRequest = PermissionPromptRequestCommands | PermissionPromptRequestWrite | PermissionPromptRequestRead | PermissionPromptRequestMcp | PermissionPromptRequestUrl | PermissionPromptRequestMemory | PermissionPromptRequestCustomTool | PermissionPromptRequestPath | PermissionPromptRequestHook | PermissionPromptRequestExtensionManagement | PermissionPromptRequestExtensionPermissionAccess;
+/**
+ * Why the auto-approval judge produced no usable recommendation. Present only alongside an `error` recommendation, where the human-readable reason is a fixed string and therefore cannot distinguish these cases. Intended to make a judge failure reportable by a consumer that has no access to the host's logs.
+ */
+/** @experimental */
+export type AutoApprovalJudgeFailureReason = 
+/** The judge model call exceeded its deadline. */
+"timeout"
+/** The judge model call was cancelled before it returned. */
+ | "abort"
+/** The judge model call completed but returned no content. */
+ | "empty_response"
+/** The judge model call failed (for example a transport, authentication, or rate-limit error). */
+ | "model_error"
+/** The judge model replied, but the reply carried no ALLOW/DENY verdict. */
+ | "parse_error";
+/**
+ * Outcome of the auto-approval safety judge for a permission request. Present only when auto mode is enabled; its absence means the judge did not evaluate the request (auto mode was off).
+ */
+/** @experimental */
+export type AutoApprovalRecommendation = 
+/** The judge evaluated the request and recommends automatically approving it. */
+"approve"
+/** The judge evaluated the request and does not recommend auto-approving it; explicit approval is required. Whether that means prompting, denying, or something else is the consumer's decision. */
+ | "requireApproval"
+/** Auto mode is enabled, but this request category is never auto-approvable (for example, sandbox-bypass requests), so the judge was not consulted. */
+ | "excluded"
+/** The judge was consulted but did not return a usable recommendation, so the request requires explicit approval. */
+ | "error";
 /**
  * Underlying permission kind that needs path approval
  */
@@ -356,6 +463,18 @@ export type ElicitationCompletedAction =
 /** The user dismissed the request. */
  | "cancel";
 /**
+ * Reason the runtime is requesting host-provided MCP OAuth credentials
+ */
+export type McpOauthRequestReason = 
+/** Initial credentials are required before connecting to the MCP server. */
+"initial"
+/** The current host-provided credential was rejected and a replacement is requested. */
+ | "refresh"
+/** The server requires a new host authorization flow before continuing. */
+ | "reauth"
+/** The server requires a credential with additional scope or audience. */
+ | "upscope";
+/**
  * How the pending MCP OAuth request was completed
  */
 export type McpOauthCompletionOutcome = 
@@ -363,6 +482,26 @@ export type McpOauthCompletionOutcome =
 "token"
 /** The request completed without an OAuth provider. */
  | "cancelled";
+/**
+ * Why dynamic headers are being requested.
+ */
+export type McpHeadersRefreshRequiredReason = 
+/** The transport is making its first dynamic header request for this server. */
+"startup"
+/** The previously cached dynamic headers expired. */
+ | "ttl-expired"
+/** The server returned 401 and stale dynamic headers were invalidated. */
+ | "auth-failed";
+/**
+ * How the pending MCP headers refresh request resolved.
+ */
+export type McpHeadersRefreshCompletedOutcome = 
+/** The host supplied dynamic headers. */
+"headers"
+/** The host responded with no dynamic headers. */
+ | "none"
+/** No response arrived within the bounded window. */
+ | "timeout";
 /**
  * The user's auto-mode-switch choice
  */
@@ -373,6 +512,58 @@ export type AutoModeSwitchResponse =
  | "yes_always"
 /** Do not switch models. */
  | "no";
+/**
+ * User action selected for an exhausted session limit.
+ */
+export type SessionLimitsExhaustedResponseAction = 
+/** Increase the current max by an exact AI Credits amount. */
+"add"
+/** Set a new absolute max AI Credits value. */
+ | "set"
+/** Remove the current session limit. */
+ | "unset"
+/** Leave the limit unchanged and cancel the blocked model request. */
+ | "cancel";
+/**
+ * Coarse request-difficulty bucket for UX explainability
+ */
+export type AutoModeResolvedReasoningBucket = 
+/** The request looks low-reasoning; a lighter model is appropriate. */
+"low"
+/** The request needs a moderate amount of reasoning. */
+ | "medium"
+/** The request looks high-reasoning; a stronger model is appropriate. */
+ | "high";
+/**
+ * Which channel supplied the effective enterprise managed settings (highest-authority present layer wins wholesale)
+ */
+export type ManagedSettingsResolvedSource = 
+/** Account/org policy self-fetched from the GitHub managed-settings endpoint (higher authority). */
+"server"
+/** Device-level MDM policy discovered from plist/registry/file (lower authority). */
+ | "device"
+/** No managed policy is in force (no layer contributed). */
+ | "none";
+/**
+ * The category of runtime action that enterprise managed settings governed (blocked or capped)
+ */
+export type ManagedSettingsEnforcedAction = 
+/** An attempt to turn on a bypass-permissions ("yolo") escalation was refused or capped because policy disables bypass-permissions mode. */
+"bypass_permissions_blocked";
+/**
+ * For a `bypass_permissions_blocked` action, which permission-escalation primitive was refused
+ */
+export type ManagedSettingsEnforcedEscalation = 
+/** Full allow-all ("/allow-all on") permissions — auto-approving tools, paths, and URLs. */
+"allow_all"
+/** Auto-approval of all tool permission requests. */
+ | "approve_all"
+/** Advisory auto-approval ("/allow-all auto") mode — keeps normal prompt paths and adds LLM-advised approval, distinct from full allow-all. */
+ | "auto_approval"
+/** Unrestricted filesystem access outside the session's allowed directories. */
+ | "unrestricted_paths"
+/** Unrestricted URL fetch access. */
+ | "unrestricted_urls";
 /**
  * Exit plan mode action
  */
@@ -468,14 +659,6 @@ export type ExtensionsLoadedExtensionStatus =
 /** The extension process is starting. */
  | "starting";
 /**
- * Runtime-controlled routing state for the instance. "ready" when the provider connection is live; "stale" when the provider has gone away and the instance is awaiting rebinding.
- */
-export type CanvasOpenedAvailability = 
-/** Provider connection is live; actions can be invoked. */
-"ready"
-/** Provider has gone away; the instance is awaiting rebinding. */
- | "stale";
-/**
  * Session event "session.start". Session initialization metadata including context and configuration
  */
 export interface StartEvent {
@@ -547,10 +730,12 @@ export interface StartData {
      * Unique identifier for the session
      */
     sessionId: string;
+    sessionLimits?: SessionLimitsConfig;
     /**
      * ISO 8601 timestamp when the session was created
      */
     startTime: string;
+    verbosity?: Verbosity;
     /**
      * Schema version number for the session event format
      */
@@ -582,6 +767,10 @@ export interface WorkingDirectoryContext {
     headCommit?: string;
     hostType?: WorkingDirectoryContextHostType;
     /**
+     * Set on the immediate preliminary event of a working-directory change, before the git context is resolved. A settled follow-up event (enriched with git context, or cwd-only for a non-repository) is always emitted afterward, so observers may defer to it. Absent on standalone/final events (e.g. relay context changes).
+     */
+    pendingGitContext?: boolean;
+    /**
      * Repository identifier derived from the git remote URL ("owner/name" for GitHub, "org/project/repo" for Azure DevOps)
      */
     repository?: string;
@@ -589,6 +778,15 @@ export interface WorkingDirectoryContext {
      * Raw host string from the git remote URL (e.g. "github.com", "mycompany.ghe.com", "dev.azure.com")
      */
     repositoryHost?: string;
+}
+/**
+ * Optional session limits.
+ */
+export interface SessionLimitsConfig {
+    /**
+     * Maximum AI Credits allowed across the session's current accounting window.
+     */
+    maxAiCredits?: number;
 }
 /**
  * Session event "session.resume". Session resume metadata including current context and event count
@@ -634,7 +832,7 @@ export interface ResumeData {
      */
     contextTier?: ContextTier | null;
     /**
-     * When true, tool calls and permission requests left in flight by the previous session lifetime remain pending after resume and the agentic loop awaits their results. User sends are queued behind the pending work until all such requests reach a terminal state. When false (the default), any such tool calls and permission requests are immediately marked as interrupted on resume.
+     * When true, tool calls and permission requests left in flight by the previous session lifetime remain pending after resume and the agentic loop awaits their results. User sends are queued behind the pending work until all such requests reach a terminal state. When false or omitted, pending work is normally marked as interrupted unless the resume passively joined live work owned by another client; sessionWasActive distinguishes that case.
      */
     continuePendingWork?: boolean;
     /**
@@ -663,9 +861,14 @@ export interface ResumeData {
      */
     selectedModel?: string;
     /**
-     * True when this resume attached to a session that the runtime already had running in-memory (for example, an extension joining a session another client was actively driving). False (or omitted) for cold resumes — the runtime had to reconstitute the session from its persisted event log.
+     * Session limits currently configured at resume time; null when no limits are active
+     */
+    sessionLimits?: SessionLimitsConfig | null;
+    /**
+     * True when this resume passively joined a session that already had live work running in the runtime - an agent turn, a native queue run, a queued resume continuation, or an in-flight send (for example, an extension joining a session another client was actively driving). False (or omitted) when the session had no live work or when the resume explicitly abandoned pending work, including cold resumes and suspended sessions that remain resident in memory.
      */
     sessionWasActive?: boolean;
+    verbosity?: Verbosity;
 }
 /**
  * Session event "session.remote_steerable_changed". Notifies that the session's remote steering capability has changed
@@ -909,6 +1112,7 @@ export interface ScheduleCreatedData {
      * Interval between ticks in milliseconds (relative-interval schedules)
      */
     intervalMs?: number;
+    origin?: ScheduleOrigin;
     /**
      * Prompt text that gets enqueued on every tick
      */
@@ -917,6 +1121,10 @@ export interface ScheduleCreatedData {
      * Whether the schedule re-arms after each tick (`/every`) or fires once (`/after`)
      */
     recurring?: boolean;
+    /**
+     * True for a self-paced (`dynamic`) schedule: no fixed cadence; the model arms each next run via the `manage_schedule` `wakeup` action. `nextRunAt` is model-controlled rather than auto-computed.
+     */
+    selfPaced?: boolean;
     /**
      * IANA timezone the `cron` expression is evaluated in
      */
@@ -960,6 +1168,49 @@ export interface ScheduleCancelledData {
      * Id of the scheduled prompt that was cancelled
      */
     id: number;
+}
+/**
+ * Session event "session.schedule_rearmed". Self-paced schedule re-armed for its next run
+ */
+export interface ScheduleRearmedEvent {
+    /**
+     * Sub-agent instance identifier. Absent for events from the root/main agent and session-level events.
+     */
+    agentId?: string;
+    data: ScheduleRearmedData;
+    /**
+     * When true, the event is transient and not persisted to the session event log on disk
+     */
+    ephemeral?: boolean;
+    /**
+     * Unique event identifier (UUID v4), generated when the event is emitted
+     */
+    id: string;
+    /**
+     * ID of the chronologically preceding event in the session, forming a linked chain. Null for the first event.
+     */
+    parentId: string | null;
+    /**
+     * ISO 8601 timestamp when the event was created
+     */
+    timestamp: string;
+    /**
+     * Type discriminator. Always "session.schedule_rearmed".
+     */
+    type: "session.schedule_rearmed";
+}
+/**
+ * Self-paced schedule re-armed for its next run
+ */
+export interface ScheduleRearmedData {
+    /**
+     * Id of the self-paced schedule that was re-armed
+     */
+    id: number;
+    /**
+     * Absolute time (epoch milliseconds) the model armed the next run to fire
+     */
+    nextRunAt: number;
 }
 /**
  * Session event "session.autopilot_objective_changed". Autopilot objective state file operation details indicating what changed
@@ -1155,11 +1406,13 @@ export interface ModelChangeData {
      */
     previousReasoningEffort?: string;
     previousReasoningSummary?: ReasoningSummary;
+    previousVerbosity?: Verbosity;
     /**
      * Reasoning effort level after the model change, if applicable
      */
     reasoningEffort?: string | null;
     reasoningSummary?: ReasoningSummary;
+    verbosity?: Verbosity;
 }
 /**
  * Session event "session.mode_changed". Agent mode change details including previous and new modes
@@ -1199,7 +1452,46 @@ export interface ModeChangedData {
     previousMode: SessionMode;
 }
 /**
- * Session event "session.permissions_changed". Permissions change details carrying the aggregate allow-all boolean transition.
+ * Session event "session.session_limits_changed". Session limits update details. Null clears the limits.
+ */
+export interface SessionLimitsChangedEvent {
+    /**
+     * Sub-agent instance identifier. Absent for events from the root/main agent and session-level events.
+     */
+    agentId?: string;
+    data: SessionLimitsChangedData;
+    /**
+     * When true, the event is transient and not persisted to the session event log on disk
+     */
+    ephemeral?: boolean;
+    /**
+     * Unique event identifier (UUID v4), generated when the event is emitted
+     */
+    id: string;
+    /**
+     * ID of the chronologically preceding event in the session, forming a linked chain. Null for the first event.
+     */
+    parentId: string | null;
+    /**
+     * ISO 8601 timestamp when the event was created
+     */
+    timestamp: string;
+    /**
+     * Type discriminator. Always "session.session_limits_changed".
+     */
+    type: "session.session_limits_changed";
+}
+/**
+ * Session limits update details. Null clears the limits.
+ */
+export interface SessionLimitsChangedData {
+    /**
+     * Current session limits, or null when no limits are active
+     */
+    sessionLimits: SessionLimitsConfig | null;
+}
+/**
+ * Session event "session.permissions_changed". Permissions change details carrying the aggregate allow-all transition.
  */
 export interface PermissionsChangedEvent {
     /**
@@ -1229,13 +1521,25 @@ export interface PermissionsChangedEvent {
     type: "session.permissions_changed";
 }
 /**
- * Permissions change details carrying the aggregate allow-all boolean transition.
+ * Permissions change details carrying the aggregate allow-all transition.
  */
 export interface PermissionsChangedData {
+    /**
+     * Allow-all mode after the change
+     *
+     * @experimental
+     */
+    allowAllPermissionMode?: PermissionAllowAllMode;
     /**
      * Aggregate allow-all flag after the change
      */
     allowAllPermissions: boolean;
+    /**
+     * Allow-all mode before the change
+     *
+     * @experimental
+     */
+    previousAllowAllPermissionMode?: PermissionAllowAllMode;
     /**
      * Aggregate allow-all flag before the change
      */
@@ -1645,7 +1949,7 @@ export interface ShutdownCodeChanges {
     linesRemoved: number;
 }
 /**
- * Schema for the `ShutdownModelMetric` type.
+ * Per-model shutdown metrics with request counts, token usage, nano-AI units, and token details.
  */
 export interface ShutdownModelMetric {
     requests: ShutdownModelMetricRequests;
@@ -1681,7 +1985,7 @@ export interface ShutdownModelMetricRequests {
     count?: number;
 }
 /**
- * Schema for the `ShutdownModelMetricTokenDetail` type.
+ * A token-type entry in a shutdown model metric, storing the accumulated token count.
  */
 export interface ShutdownModelMetricTokenDetail {
     /**
@@ -1715,13 +2019,52 @@ export interface ShutdownModelMetricUsage {
     reasoningTokens?: number;
 }
 /**
- * Schema for the `ShutdownTokenDetail` type.
+ * A session-wide shutdown token-type entry storing the accumulated token count.
  */
 export interface ShutdownTokenDetail {
     /**
      * Accumulated token count for this token type
      */
     tokenCount: number;
+}
+/**
+ * Session event "session.usage_checkpoint". Durable session usage checkpoint for reconstructing aggregate accounting on resume
+ */
+export interface UsageCheckpointEvent {
+    /**
+     * Sub-agent instance identifier. Absent for events from the root/main agent and session-level events.
+     */
+    agentId?: string;
+    data: UsageCheckpointData;
+    /**
+     * When true, the event is transient and not persisted to the session event log on disk
+     */
+    ephemeral?: boolean;
+    /**
+     * Unique event identifier (UUID v4), generated when the event is emitted
+     */
+    id: string;
+    /**
+     * ID of the chronologically preceding event in the session, forming a linked chain. Null for the first event.
+     */
+    parentId: string | null;
+    /**
+     * ISO 8601 timestamp when the event was created
+     */
+    timestamp: string;
+    /**
+     * Type discriminator. Always "session.usage_checkpoint".
+     */
+    type: "session.usage_checkpoint";
+}
+/**
+ * Durable session usage checkpoint for reconstructing aggregate accounting on resume
+ */
+export interface UsageCheckpointData {
+    /**
+     * Session-wide accumulated nano-AI units cost at checkpoint time
+     */
+    totalNanoAiu: number;
 }
 /**
  * Session event "session.context_changed". Updated working directory and git context after the change
@@ -1855,13 +2198,26 @@ export interface CompactionStartData {
      */
     conversationTokens?: number;
     /**
+     * Total context tokens (system + conversation + tool definitions) at compaction start, when known
+     */
+    currentTokens?: number;
+    /**
+     * Model identifier used for compaction, when known
+     */
+    model?: string;
+    /**
      * Token count from system message(s) at compaction start
      */
     systemTokens?: number;
     /**
+     * Model context window token limit the compaction is targeting, when known
+     */
+    tokenLimit?: number;
+    /**
      * Token count from tool definitions at compaction start
      */
     toolDefinitionsTokens?: number;
+    trigger?: CompactionTrigger;
 }
 /**
  * Session event "session.compaction_complete". Conversation compaction results including success status, metrics, and optional error details
@@ -1943,6 +2299,10 @@ export interface CompactionCompleteData {
      */
     serviceRequestId?: string;
     /**
+     * For failed compaction only: the HTTP status code of the compaction LLM call failure, when it carried one. Absent for successful compaction and for failures without an HTTP status (e.g. an empty model response or a transport error).
+     */
+    statusCode?: number;
+    /**
      * Whether compaction completed successfully
      */
     success: boolean;
@@ -1955,6 +2315,10 @@ export interface CompactionCompleteData {
      */
     systemTokens?: number;
     /**
+     * Model context window token limit the compaction was targeting, when known
+     */
+    tokenLimit?: number;
+    /**
      * Number of tokens removed during compaction
      */
     tokensRemoved?: number;
@@ -1962,6 +2326,7 @@ export interface CompactionCompleteData {
      * Token count from tool definitions after compaction
      */
     toolDefinitionsTokens?: number;
+    trigger?: CompactionTrigger;
 }
 /**
  * Token usage breakdown for the compaction LLM call (aligned with assistant.usage format)
@@ -2048,7 +2413,16 @@ export interface TaskCompleteEvent {
  */
 export interface TaskCompleteData {
     /**
-     * Whether the tool call succeeded. False when validation failed (e.g., invalid arguments)
+     * Active autopilot objective ID evaluated by the completion reviewer
+     */
+    objectiveId?: number;
+    outcome?: TaskCompletionOutcome;
+    /**
+     * Label-safe runtime rationale for the completion decision (e.g. a cancellation or pause/resume downgrade), when one applies. Reviewer-authored rationale is intentionally omitted here because this event has no IFC label channel; the reviewer's findings remain available through its own labeled sub-agent events
+     */
+    reason?: string;
+    /**
+     * Whether the task was accepted as complete. False when validation failed or completion was rejected or blocked by the reviewer
      */
     success?: boolean;
     /**
@@ -2057,7 +2431,7 @@ export interface TaskCompleteData {
     summary?: string;
 }
 /**
- * Session event "user.message".
+ * Session event "user.message". Payload of `user.message` with displayed and model-transformed content, attachments, source/delivery metadata, mode, and telemetry IDs.
  */
 export interface UserMessageEvent {
     /**
@@ -2087,7 +2461,7 @@ export interface UserMessageEvent {
     type: "user.message";
 }
 /**
- * Schema for the `UserMessageData` type.
+ * Payload of `user.message` with displayed and model-transformed content, attachments, source/delivery metadata, mode, and telemetry IDs.
  */
 export interface UserMessageData {
     agentMode?: UserMessageAgentMode;
@@ -2099,6 +2473,7 @@ export interface UserMessageData {
      * The user's message text as displayed in the timeline
      */
     content: string;
+    delivery?: UserMessageDelivery;
     /**
      * CAPI interaction ID for correlating this user message with its turn
      */
@@ -2116,7 +2491,7 @@ export interface UserMessageData {
      */
     parentAgentTaskId?: string;
     /**
-     * Origin of this message, used for timeline filtering (e.g., "skill-pdf" for skill-injected messages that should be hidden from the user)
+     * Origin of this message, used for timeline filtering and attribution (e.g., `skill-pdf` for hidden skill injection or `agent-<agent-id>` for an inter-agent prompt)
      */
     source?: string;
     /**
@@ -2155,6 +2530,10 @@ export interface AttachmentFile {
      */
     path: string;
     /**
+     * Frozen rendered line this attachment contributed to the <tagged_files> prompt block (e.g. "* /path (123 lines)"). Captured at send time so resumed history reproduces the exact text the model saw, independent of later filesystem changes. Present only for attachments routed to <tagged_files> (mutually exclusive with assetId, which marks bytes sent natively).
+     */
+    taggedFilesEntry?: string;
+    /**
      * Attachment type discriminator
      */
     type: "file";
@@ -2184,6 +2563,10 @@ export interface AttachmentDirectory {
      * Absolute directory path
      */
     path: string;
+    /**
+     * Frozen rendered line this attachment contributed to the <tagged_files> prompt block (e.g. "* /path (12 items)"). Captured at send time so resumed history reproduces the exact text the model saw, independent of later filesystem changes.
+     */
+    taggedFilesEntry?: string;
     /**
      * Attachment type discriminator
      */
@@ -2267,6 +2650,231 @@ export interface AttachmentGitHubReference {
     type: "github_reference";
     /**
      * URL to the referenced item on GitHub
+     */
+    url: string;
+}
+/**
+ * Pointer to a GitHub commit.
+ */
+export interface AttachmentGitHubCommit {
+    /**
+     * First line of the commit message
+     */
+    message: string;
+    /**
+     * Full commit SHA
+     */
+    oid: string;
+    repo: GitHubRepoRef;
+    /**
+     * Attachment type discriminator
+     */
+    type: "github_commit";
+    /**
+     * URL to the commit on GitHub
+     */
+    url: string;
+}
+/**
+ * Pointer to a GitHub repository.
+ */
+export interface GitHubRepoRef {
+    /**
+     * Numeric GitHub repository id
+     */
+    id?: number;
+    /**
+     * Repository name (without owner)
+     */
+    name: string;
+    /**
+     * Repository owner login (user or organization)
+     */
+    owner: string;
+}
+/**
+ * Pointer to a GitHub release.
+ */
+export interface AttachmentGitHubRelease {
+    /**
+     * Human-readable release name
+     */
+    name: string;
+    repo: GitHubRepoRef;
+    /**
+     * Git tag the release is anchored to
+     */
+    tagName: string;
+    /**
+     * Attachment type discriminator
+     */
+    type: "github_release";
+    /**
+     * URL to the release on GitHub
+     */
+    url: string;
+}
+/**
+ * Pointer to a GitHub Actions job.
+ */
+export interface AttachmentGitHubActionsJob {
+    /**
+     * Terminal conclusion of the job when finished (e.g., success, failure, cancelled). Absent for in-progress jobs.
+     */
+    conclusion?: string;
+    /**
+     * Job id within the workflow run
+     */
+    jobId: number;
+    /**
+     * Display name of the job
+     */
+    jobName: string;
+    repo: GitHubRepoRef;
+    /**
+     * Attachment type discriminator
+     */
+    type: "github_actions_job";
+    /**
+     * URL to the job on GitHub
+     */
+    url: string;
+    /**
+     * Display name of the workflow the job ran in
+     */
+    workflowName: string;
+}
+/**
+ * Pointer to a GitHub repository.
+ */
+export interface AttachmentGitHubRepository {
+    /**
+     * Short description of the repository
+     */
+    description?: string;
+    /**
+     * Git ref this attachment is anchored at (branch, tag, or commit). When absent the default branch is implied.
+     */
+    ref?: string;
+    repo: GitHubRepoRef;
+    /**
+     * Attachment type discriminator
+     */
+    type: "github_repository";
+    /**
+     * URL to the repository on GitHub
+     */
+    url: string;
+}
+/**
+ * Pointer to a single-file diff. At least one of `head` and `base` must be present.
+ */
+export interface AttachmentGitHubFileDiff {
+    base?: AttachmentGitHubFileDiffSide;
+    head?: AttachmentGitHubFileDiffSide;
+    /**
+     * Attachment type discriminator
+     */
+    type: "github_file_diff";
+    /**
+     * URL to the diff on GitHub (e.g., a commit, compare, or PR-file URL)
+     */
+    url: string;
+}
+/**
+ * One side of a file diff (head or base)
+ */
+export interface AttachmentGitHubFileDiffSide {
+    /**
+     * Repository-relative path to the file
+     */
+    path: string;
+    /**
+     * Git ref (branch, tag, or commit SHA) the file is read at
+     */
+    ref: string;
+    repo: GitHubRepoRef;
+}
+/**
+ * Pointer to a comparison between two git revisions.
+ */
+export interface AttachmentGitHubTreeComparison {
+    base: AttachmentGitHubTreeComparisonSide;
+    head: AttachmentGitHubTreeComparisonSide;
+    /**
+     * Attachment type discriminator
+     */
+    type: "github_tree_comparison";
+    /**
+     * URL to the comparison on GitHub
+     */
+    url: string;
+}
+/**
+ * One side of a tree comparison (head or base)
+ */
+export interface AttachmentGitHubTreeComparisonSide {
+    repo: GitHubRepoRef;
+    /**
+     * Git revision (branch, tag, or commit SHA)
+     */
+    revision: string;
+}
+/**
+ * Generic GitHub URL reference.
+ */
+export interface AttachmentGitHubUrl {
+    /**
+     * Attachment type discriminator
+     */
+    type: "github_url";
+    /**
+     * URL to the GitHub resource
+     */
+    url: string;
+}
+/**
+ * Pointer to a file in a GitHub repository at a specific ref.
+ */
+export interface AttachmentGitHubFile {
+    /**
+     * Repository-relative path to the file
+     */
+    path: string;
+    /**
+     * Git ref the file is read at (branch, tag, or commit SHA)
+     */
+    ref: string;
+    repo: GitHubRepoRef;
+    /**
+     * Attachment type discriminator
+     */
+    type: "github_file";
+    /**
+     * URL to the file on GitHub
+     */
+    url: string;
+}
+/**
+ * Pointer to a line range inside a file in a GitHub repository.
+ */
+export interface AttachmentGitHubSnippet {
+    lineRange: AttachmentFileLineRange;
+    /**
+     * Repository-relative path to the file
+     */
+    path: string;
+    /**
+     * Git ref the file is read at (branch, tag, or commit SHA)
+     */
+    ref: string;
+    repo: GitHubRepoRef;
+    /**
+     * Attachment type discriminator
+     */
+    type: "github_snippet";
+    /**
+     * URL to the snippet on GitHub (with line anchor)
      */
     url: string;
 }
@@ -2409,6 +3017,10 @@ export interface AssistantTurnStartData {
      */
     interactionId?: string;
     /**
+     * Model identifier used for this turn, when known
+     */
+    model?: string;
+    /**
      * Identifier for this turn within the agentic loop, typically a stringified turn number
      */
     turnId: string;
@@ -2453,6 +3065,53 @@ export interface AssistantIntentData {
     intent: string;
 }
 /**
+ * Session event "assistant.server_tool_progress". Live progress signal for a provider-hosted server tool (e.g. hosted web search) while it runs, before the finalized serverTools envelope lands on the terminal assistant.message
+ */
+export interface AssistantServerToolProgressEvent {
+    /**
+     * Sub-agent instance identifier. Absent for events from the root/main agent and session-level events.
+     */
+    agentId?: string;
+    data: AssistantServerToolProgressData;
+    /**
+     * Always true for events that are transient and not persisted to the session event log on disk.
+     */
+    ephemeral: true;
+    /**
+     * Unique event identifier (UUID v4), generated when the event is emitted
+     */
+    id: string;
+    /**
+     * ID of the chronologically preceding event in the session, forming a linked chain. Null for the first event.
+     */
+    parentId: string | null;
+    /**
+     * ISO 8601 timestamp when the event was created
+     */
+    timestamp: string;
+    /**
+     * Type discriminator. Always "assistant.server_tool_progress".
+     */
+    type: "assistant.server_tool_progress";
+}
+/**
+ * Live progress signal for a provider-hosted server tool (e.g. hosted web search) while it runs, before the finalized serverTools envelope lands on the terminal assistant.message
+ */
+export interface AssistantServerToolProgressData {
+    /**
+     * Kind of hosted server tool that is running. Only `web_search` is emitted today.
+     */
+    kind: string;
+    /**
+     * Position of the hosted tool call in the response output. Stable across the call's lifecycle events (unlike the provider's per-event item id, which CAPI rotates), so the host keys the live in-progress row on it.
+     */
+    outputIndex: number;
+    /**
+     * Lifecycle status of the hosted call: `in_progress`, `searching`, or `completed`.
+     */
+    status: string;
+}
+/**
  * Session event "assistant.reasoning". Assistant reasoning content for timeline display with complete thinking text
  */
 export interface AssistantReasoningEvent {
@@ -2494,6 +3153,7 @@ export interface AssistantReasoningData {
      * Unique identifier for this reasoning block
      */
     reasoningId: string;
+    rte?: boolean;
 }
 /**
  * Session event "assistant.reasoning_delta". Streaming reasoning delta for incremental extended thinking updates
@@ -2537,6 +3197,54 @@ export interface AssistantReasoningDeltaData {
      * Reasoning block ID this delta belongs to, matching the corresponding assistant.reasoning event
      */
     reasoningId: string;
+}
+/**
+ * Session event "assistant.tool_call_delta". Streaming tool-call input delta for incremental tool-call updates
+ */
+export interface AssistantToolCallDeltaEvent {
+    /**
+     * Sub-agent instance identifier. Absent for events from the root/main agent and session-level events.
+     */
+    agentId?: string;
+    data: AssistantToolCallDeltaData;
+    /**
+     * Always true for events that are transient and not persisted to the session event log on disk.
+     */
+    ephemeral: true;
+    /**
+     * Unique event identifier (UUID v4), generated when the event is emitted
+     */
+    id: string;
+    /**
+     * ID of the chronologically preceding event in the session, forming a linked chain. Null for the first event.
+     */
+    parentId: string | null;
+    /**
+     * ISO 8601 timestamp when the event was created
+     */
+    timestamp: string;
+    /**
+     * Type discriminator. Always "assistant.tool_call_delta".
+     */
+    type: "assistant.tool_call_delta";
+}
+/**
+ * Streaming tool-call input delta for incremental tool-call updates
+ */
+export interface AssistantToolCallDeltaData {
+    /**
+     * Raw provider tool input fragment to append for this tool call. Function/tool-use providers stream serialized JSON argument text (so newlines inside JSON string values may appear as escaped `\n` until the accumulated JSON is parsed); custom tool calls stream raw custom input.
+     */
+    inputDelta: string;
+    /**
+     * Tool call ID this delta belongs to, matching the corresponding assistant.message tool request
+     */
+    toolCallId: string;
+    /**
+     * Name of the tool being invoked, when known from the stream
+     */
+    toolName?: string;
+    toolType?: AssistantMessageToolRequestType;
 }
 /**
  * Session event "assistant.streaming_delta". Streaming response progress with cumulative byte count
@@ -2622,6 +3330,10 @@ export interface AssistantMessageData {
      */
     citations?: Citations;
     /**
+     * Client-minted request id (x-request-id header) echoed by the server. Distinct from requestId (x-github-request-id) and serviceRequestId (x-copilot-service-request-id).
+     */
+    clientRequestId?: string;
+    /**
      * The assistant's text response content
      */
     content: string;
@@ -2663,9 +3375,14 @@ export interface AssistantMessageData {
      */
     reasoningText?: string;
     /**
+     * OpenAI-compatible wire field the provider used for reasoning (e.g. reasoning_content/reasoning). Populated only when non-canonical, so the dialect round-trips across turns.
+     */
+    reasoningWireField?: string;
+    /**
      * GitHub request tracing ID (x-github-request-id header) for correlating with server-side logs
      */
     requestId?: string;
+    rte?: boolean;
     serverTools?: AssistantMessageServerTools;
     /**
      * Copilot service request ID (x-copilot-service-request-id header) for CAPI log correlation
@@ -2985,9 +3702,52 @@ export interface AssistantTurnEndEvent {
  */
 export interface AssistantTurnEndData {
     /**
+     * Model identifier used for this turn, when known
+     */
+    model?: string;
+    /**
      * Identifier of the turn that has ended, matching the corresponding assistant.turn_start event
      */
     turnId: string;
+}
+/**
+ * Session event "assistant.idle". Payload emitted whenever the main agent's processing loop goes idle, including while related background work (running agents or in-flight attached shell commands) is still pending and the session-level idle event is therefore deferred
+ */
+export interface AssistantIdleEvent {
+    /**
+     * Sub-agent instance identifier. Absent for events from the root/main agent and session-level events.
+     */
+    agentId?: string;
+    data: AssistantIdleData;
+    /**
+     * Always true for events that are transient and not persisted to the session event log on disk.
+     */
+    ephemeral: true;
+    /**
+     * Unique event identifier (UUID v4), generated when the event is emitted
+     */
+    id: string;
+    /**
+     * ID of the chronologically preceding event in the session, forming a linked chain. Null for the first event.
+     */
+    parentId: string | null;
+    /**
+     * ISO 8601 timestamp when the event was created
+     */
+    timestamp: string;
+    /**
+     * Type discriminator. Always "assistant.idle".
+     */
+    type: "assistant.idle";
+}
+/**
+ * Payload emitted whenever the main agent's processing loop goes idle, including while related background work (running agents or in-flight attached shell commands) is still pending and the session-level idle event is therefore deferred
+ */
+export interface AssistantIdleData {
+    /**
+     * True when the preceding agentic loop was cancelled via abort signal
+     */
+    aborted?: boolean;
 }
 /**
  * Session event "assistant.usage". LLM API call usage metrics including tokens, costs, quotas, and billing information
@@ -3029,6 +3789,10 @@ export interface AssistantUsageData {
     apiCallId?: string;
     apiEndpoint?: AssistantUsageApiEndpoint;
     /**
+     * Updated prompt-cache expiration for this model call. Present only when the call establishes or refreshes known cache state.
+     */
+    cacheExpiresAt?: string;
+    /**
      * Number of tokens read from prompt cache
      */
     cacheReadTokens?: number;
@@ -3064,6 +3828,10 @@ export interface AssistantUsageData {
      */
     inputTokens?: number;
     /**
+     * Coarse classification of the interaction that produced this call, mirroring the session's per-request agent context (e.g. `conversation-agent`, `conversation-subagent`, `conversation-sampling`, `conversation-background`, `conversation-compaction`, `conversation-user`). Non-billing; lets consumers attribute a model call to a call class (e.g. sub-agent/sidekick) independently of the billing initiator. Absent when the runtime did not classify the request.
+     */
+    interactionType?: string;
+    /**
      * Average inter-token latency in milliseconds. Only available for streaming requests
      */
     interTokenLatencyMs?: number;
@@ -3092,6 +3860,7 @@ export interface AssistantUsageData {
      * Number of output tokens used for reasoning (e.g., chain-of-thought)
      */
     reasoningTokens?: number;
+    rte?: boolean;
     /**
      * Copilot service request ID (x-copilot-service-request-id header) for CAPI log correlation
      */
@@ -3169,6 +3938,7 @@ export interface ModelCallFailureData {
      * Completion ID from the model provider (e.g., chatcmpl-abc123)
      */
     apiCallId?: string;
+    apiEndpoint?: AssistantUsageApiEndpoint;
     badRequestKind?: ModelCallFailureBadRequestKind;
     /**
      * Duration of the failed API call in milliseconds
@@ -3186,10 +3956,27 @@ export interface ModelCallFailureData {
      * For HTTP 400 failures only: the `type` from the CAPI error envelope (e.g. 'websocket_error'), a coarser companion to errorCode for envelopes that carry no code. Raw server-controlled string, emitted only through restricted telemetry. Absent for bodyless or non-400 failures.
      */
     errorType?: string;
+    failureKind?: ModelCallFailureKind;
     /**
      * What initiated this API call (e.g., "sub-agent", "mcp-sampling"); absent for user-initiated calls
      */
     initiator?: string;
+    /**
+     * Whether the session selected Auto mode for the failed call
+     */
+    isAuto?: boolean;
+    /**
+     * Whether the failed call used a bring-your-own-key provider
+     */
+    isByok?: boolean;
+    /**
+     * Effective maximum output-token limit for the failed call
+     */
+    maxOutputTokens?: number;
+    /**
+     * Effective maximum prompt-token limit for the failed call
+     */
+    maxPromptTokens?: number;
     /**
      * Model identifier used for the failed API call
      */
@@ -3199,6 +3986,12 @@ export interface ModelCallFailureData {
      */
     providerCallId?: string;
     /**
+     * Reasoning effort level used for the failed model call, if applicable
+     */
+    reasoningEffort?: string;
+    requestFingerprint?: ModelCallFailureRequestFingerprint;
+    rte?: boolean;
+    /**
      * Copilot service request ID (x-copilot-service-request-id header) for CAPI log correlation
      */
     serviceRequestId?: string;
@@ -3207,6 +4000,40 @@ export interface ModelCallFailureData {
      * HTTP status code from the failed request
      */
     statusCode?: number;
+    transport?: ModelCallFailureTransport;
+}
+/**
+ * Content-free structural summary of the failing request for diagnosing malformed 4xx calls
+ */
+export interface ModelCallFailureRequestFingerprint {
+    /**
+     * Total number of image content parts
+     */
+    imagePartCount: number;
+    /**
+     * Image parts whose media type cannot be determined (rejected by strict providers)
+     */
+    imagePartsMissingMediaType: number;
+    /**
+     * Role of the final message in the request
+     */
+    lastMessageRole?: string;
+    /**
+     * Total number of messages in the request
+     */
+    messageCount: number;
+    /**
+     * Tool calls whose name is missing or empty (rejected by strict providers)
+     */
+    namelessToolCallCount: number;
+    /**
+     * Total number of tool calls across assistant messages
+     */
+    toolCallCount: number;
+    /**
+     * Number of "tool" result messages in the request
+     */
+    toolResultMessageCount: number;
 }
 /**
  * Session event "abort". Turn abort information including the reason for termination
@@ -3354,6 +4181,8 @@ export interface ToolExecutionStartData {
      * Tool call ID of the parent tool invocation when this event originates from a sub-agent
      */
     parentToolCallId?: string;
+    rte?: boolean;
+    shellToolInfo?: ToolExecutionStartShellToolInfo;
     /**
      * Unique identifier for this tool call
      */
@@ -3367,6 +4196,19 @@ export interface ToolExecutionStartData {
      * Identifier for the agent loop turn this tool was invoked in, matching the corresponding assistant.turn_start event
      */
     turnId?: string;
+}
+/**
+ * Shell-aware path hints for a shell tool's command, captured at start time so consumers can snapshot a file's pre-image before the tool runs.
+ */
+export interface ToolExecutionStartShellToolInfo {
+    /**
+     * Whether the command includes a file write redirection (e.g., > or >>).
+     */
+    hasWriteFileRedirection: boolean;
+    /**
+     * File paths the command may read or write, derived from the command at start time. Produced by the same shell-aware extractor as PermissionRequestShell.possiblePaths, so it is present even when the command is auto-approved and no permission request fires.
+     */
+    possiblePaths: string[];
 }
 /**
  * Tool definition metadata, present for MCP tools with MCP Apps support
@@ -3389,7 +4231,7 @@ export interface ToolExecutionStartToolDescriptionMeta {
     ui?: ToolExecutionStartToolDescriptionMetaUI;
 }
 /**
- * Schema for the `ToolExecutionStartToolDescriptionMetaUI` type.
+ * MCP Apps tool `_meta.ui` resource URI and visibility captured on `tool.execution_start`.
  */
 export interface ToolExecutionStartToolDescriptionMetaUI {
     /**
@@ -3531,6 +4373,14 @@ export interface ToolExecutionCompleteData {
      */
     isUserRequested?: boolean;
     /**
+     * FIDES IFC label projected from tool ingress metadata (MCP `CallToolResult._meta` or synthesized built-in ingress labels). Persisted as `{ ifc: ... }` so the label survives session resume, including model-visible failure results. Experimental.
+     *
+     * @experimental
+     */
+    mcpMeta?: {
+        [k: string]: unknown | undefined;
+    };
+    /**
      * Model identifier that generated this tool call
      */
     model?: string;
@@ -3540,6 +4390,7 @@ export interface ToolExecutionCompleteData {
      */
     parentToolCallId?: string;
     result?: ToolExecutionCompleteResult;
+    rte?: boolean;
     /**
      * Whether this tool execution ran inside a sandbox container
      */
@@ -3605,6 +4456,14 @@ export interface ToolExecutionCompleteResult {
      * Full detailed tool result for UI/timeline display, preserving complete content such as diffs. Falls back to content when absent.
      */
     detailedContent?: string;
+    /**
+     * FIDES IFC label projected from tool ingress metadata (MCP `CallToolResult._meta` or synthesized built-in ingress labels) — persisted as `{ ifc: ... }` (only the `ifc` key, not the whole `_meta`). Persisted so the FIDES IFC label survives session resume: the engine rehydrates accumulated taint by replaying these on load. Populated for ingress sources when FIDES IFC is on. Experimental.
+     *
+     * @experimental
+     */
+    mcpMeta?: {
+        [k: string]: unknown | undefined;
+    };
     /**
      * Structured content (arbitrary JSON) returned verbatim by the MCP tool
      */
@@ -3732,7 +4591,8 @@ export interface ToolExecutionCompleteContentText {
     type: "text";
 }
 /**
- * Terminal/shell output content block with optional exit code and working directory
+ * @deprecated
+ * Deprecated for shell command exit metadata. Use ToolExecutionCompleteContentShellExit instead.
  */
 export interface ToolExecutionCompleteContentTerminal {
     /**
@@ -3751,6 +4611,35 @@ export interface ToolExecutionCompleteContentTerminal {
      * Content block type discriminator
      */
     type: "terminal";
+}
+/**
+ * Shell command exit metadata with optional output preview
+ */
+export interface ToolExecutionCompleteContentShellExit {
+    /**
+     * Working directory where the shell command was executed
+     */
+    cwd?: string;
+    /**
+     * Exit code from the completed shell command
+     */
+    exitCode: number;
+    /**
+     * Output associated with this shell command, if available. May be partial, truncated, or a preview; not guaranteed to be full output.
+     */
+    outputPreview?: string;
+    /**
+     * Whether outputPreview is known to be incomplete or truncated
+     */
+    outputTruncated?: boolean;
+    /**
+     * Shell id, as assigned by Copilot runtime
+     */
+    shellId: string;
+    /**
+     * Content block type discriminator
+     */
+    type: "shell_exit";
 }
 /**
  * Image content block with base64-encoded data
@@ -3852,7 +4741,7 @@ export interface ToolExecutionCompleteContentResource {
     type: "resource";
 }
 /**
- * Schema for the `EmbeddedTextResourceContents` type.
+ * Embedded text resource contents identified by a URI, with an optional MIME type and a text payload.
  */
 export interface EmbeddedTextResourceContents {
     /**
@@ -3869,7 +4758,7 @@ export interface EmbeddedTextResourceContents {
     uri: string;
 }
 /**
- * Schema for the `EmbeddedBlobResourceContents` type.
+ * Embedded binary resource contents identified by a URI, with an optional MIME type and a base64-encoded blob.
  */
 export interface EmbeddedBlobResourceContents {
     /**
@@ -3914,7 +4803,7 @@ export interface ToolExecutionCompleteUIResourceMeta {
     ui?: ToolExecutionCompleteUIResourceMetaUI;
 }
 /**
- * Schema for the `ToolExecutionCompleteUIResourceMetaUI` type.
+ * MCP Apps UI resource metadata for a completed tool result, including CSP, permissions, domain, and border preference.
  */
 export interface ToolExecutionCompleteUIResourceMetaUI {
     csp?: ToolExecutionCompleteUIResourceMetaUICsp;
@@ -3923,7 +4812,7 @@ export interface ToolExecutionCompleteUIResourceMetaUI {
     prefersBorder?: boolean;
 }
 /**
- * Schema for the `ToolExecutionCompleteUIResourceMetaUICsp` type.
+ * CSP domain allowlists for an MCP Apps UI resource, including connect, resource, frame, and base URI domains.
  */
 export interface ToolExecutionCompleteUIResourceMetaUICsp {
     baseUriDomains?: string[];
@@ -3932,7 +4821,7 @@ export interface ToolExecutionCompleteUIResourceMetaUICsp {
     resourceDomains?: string[];
 }
 /**
- * Schema for the `ToolExecutionCompleteUIResourceMetaUIPermissions` type.
+ * Browser permission metadata for an MCP Apps UI resource, including camera, microphone, geolocation, and clipboard-write.
  */
 export interface ToolExecutionCompleteUIResourceMetaUIPermissions {
     camera?: ToolExecutionCompleteUIResourceMetaUIPermissionsCamera;
@@ -3941,22 +4830,22 @@ export interface ToolExecutionCompleteUIResourceMetaUIPermissions {
     microphone?: ToolExecutionCompleteUIResourceMetaUIPermissionsMicrophone;
 }
 /**
- * Schema for the `ToolExecutionCompleteUIResourceMetaUIPermissionsCamera` type.
+ * Marker object for camera permission on an MCP Apps UI resource.
  */
 export interface ToolExecutionCompleteUIResourceMetaUIPermissionsCamera {
 }
 /**
- * Schema for the `ToolExecutionCompleteUIResourceMetaUIPermissionsClipboardWrite` type.
+ * Marker object for clipboard-write permission on an MCP Apps UI resource.
  */
 export interface ToolExecutionCompleteUIResourceMetaUIPermissionsClipboardWrite {
 }
 /**
- * Schema for the `ToolExecutionCompleteUIResourceMetaUIPermissionsGeolocation` type.
+ * Marker object for geolocation permission on an MCP Apps UI resource.
  */
 export interface ToolExecutionCompleteUIResourceMetaUIPermissionsGeolocation {
 }
 /**
- * Schema for the `ToolExecutionCompleteUIResourceMetaUIPermissionsMicrophone` type.
+ * Marker object for microphone permission on an MCP Apps UI resource.
  */
 export interface ToolExecutionCompleteUIResourceMetaUIPermissionsMicrophone {
 }
@@ -3981,7 +4870,7 @@ export interface ToolExecutionCompleteToolDescriptionMeta {
     ui?: ToolExecutionCompleteToolDescriptionMetaUI;
 }
 /**
- * Schema for the `ToolExecutionCompleteToolDescriptionMetaUI` type.
+ * MCP Apps tool `_meta.ui` resource URI and visibility captured on `tool.execution_complete`.
  */
 export interface ToolExecutionCompleteToolDescriptionMetaUI {
     /**
@@ -3992,6 +4881,49 @@ export interface ToolExecutionCompleteToolDescriptionMetaUI {
      * Who can access this tool
      */
     visibility?: ToolExecutionCompleteToolDescriptionMetaUIVisibility[];
+}
+/**
+ * Session event "tool_search.activated". Persisted generic client-side tool activations restored when a session resumes.
+ */
+export interface ToolSearchActivatedEvent {
+    /**
+     * Sub-agent instance identifier. Absent for events from the root/main agent and session-level events.
+     */
+    agentId?: string;
+    data: ToolSearchActivatedData;
+    /**
+     * When true, the event is transient and not persisted to the session event log on disk
+     */
+    ephemeral?: boolean;
+    /**
+     * Unique event identifier (UUID v4), generated when the event is emitted
+     */
+    id: string;
+    /**
+     * ID of the chronologically preceding event in the session, forming a linked chain. Null for the first event.
+     */
+    parentId: string | null;
+    /**
+     * ISO 8601 timestamp when the event was created
+     */
+    timestamp: string;
+    /**
+     * Type discriminator. Always "tool_search.activated".
+     */
+    type: "tool_search.activated";
+}
+/**
+ * Persisted generic client-side tool activations restored when a session resumes.
+ */
+export interface ToolSearchActivatedData {
+    /**
+     * Tool-search strategy that activated the definitions.
+     */
+    strategy: string;
+    /**
+     * Names of tool definitions activated by this search invocation.
+     */
+    toolNames: string[];
 }
 /**
  * Session event "skill.invoked". Skill invocation details including content, allowed tools, and plugin metadata
@@ -4039,6 +4971,10 @@ export interface SkillInvokedData {
      * Description of the skill from its SKILL.md frontmatter
      */
     description?: string;
+    /**
+     * Model identifier active when the skill was invoked, when known
+     */
+    model?: string;
     /**
      * Name of the invoked skill
      */
@@ -4592,6 +5528,10 @@ export interface SystemMessageData {
      * The system or developer prompt text sent as model input
      */
     content: string;
+    /**
+     * Logical interaction identifier for the model run receiving this prompt
+     */
+    interactionId?: string;
     metadata?: SystemMessageMetadata;
     /**
      * Optional name identifier for the message source
@@ -4655,7 +5595,7 @@ export interface SystemNotificationData {
     kind: SystemNotification;
 }
 /**
- * Schema for the `SystemNotificationAgentCompleted` type.
+ * System notification metadata for a background agent that completed or failed, including agent ID, type, status, description, and prompt.
  */
 export interface SystemNotificationAgentCompleted {
     /**
@@ -4681,7 +5621,7 @@ export interface SystemNotificationAgentCompleted {
     type: "agent_completed";
 }
 /**
- * Schema for the `SystemNotificationAgentIdle` type.
+ * System notification metadata for a background agent that became idle, including agent ID, type, and description.
  */
 export interface SystemNotificationAgentIdle {
     /**
@@ -4702,7 +5642,7 @@ export interface SystemNotificationAgentIdle {
     type: "agent_idle";
 }
 /**
- * Schema for the `SystemNotificationNewInboxMessage` type.
+ * System notification metadata for a new inbox message, including entry ID, sender details, and summary.
  */
 export interface SystemNotificationNewInboxMessage {
     /**
@@ -4727,7 +5667,7 @@ export interface SystemNotificationNewInboxMessage {
     type: "new_inbox_message";
 }
 /**
- * Schema for the `SystemNotificationShellCompleted` type.
+ * System notification metadata for a shell session that completed, including shell ID, optional exit code, and description.
  */
 export interface SystemNotificationShellCompleted {
     /**
@@ -4748,7 +5688,7 @@ export interface SystemNotificationShellCompleted {
     type: "shell_completed";
 }
 /**
- * Schema for the `SystemNotificationShellDetachedCompleted` type.
+ * System notification metadata for a detached shell session that completed, including shell ID and description.
  */
 export interface SystemNotificationShellDetachedCompleted {
     /**
@@ -4765,7 +5705,7 @@ export interface SystemNotificationShellDetachedCompleted {
     type: "shell_detached_completed";
 }
 /**
- * Schema for the `SystemNotificationInstructionDiscovered` type.
+ * System notification metadata for an instruction file discovered during tool access, including source, trigger file, and tool.
  */
 export interface SystemNotificationInstructionDiscovered {
     /**
@@ -4788,6 +5728,21 @@ export interface SystemNotificationInstructionDiscovered {
      * Type discriminator. Always "instruction_discovered".
      */
     type: "instruction_discovered";
+}
+/**
+ * System notification metadata from an external host that does not match a runtime-owned notification kind.
+ */
+export interface SystemNotificationUnclassified {
+    /**
+     * Opaque metadata supplied by the external host, when present.
+     */
+    metadata?: {
+        [k: string]: unknown | undefined;
+    };
+    /**
+     * Type discriminator. Always "unclassified".
+     */
+    type: "unclassified";
 }
 /**
  * Session event "permission.requested". Permission request notification requiring client approval with request details
@@ -4833,6 +5788,12 @@ export interface PermissionRequestedData {
      * When true, this permission was already resolved by a permissionRequest hook and requires no client action
      */
     resolvedByHook?: boolean;
+    /**
+     * Neutral risk metadata supplied by the tool host. Consumers may display this value but must not use it to bypass the permission decision.
+     */
+    riskAssessment?: {
+        [k: string]: unknown | undefined;
+    };
 }
 /**
  * Shell command permission request
@@ -4846,6 +5807,10 @@ export interface PermissionRequestShell {
      * Parsed command identifiers found in the command text
      */
     commands: PermissionRequestShellCommand[];
+    /**
+     * Parsed command segments, including arguments, used for managed policy matching
+     */
+    commandSegments?: PermissionRequestShellCommandSegment[];
     /**
      * The complete shell command text to be executed
      */
@@ -4863,6 +5828,10 @@ export interface PermissionRequestShell {
      */
     kind: "shell";
     /**
+     * Whether managed policy requires a human response and forbids host auto-approval
+     */
+    managedApprovalRequired?: boolean;
+    /**
      * File paths that may be read or written by the command
      */
     possiblePaths: string[];
@@ -4870,6 +5839,14 @@ export interface PermissionRequestShell {
      * URLs that may be accessed by the command
      */
     possibleUrls: PermissionRequestShellPossibleUrl[];
+    /**
+     * True when the model has requested to run this command outside the sandbox (it set requestSandboxBypass: true and the host opted in via sandbox.allowBypass). This is a request, not a grant: the command runs unsandboxed only if the user approves this permission request. Hosts should highlight the elevated risk in the approval UI.
+     */
+    requestSandboxBypass?: boolean;
+    /**
+     * Model-provided justification for the sandbox-bypass request. Only meaningful when requestSandboxBypass is true.
+     */
+    requestSandboxBypassReason?: string;
     /**
      * Tool call ID that triggered this permission request
      */
@@ -4880,7 +5857,7 @@ export interface PermissionRequestShell {
     warning?: string;
 }
 /**
- * Schema for the `PermissionRequestShellCommand` type.
+ * A parsed command identifier in a shell permission request, including whether it is read-only.
  */
 export interface PermissionRequestShellCommand {
     /**
@@ -4893,7 +5870,20 @@ export interface PermissionRequestShellCommand {
     readOnly: boolean;
 }
 /**
- * Schema for the `PermissionRequestShellPossibleUrl` type.
+ * A parsed shell command segment used for argument-aware managed policy matching.
+ */
+export interface PermissionRequestShellCommandSegment {
+    /**
+     * Full text of this command segment, including arguments
+     */
+    fullCommandText: string;
+    /**
+     * Command identifier (e.g., executable name)
+     */
+    identifier: string;
+}
+/**
+ * A URL that may be accessed by a command in a shell permission request.
  */
 export interface PermissionRequestShellPossibleUrl {
     /**
@@ -4926,9 +5916,21 @@ export interface PermissionRequestWrite {
      */
     kind: "write";
     /**
+     * Whether managed policy requires a human response and forbids host auto-approval
+     */
+    managedApprovalRequired?: boolean;
+    /**
      * Complete new file contents for newly created files
      */
     newFileContents?: string;
+    /**
+     * True when a built-in file tool (apply_patch / str_replace_editor) asked to write a path the sandbox filesystem policy would block, and the host opted in via sandbox.allowBypass. This is a request, not a grant: the write happens unsandboxed only if the user approves this permission request. Hosts should highlight the elevated risk in the approval UI.
+     */
+    requestSandboxBypass?: boolean;
+    /**
+     * Justification for the sandbox-bypass request. Only meaningful when requestSandboxBypass is true.
+     */
+    requestSandboxBypassReason?: string;
     /**
      * Tool call ID that triggered this permission request
      */
@@ -4947,9 +5949,21 @@ export interface PermissionRequestRead {
      */
     kind: "read";
     /**
+     * Whether managed policy requires a human response and forbids host auto-approval
+     */
+    managedApprovalRequired?: boolean;
+    /**
      * Path of the file or directory being read
      */
     path: string;
+    /**
+     * True when the model has requested to run this search outside the sandbox (it set requestSandboxBypass: true and the host opted in via sandbox.allowBypass). This is a request, not a grant: the search runs unsandboxed only if the user approves this permission request. Hosts should highlight the elevated risk in the approval UI.
+     */
+    requestSandboxBypass?: boolean;
+    /**
+     * Model-provided justification for the sandbox-bypass request. Only meaningful when requestSandboxBypass is true.
+     */
+    requestSandboxBypassReason?: string;
     /**
      * Tool call ID that triggered this permission request
      */
@@ -5002,6 +6016,22 @@ export interface PermissionRequestUrl {
      * Permission kind discriminator
      */
     kind: "url";
+    /**
+     * Whether managed policy requires a human response and forbids host auto-approval
+     */
+    managedApprovalRequired?: boolean;
+    /**
+     * Immediately preceding URL when this request is for a redirect target
+     */
+    redirectedFrom?: string;
+    /**
+     * True when this URL fetch is requesting to bypass the sandbox network policy: either the model set requestSandboxBypass: true, or the tool re-issued the request as an interactive bypass after the network policy denied the approved URL (host opted in via sandbox.allowBypass). This is a request, not a grant: the fetch runs only if the user approves this permission request. Hosts should highlight the elevated risk in the approval UI.
+     */
+    requestSandboxBypass?: boolean;
+    /**
+     * Model-provided justification for the sandbox-bypass request. Only meaningful when requestSandboxBypass is true.
+     */
+    requestSandboxBypassReason?: string;
     /**
      * Tool call ID that triggered this permission request
      */
@@ -5143,6 +6173,12 @@ export interface PermissionRequestExtensionPermissionAccess {
  */
 export interface PermissionPromptRequestCommands {
     /**
+     * Auto-approval judge information for this request; present only when auto mode is enabled.
+     *
+     * @experimental
+     */
+    autoApproval?: PermissionAutoApproval;
+    /**
      * Whether the UI can offer session-wide approval for this command pattern
      */
     canOfferSessionApproval: boolean;
@@ -5163,6 +6199,10 @@ export interface PermissionPromptRequestCommands {
      */
     kind: "commands";
     /**
+     * Whether managed policy requires a human response and forbids host auto-approval
+     */
+    managedApprovalRequired?: boolean;
+    /**
      * Tool call ID that triggered this permission request
      */
     toolCallId?: string;
@@ -5172,9 +6212,31 @@ export interface PermissionPromptRequestCommands {
     warning?: string;
 }
 /**
+ * Auto-approval judge information attached to a permission request. Present (non-null) only when the session's allow-all mode is "auto"; its absence means auto mode was off and the judge did not evaluate the request. The `recommendation` conveys the judge's disposition for this request.
+ */
+/** @experimental */
+export interface PermissionAutoApproval {
+    failureReason?: AutoApprovalJudgeFailureReason;
+    /**
+     * Model id that produced the recommendation, when the judge was consulted and reported one. Absent for `excluded` (the judge was not consulted) and for failures that occurred before a model was selected.
+     */
+    model?: string;
+    /**
+     * Human-readable reason for the judge's recommendation, when available.
+     */
+    reason?: string;
+    recommendation: AutoApprovalRecommendation;
+}
+/**
  * File write permission prompt
  */
 export interface PermissionPromptRequestWrite {
+    /**
+     * Auto-approval judge information for this request; present only when auto mode is enabled.
+     *
+     * @experimental
+     */
+    autoApproval?: PermissionAutoApproval;
     /**
      * Whether the UI can offer session-wide approval for file write operations
      */
@@ -5196,6 +6258,10 @@ export interface PermissionPromptRequestWrite {
      */
     kind: "write";
     /**
+     * Whether managed policy requires a human response and forbids host auto-approval
+     */
+    managedApprovalRequired?: boolean;
+    /**
      * Complete new file contents for newly created files
      */
     newFileContents?: string;
@@ -5209,6 +6275,12 @@ export interface PermissionPromptRequestWrite {
  */
 export interface PermissionPromptRequestRead {
     /**
+     * Auto-approval judge information for this request; present only when auto mode is enabled.
+     *
+     * @experimental
+     */
+    autoApproval?: PermissionAutoApproval;
+    /**
      * Human-readable description of why the file is being read
      */
     intention: string;
@@ -5216,6 +6288,10 @@ export interface PermissionPromptRequestRead {
      * Prompt kind discriminator
      */
     kind: "read";
+    /**
+     * Whether managed policy requires a human response and forbids host auto-approval
+     */
+    managedApprovalRequired?: boolean;
     /**
      * Path of the file or directory being read
      */
@@ -5235,6 +6311,12 @@ export interface PermissionPromptRequestMcp {
     args?: {
         [k: string]: unknown | undefined;
     };
+    /**
+     * Auto-approval judge information for this request; present only when auto mode is enabled.
+     *
+     * @experimental
+     */
+    autoApproval?: PermissionAutoApproval;
     /**
      * Prompt kind discriminator
      */
@@ -5261,6 +6343,12 @@ export interface PermissionPromptRequestMcp {
  */
 export interface PermissionPromptRequestUrl {
     /**
+     * Auto-approval judge information for this request; present only when auto mode is enabled.
+     *
+     * @experimental
+     */
+    autoApproval?: PermissionAutoApproval;
+    /**
      * Human-readable description of why the URL is being accessed
      */
     intention: string;
@@ -5268,6 +6356,22 @@ export interface PermissionPromptRequestUrl {
      * Prompt kind discriminator
      */
     kind: "url";
+    /**
+     * Whether managed policy requires a human response and forbids host auto-approval
+     */
+    managedApprovalRequired?: boolean;
+    /**
+     * Immediately preceding URL when this prompt is for a redirect target
+     */
+    redirectedFrom?: string;
+    /**
+     * True when this URL fetch is requesting to bypass the sandbox network policy: either the model set requestSandboxBypass: true, or the tool re-issued the request as an interactive bypass after the network policy denied the approved URL (host opted in via sandbox.allowBypass). This is a request, not a grant: the fetch runs only if the user approves this permission request. Hosts should highlight the elevated risk in the approval UI.
+     */
+    requestSandboxBypass?: boolean;
+    /**
+     * Model-provided justification for the sandbox-bypass request. Only meaningful when requestSandboxBypass is true.
+     */
+    requestSandboxBypassReason?: string;
     /**
      * Tool call ID that triggered this permission request
      */
@@ -5282,6 +6386,12 @@ export interface PermissionPromptRequestUrl {
  */
 export interface PermissionPromptRequestMemory {
     action?: PermissionRequestMemoryAction;
+    /**
+     * Auto-approval judge information for this request; present only when auto mode is enabled.
+     *
+     * @experimental
+     */
+    autoApproval?: PermissionAutoApproval;
     /**
      * Source references for the stored fact (store only)
      */
@@ -5319,6 +6429,12 @@ export interface PermissionPromptRequestCustomTool {
         [k: string]: unknown | undefined;
     };
     /**
+     * Auto-approval judge information for this request; present only when auto mode is enabled.
+     *
+     * @experimental
+     */
+    autoApproval?: PermissionAutoApproval;
+    /**
      * Prompt kind discriminator
      */
     kind: "custom-tool";
@@ -5341,6 +6457,12 @@ export interface PermissionPromptRequestCustomTool {
 export interface PermissionPromptRequestPath {
     accessKind: PermissionPromptRequestPathAccessKind;
     /**
+     * Auto-approval judge information for this request; present only when auto mode is enabled.
+     *
+     * @experimental
+     */
+    autoApproval?: PermissionAutoApproval;
+    /**
      * Prompt kind discriminator
      */
     kind: "path";
@@ -5357,6 +6479,12 @@ export interface PermissionPromptRequestPath {
  * Hook confirmation permission prompt
  */
 export interface PermissionPromptRequestHook {
+    /**
+     * Auto-approval judge information for this request; present only when auto mode is enabled.
+     *
+     * @experimental
+     */
+    autoApproval?: PermissionAutoApproval;
     /**
      * Optional message from the hook explaining why confirmation is needed
      */
@@ -5385,6 +6513,12 @@ export interface PermissionPromptRequestHook {
  */
 export interface PermissionPromptRequestExtensionManagement {
     /**
+     * Auto-approval judge information for this request; present only when auto mode is enabled.
+     *
+     * @experimental
+     */
+    autoApproval?: PermissionAutoApproval;
+    /**
      * Name of the extension being managed
      */
     extensionName?: string;
@@ -5405,6 +6539,12 @@ export interface PermissionPromptRequestExtensionManagement {
  * Extension permission access prompt
  */
 export interface PermissionPromptRequestExtensionPermissionAccess {
+    /**
+     * Auto-approval judge information for this request; present only when auto mode is enabled.
+     *
+     * @experimental
+     */
+    autoApproval?: PermissionAutoApproval;
     /**
      * Capabilities the extension is requesting
      */
@@ -5467,7 +6607,7 @@ export interface PermissionCompletedData {
     toolCallId?: string;
 }
 /**
- * Schema for the `PermissionApproved` type.
+ * Permission response variant indicating the request was approved without persisting an approval rule.
  */
 export interface PermissionApproved {
     /**
@@ -5476,7 +6616,7 @@ export interface PermissionApproved {
     kind: "approved";
 }
 /**
- * Schema for the `PermissionApprovedForSession` type.
+ * Permission response variant that approves a request and remembers the provided approval for the rest of the session.
  */
 export interface PermissionApprovedForSession {
     approval: UserToolSessionApproval;
@@ -5486,7 +6626,7 @@ export interface PermissionApprovedForSession {
     kind: "approved-for-session";
 }
 /**
- * Schema for the `UserToolSessionApprovalCommands` type.
+ * Session-scoped tool-approval rule for specific shell command identifiers.
  */
 export interface UserToolSessionApprovalCommands {
     /**
@@ -5499,7 +6639,7 @@ export interface UserToolSessionApprovalCommands {
     kind: "commands";
 }
 /**
- * Schema for the `UserToolSessionApprovalRead` type.
+ * Session-scoped tool-approval rule for read-only filesystem operations.
  */
 export interface UserToolSessionApprovalRead {
     /**
@@ -5508,7 +6648,7 @@ export interface UserToolSessionApprovalRead {
     kind: "read";
 }
 /**
- * Schema for the `UserToolSessionApprovalWrite` type.
+ * Session-scoped tool-approval rule for filesystem write operations.
  */
 export interface UserToolSessionApprovalWrite {
     /**
@@ -5517,7 +6657,7 @@ export interface UserToolSessionApprovalWrite {
     kind: "write";
 }
 /**
- * Schema for the `UserToolSessionApprovalMcp` type.
+ * Session-scoped tool-approval rule for an MCP server tool, or all tools on the server when `toolName` is null.
  */
 export interface UserToolSessionApprovalMcp {
     /**
@@ -5534,7 +6674,7 @@ export interface UserToolSessionApprovalMcp {
     toolName: string | null;
 }
 /**
- * Schema for the `UserToolSessionApprovalMemory` type.
+ * Session-scoped tool-approval rule for writes to long-term memory.
  */
 export interface UserToolSessionApprovalMemory {
     /**
@@ -5543,7 +6683,7 @@ export interface UserToolSessionApprovalMemory {
     kind: "memory";
 }
 /**
- * Schema for the `UserToolSessionApprovalCustomTool` type.
+ * Session-scoped tool-approval rule for a custom tool, keyed by tool name.
  */
 export interface UserToolSessionApprovalCustomTool {
     /**
@@ -5556,7 +6696,7 @@ export interface UserToolSessionApprovalCustomTool {
     toolName: string;
 }
 /**
- * Schema for the `UserToolSessionApprovalExtensionManagement` type.
+ * Session-scoped tool-approval rule for extension-management operations, optionally narrowed by operation.
  */
 export interface UserToolSessionApprovalExtensionManagement {
     /**
@@ -5569,7 +6709,7 @@ export interface UserToolSessionApprovalExtensionManagement {
     operation?: string;
 }
 /**
- * Schema for the `UserToolSessionApprovalExtensionPermissionAccess` type.
+ * Session-scoped tool-approval rule for an extension's permission-gated capability access, keyed by extension name.
  */
 export interface UserToolSessionApprovalExtensionPermissionAccess {
     /**
@@ -5582,7 +6722,7 @@ export interface UserToolSessionApprovalExtensionPermissionAccess {
     kind: "extension-permission-access";
 }
 /**
- * Schema for the `PermissionApprovedForLocation` type.
+ * Permission response variant that approves a request and persists the provided approval to a project location key.
  */
 export interface PermissionApprovedForLocation {
     approval: UserToolSessionApproval;
@@ -5596,7 +6736,7 @@ export interface PermissionApprovedForLocation {
     locationKey: string;
 }
 /**
- * Schema for the `PermissionCancelled` type.
+ * Permission response variant indicating the request was cancelled before use, with an optional reason.
  */
 export interface PermissionCancelled {
     /**
@@ -5609,7 +6749,7 @@ export interface PermissionCancelled {
     reason?: string;
 }
 /**
- * Schema for the `PermissionDeniedByRules` type.
+ * Permission response variant denied because matching approval rules explicitly blocked the request.
  */
 export interface PermissionDeniedByRules {
     /**
@@ -5622,7 +6762,7 @@ export interface PermissionDeniedByRules {
     rules: PermissionRule[];
 }
 /**
- * Schema for the `PermissionRule` type.
+ * A permission approval or denial rule matched against a tool request, identified by a rule kind with an optional argument value.
  */
 export interface PermissionRule {
     /**
@@ -5635,7 +6775,7 @@ export interface PermissionRule {
     kind: string;
 }
 /**
- * Schema for the `PermissionDeniedNoApprovalRuleAndCouldNotRequestFromUser` type.
+ * Permission response variant denied because no approval rule matched and user confirmation was unavailable.
  */
 export interface PermissionDeniedNoApprovalRuleAndCouldNotRequestFromUser {
     /**
@@ -5644,7 +6784,7 @@ export interface PermissionDeniedNoApprovalRuleAndCouldNotRequestFromUser {
     kind: "denied-no-approval-rule-and-could-not-request-from-user";
 }
 /**
- * Schema for the `PermissionDeniedInteractivelyByUser` type.
+ * Permission response variant denied in an interactive user prompt, with optional feedback and force-reject flag.
  */
 export interface PermissionDeniedInteractivelyByUser {
     /**
@@ -5661,7 +6801,7 @@ export interface PermissionDeniedInteractivelyByUser {
     kind: "denied-interactively-by-user";
 }
 /**
- * Schema for the `PermissionDeniedByContentExclusionPolicy` type.
+ * Permission response variant denying a path under content exclusion policy, with the path and message.
  */
 export interface PermissionDeniedByContentExclusionPolicy {
     /**
@@ -5678,7 +6818,7 @@ export interface PermissionDeniedByContentExclusionPolicy {
     path: string;
 }
 /**
- * Schema for the `PermissionDeniedByPermissionRequestHook` type.
+ * Permission response variant denied by a permission-request hook, with optional message and interrupt flag.
  */
 export interface PermissionDeniedByPermissionRequestHook {
     /**
@@ -5919,7 +7059,7 @@ export interface ElicitationCompletedData {
     requestId: string;
 }
 /**
- * Schema for the `ElicitationCompletedContent` type.
+ * Opaque JSON value submitted for one field in accepted `elicitation.completed` form content.
  */
 export interface ElicitationCompletedContent {
     [k: string]: unknown | undefined;
@@ -6046,6 +7186,8 @@ export interface McpOauthRequiredEvent {
  * OAuth authentication request for an MCP server
  */
 export interface McpOauthRequiredData {
+    httpResponse?: McpOauthHttpResponse;
+    reason: McpOauthRequestReason;
     /**
      * Unique identifier for this OAuth request; used to respond via session.mcp.oauth.handlePendingRequest
      */
@@ -6066,6 +7208,36 @@ export interface McpOauthRequiredData {
     wwwAuthenticateParams?: McpOauthWWWAuthenticateParams;
 }
 /**
+ * Raw HTTP response details from the OAuth auth challenge, as observed by the runtime.
+ */
+export interface McpOauthHttpResponse {
+    /**
+     * Complete UTF-8 response body for host-specific challenge handling, including an empty string for an empty body. Omitted when the complete body is not valid UTF-8; body read failures fail the HTTP operation rather than exposing a partial response.
+     */
+    body?: string;
+    /**
+     * HTTP response headers as observed by the runtime. Order and casing are transport-dependent, and duplicate header names may appear multiple times.
+     */
+    headers: HeaderEntry[];
+    /**
+     * HTTP status code returned with the auth challenge.
+     */
+    statusCode: number;
+}
+/**
+ * Single HTTP header entry as a name/value pair.
+ */
+export interface HeaderEntry {
+    /**
+     * HTTP response header name as observed by the runtime.
+     */
+    name: string;
+    /**
+     * HTTP response header value as observed by the runtime.
+     */
+    value: string;
+}
+/**
  * Static OAuth client configuration, if the server specifies one
  */
 export interface McpOauthRequiredStaticClientConfig {
@@ -6073,6 +7245,10 @@ export interface McpOauthRequiredStaticClientConfig {
      * OAuth client ID for the server
      */
     clientId: string;
+    /**
+     * Optional OAuth client secret for confidential static clients, when the runtime can resolve one
+     */
+    clientSecret?: string;
     /**
      * Optional non-default OAuth grant type. When set to 'client_credentials', the OAuth flow runs headlessly using the client_id + keychain-stored secret (no browser, no callback server).
      */
@@ -6091,9 +7267,9 @@ export interface McpOauthWWWAuthenticateParams {
      */
     error?: string;
     /**
-     * Protected resource metadata URL from the WWW-Authenticate resource_metadata parameter
+     * Protected resource metadata URL from the WWW-Authenticate resource_metadata parameter, if present
      */
-    resourceMetadataUrl: string;
+    resourceMetadataUrl?: string;
     /**
      * Requested OAuth scopes from the WWW-Authenticate scope parameter, if present
      */
@@ -6136,6 +7312,94 @@ export interface McpOauthCompletedData {
     outcome: McpOauthCompletionOutcome;
     /**
      * Request ID of the resolved OAuth request
+     */
+    requestId: string;
+}
+/**
+ * Session event "mcp.headers_refresh_required". Dynamic headers refresh request for a remote MCP server
+ */
+export interface McpHeadersRefreshRequiredEvent {
+    /**
+     * Sub-agent instance identifier. Absent for events from the root/main agent and session-level events.
+     */
+    agentId?: string;
+    data: McpHeadersRefreshRequiredData;
+    /**
+     * Always true for events that are transient and not persisted to the session event log on disk.
+     */
+    ephemeral: true;
+    /**
+     * Unique event identifier (UUID v4), generated when the event is emitted
+     */
+    id: string;
+    /**
+     * ID of the chronologically preceding event in the session, forming a linked chain. Null for the first event.
+     */
+    parentId: string | null;
+    /**
+     * ISO 8601 timestamp when the event was created
+     */
+    timestamp: string;
+    /**
+     * Type discriminator. Always "mcp.headers_refresh_required".
+     */
+    type: "mcp.headers_refresh_required";
+}
+/**
+ * Dynamic headers refresh request for a remote MCP server
+ */
+export interface McpHeadersRefreshRequiredData {
+    reason: McpHeadersRefreshRequiredReason;
+    /**
+     * Unique identifier for this headers refresh request; used to respond via session.mcp.headers.handlePendingHeadersRefreshRequest()
+     */
+    requestId: string;
+    /**
+     * Display name of the remote MCP server requesting headers
+     */
+    serverName: string;
+    /**
+     * URL of the remote MCP server requesting headers
+     */
+    serverUrl: string;
+}
+/**
+ * Session event "mcp.headers_refresh_completed". MCP headers refresh request completion notification
+ */
+export interface McpHeadersRefreshCompletedEvent {
+    /**
+     * Sub-agent instance identifier. Absent for events from the root/main agent and session-level events.
+     */
+    agentId?: string;
+    data: McpHeadersRefreshCompletedData;
+    /**
+     * Always true for events that are transient and not persisted to the session event log on disk.
+     */
+    ephemeral: true;
+    /**
+     * Unique event identifier (UUID v4), generated when the event is emitted
+     */
+    id: string;
+    /**
+     * ID of the chronologically preceding event in the session, forming a linked chain. Null for the first event.
+     */
+    parentId: string | null;
+    /**
+     * ISO 8601 timestamp when the event was created
+     */
+    timestamp: string;
+    /**
+     * Type discriminator. Always "mcp.headers_refresh_completed".
+     */
+    type: "mcp.headers_refresh_completed";
+}
+/**
+ * MCP headers refresh request completion notification
+ */
+export interface McpHeadersRefreshCompletedData {
+    outcome: McpHeadersRefreshCompletedOutcome;
+    /**
+     * Request ID of the resolved headers refresh request
      */
     requestId: string;
 }
@@ -6529,6 +7793,322 @@ export interface AutoModeSwitchCompletedData {
     response: AutoModeSwitchResponse;
 }
 /**
+ * Session event "session_limits_exhausted.requested". Session limit exhaustion notification requiring user action.
+ */
+export interface SessionLimitsExhaustedRequestedEvent {
+    /**
+     * Sub-agent instance identifier. Absent for events from the root/main agent and session-level events.
+     */
+    agentId?: string;
+    data: SessionLimitsExhaustedRequestedData;
+    /**
+     * Always true for events that are transient and not persisted to the session event log on disk.
+     */
+    ephemeral: true;
+    /**
+     * Unique event identifier (UUID v4), generated when the event is emitted
+     */
+    id: string;
+    /**
+     * ID of the chronologically preceding event in the session, forming a linked chain. Null for the first event.
+     */
+    parentId: string | null;
+    /**
+     * ISO 8601 timestamp when the event was created
+     */
+    timestamp: string;
+    /**
+     * Type discriminator. Always "session_limits_exhausted.requested".
+     */
+    type: "session_limits_exhausted.requested";
+}
+/**
+ * Session limit exhaustion notification requiring user action.
+ */
+export interface SessionLimitsExhaustedRequestedData {
+    /**
+     * Configured max AI Credits for the current accounting window.
+     */
+    maxAiCredits: number;
+    /**
+     * Unique identifier for this request; used to respond via session.ui.handlePendingSessionLimitsExhausted().
+     */
+    requestId: string;
+    /**
+     * AI Credits already consumed in the current accounting window.
+     */
+    usedAiCredits: number;
+}
+/**
+ * Session event "session_limits_exhausted.completed". Session limit exhaustion prompt completion notification.
+ */
+export interface SessionLimitsExhaustedCompletedEvent {
+    /**
+     * Sub-agent instance identifier. Absent for events from the root/main agent and session-level events.
+     */
+    agentId?: string;
+    data: SessionLimitsExhaustedCompletedData;
+    /**
+     * Always true for events that are transient and not persisted to the session event log on disk.
+     */
+    ephemeral: true;
+    /**
+     * Unique event identifier (UUID v4), generated when the event is emitted
+     */
+    id: string;
+    /**
+     * ID of the chronologically preceding event in the session, forming a linked chain. Null for the first event.
+     */
+    parentId: string | null;
+    /**
+     * ISO 8601 timestamp when the event was created
+     */
+    timestamp: string;
+    /**
+     * Type discriminator. Always "session_limits_exhausted.completed".
+     */
+    type: "session_limits_exhausted.completed";
+}
+/**
+ * Session limit exhaustion prompt completion notification.
+ */
+export interface SessionLimitsExhaustedCompletedData {
+    /**
+     * Request ID of the resolved request; clients should dismiss any UI for this request.
+     */
+    requestId: string;
+    response: SessionLimitsExhaustedResponse;
+}
+/**
+ * The user's selected action for an exhausted session limit.
+ */
+export interface SessionLimitsExhaustedResponse {
+    action: SessionLimitsExhaustedResponseAction;
+    /**
+     * AI Credits to add to the current max when action is 'add'.
+     */
+    additionalAiCredits?: number;
+    /**
+     * New absolute max AI Credits when action is 'set'.
+     */
+    maxAiCredits?: number;
+}
+/**
+ * Session event "session.auto_mode_resolved". Auto Intent resolution: the concrete model the session settled on for the first prompt of an auto-mode session, and why. Lets SDK clients render the chosen model and the full reason it was picked. The core selection fields (chosenModel/reasoningBucket/categoryScores) are stable; the routing-analytics fields (predictedLabel/confidence/candidateModels) mirror the upstream intent service and may evolve, hence the event's experimental stability.
+ */
+/** @experimental */
+export interface AutoModeResolvedEvent {
+    /**
+     * Sub-agent instance identifier. Absent for events from the root/main agent and session-level events.
+     */
+    agentId?: string;
+    data: AutoModeResolvedData;
+    /**
+     * When true, the event is transient and not persisted to the session event log on disk
+     */
+    ephemeral?: boolean;
+    /**
+     * Unique event identifier (UUID v4), generated when the event is emitted
+     */
+    id: string;
+    /**
+     * ID of the chronologically preceding event in the session, forming a linked chain. Null for the first event.
+     */
+    parentId: string | null;
+    /**
+     * ISO 8601 timestamp when the event was created
+     */
+    timestamp: string;
+    /**
+     * Type discriminator. Always "session.auto_mode_resolved".
+     */
+    type: "session.auto_mode_resolved";
+}
+/**
+ * Auto Intent resolution: the concrete model the session settled on for the first prompt of an auto-mode session, and why. Lets SDK clients render the chosen model and the full reason it was picked. The core selection fields (chosenModel/reasoningBucket/categoryScores) are stable; the routing-analytics fields (predictedLabel/confidence/candidateModels) mirror the upstream intent service and may evolve, hence the event's experimental stability.
+ */
+/** @experimental */
+export interface AutoModeResolvedData {
+    /**
+     * Models offered to the router for this resolution
+     */
+    availableModels?: string[];
+    /**
+     * Ordered candidate model list the router returned, when not a fallback
+     */
+    candidateModels?: string[];
+    /**
+     * Per-category classifier scores (0-1) behind the bucket: the granular HYDRA capability scores (reasoning, code_gen, debugging, tool_use), or the binary needs_reasoning/no_reasoning scores when HYDRA didn't run. Lets clients show a breakdown rather than just the bucket.
+     */
+    categoryScores?: {
+        [k: string]: number | undefined;
+    };
+    /**
+     * The concrete model the session will use after any intent refinement
+     */
+    chosenModel: string;
+    /**
+     * The chosen model's score shortfall relative to the top candidate
+     */
+    chosenShortfall?: number;
+    /**
+     * Classifier confidence for the predicted label, when available
+     */
+    confidence?: number;
+    /**
+     * End-to-end client wait time for the router request in milliseconds
+     */
+    endToEndLatencyMs?: number;
+    /**
+     * Whether the router fell back to the standard Auto selection
+     */
+    fallback?: boolean;
+    /**
+     * Server-provided reason for falling back, when available
+     */
+    fallbackReason?: string;
+    /**
+     * Whether the routed prompt contained an image
+     */
+    hasImage?: boolean;
+    /**
+     * The predicted classifier label (e.g. `needs_reasoning`), when available
+     */
+    predictedLabel?: string;
+    reasoningBucket?: AutoModeResolvedReasoningBucket;
+    /**
+     * Server-reported router processing time in milliseconds
+     */
+    routerLatencyMs?: number;
+    /**
+     * The routing method the server applied, when Auto Intent ran
+     */
+    routingMethod?: string;
+    /**
+     * Whether a sticky model choice overrode the router result
+     */
+    stickyOverride?: boolean;
+}
+/**
+ * Session event "session.managed_settings_resolved". Enterprise managed-settings resolution: the effective managed settings the session applied and where they came from, so SDK clients can show users what is enterprise-managed and by which authority. Fires whenever managed policy is (re)applied — at session start, on resume, and on account switch. This is an ephemeral live snapshot (delivered to subscribers but not persisted to the session event log), because at session start it resolves before `session.start` is emitted; for a session-independent pull, use the SDK `getManagedSettings()` API, which returns the identical payload. Managed settings have a single authoritative source, so the highest-authority present layer (server > device) wins wholesale; `bypassPermissionsDisabled` is deny-wins across layers. Marked experimental while the managed-settings surface stabilizes.
+ */
+/** @experimental */
+export interface ManagedSettingsResolvedEvent {
+    /**
+     * Sub-agent instance identifier. Absent for events from the root/main agent and session-level events.
+     */
+    agentId?: string;
+    data: ManagedSettingsResolvedData;
+    /**
+     * Always true for events that are transient and not persisted to the session event log on disk.
+     */
+    ephemeral: true;
+    /**
+     * Unique event identifier (UUID v4), generated when the event is emitted
+     */
+    id: string;
+    /**
+     * ID of the chronologically preceding event in the session, forming a linked chain. Null for the first event.
+     */
+    parentId: string | null;
+    /**
+     * ISO 8601 timestamp when the event was created
+     */
+    timestamp: string;
+    /**
+     * Type discriminator. Always "session.managed_settings_resolved".
+     */
+    type: "session.managed_settings_resolved";
+}
+/**
+ * Enterprise managed-settings resolution: the effective managed settings the session applied and where they came from, so SDK clients can show users what is enterprise-managed and by which authority. Fires whenever managed policy is (re)applied — at session start, on resume, and on account switch. This is an ephemeral live snapshot (delivered to subscribers but not persisted to the session event log), because at session start it resolves before `session.start` is emitted; for a session-independent pull, use the SDK `getManagedSettings()` API, which returns the identical payload. Managed settings have a single authoritative source, so the highest-authority present layer (server > device) wins wholesale; `bypassPermissionsDisabled` is deny-wins across layers. Marked experimental while the managed-settings surface stabilizes.
+ */
+/** @experimental */
+export interface ManagedSettingsResolvedData {
+    /**
+     * Whether enterprise policy disables bypass-permissions ("yolo") mode for this session. Deny-wins across layers, and forced on when `failClosed` is true.
+     */
+    bypassPermissionsDisabled: boolean;
+    /**
+     * Whether the device (MDM/plist/registry/file) managed-settings layer was present
+     */
+    deviceManaged: boolean;
+    /**
+     * Whether managed policy could not be determined (e.g. a failed server fetch) and the session fell back to the fail-closed restriction. When true, restrictions such as disabling bypass-permissions are enforced even though `settings` may be absent.
+     */
+    failClosed: boolean;
+    /**
+     * The setting keys under enterprise management in the effective managed settings (e.g. `model`, `enabledPlugins`, `permissions`). Empty when no managed settings are in force.
+     */
+    managedKeys: string[];
+    /**
+     * Whether server and device each supplied a permission allowlist, so enforcement intersects them and the flattened settings payload omits `permissions.allow`.
+     */
+    permissionsAllowIntersected?: boolean;
+    /**
+     * Whether the server (account/org) managed-settings layer was present
+     */
+    serverManaged: boolean;
+    /**
+     * The effective (resolved) managed settings values, so clients can render exactly what is enforced. Absent when no managed policy is in force.
+     */
+    settings?: {
+        [k: string]: unknown | undefined;
+    };
+    source: ManagedSettingsResolvedSource;
+}
+/**
+ * Session event "session.managed_settings_enforced". Runtime enforcement of enterprise managed settings: fires when the session blocks or caps a runtime action because enterprise policy governs it, so SDK clients can explain *why* an action was governed. Unlike `session.managed_settings_resolved` (which reports *what* is managed), this reports a concrete governed action — e.g. a user or host tried to turn on a bypass-permissions escalation while policy disables it. Emitted live (not persisted to the session event log) on user/host-initiated attempts only, never for silent policy application. Marked experimental while the managed-settings surface stabilizes.
+ */
+/** @experimental */
+export interface ManagedSettingsEnforcedEvent {
+    /**
+     * Sub-agent instance identifier. Absent for events from the root/main agent and session-level events.
+     */
+    agentId?: string;
+    data: ManagedSettingsEnforcedData;
+    /**
+     * Always true for events that are transient and not persisted to the session event log on disk.
+     */
+    ephemeral: true;
+    /**
+     * Unique event identifier (UUID v4), generated when the event is emitted
+     */
+    id: string;
+    /**
+     * ID of the chronologically preceding event in the session, forming a linked chain. Null for the first event.
+     */
+    parentId: string | null;
+    /**
+     * ISO 8601 timestamp when the event was created
+     */
+    timestamp: string;
+    /**
+     * Type discriminator. Always "session.managed_settings_enforced".
+     */
+    type: "session.managed_settings_enforced";
+}
+/**
+ * Runtime enforcement of enterprise managed settings: fires when the session blocks or caps a runtime action because enterprise policy governs it, so SDK clients can explain *why* an action was governed. Unlike `session.managed_settings_resolved` (which reports *what* is managed), this reports a concrete governed action — e.g. a user or host tried to turn on a bypass-permissions escalation while policy disables it. Emitted live (not persisted to the session event log) on user/host-initiated attempts only, never for silent policy application. Marked experimental while the managed-settings surface stabilizes.
+ */
+/** @experimental */
+export interface ManagedSettingsEnforcedData {
+    action: ManagedSettingsEnforcedAction;
+    escalation?: ManagedSettingsEnforcedEscalation;
+    /**
+     * Whether the enforcement was forced by fail-closed handling (managed policy could not be determined) rather than an explicit managed setting. When true, `setting` still names the restriction that was applied.
+     */
+    failClosed: boolean;
+    /**
+     * A human-readable explanation of why the action was governed, suitable for surfacing to the user.
+     */
+    message: string;
+    /**
+     * The managed setting key responsible for the enforcement (e.g. `permissions.disableBypassPermissionsMode`).
+     */
+    setting: string;
+}
+/**
  * Session event "commands.changed". SDK command registration change notification
  */
 export interface CommandsChangedEvent {
@@ -6568,7 +8148,7 @@ export interface CommandsChangedData {
     commands: CommandsChangedCommand[];
 }
 /**
- * Schema for the `CommandsChangedCommand` type.
+ * A single slash command available in the session, as listed by the `commands.changed` event.
  */
 export interface CommandsChangedCommand {
     /**
@@ -6738,7 +8318,7 @@ export interface ExitPlanModeCompletedData {
     selectedAction?: ExitPlanModeAction;
 }
 /**
- * Session event "session.tools_updated".
+ * Session event "session.tools_updated". Payload of `session.tools_updated` identifying the model whose resolved tools were updated.
  */
 export interface ToolsUpdatedEvent {
     /**
@@ -6768,7 +8348,7 @@ export interface ToolsUpdatedEvent {
     type: "session.tools_updated";
 }
 /**
- * Schema for the `ToolsUpdatedData` type.
+ * Payload of `session.tools_updated` identifying the model whose resolved tools were updated.
  */
 export interface ToolsUpdatedData {
     /**
@@ -6777,7 +8357,7 @@ export interface ToolsUpdatedData {
     model: string;
 }
 /**
- * Session event "session.background_tasks_changed".
+ * Session event "session.background_tasks_changed". Empty payload for `session.background_tasks_changed`, indicating background task state changed.
  */
 export interface BackgroundTasksChangedEvent {
     /**
@@ -6807,12 +8387,54 @@ export interface BackgroundTasksChangedEvent {
     type: "session.background_tasks_changed";
 }
 /**
- * Schema for the `BackgroundTasksChangedData` type.
+ * Empty payload for `session.background_tasks_changed`, indicating background task state changed.
  */
 export interface BackgroundTasksChangedData {
 }
 /**
- * Session event "session.skills_loaded".
+ * Session event "factory.run_updated". Ephemeral invalidation signal for a changed factory run.
+ */
+/** @experimental */
+export interface FactoryRunUpdatedEvent {
+    /**
+     * Sub-agent instance identifier. Absent for events from the root/main agent and session-level events.
+     */
+    agentId?: string;
+    data: FactoryRunUpdatedData;
+    /**
+     * Always true for events that are transient and not persisted to the session event log on disk.
+     */
+    ephemeral: true;
+    /**
+     * Unique event identifier (UUID v4), generated when the event is emitted
+     */
+    id: string;
+    /**
+     * ID of the chronologically preceding event in the session, forming a linked chain. Null for the first event.
+     */
+    parentId: string | null;
+    /**
+     * ISO 8601 timestamp when the event was created
+     */
+    timestamp: string;
+    /**
+     * Type discriminator. Always "factory.run_updated".
+     */
+    type: "factory.run_updated";
+}
+/**
+ * Ephemeral invalidation signal for a changed factory run.
+ */
+/** @experimental */
+export interface FactoryRunUpdatedData {
+    /**
+     * Monotonic revision now available for the run.
+     */
+    revision: number;
+    runId: string;
+}
+/**
+ * Session event "session.skills_loaded". Payload of `session.skills_loaded` listing resolved skill metadata.
  */
 export interface SkillsLoadedEvent {
     /**
@@ -6842,7 +8464,7 @@ export interface SkillsLoadedEvent {
     type: "session.skills_loaded";
 }
 /**
- * Schema for the `SkillsLoadedData` type.
+ * Payload of `session.skills_loaded` listing resolved skill metadata.
  */
 export interface SkillsLoadedData {
     /**
@@ -6851,9 +8473,13 @@ export interface SkillsLoadedData {
     skills: SkillsLoadedSkill[];
 }
 /**
- * Schema for the `SkillsLoadedSkill` type.
+ * A single resolved skill in `session.skills_loaded`, including source, invocability, enabled state, path, and argument hint.
  */
 export interface SkillsLoadedSkill {
+    /**
+     * Optional freeform hint describing the skill's expected arguments, from the `argument-hint` frontmatter field
+     */
+    argumentHint?: string;
     /**
      * Description of what the skill does
      */
@@ -6877,7 +8503,7 @@ export interface SkillsLoadedSkill {
     userInvocable: boolean;
 }
 /**
- * Session event "session.custom_agents_updated".
+ * Session event "session.custom_agents_updated". Payload of `session.custom_agents_updated` with loaded custom agents plus non-fatal warnings and fatal errors.
  */
 export interface CustomAgentsUpdatedEvent {
     /**
@@ -6907,7 +8533,7 @@ export interface CustomAgentsUpdatedEvent {
     type: "session.custom_agents_updated";
 }
 /**
- * Schema for the `CustomAgentsUpdatedData` type.
+ * Payload of `session.custom_agents_updated` with loaded custom agents plus non-fatal warnings and fatal errors.
  */
 export interface CustomAgentsUpdatedData {
     /**
@@ -6924,7 +8550,7 @@ export interface CustomAgentsUpdatedData {
     warnings: string[];
 }
 /**
- * Schema for the `CustomAgentsUpdatedAgent` type.
+ * A single loaded custom agent in `session.custom_agents_updated`, with identity, source, tools, invocability, and model override.
  */
 export interface CustomAgentsUpdatedAgent {
     /**
@@ -6961,7 +8587,7 @@ export interface CustomAgentsUpdatedAgent {
     userInvocable: boolean;
 }
 /**
- * Session event "session.mcp_servers_loaded".
+ * Session event "session.mcp_servers_loaded". Payload of `session.mcp_servers_loaded` listing MCP server status summaries.
  */
 export interface McpServersLoadedEvent {
     /**
@@ -6991,7 +8617,7 @@ export interface McpServersLoadedEvent {
     type: "session.mcp_servers_loaded";
 }
 /**
- * Schema for the `McpServersLoadedData` type.
+ * Payload of `session.mcp_servers_loaded` listing MCP server status summaries.
  */
 export interface McpServersLoadedData {
     /**
@@ -7000,7 +8626,7 @@ export interface McpServersLoadedData {
     servers: McpServersLoadedServer[];
 }
 /**
- * Schema for the `McpServersLoadedServer` type.
+ * A single MCP server status summary in `session.mcp_servers_loaded`, including name, status, source, transport, and plugin metadata.
  */
 export interface McpServersLoadedServer {
     /**
@@ -7024,7 +8650,7 @@ export interface McpServersLoadedServer {
     transport?: McpServerTransport;
 }
 /**
- * Session event "session.mcp_server_status_changed".
+ * Session event "session.mcp_server_status_changed". Payload of `session.mcp_server_status_changed` for one MCP server's status and optional failure error.
  */
 export interface McpServerStatusChangedEvent {
     /**
@@ -7054,7 +8680,7 @@ export interface McpServerStatusChangedEvent {
     type: "session.mcp_server_status_changed";
 }
 /**
- * Schema for the `McpServerStatusChangedData` type.
+ * Payload of `session.mcp_server_status_changed` for one MCP server's status and optional failure error.
  */
 export interface McpServerStatusChangedData {
     /**
@@ -7068,7 +8694,106 @@ export interface McpServerStatusChangedData {
     status: McpServerStatus;
 }
 /**
- * Session event "session.extensions_loaded".
+ * Session event "mcp.tools.list_changed". Payload identifying the MCP server associated with a list change.
+ */
+export interface McpToolsListChangedEvent {
+    /**
+     * Sub-agent instance identifier. Absent for events from the root/main agent and session-level events.
+     */
+    agentId?: string;
+    data: McpListChangedData;
+    /**
+     * Always true for events that are transient and not persisted to the session event log on disk.
+     */
+    ephemeral: true;
+    /**
+     * Unique event identifier (UUID v4), generated when the event is emitted
+     */
+    id: string;
+    /**
+     * ID of the chronologically preceding event in the session, forming a linked chain. Null for the first event.
+     */
+    parentId: string | null;
+    /**
+     * ISO 8601 timestamp when the event was created
+     */
+    timestamp: string;
+    /**
+     * Type discriminator. Always "mcp.tools.list_changed".
+     */
+    type: "mcp.tools.list_changed";
+}
+/**
+ * Payload identifying the MCP server associated with a list change.
+ */
+export interface McpListChangedData {
+    /**
+     * Name of the MCP server whose list changed
+     */
+    serverName: string;
+}
+/**
+ * Session event "mcp.resources.list_changed". Payload identifying the MCP server associated with a list change.
+ */
+export interface McpResourcesListChangedEvent {
+    /**
+     * Sub-agent instance identifier. Absent for events from the root/main agent and session-level events.
+     */
+    agentId?: string;
+    data: McpListChangedData;
+    /**
+     * Always true for events that are transient and not persisted to the session event log on disk.
+     */
+    ephemeral: true;
+    /**
+     * Unique event identifier (UUID v4), generated when the event is emitted
+     */
+    id: string;
+    /**
+     * ID of the chronologically preceding event in the session, forming a linked chain. Null for the first event.
+     */
+    parentId: string | null;
+    /**
+     * ISO 8601 timestamp when the event was created
+     */
+    timestamp: string;
+    /**
+     * Type discriminator. Always "mcp.resources.list_changed".
+     */
+    type: "mcp.resources.list_changed";
+}
+/**
+ * Session event "mcp.prompts.list_changed". Payload identifying the MCP server associated with a list change.
+ */
+export interface McpPromptsListChangedEvent {
+    /**
+     * Sub-agent instance identifier. Absent for events from the root/main agent and session-level events.
+     */
+    agentId?: string;
+    data: McpListChangedData;
+    /**
+     * Always true for events that are transient and not persisted to the session event log on disk.
+     */
+    ephemeral: true;
+    /**
+     * Unique event identifier (UUID v4), generated when the event is emitted
+     */
+    id: string;
+    /**
+     * ID of the chronologically preceding event in the session, forming a linked chain. Null for the first event.
+     */
+    parentId: string | null;
+    /**
+     * ISO 8601 timestamp when the event was created
+     */
+    timestamp: string;
+    /**
+     * Type discriminator. Always "mcp.prompts.list_changed".
+     */
+    type: "mcp.prompts.list_changed";
+}
+/**
+ * Session event "session.extensions_loaded". Payload of `session.extensions_loaded` listing discovered extensions and their statuses.
  */
 export interface ExtensionsLoadedEvent {
     /**
@@ -7098,7 +8823,7 @@ export interface ExtensionsLoadedEvent {
     type: "session.extensions_loaded";
 }
 /**
- * Schema for the `ExtensionsLoadedData` type.
+ * Payload of `session.extensions_loaded` listing discovered extensions and their statuses.
  */
 export interface ExtensionsLoadedData {
     /**
@@ -7107,7 +8832,7 @@ export interface ExtensionsLoadedData {
     extensions: ExtensionsLoadedExtension[];
 }
 /**
- * Schema for the `ExtensionsLoadedExtension` type.
+ * A single extension discovered by `session.extensions_loaded`, including qualified ID, source, and current status.
  */
 export interface ExtensionsLoadedExtension {
     /**
@@ -7122,8 +8847,9 @@ export interface ExtensionsLoadedExtension {
     status: ExtensionsLoadedExtensionStatus;
 }
 /**
- * Session event "session.canvas.opened".
+ * Session event "session.canvas.opened". Payload of `session.canvas.opened` with canvas instance and provider IDs plus optional icon, title, status, URL, and input.
  */
+/** @experimental */
 export interface CanvasOpenedEvent {
     /**
      * Sub-agent instance identifier. Absent for events from the root/main agent and session-level events.
@@ -7152,10 +8878,10 @@ export interface CanvasOpenedEvent {
     type: "session.canvas.opened";
 }
 /**
- * Schema for the `CanvasOpenedData` type.
+ * Payload of `session.canvas.opened` with canvas instance and provider IDs plus optional icon, title, status, URL, and input.
  */
+/** @experimental */
 export interface CanvasOpenedData {
-    availability: CanvasOpenedAvailability;
     /**
      * Provider-local canvas identifier
      */
@@ -7169,6 +8895,10 @@ export interface CanvasOpenedData {
      */
     extensionName?: string;
     /**
+     * Host-local PNG path for the canvas icon, when supplied
+     */
+    icon?: string;
+    /**
      * Input supplied when the instance was opened
      */
     input?: {
@@ -7178,10 +8908,6 @@ export interface CanvasOpenedData {
      * Stable caller-supplied canvas instance identifier
      */
     instanceId: string;
-    /**
-     * Whether this notification represents an idempotent reopen
-     */
-    reopen: boolean;
     /**
      * Provider-supplied status text
      */
@@ -7196,8 +8922,9 @@ export interface CanvasOpenedData {
     url?: string;
 }
 /**
- * Session event "session.canvas.registry_changed".
+ * Session event "session.canvas.registry_changed". Payload of `session.canvas.registry_changed` listing the canvas declarations currently available.
  */
+/** @experimental */
 export interface CanvasRegistryChangedEvent {
     /**
      * Sub-agent instance identifier. Absent for events from the root/main agent and session-level events.
@@ -7226,8 +8953,9 @@ export interface CanvasRegistryChangedEvent {
     type: "session.canvas.registry_changed";
 }
 /**
- * Schema for the `CanvasRegistryChangedData` type.
+ * Payload of `session.canvas.registry_changed` listing the canvas declarations currently available.
  */
+/** @experimental */
 export interface CanvasRegistryChangedData {
     /**
      * Canvas declarations currently available
@@ -7235,8 +8963,9 @@ export interface CanvasRegistryChangedData {
     canvases: CanvasRegistryChangedCanvas[];
 }
 /**
- * Schema for the `CanvasRegistryChangedCanvas` type.
+ * A single canvas declaration in `session.canvas.registry_changed`, including provider IDs, display metadata, input schema, and actions.
  */
+/** @experimental */
 export interface CanvasRegistryChangedCanvas {
     /**
      * Actions the agent or host may invoke
@@ -7263,6 +8992,10 @@ export interface CanvasRegistryChangedCanvas {
      */
     extensionName?: string;
     /**
+     * Host-local PNG path for the canvas icon, when supplied
+     */
+    icon?: string;
+    /**
      * JSON Schema for canvas open input
      */
     inputSchema?: {
@@ -7270,8 +9003,9 @@ export interface CanvasRegistryChangedCanvas {
     };
 }
 /**
- * Schema for the `CanvasRegistryChangedCanvasAction` type.
+ * A single action within a canvas declaration, with its name, optional description, and optional input schema.
  */
+/** @experimental */
 export interface CanvasRegistryChangedCanvasAction {
     /**
      * Action description
@@ -7289,8 +9023,9 @@ export interface CanvasRegistryChangedCanvasAction {
     name: string;
 }
 /**
- * Session event "session.canvas.closed".
+ * Session event "session.canvas.closed". Payload of `session.canvas.closed` with the closed canvas instance ID, provider ID, and canvas ID.
  */
+/** @experimental */
 export interface CanvasClosedEvent {
     /**
      * Sub-agent instance identifier. Absent for events from the root/main agent and session-level events.
@@ -7319,8 +9054,9 @@ export interface CanvasClosedEvent {
     type: "session.canvas.closed";
 }
 /**
- * Schema for the `CanvasClosedData` type.
+ * Payload of `session.canvas.closed` with the closed canvas instance ID, provider ID, and canvas ID.
  */
+/** @experimental */
 export interface CanvasClosedData {
     /**
      * Provider-local canvas identifier
@@ -7336,7 +9072,164 @@ export interface CanvasClosedData {
     instanceId: string;
 }
 /**
- * Session event "session.extensions.attachments_pushed".
+ * Session event "session.canvas.unavailable". Transient signal that an open canvas instance's provider has dropped (for example the extension is reloading mid-session). The host should keep the panel mounted and surface a reconnecting affordance rather than tearing it down; a subsequent `session.canvas.opened` for the same instanceId clears the affordance once the provider reconnects with a fresh url. Ephemeral and never persisted, so it is never replayed on cold resume.
+ */
+/** @experimental */
+export interface CanvasUnavailableEvent {
+    /**
+     * Sub-agent instance identifier. Absent for events from the root/main agent and session-level events.
+     */
+    agentId?: string;
+    data: CanvasUnavailableData;
+    /**
+     * Always true for events that are transient and not persisted to the session event log on disk.
+     */
+    ephemeral: true;
+    /**
+     * Unique event identifier (UUID v4), generated when the event is emitted
+     */
+    id: string;
+    /**
+     * ID of the chronologically preceding event in the session, forming a linked chain. Null for the first event.
+     */
+    parentId: string | null;
+    /**
+     * ISO 8601 timestamp when the event was created
+     */
+    timestamp: string;
+    /**
+     * Type discriminator. Always "session.canvas.unavailable".
+     */
+    type: "session.canvas.unavailable";
+}
+/**
+ * Transient signal that an open canvas instance's provider has dropped (for example the extension is reloading mid-session). The host should keep the panel mounted and surface a reconnecting affordance rather than tearing it down; a subsequent `session.canvas.opened` for the same instanceId clears the affordance once the provider reconnects with a fresh url. Ephemeral and never persisted, so it is never replayed on cold resume.
+ */
+/** @experimental */
+export interface CanvasUnavailableData {
+    /**
+     * Provider-local canvas identifier
+     */
+    canvasId: string;
+    /**
+     * Owning provider identifier
+     */
+    extensionId: string;
+    /**
+     * Stable caller-supplied identifier of the canvas instance whose provider became unavailable
+     */
+    instanceId: string;
+}
+/**
+ * Session event "session.canvas.recorded". Durable record that a canvas instance is open, used to restore open canvases on cold session resume. Intentionally omits the transient url and availability.
+ */
+/** @experimental */
+export interface CanvasRecordedEvent {
+    /**
+     * Sub-agent instance identifier. Absent for events from the root/main agent and session-level events.
+     */
+    agentId?: string;
+    data: CanvasRecordedData;
+    /**
+     * When true, the event is transient and not persisted to the session event log on disk
+     */
+    ephemeral?: boolean;
+    /**
+     * Unique event identifier (UUID v4), generated when the event is emitted
+     */
+    id: string;
+    /**
+     * ID of the chronologically preceding event in the session, forming a linked chain. Null for the first event.
+     */
+    parentId: string | null;
+    /**
+     * ISO 8601 timestamp when the event was created
+     */
+    timestamp: string;
+    /**
+     * Type discriminator. Always "session.canvas.recorded".
+     */
+    type: "session.canvas.recorded";
+}
+/**
+ * Durable record that a canvas instance is open, used to restore open canvases on cold session resume. Intentionally omits the transient url and availability.
+ */
+/** @experimental */
+export interface CanvasRecordedData {
+    /**
+     * Provider-local canvas identifier
+     */
+    canvasId: string;
+    /**
+     * Owning provider identifier
+     */
+    extensionId: string;
+    /**
+     * Input supplied when the instance was opened
+     */
+    input?: {
+        [k: string]: unknown | undefined;
+    };
+    /**
+     * Stable caller-supplied canvas instance identifier
+     */
+    instanceId: string;
+    /**
+     * Rendered title
+     */
+    title?: string;
+}
+/**
+ * Session event "session.canvas.removed". Durable record that a canvas instance was closed, superseding a prior instance_recorded during resume replay.
+ */
+/** @experimental */
+export interface CanvasRemovedEvent {
+    /**
+     * Sub-agent instance identifier. Absent for events from the root/main agent and session-level events.
+     */
+    agentId?: string;
+    data: CanvasRemovedData;
+    /**
+     * When true, the event is transient and not persisted to the session event log on disk
+     */
+    ephemeral?: boolean;
+    /**
+     * Unique event identifier (UUID v4), generated when the event is emitted
+     */
+    id: string;
+    /**
+     * ID of the chronologically preceding event in the session, forming a linked chain. Null for the first event.
+     */
+    parentId: string | null;
+    /**
+     * ISO 8601 timestamp when the event was created
+     */
+    timestamp: string;
+    /**
+     * Type discriminator. Always "session.canvas.removed".
+     */
+    type: "session.canvas.removed";
+}
+/**
+ * Durable record that a canvas instance was closed, superseding a prior instance_recorded during resume replay.
+ */
+/** @experimental */
+export interface CanvasRemovedData {
+    /**
+     * Provider-local canvas identifier
+     */
+    canvasId: string;
+    /**
+     * Owning provider identifier
+     */
+    extensionId: string;
+    /**
+     * Stable caller-supplied identifier of the canvas instance that was closed
+     */
+    instanceId: string;
+}
+/**
+ * Session event "session.extensions.attachments_pushed". Payload of `session.extensions.attachments_pushed` with extension-contributed attachments for the next send.
  */
 export interface ExtensionsAttachmentsPushedEvent {
     /**
@@ -7366,7 +9259,7 @@ export interface ExtensionsAttachmentsPushedEvent {
     type: "session.extensions.attachments_pushed";
 }
 /**
- * Schema for the `ExtensionsAttachmentsPushedData` type.
+ * Payload of `session.extensions.attachments_pushed` with extension-contributed attachments for the next send.
  */
 export interface ExtensionsAttachmentsPushedData {
     /**
@@ -7455,7 +9348,7 @@ export interface McpAppToolCallCompleteToolMeta {
     ui?: McpAppToolCallCompleteToolMetaUI;
 }
 /**
- * Schema for the `McpAppToolCallCompleteToolMetaUI` type.
+ * MCP App tool `_meta.ui` resource URI and SEP-1865 visibility captured with an `mcp_app.tool_call_complete` result.
  */
 export interface McpAppToolCallCompleteToolMetaUI {
     /**

@@ -6,6 +6,7 @@ model:
   - gpt-5.4-mini
 tools:
   - send_inbox
+strictToolsList: true
 promptParts:
   includeOutputChannelInstructions: inbox
 prompt: |
