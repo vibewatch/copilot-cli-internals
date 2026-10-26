@@ -113,6 +113,7 @@ jobs:
             | xargs -0 sha256sum > "$protected_before"
 
           copilot \
+            --model gpt-6-luna \
             --prompt "$(cat .github/prompts/weekly-copilot-cli-docs.md)" \
             --allow-all-tools \
             --disable-builtin-mcps \
